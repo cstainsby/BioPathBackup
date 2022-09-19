@@ -1,0 +1,78 @@
+# docker-compose.yaml
+#
+# Docker compose file for launching and running both frontend and backend
+# docker containers for the Biopath app
+#
+# Modified by: Zach B.
+#
+# Source: https://medium.com/@gagansh7171/dockerize-your-django-and-react-app-68a7b73ab6e9
+
+version: "3.2"
+services:
+  # Zach B - No need for redis at the moment, but we'll leave this 
+  #           here in case we use it in the future
+  # redis:
+  #   restart: always
+  #   image: redis:5
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - db-net
+
+  # Zach B. - This is from the medium.com article
+  # db:
+  #   restart: always
+  #   image: mariadb:5.5
+  #   environment:
+  #     - MYSQL_HOST=localhost
+  #     - MYSQL_PORT=3306
+  #     - MYSQL_ROOT_HOST=%
+  #     - MYSQL_DATABASE=bug
+  #     - MYSQL_USER=<<username>>
+  #     - MYSQL_PASSWORD=<<password>>
+  #     - MYSQL_ROOT_PASSWORD=<<rootpassword>>
+  #   ports:
+  #     - "3302:3306"
+  #   networks:
+  #     - db-net
+
+  project:
+    # Zach B - We ran into constant restart issues, fixed when we removed this
+    # restart: always
+    container_name: code
+    # Zach B. - Use this command if you run into a race-condition issue where database port is not open
+    # command : python check_db.py --service-name db --ip db --port 3306 && 
+    #           python manage.py migrate &&
+    #           python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - ./backend/settings.ini
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    # depends_on:
+    #     - db
+    #     - redis
+    networks:
+      - db-net
+
+  frontend:
+    restart: always
+    command : npm start
+    container_name: front
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - project
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge

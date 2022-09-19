@@ -1,0 +1,5 @@
+frontend/src/Component/display/reactionEdit 
+  - I commented out the Select import, build works but not sure if this was necessary or not
+
+biopath_backend/biopath_backend/serilizers.py
+  - changed import of rest_framework_json_api to rest_framework, the docs of the official django rest framework seem to support this

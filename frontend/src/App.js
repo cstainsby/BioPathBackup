@@ -1,25 +1,27 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Model from "./Component/Model/Model"
+import background from "./images/bg-01.png"
 
-function App() {
+
+const enteredName = "glycolysis";
+
+
+export default function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id = "appcontainer">
+      <div style={{ backgroundImage: `url(${background})` }}>
+      <div className = "mainStructure">
+        <Model name = {enteredName} numComplete = '3'/>
+      </div>
+
+      </div>
+
+      <div className="modalForLastWeek">
+
+      </div>
     </div>
+
   );
 }
-
-export default App;

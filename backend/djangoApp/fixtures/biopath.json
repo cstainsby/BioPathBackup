@@ -1,0 +1,414 @@
+[
+    {
+        "model": "biopath.pathway",
+        "pk": 1,
+        "fields": {
+            "modelName": "Glycolysis"
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 1,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Hexokinase",
+            "enzymeAbbr": "HK",
+            "reversible": "irreversible",
+            "xCoor": 0.0,
+            "yCoor": 1.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 2,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Phosphoglucose_isomerase",
+            "enzymeAbbr": "PGI",
+            "reversible": "reversible",
+            "xCoor": 0.0,
+            "yCoor": 2.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 3,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Phosphofructokinase",
+            "enzymeAbbr": "PFK",
+            "reversible": "irreversible",
+            "xCoor": 0.0,
+            "yCoor": 3.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 4,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Aldolase",
+            "enzymeAbbr": "ALDO",
+            "reversible": "reversible",
+            "xCoor": 0.0,
+            "yCoor": 4.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 5,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Triosephosphate_isomerase",
+            "enzymeAbbr": "TPI",
+            "reversible": "reversible",
+            "xCoor": -1.0,
+            "yCoor": 5.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 6,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Glyceraldehyde_phosphate_dehydrogenase",
+            "enzymeAbbr": "GAPDH",
+            "reversible": "reversible",
+            "xCoor": 1.0,
+            "yCoor": 5.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 7,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Phosphoglycerate_kinase",
+            "enzymeAbbr": "PGK",
+            "reversible": "reversible",
+            "xCoor": 1.0,
+            "yCoor": 6.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 8,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Phosphoglycerate_mutase",
+            "enzymeAbbr": "PGM",
+            "reversible": "reversible",
+            "xCoor": 1.0,
+            "yCoor": 7.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 9,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Enolase",
+            "enzymeAbbr": "ENO",
+            "reversible": "reversible",
+            "xCoor": 1.0,
+            "yCoor": 8.0
+        }
+    },
+
+    {
+        "model": "biopath.module",
+        "pk": 10,
+        "fields": {
+            "modelID": 1,
+            "enzyme": "Pyruvate_kinase",
+            "enzymeAbbr": "PK",
+            "reversible": "irreversible",
+            "xCoor": 1.0,
+            "yCoor": 9.0
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 1,
+        "fields": {
+            "product": "Glucose-6-Phosphate",
+            "abbr": "G6P",
+            "moduleID": 1,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 2,
+        "fields": {
+            "product": "Adenosine Diphosphate",
+            "abbr": "ADP",
+            "moduleID": 1,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 3,
+        "fields": {
+            "product": "Fructose-6-Phosphate",
+            "abbr": "F6P",
+            "moduleID": 2,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 4,
+        "fields": {
+            "product": "Fructose-1,6-biphosphate",
+            "abbr": "F16BP",
+            "moduleID": 3,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 5,
+        "fields": {
+            "product": "Adenosine Diphosphate",
+            "abbr": "ADP",
+            "moduleID": 3,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 6,
+        "fields": {
+            "product": "Dihydroxyacetone_Phosphate",
+            "abbr": "DHAP",
+            "moduleID": 4,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 7,
+        "fields": {
+            "product": "Glyceraldehyde-3-Phosphate",
+            "abbr": "GADP",
+            "moduleID": 4,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 8,
+        "fields": {
+            "product": "Glyceraldehyde-3-Phosphate",
+            "abbr": "GADP",
+            "moduleID": 5,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 9,
+        "fields": {
+            "product": "1,3-bisphoglycerate",
+            "abbr": "13PG",
+            "moduleID": 6,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 10,
+        "fields": {
+            "product": "3_phosphoglycerate",
+            "abbr": "3PG",
+            "moduleID": 7,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 11,
+        "fields": {
+            "product": "2_phosphoglycerate",
+            "abbr": "2PG",
+            "moduleID": 8,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 12,
+        "fields": {
+            "product": "Phosphoenolpyruvate",
+            "abbr": "PEP",
+            "moduleID": 9,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.products",
+        "pk": 13,
+        "fields": {
+            "product": "Pyruvate",
+            "abbr": "Pyruvate",
+            "moduleID": 10,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 1,
+        "fields": {
+            "substrate": "Glucose",
+            "abbr": "G",
+            "moduleID": 1,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 2,
+        "fields": {
+            "substrate": "Adenosine Triphosphate",
+            "abbr": "ATP",
+            "moduleID": 1,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 3,
+        "fields": {
+            "substrate": "Glucose-6-Phosphate",
+            "abbr": "G6P",
+            "moduleID": 2,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 4,
+        "fields": {
+            "substrate": "Fructose-6-Phosphate",
+            "abbr": "F6P",
+            "moduleID": 3,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 5,
+        "fields": {
+            "substrate": "Adenosine Triphosphate",
+            "abbr": "ATP",
+            "moduleID": 3,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 6,
+        "fields": {
+            "substrate": "Fructose-1,-6bisphosphate",
+            "abbr": "F16BP",
+            "moduleID": 4,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 7,
+        "fields": {
+            "substrate": "Dihydroxyacetone_Phosphate",
+            "abbr": "DHAP",
+            "moduleID": 5,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 8,
+        "fields": {
+            "substrate": "Glyceraldehyde-3-Phosphate",
+            "abbr": "GADP",
+            "moduleID": 6,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 9,
+        "fields": {
+            "substrate": "1,3-bisphoglycerate",
+            "abbr": "13PG",
+            "moduleID": 7,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 10,
+        "fields": {
+            "substrate": "3_phosphoglycerate",
+            "abbr": "3PG",
+            "moduleID": 8,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 11,
+        "fields": {
+            "substrate": "2_phosphoglycerate",
+            "abbr": "2PG",
+            "moduleID": 9,
+            "modelID": 1
+        }
+    },
+
+    {
+        "model": "biopath.substrates",
+        "pk": 12,
+        "fields": {
+            "substrate": "Phosphoenolpyruvate",
+            "abbr": "PEP",
+            "moduleID": 10,
+            "modelID": 1
+        }
+    }
+]

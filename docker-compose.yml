@@ -1,0 +1,80 @@
+# docker-compose.yaml
+#
+# Docker compose file for launching and running both frontend and backend
+# docker containers for the Biopath app
+#
+# Modified by: Josh S.
+
+version: "3.2"
+services:
+  # Zach B - No need for redis at the moment, but we'll leave this 
+  #           here in case we use it in the future
+  # redis:
+  #   restart: always
+  #   image: redis:5
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - db-net
+
+  db:
+    # Josh S. - Figured we may as well dockerize the DB
+    container_name: mariadb
+    restart: always
+    image: mariadb:10.7
+    volumes:
+      - "${biopath_root_path}/mariadb:/var/lib/mysql"
+    environment:
+      # - MYSQL_HOST=localhost
+      # - MYSQL_PORT=3306
+      # - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=pathways
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=password # We'll need to change this
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
+    networks:
+      - db-net
+
+  backend:
+    # Josh S - Renamed to backend
+    # Zach B - We ran into constant restart issues, fixed when we removed this
+    # restart: always
+    container_name: backend
+    # Zach B. - Use this command if you run into a race-condition issue where database port is not open
+    # command : python check_db.py --service-name db --ip db --port 3306 && 
+    #           python manage.py migrate &&
+    #           python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
+    env_file:
+      - ./backend/settings.ini
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      # - redis
+    networks:
+      - db-net
+
+  frontend:
+    container_name: frontend
+    restart: always
+    command : npm start
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - backend
+    networks:
+      - db-net
+
+networks:
+  db-net:
+    driver: bridge

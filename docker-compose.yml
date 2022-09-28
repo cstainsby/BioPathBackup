@@ -17,25 +17,38 @@ services:
   #   networks:
   #     - db-net
 
+  # db:
+  #   # Josh S. - Figured we may as well dockerize the DB
+  #   container_name: mariadb
+  #   restart: always
+  #   image: mariadb:10.7
+  #   volumes:
+  #     - "${biopath_root_path}/mariadb:/var/lib/mysql"
+  #   environment:
+  #     # - MYSQL_HOST=localhost
+  #     # - MYSQL_PORT=3306
+  #     # - MYSQL_ROOT_HOST=%
+  #     - MYSQL_DATABASE=BioPath
+  #     - MYSQL_USER=username
+  #     - MYSQL_PASSWORD=password # We'll need to change this
+  #     - MYSQL_ROOT_PASSWORD=password
+  #   ports:
+  #     - "3306:3306"
+  #   networks:
+  #     - db-net
+
   db:
-    # Josh S. - Figured we may as well dockerize the DB
-    container_name: mariadb
+    container_name: postgres
+    image: postgres:14.1-alpine
     restart: always
-    image: mariadb:10.7
     volumes:
-      - "${biopath_root_path}/mariadb:/var/lib/mysql"
+      - "${biopath_root_path}/postgres:/var/lib/postgresql/data"
     environment:
-      # - MYSQL_HOST=localhost
-      # - MYSQL_PORT=3306
-      # - MYSQL_ROOT_HOST=%
-      - MYSQL_DATABASE=pathways
-      - MYSQL_USER=username
-      - MYSQL_PASSWORD=password # We'll need to change this
-      - MYSQL_ROOT_PASSWORD=password
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=BioPath
     ports:
-      - "3306:3306"
-    networks:
-      - db-net
+      - '5432:5432'
 
   backend:
     # Josh S - Renamed to backend
@@ -46,9 +59,13 @@ services:
     # command : python check_db.py --service-name db --ip db --port 3306 && 
     #           python manage.py migrate &&
     #           python manage.py runserver 0.0.0.0:8000
-    command: python manage.py runserver 0.0.0.0:8000
-    env_file:
-      - ./backend/settings.ini
+    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python manage.py runserver 0.0.0.0:8000'
+    environment:
+      - POSTGRES_DB=BioPath
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+    # env_file:
+    #   - ./backend/settings.ini
     build:
       context: ./backend/
       dockerfile: Dockerfile
@@ -57,8 +74,8 @@ services:
     depends_on:
       - db
       # - redis
-    networks:
-      - db-net
+    # networks:
+    #   - db-net
 
   frontend:
     container_name: frontend
@@ -72,9 +89,9 @@ services:
     stdin_open: true
     depends_on:
       - backend
-    networks:
-      - db-net
+    # networks:
+    #   - db-net
 
-networks:
-  db-net:
-    driver: bridge
+# networks:
+#   db-net:
+#     driver: bridge

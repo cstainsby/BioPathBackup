@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'api', # added by Josh S
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,12 +75,13 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+DATABASES = { # edited by Josh S
+    # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get("POSTGRES_DB"),
-        'HOST': 'db',
-        'PORT': 5432,
+        'HOST': 'db', # name of postgres container
+        'PORT': 5432, # default port for postgres
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
     }

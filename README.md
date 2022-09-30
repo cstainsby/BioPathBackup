@@ -1,4 +1,5 @@
-# GU BioPath web app
+# BioPath
+### GU BioPath web app
 
 To run:
 Install Docker Desktop
@@ -23,7 +24,7 @@ To stop the app:
 ```
 BioPath
 │   README.md
-│   docker-compose.yaml    
+│   docker-compose.yaml 
 │
 └───frontend
 │   │   Dockerfile
@@ -48,12 +49,11 @@ BioPath
 │   
 └───backend
     │   Dockerfile
-    │   check_db.py
     |   manage.py
     |   requirements.txt
     |   settings.ini
     |
-    └───djangoApp
+    └───api $ this is the django app that defines the functionality for the api
     |   |   admin.py
     |   |   apps.py
     |   |   models.py
@@ -63,9 +63,17 @@ BioPath
     |   └───migrations
     |   |   |   $ Neccesary migration files
     |   
-    └───djangoSettings
+    └───biopath $ this is the django project that contains the api app
         │   asgi.py
         │   settings.py
         │   urls.py
         │   wsgi.py
 ```
+
+# Useful commands
+- View the data tables Django created in our postgres container
+    1. `docker exec -it postgres bash` this will attach a shell to the postgres container
+    1. `psql --user=username BioPath` this starts the CLI for the BioPath database
+    1. `\dt` display tables: lists the tables in the current database
+        - You should see the various tables defined in backend/api/models.py
+        - Django created this tables for us; no sql required!

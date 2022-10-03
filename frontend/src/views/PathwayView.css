@@ -1,0 +1,12 @@
+div.NavBar {
+    outline: 12px rgb(255, 0, 0);
+    height: 200px;
+    width: 100px;
+}
+
+div.SliderBar {
+    outline: 12px rgb(255, 0, 0);
+    height: 200px;
+    width: 100px;
+    background-color: aquamarine;
+}

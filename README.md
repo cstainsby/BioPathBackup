@@ -41,7 +41,10 @@ BioPath
 |       |   index.css
 |       |   logo.svg
 |       |   reportWebVitals.js
-│       │   
+|       └───views
+|       |   |   $ Upper level page views
+|       |   |   PathwayView.js
+|       |   |   PathwayView.css
 |       └───components
 |       |   |   $ React components in js/css pairs
 |       |   |   Component.js

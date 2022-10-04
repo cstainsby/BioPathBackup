@@ -1,5 +1,5 @@
 .SliderBar {
-    border: 5px solid rgb(0, 0, 0);
-    background-color: aquamarine;
-    width: 300px;
+  border: 5px solid rgba(0, 0, 0);
+  background-color: rgba(127, 255, 212,0.5);
+  width: 300px;
 }

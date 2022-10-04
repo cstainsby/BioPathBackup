@@ -1,5 +1,37 @@
 .NavBar {
-    border: 5px solid rgb(0, 0, 0);
-    width: inherit;
-    height: 75px;
+  width: inherit;
+  height: 75px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: inherit;
+}
+
+li {
+  height: inherit;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.left li {
+  float: left;
+}
+
+.right li {
+  float: right;
+}
+
+li button {
+  height: inherit;
+  width: 100px;
 }

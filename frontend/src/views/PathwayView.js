@@ -7,10 +7,12 @@ import SliderBar from '../components/SliderBar'
 export default class PathwayView extends Component {
   render() {
     return (
-      <div>
+      <div className='PathwayView'>
         <NavBar/>
-        <ModelArea/>
-        <SliderBar/>
+        <div className='pathwayViewArea'>
+            <ModelArea/>
+            <SliderBar/>
+        </div>
       </div>
     )
   }

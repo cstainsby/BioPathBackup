@@ -1,12 +1,17 @@
-div.NavBar {
-    outline: 12px rgb(255, 0, 0);
-    height: 200px;
-    width: 100px;
+div.PathwayView {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
 }
 
-div.SliderBar {
-    outline: 12px rgb(255, 0, 0);
-    height: 200px;
-    width: 100px;
-    background-color: aquamarine;
+div.pathwayViewArea {
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+    flex: 100%;
 }
+
+.ModelArea {
+    flex: 100%
+}
+

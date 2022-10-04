@@ -1,5 +1,4 @@
-div.ModelArea {
-    outline: 12px rgb(255, 0, 0);
-    height: 200px;
-    width: 100px;
+.ModelArea {
+    border: 5px solid rgb(0, 0, 0);
+    background-color: blue;
 }

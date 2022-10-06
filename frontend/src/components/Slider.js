@@ -4,7 +4,13 @@ import './Slider.css'
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: 1, isShowing: props.isShowing};
+    let {title,isShowing} = this.props
+    if (isShowing == undefined) {
+      this.state = {value: 1, isShowing: true};
+    }
+    else {
+      this.state = {value: 1, isShowing: props.isShowing};
+    }
   }
 
   handleChange(e) {

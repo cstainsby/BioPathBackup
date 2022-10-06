@@ -13,9 +13,9 @@ export default class SliderBar extends Component {
       <div className='SliderBar'>
         <h1>{this.state.title}</h1>
         <ul>
-          <li><Slider title={"ATP"}/></li>
-          <li><Slider title={"HCL"}/></li>
-          <li><Slider title={"dCL"}/></li>
+          <li><Slider title={"ATP"} isShowing={true}/></li>
+          <li><Slider title={"HCL"} isShowing={true}/></li>
+          <li><Slider title={"dCL"} isShowing={true}/></li>
         </ul>
       </div>
     )

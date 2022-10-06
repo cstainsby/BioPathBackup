@@ -4,7 +4,7 @@ import './Slider.css'
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: 5, isShowing: true};
+    this.state = {value: 1, isShowing: props.isShowing};
   }
 
   handleChange(e) {
@@ -33,37 +33,26 @@ export default class Slider extends Component {
 
 
   render() {
-    const isShown = this.state.isShowing;
-    let button;
-
-    if (isShown) {
+    if (this.state.isShowing) {
       return (
         <div className='Slider'>
           <p>{this.props.title} <button onClick={(e) => this.handleClick(e.target.value)}>Close Slider</button></p>
           <input type="range"
-            min={0}
-            max={10}
+            min={0.0}
+            step={0.1}
+            max={2.0}
             onChange={(e) => this.handleChange(e.target.value)}
             value={this.state.value}
             />
-            <h1>{this.state.value}</h1>
+            <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
         </div>
       )
     }
 
     else {
+      // comment out return statement if you don't want it to show at all
       return (
         <div><button onClick={(e) => this.handleClick(e.target.value)}>Show</button></div>
-        // <div className='Slider'>
-        //   {this.props.title}
-        //   <input type="range"
-        //     min={0}
-        //     max={10}
-        //     onChange={(e) => this.handleChange(e.target.value)}
-        //     value={this.state.value}
-        //     />
-        //     <h1>{this.state.value}</h1>
-        // </div>
       )
       }
   }

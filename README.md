@@ -20,6 +20,14 @@ To check he status of your Docker containers either
 To stop the app:
     ```$ docker-compose down```
 
+### Django Admin stuff
+To create an admin account just startup the containers per usual and then...
+1. exec into backend container (recommend using docker desktop or vscode extension, but a simple `docker exec -it backend bash` should work)
+1. `python manage.py createsuperuser`
+1. Fill in username and password. I've been using root root but y'all can use whatever.
+1. Go to http://localhost:8000/admin
+1. You should be able to login with the user info you supplied. Now you can administer to your hearts content!
+
 ### Filesystem
 ```
 BioPath
@@ -70,10 +78,12 @@ BioPath
         │   wsgi.py
 ```
 
-# Useful commands
+### Useful commands
 - View the data tables Django created in our postgres container
     1. `docker exec -it postgres bash` this will attach a shell to the postgres container
     1. `psql --user=username BioPath` this starts the CLI for the BioPath database
     1. `\dt` display tables: lists the tables in the current database
         - You should see the various tables defined in backend/api/models.py
         - Django created this tables for us; no sql required!
+
+

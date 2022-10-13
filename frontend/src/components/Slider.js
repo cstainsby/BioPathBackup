@@ -1,15 +1,15 @@
-import React, { Component, onClick } from 'react'
+import React, { Component } from 'react'
 import './Slider.css'
 
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    let {title,isShowing} = this.props
-    if (isShowing == undefined) {
+    let {title, isShowing} = this.props
+    if (isShowing === undefined) {
       this.state = {value: 1, isShowing: true};
     }
     else {
-      this.state = {value: 1, isShowing: props.isShowing};
+      this.state = {value: 1, isShowing: this.props.isShowing};
     }
   }
 

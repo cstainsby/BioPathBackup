@@ -10,105 +10,107 @@ import ReactFlow, {
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 
+const groupHeight = 130;
+
 const initialNodes = [
   { 
     id: '1e',
-    position: { x: 0, y: 0 },
+    position: { x: 0, y: (groupHeight + 20) * 0 },
     data: {label: 'Hexokinase'},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '2e',
-    position: { x: 0, y: 110 },
+    position: { x: 0, y: (groupHeight + 20) * 1 },
     data: {label: ''},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '3e',
-    position: { x: 0, y: 220 },
+    position: { x: 0, y: (groupHeight + 20) * 2 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '4e',
-    position: { x: 0, y: 330 },
+    position: { x: 0, y: (groupHeight + 20) * 3 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '5e',
-    position: { x: 0, y: 440 },
+    position: { x: 0, y: (groupHeight + 20) * 4 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '6e',
-    position: { x: 0, y: 550 },
+    position: { x: 0, y: (groupHeight + 20) * 5 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '7e',
-    position: { x: 0, y: 660 },
+    position: { x: 0, y: (groupHeight + 20) * 6 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '8e',
-    position: { x: 0, y: 770 },
+    position: { x: 0, y: (groupHeight + 20) * 7 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '9e',
-    position: { x: 0, y: 880 },
+    position: { x: 0, y: (groupHeight + 20) * 8 },
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
     id: '10e',
-    position: { x: 0, y: 990 },
+    position: { x: 0, y: (groupHeight + 20) * 9},
     data: {label: null},
     type: 'group',
     style: {
       width: 170,
-      height: 100,
+      height: groupHeight,
     },
   },
   { 
@@ -121,7 +123,7 @@ const initialNodes = [
   },
   { 
     id: '2s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '1e',
     extent: 'parent',
@@ -137,7 +139,7 @@ const initialNodes = [
   },
   {
     id: '4s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Fructose-6-phosphate' },
     parentNode: '2e',
     extent: 'parent',
@@ -153,7 +155,7 @@ const initialNodes = [
   },
   {
     id: '6s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Fructose-1,6-bisphosphate' },
     parentNode: '3e',
     extent: 'parent',
@@ -169,7 +171,7 @@ const initialNodes = [
   },
   { 
     id: '8s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '4e',
     extent: 'parent',
@@ -185,7 +187,7 @@ const initialNodes = [
   },
   { 
     id: '10s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '5e',
     extent: 'parent',
@@ -201,7 +203,7 @@ const initialNodes = [
   },
   { 
     id: '12s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '6e',
     extent: 'parent',
@@ -217,7 +219,7 @@ const initialNodes = [
   },
   { 
     id: '14s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '7e',
     extent: 'parent',
@@ -233,7 +235,7 @@ const initialNodes = [
   },
   { 
     id: '16s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '8e',
     extent: 'parent',
@@ -249,7 +251,7 @@ const initialNodes = [
   },
   { 
     id: '18s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '9e',
     extent: 'parent',
@@ -265,7 +267,7 @@ const initialNodes = [
   },
   { 
     id: '20s',
-    position: { x: 10, y: 50 },
+    position: { x: 10, y: 60 },
     data: { label: 'Glucose-6-phosphate' },
     parentNode: '10e',
     extent: 'parent',
@@ -276,8 +278,8 @@ const initialNodes = [
 const initialEdges = [
   {
     id: 'e1-2',
-    source: '1',
-    target: '2' 
+    source: '2s',
+    target: '3s' 
   }
 ];
 

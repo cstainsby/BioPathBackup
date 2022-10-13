@@ -92,6 +92,7 @@ const initialNodes = [
     data: { label: 'Glucose' },
     parentNode: '1e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -103,6 +104,7 @@ const initialNodes = [
     data: { label: 'G6P' },
     parentNode: '1e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -114,6 +116,7 @@ const initialNodes = [
     data: { label: 'ATP' },
     parentNode: '1e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -125,6 +128,7 @@ const initialNodes = [
     data: { label: 'ADP' },
     parentNode: '1e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -136,6 +140,7 @@ const initialNodes = [
     data: { label: 'G6P' },
     parentNode: '2e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -147,6 +152,7 @@ const initialNodes = [
     data: { label: 'F6P' },
     parentNode: '2e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -158,6 +164,7 @@ const initialNodes = [
     data: { label: 'F6P' },
     parentNode: '3e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -169,6 +176,7 @@ const initialNodes = [
     data: { label: 'F1,6BP' },
     parentNode: '3e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -180,6 +188,7 @@ const initialNodes = [
     data: { label: 'ATP' },
     parentNode: '3e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -191,6 +200,7 @@ const initialNodes = [
     data: { label: 'ADP' },
     parentNode: '3e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -202,6 +212,7 @@ const initialNodes = [
     data: { label: 'F1,6BP' },
     parentNode: '4e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -213,6 +224,7 @@ const initialNodes = [
     data: { label: 'GH3P'},
     parentNode: '4e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -224,6 +236,7 @@ const initialNodes = [
     data: { label: 'DHAP' },
     parentNode: '4e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -235,6 +248,7 @@ const initialNodes = [
     data: { label: 'DHAP' },
     parentNode: '5e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -246,6 +260,7 @@ const initialNodes = [
     data: { label: 'GH3P' },
     parentNode: '5e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -257,6 +272,7 @@ const initialNodes = [
     data: { label: 'GH3P' },
     parentNode: '6e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -268,6 +284,7 @@ const initialNodes = [
     data: { label: '1,3BPG' },
     parentNode: '6e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -279,6 +296,7 @@ const initialNodes = [
     data: { label: 'NAD' },
     parentNode: '6e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,
@@ -290,6 +308,7 @@ const initialNodes = [
     data: { label: 'NADH' },
     parentNode: '6e',
     extent: 'parent',
+    draggable: false,
     style: {
       width: substrateWidth,
       height: substrateHeight,

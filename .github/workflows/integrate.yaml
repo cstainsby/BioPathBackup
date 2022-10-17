@@ -17,7 +17,8 @@ jobs:
     # runs build tests across multiple versions of node 
     strategy:
       matrix:
-        node-version: [15.x, 16.x, 17.x, 18.x]
+        # specify any other versions we want to test here
+        node-version: [13.x]
 
     steps:
       - uses: actions/checkout@v3

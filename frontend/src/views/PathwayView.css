@@ -1,0 +1,17 @@
+div.PathwayView {
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+div.pathwayViewArea {
+  height: inherit;
+  display: flex;
+  flex-direction: row;
+  flex: 100%;
+}
+
+.ModelArea {
+  flex: 100%
+}
+

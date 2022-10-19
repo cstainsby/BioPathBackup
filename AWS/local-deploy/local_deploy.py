@@ -70,6 +70,9 @@ def console_job(job_title="", command="", desc=""):
 
 
 def create_aws_credentials():
+  """
+  If the credentials file is missing, enter in requested info and it will make it for you
+  """
   print("Before signing into AWS, you will need to make a credentials file")
   with open(AWS_CRED_FILE_NAME, "w") as csv_cred_file:
     writer = csv.writer(csv_cred_file)
@@ -82,6 +85,10 @@ def create_aws_credentials():
     writer.writerow(column_values)
 
 def read_credentials():
+  """
+  Reads in the credentials from the credential file
+  """
+
   cred_cols = []
   cred_vals = []
 
@@ -99,6 +106,11 @@ def read_credentials():
 
 
 def login_to_aws():
+  """
+  Logs you in to AWS, if the required credentials file for the user is missing
+  you will be forwarded to a cred file build function
+  """
+
   # first check if credentials file exists
   if not os.path.isfile(AWS_CRED_FILE_NAME):
     print("You are missing credentials file")
@@ -120,6 +132,11 @@ def login_to_aws():
 
 
 def images_to_ecr():
+  """
+  Builds, tags, and then pushes all images used in the project to AWS' ECR for containerization 
+  on our VPC
+  """
+
   # build the frontend and backend images
   console_job(
     "Building Frontend Docker Image", 
@@ -149,32 +166,39 @@ def images_to_ecr():
     "Push Backend Image to ECR",
     f"docker push {ECR_REPO_URI}:{BACKEND_TAG}"
   )
+  
 
   #TODO: clean up locally built images
   console_job(
-    "Clean up Locally Built Images",
-    f"docker rmi {FRONTEND_TAG} {BACKEND_TAG}"
+    "Clean up Locally Built Frontend Image",
+    f"docker rmi {FRONTEND_IMG_NAME}:{FRONTEND_TAG}"
+  )
+  console_job(
+    "Clean up Locally Built Frontend Image",
+    f"docker rmi {BACKEND_IMG_NAME}:{BACKEND_TAG}"
   )
 
 def deploy_aws_infrastructure():
+  """
+  This function will deploy the .yaml files which are stored in the infrastructure dir
+  When deployed AWS will create a stack for each of them
+  """
+
   # deploy VPC stack to AWS
   console_job(
     "Deploy VPC Stack to Console",
     f"aws cloudformation create-stack --stack-name vpc --template-body file://{INFRA_PATH}VPC.yaml"
   )
-
   # deploy the credentials (IAM-Roles) stack
   console_job(
     "Deploy IAM Roles Stack",
     f"aws cloudformation create-stack --stack-name iam --template-body file://{INFRA_PATH}IAM-Roles.yaml --capabilities CAPABILITY_IAM"
   )
-
   # deploy the cluster
   console_job(
     "Deploy Cluster Stack",
     f"aws cloudformation create-stack --stack-name cluster --template-body file://{INFRA_PATH}Cluster.yaml"
   )
-
   # deploy the container stack
   console_job(
     "Deploy Container Stack",
@@ -183,6 +207,7 @@ def deploy_aws_infrastructure():
 
 
 def main():
+  """Main driver for the local deploy script"""
   flags = []
 
   if len(sys.argv) - 1 > 0:
@@ -195,13 +220,17 @@ def main():
 
   for flag in flags:
     if flag == "--images-to-ecr":
-      # images_to_ecr()
+      images_to_ecr()
       pass
     elif flag == "--deploy-infra":
       deploy_aws_infrastructure()
     else:
       print("Error: unregcognized flag {}".format(flag))
       return -1
+  
+  if len(flags) == 0:
+    images_to_ecr()
+    deploy_aws_infrastructure()
 
 
 

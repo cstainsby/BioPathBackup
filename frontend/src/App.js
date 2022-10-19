@@ -1,27 +1,13 @@
-import React from 'react';
 import './App.css';
-import Model from "./Component/Model/Model"
-import background from "./images/bg-01.png"
+import PathwayView from './views/PathwayView'
+import React, { Component }  from 'react'; // added this for an error meesage
 
-
-const enteredName = "glycolysis";
-
-
-export default function App() {
-
+function App() {
   return (
-    <div id = "appcontainer">
-      <div style={{ backgroundImage: `url(${background})` }}>
-      <div className = "mainStructure">
-        <Model name = {enteredName} numComplete = '3'/>
-      </div>
-
-      </div>
-
-      <div className="modalForLastWeek">
-
-      </div>
+    <div className="App">
+      <PathwayView/>
     </div>
-
   );
 }
+
+export default App;

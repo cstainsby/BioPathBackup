@@ -1,204 +1,36 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
-:root{
-  --main-color: #17a2b8;
-  --secondary-color: #fff; /* white */
-  --border-color: #fff; /* white */
-  --text-color: black;    /* black */
-  --button-text-color: #fff;
-  --main-hover-color: #138496;
-  --button-border-radius: 10px;
+/*
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
-
-/* Important: this prevents the ReactionEdit modal from appearing under a background */
-.modal-backdrop {
-  display: none;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
-
-.reaction_action_button{
-  display: block;
-  width: 25%;
-  margin: 1%;
-  padding: 1%;
-  border: 1px solid var(--secondary-color);
-  border-radius: 10px;
-  background-color: var(--main-color); /* Green */
-  color: var(--secondary-color);
-  text-align: center;
-  font-size: 16px;
-  float: center;
-}
-
-.reaction_action_button:hover {
-  background: var(--main-hover-color)
-}
-
-.viewAndCreateReaction {
+ .App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
-  flex-direction: row;
-  float: center;
-  height: 650px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
-
-.infoContainer{
-  position: fixed;
-  top: 15vh;;
-  left: 25vw;
-  right: 25vw;
-  width: 50vw;
-  height: 70vh;
-  background-color: lightgrey;
-  border: 1px solid black;
-  border-radius: 15px;
-
-  box-shadow: 5px 5px 30px 5px grey;
+.App-link {
+  color: #61dafb;
 }
-
-.moleculeInfoHeader{
-  text-align: left;
-  padding-left: 2vw;
-  margin-bottom: 2px;
-}
-
-.infoSpacerDiv{
-  height: 1px;
-  width: 25vw;
-  background-color: lightslategray;
-  margin-left: 2vw;
-  margin-top: 0px;
-
-}
-
-.infoSpacerDiv2{
-  margin-bottom: 6vh;
-}
-
-.moleculeInfo{
-  text-align: left;
-  margin-left: 2vw;
-}
-
-.appcontainer{
-  width: 100vw;
-  text-align: center;
-}
-
-.reactionModalNumber {
-  padding-left: 2vw;
-}
-
-.button {
-  margin-left: 2vw;
-}
-
-.entireReaction {
-    border: 1px solid blue;
-}
-
-.wholeDisplay {
-  /*border: 1px solid red;*/
-}
-
-ul {
-  text-align: center;
-  padding-inline-start: 0;
-}
-
-.individualReaction {
-  width: 50vw;
-  height: 30vh;
-
-  display: grid;
-  grid-template-columns: 30vw 20vw;
-  grid-template-rows: 24vh 6vh;
-
-  /*border: 1px solid red;*/
-}
-
-.enzymeImg {
-  width: 140px;
-  height: 100px;
-
-  position: relative;
-
-  margin-bottom: 100px;
-  margin-left:20vw;
-
-
-  grid-column: 1;
-  grid-row: 2;
-  transform: rotate(270deg);
-
-}
-
-.moleculeImg{
-
-  margin-left: 25vw;
-
-  grid-column: 1;
-  grid-row: 1;
-
-  width: 25px;
-  height: 35px;
-}
-
-.enzymeLabelText{
-  text-align: left;
-  margin-top:auto;
-
-  grid-column: 2;
-  grid-row: 2;
-
-}
-
-.moleculeLabelText{
-  text-align: left;
-  margin-left: 10px;
-}
-
-#nextReaction {
-  height: 7vh;
-  width: 19vh;
-
-  position: fixed;
-  right: 5vw;
-  bottom: 5vh;
-
-  line-height: 3.5vh;
-
-  text-align: center;
-
-  color: #0099CC; /* Text color */
-
-  background-color: transparent; /* Remove background color */
-
-  border: 2px solid #0099CC; /* Border thickness, line style, and color */
-
-  border-radius: 5px; /* Adds curve to border corners */
-
-  text-transform: uppercase; /* Make letters uppercase */
-}
-
-
-.reactionContainer{
-  width: 50vw;
-  margin-left: 25vw;
-}
-
-.unsolvedContainer{
-  text-align: center;
-
-  width: 30vw;
-  margin-left: 35vw;
-  height: 15vh;
-  line-height: 15vh;
-  border: 1px solid red;
-}
-
-.solveButton {
-  position: fixed;
-  left: 5vw;
-  bottom: 5vh;
-}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */

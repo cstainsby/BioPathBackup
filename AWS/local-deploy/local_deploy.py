@@ -14,6 +14,7 @@
 
 import os
 import sys
+import csv
 
 # repository information 
 # get updated info by command ""
@@ -52,32 +53,70 @@ INFRA_PATH = os.path.join("../", "infrastructure/")
 
 # credentials for deployment
 # import credentials file from credentials_<name>.txt
+AWS_CRED_FILE_NAME = "aws_credentials.csv"
 
-AWS_ACCT_ID = 0
 
 def console_job(job_title="", command="", desc=""):
   print("-----------------------------------------------------")
   print("     " + job_title)
   print("-----------------------------------------------------")
 
-  os.system(command)
-
   if desc != "":
     print(desc)
+
+  os.system(command)
 
   print("-----------------------done--------------------------", end="\n\n")
 
 
+def create_aws_credentials():
+  print("Before signing into AWS, you will need to make a credentials file")
+  with open(AWS_CRED_FILE_NAME, "w") as csv_cred_file:
+    writer = csv.writer(csv_cred_file)
+
+    # write in column names
+    column_names = ["User Name", "Account ID", "Access Key ID", "Secret Access Key", "Password"]
+    writer.writerow(column_names)
+
+    column_values = [input("Please enter your {}: ".format(item)) for item in column_names]
+    writer.writerow(column_values)
+
+def read_credentials():
+  cred_cols = []
+  cred_vals = []
+
+  with open(AWS_CRED_FILE_NAME, "r") as csv_cred_file:
+    reader = csv.reader(csv_cred_file)
+
+    try:
+      cred_cols = next(reader)
+      cred_vals = next(reader)
+    except:
+      print("Error: credentials file not well formed")
+      return -1
+
+  return cred_cols, cred_vals
 
 
 def login_to_aws():
+  # first check if credentials file exists
+  if not os.path.isfile(AWS_CRED_FILE_NAME):
+    print("You are missing credentials file")
+    create_aws_credentials()
+
+  cred_cols, cred_vals = read_credentials()
+    
+  acct_id_index = cred_cols.index("Account ID")
+  acct_id = cred_vals[acct_id_index]
+
+
   # login to AWS
   console_job("Logging Into AWS",
               f"""aws ecr get-login-password --region {REGION_NAME} \
                 | docker login \
                   --username AWS \
-                  --password-stdin {AWS_ACCT_ID}.dkr.ecr.{REGION_NAME}.amazonaws.com""",
-              "Using information fielded from Credentials.txt, Logging you into AWS console")
+                  --password-stdin {acct_id}.dkr.ecr.{REGION_NAME}.amazonaws.com""",
+              "Using information fielded from aws_credentials.csv, Logging you into AWS console")
 
 
 def images_to_ecr():
@@ -156,7 +195,8 @@ def main():
 
   for flag in flags:
     if flag == "--images-to-ecr":
-      images_to_ecr()
+      # images_to_ecr()
+      pass
     elif flag == "--deploy-infra":
       deploy_aws_infrastructure()
     else:

@@ -1,3 +1,6 @@
 # ignore postgres because we don't need our whole DB in the repo
 postgres
 *.code-workspace
+
+# ignore private credentials which should be kept local
+AWS/local-deploy/aws_credentials.csv

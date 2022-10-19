@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-        docker build -t biopath_frontend:frontend_latest ./frontend/
-        docker build -t biopath_backend:backend_latest ./backend/
-        aws ecr get-login-password --region us-west-2 \
-          | docker login \
-            --username AWS \
-            --password-stdin <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com
-        docker tag 
+      # - run: |
+      #   docker build -t biopath_frontend:frontend_latest ./frontend/
+      #   docker build -t biopath_backend:backend_latest ./backend/
+      #   aws ecr get-login-password --region us-west-2 \
+      #     | docker login \
+      #       --username AWS \
+      #       --password-stdin <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com
+      #   docker tag 
 
         
 

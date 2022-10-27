@@ -56,7 +56,7 @@ BioPath
 |       |   |   Component.js
 |       |   |   Component.css
 │   
-└───[backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend#file-structure)
+└───backend: details in backend directories README
 |   |   ...
 ```
 

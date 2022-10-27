@@ -56,26 +56,7 @@ BioPath
 |       |   |   Component.js
 |       |   |   Component.css
 │   
-└───backend
-    │   Dockerfile
-    |   manage.py
-    |   requirements.txt
-    |   settings.ini
-    |
-    └───api $ this is the django app that defines the functionality for the api
-    |   |   admin.py
-    |   |   apps.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   │   
-    |   └───migrations
-    |   |   |   $ Neccesary migration files
-    |   
-    └───biopath $ this is the django project that contains the api app
-        │   asgi.py
-        │   settings.py
-        │   urls.py
-        │   wsgi.py
+└───[backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend#file-structure)
+|   |   ...
 ```
 

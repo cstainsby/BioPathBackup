@@ -1,6 +1,6 @@
 # BioPath
 More detailed documentation for each componenet found in the README at...
-* [Backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend)
+* [Backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend#biopath-backend)
 * [Frontend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/frontend)
 
 ### GU BioPath web app

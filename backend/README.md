@@ -7,19 +7,22 @@ All of the code and relevant information for the backend can be found in this di
 ## File Structure
 This does not contain every file or directory, just the one's that are most critical for you to understand what's going. Django creates a bunch of files and directories that are necessary for everything to work, but aren't necessary for you the developer to mess with or fully understand. These are the files that we have found useful/written code in so far, but please expand this as you inevitably end up modifying or adding other files. Also read [this](https://techvidvan.com/tutorials/django-project-structure-layout/) to better understand the files that Django creates and what they do.
 
-Dockerfile $ Dockerfile for backend container. [Dockerfile](https://www.cloudbees.com/blog/what-is-a-dockerfile).  
-api $ Currently the only app within the project biopath.  
-├── models.py $ Declares models for api. Django automatically modifies database to match this when migrated.  
-├── serializers.py $ Uses DRF to serialize models into more basic data types like JSON so that views.py doesn't have to. [Serializers](https://www.django-rest-framework.org/api-guide/serializers/).  
-├── tests.py√Don't be like me. Test your code. [Django testing](https://docs.djangoproject.com/en/4.1/topics/testing/overview/) makes it easy.  
-├── urls.py $ Routes urls to the views in views.py. Using [DRF's routers](https://www.django-rest-framework.org/api-guide/routers/) makes this a breeze and ensures consistency.  
-└── views.py $ Declares functions that return the json response when a specefic endpoint is reached. DRF's [ViewSets](https://www.django-rest-framework.org/api-guide/viewsets/) make this easy.  
-biopath $ The Django project that holds our api.  
-├── settings.py $ Settings for the project (such as how to connect to the database).  
-├── urls.py $ Routes url routes to views or url prefix patterns to an app's urls.py.  
-manage.py $ CLI tool for managing the Django project. `python manage.py help`  
-requirements.txt $ Package requirements to be pip installed on container initialization.  
-startup.sh $ Startup commands to get Django up and running after container starts.  
+```
+|   Backend
+|   Dockerfile $ Dockerfile for backend container. [Dockerfile](https://www.cloudbees.com/blog/what-is-a-dockerfile).  
+|---api $ Currently the only app within the project biopath.  
+|   |   models.py $ Declares models for api. Django automatically modifies database to match this when migrated.  
+|   |   serializers.py $ Uses DRF to serialize models into more basic data types like JSON so that views.py doesn't have to. [Serializers](https://www.django-rest-framework.org/api-guide/serializers/).  
+|   |   tests.py $ Don't be like me. Test your code. [Django testing](https://docs.djangoproject.com/en/4.1/topics/testing/overview/) makes it easy.  
+|   |   urls.py $ Routes urls to the views in views.py. Using [DRF's routers](https://www.django-rest-framework.org/api-guide/routers/) makes this a breeze and ensures consistency.  
+|   |   views.py $ Declares functions that return the json response when a specefic endpoint is reached. DRF's [ViewSets](https://www.django-rest-framework.org/api-guide/viewsets/) make this easy.  
+|---biopath $ The Django project that holds our api.  
+|   |   settings.py $ Settings for the project (such as how to connect to the database).  
+|   |   urls.py $ Routes url routes to views or url prefix patterns to an app's urls.py.  
+|   manage.py $ CLI tool for managing the Django project. `python manage.py help`  
+|   requirements.txt $ Package requirements to be pip installed on container initialization.  
+|   startup.sh $ Startup commands to get Django up and running after container starts.  
+```
 
 ## API
 This is a RESTful API so an understanding of the REST architectural constraints, and especially [CRUD](https://www.codecademy.com/article/what-is-crud) will make understanding and using the interface very easy. We also suggest playing with the [web interface](http://localhost:8000/api) to learn the endpoints and http methods.

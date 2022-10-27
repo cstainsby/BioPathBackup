@@ -1,5 +1,7 @@
 # BioPath
-**Documentation for Specefic Components can be found in READMEs for the subdirectories (ie more information for backend found in backend/README.md)**
+More detailed documentation for each componenet found in the README at...
+* [Backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend)
+* [Frontend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/frontend)
 
 ### GU BioPath web app
 

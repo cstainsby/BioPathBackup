@@ -1,4 +1,6 @@
 # BioPath
+## Documentation for Specefic Components can be found in READMEs for the subdirectories (ie more information for backend found in backend/README.md)
+
 ### GU BioPath web app
 
 To run:
@@ -20,13 +22,7 @@ To check he status of your Docker containers either
 To stop the app:
     ```$ docker-compose down```
 
-### Django Admin stuff
-To create an admin account just startup the containers per usual and then...
-1. exec into backend container (recommend using docker desktop or vscode extension, but a simple `docker exec -it backend bash` should work)
-1. `python manage.py createsuperuser`
-1. Fill in username and password. I've been using root root but y'all can use whatever.
-1. Go to http://localhost:8000/admin
-1. You should be able to login with the user info you supplied. Now you can administer to your hearts content!
+
 
 ### Filesystem
 ```

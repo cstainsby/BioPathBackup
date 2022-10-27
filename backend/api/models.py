@@ -1,29 +1,35 @@
 """
-This file describes the models for our api. Django will automatically create tables in our DB for each of the classes below. If this
-    explanation was useful to you, you should spend some time reading up on Django instead of reading my comments!
+File: models.py
+Description: Defines the models for enzymes, substrates, connections, etc. Django uses
+    these models to construct the database tables. They are used by serializers.py which
+    serializes the data into json for easy view building.
+Modified: 10/27 - Josh Schmitz
 """
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+
 class Enzyme(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     reversible = models.BooleanField()
     image = models.CharField(max_length=30) # image is a filepath to a png showing the enzyme
 
+
 class Substrate(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     image = models.CharField(max_length=30) # image is a filepath to a png showing the substrate
 
+
 class EnzymeSubstrate(models.Model):
     """
-    This model contains information that is intrinsic to an enzyme. It is unnecessary in the sense that a pathway can be derived
-        without it (ie using only PathwayConnections instead), however it is useful to have this model for storing the substrates
-        and products of an enzyme irrespective of any pathway.
+    This model contains information that is intrinsic to an enzyme. It is unnecessary for
+        building pathways in the sense that a pathway can be derived without it (ie using
+        only PathwayConnections instead), however it is useful to have this model for storing
+        the substrates and products of an enzyme irrespective of any pathway.
     
-    Django doesn't allow multi-field primary keys, so instead we allow Django to create an integer id primary key and enforce that
-        (enzyme, substrate) is unique.
+    Django doesn't allow multi-field primary keys, so instead we allow Django to create an
+        integer id primary key and enforce that (enzyme, substrate) is unique.
     """
     enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
     substrate = models.ForeignKey(to=Substrate, on_delete=models.CASCADE)
@@ -38,7 +44,8 @@ class EnzymeSubstrate(models.Model):
 
     class Meta():
         """
-        This class describes meta properties of the model. So far we are only using it to ensure that (enzyme, substrate) is unique.
+        This class describes meta properties of the model. So far we are only using it to
+            ensure that (enzyme, substrate) is unique.
         """
         constraints = [
             models.UniqueConstraint(
@@ -46,13 +53,15 @@ class EnzymeSubstrate(models.Model):
             )
         ]
 
+
 class PathwayConnections(models.Model):
     """
-    This table describes a pathway by listing the various enzyme->enzyme connections within a pathway. There is a START enzyme
-        and an END enzyme which are used to specify initial and terminal substrates within a pathway.
+    This table describes a pathway by listing the various enzyme->enzyme connections within
+        a pathway. There is a START enzyme and an END enzyme which are used to specify
+        initial and terminal substrates within a pathway.
         
-    Django doesn't allow multi-field primary keys, so instead we allow Django to create an integer id primary key and enforce that
-        (pathway, enzyme_from, enzyme_to) is unique.
+    Django doesn't allow multi-field primary keys, so instead we allow Django to create an
+        integer id primary key and enforce that (pathway, enzyme_from, enzyme_to) is unique.
     """
     pathway = models.CharField(max_length=30)
     enzyme_from = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE, related_name="connection_enzyme_from")

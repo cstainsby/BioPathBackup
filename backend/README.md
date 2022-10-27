@@ -8,7 +8,7 @@ All of the code and relevant information for the backend can be found in this di
 This does not contain every file or directory, just the one's that are most critical for you to understand what's going. Django creates a bunch of files and directories that are necessary for everything to work, but aren't necessary for you the developer to mess with or fully understand. These are the files that we have found useful/written code in so far, but please expand this as you inevitably end up modifying or adding other files. Also read [this](https://techvidvan.com/tutorials/django-project-structure-layout/) to better understand the files that Django creates and what they do.
 
 ```
-|   Backend
+Backend
 |   Dockerfile $ Dockerfile for backend container. [Dockerfile](https://www.cloudbees.com/blog/what-is-a-dockerfile).  
 |---api $ Currently the only app within the project biopath.  
 |   |   models.py $ Declares models for api. Django automatically modifies database to match this when migrated.  

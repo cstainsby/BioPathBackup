@@ -3,4 +3,4 @@ postgres
 *.code-workspace
 
 # ignore private credentials which should be kept local
-AWS/local-deploy/aws_credentials.csv
+AWS/aws_credentials.csv

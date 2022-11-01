@@ -47,9 +47,9 @@ FRONTEND_TAG = "frontend_latest"
 
 #TODO: check if path to backend/frontend exist and can be reached
 #TODO: path better
-BACKEND_PATH = os.path.join("../", "../", "backend/")
-FRONTEND_PATH = os.path.join("../", "../", "frontend/")
-INFRA_PATH = os.path.join("../", "infrastructure/")
+BACKEND_PATH = os.path.join("../", "backend/")
+FRONTEND_PATH = os.path.join("../", "frontend/")
+INFRA_PATH = os.path.join("infrastructure/")
 
 # credentials for deployment
 # import credentials file from credentials_<name>.txt
@@ -120,8 +120,9 @@ def login_to_aws():
     
   acct_id_index = cred_cols.index("Account ID")
   acct_id = cred_vals[acct_id_index]
+  
 
-
+  """aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/p4x5m2c9"""
   # login to AWS
   console_job("Logging Into AWS",
               f"""aws ecr get-login-password --region {REGION_NAME} \
@@ -140,11 +141,11 @@ def images_to_ecr():
   # build the frontend and backend images
   console_job(
     "Building Frontend Docker Image", 
-    f"docker build -t {FRONTEND_IMG_NAME}:{FRONTEND_TAG} ../../frontend/"
+    f"docker build -t {FRONTEND_IMG_NAME}:{FRONTEND_TAG} {FRONTEND_PATH}"
   )
   console_job(
     "Building Backend Docker Image", 
-    f"docker build -t {BACKEND_IMG_NAME}:{BACKEND_TAG} ../../backend/"
+    f"docker build -t {BACKEND_IMG_NAME}:{BACKEND_TAG} {BACKEND_PATH}"
   )
 
   # tag the images 
@@ -166,7 +167,7 @@ def images_to_ecr():
     "Push Backend Image to ECR",
     f"docker push {ECR_REPO_URI}:{BACKEND_TAG}"
   )
-  
+
 
   #TODO: clean up locally built images
   console_job(

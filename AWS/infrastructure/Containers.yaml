@@ -40,7 +40,7 @@ Resources:
       Cluster: !Ref Cluster
       DesiredCount: !Ref CountOfUiTasks
       ServiceRegistries:
-        - RegistryArn: !GetAtt BiopathFrontedServiceDiscoveryEntry.Arn
+        - RegistryArn: !GetAtt BiopathFrontendServiceDiscoveryEntry.Arn
       TaskDefinition: !Ref 'FrontendTaskDefinition'
       LoadBalancers:
         - ContainerName: 'BiopathFrontend'

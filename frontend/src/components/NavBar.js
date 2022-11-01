@@ -1,6 +1,12 @@
 import React, { Component, useState } from 'react'
 import './NavBar.css';
 
+// import logos 
+import fileLogo from './../icons/folder.png';
+import viewLogo from './../icons/search.png';
+import helpLogo from './../icons/information.png';
+import userLogo from './../icons/user.png';
+
 
 // ----------------------------------------------------------------------
 // Navbar
@@ -13,15 +19,10 @@ export default class NavBar extends Component {
   render() {
     return (
       <div className='NavBar'>
-        <ul className='left'>
-          <NavItem name="File" icon=""/>
-          <li><button>File</button></li>
-          <li><button>View</button></li>
-          <li><button onClick={this.helpClickHandler.bind(this)}>Help</button></li>
-        </ul>
-        <ul className='right'>
-          <li><button>User</button></li>
-        </ul>
+        <NavItem name='File' icon={ fileLogo } />
+        <NavItem name='View' icon={ viewLogo } />
+        <NavItem name='Help' icon={ helpLogo } />
+        <NavItem name='User' icon={ userLogo } />
       </div>
     )
   }
@@ -54,7 +55,7 @@ class NavItem extends Component {
         </a>
 
         {/* if the button is clicked */}
-        {isOpen && this.props.displayItems}
+        {this.state.isOpen && this.props.displayItems}
       </li>
     );
   }

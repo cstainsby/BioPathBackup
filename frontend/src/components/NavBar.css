@@ -1,37 +1,112 @@
+/* root variables used in style sheet */
+:root {
+  --nav-bar-size: 75px;
+  --icon-radius: calc(var(--nav-bar-size) * 0.4)
+}
+
+/* div holding all navbar elements */
 .NavBar {
   width: inherit;
-  height: 75px;
+  height: var(--nav-bar-size);
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+/* the ul holding all navigation elements */
+.NavBarNav {
+  max-width: 100%;
+  height: 100%;
+  display: flex; /* make display flexible */
+  justify-content: flex-start; /* sends items to given side */ 
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 16px;
+}
+
+/* li item which fills NavBarNav, each item holds the contents of a button */
+.navItem {
+  display: flex;
+  align-items: center; /* push items in the nav list to the center */ 
+  justify-content: center;
+  margin: 16px;
+}
+
+/* Link to another page, or to dropdown, depending on what children were passed in, <a> */
+.navIconButton {
+  /* height: calc(var(--nav-bar-size) * 0.8);
+  width: calc(var(--nav-bar-size) * 0.8); */
+  padding: 3px;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  border-radius: 10%;
+  text-decoration: none;;
+}
+/* when hovering over a button give visual indication */
+.navIconButton:hover {
+  background-color: grey;
+}
+
+/* Name of button <p> */
+.navIconButtonName {
+  padding-left: 8px;
+  margin-right: 8px;
+  color: black;
+}
+
+/* image attached to each button <img> */
+.navIconButtonImg {
+  margin: 12px;
+  max-width: var(--icon-radius);
+  max-height: var(--icon-radius);
+  /* border-radius: 90%; */
+}
+
+/* caret image displayed for any button with a dropdown, <img> */
+.navIconButtonDropImg {
+  margin: 12px;
+  max-width: var(--icon-radius);
+  max-height: var(--icon-radius);
+}
+
+/* menu displayed when click on button with dropdown attached <div>*/
+.dropdownMenu {
+  position: absolute;
+  top: 58px;
+  width: 300px;
+  transform: translateX(25%);
+  border: solid;
+  border-radius: 8px;
+  padding: 1rem;
   overflow: hidden;
-  height: inherit;
+  background-color: white;
+  /* display: flex; */
+  z-index: 999; /* make sure that when clicked, dropdown menu appears on top */
 }
 
-li {
-  height: inherit;
+/* list of all children links in dropdown list, <ul> */
+.dropdownMenuList {
+  list-style-type: none;
+  width: 100%;
+  margin-left: 0px;
+  padding-left: 0px;
+  align-items: center;
+  justify-content: center;
 }
 
-.left {
-  float: left;
+/* list item of each dropdown item <li> */
+.dropdownItem {
+  width: 100%;
+  display: flex;
 }
 
-.right {
-  float: right;
+/* contents of dropdown item inside each list item <div> */
+.dropdownItemContents {
+  width: 300px;
+  height: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  border-radius: 3%;
 }
-
-.left li {
-  float: left;
-}
-
-.right li {
-  float: right;
-}
-
-li button {
-  height: inherit;
-  width: 100px;
+/* show visual cue for when hovering over dropdown item */
+.dropdownItemContents:hover {
+  background-color: grey;
 }

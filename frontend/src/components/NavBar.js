@@ -6,6 +6,7 @@ import fileLogo from './../icons/folder.png';
 import viewLogo from './../icons/search.png';
 import helpLogo from './../icons/information.png';
 import userLogo from './../icons/user.png';
+import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
 
 
 // ----------------------------------------------------------------------
@@ -18,12 +19,32 @@ export default class NavBar extends Component {
 
   render() {
     return (
-      <div className='NavBar'>
-        <NavItem name='File' icon={ fileLogo } />
-        <NavItem name='View' icon={ viewLogo } />
-        <NavItem name='Help' icon={ helpLogo } />
-        <NavItem name='User' icon={ userLogo } />
-      </div>
+      <nav className='NavBar'>
+        <ul className='NavBarNav'>
+          {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
+          <NavItem name='File' icon={ fileLogo }> 
+            {/* The Dropdown menu will be passed Dropdown Item children to display */}
+            <DropdownMenu>
+              {/* Link to subsequent page should be passed as prop */}
+              <DropdownItem linkTo="">Save</DropdownItem>
+              <DropdownItem>Save As</DropdownItem>
+              <DropdownItem>Load</DropdownItem>
+              <DropdownItem>New</DropdownItem>
+              <DropdownItem>Delete</DropdownItem>
+            </DropdownMenu>
+          </NavItem>
+          <NavItem name='View' icon={ viewLogo }>
+              <DropdownMenu>
+                <DropdownItem>Model</DropdownItem>
+                <DropdownItem>Text</DropdownItem>
+              </DropdownMenu>
+          </NavItem>
+          <NavItem name='Help' icon={ helpLogo } />
+          <NavItem name='User' icon={ userLogo }> 
+            Tests
+          </NavItem>
+        </ul>
+      </nav>
     )
   }
 }
@@ -39,23 +60,29 @@ class NavItem extends Component {
     this.state = {
       isOpen: false // initially set the NavItem to unopened 
     };
+
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
     // set the isOpen state to true 
-    this.state.isOpen = !this.state.isOpen;
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+    console.log(this.props.name + " button has been clicked: isOpen set to " + this.state.isOpen);
   }
 
   render() {
     return (
       <li className='navItem'>
-        <a href='#' className='iconButton' onClick={this.handleClick}>
-          {this.props.name}
-          {this.props.icon}
+        <a href='#' className='navIconButton' title={this.props.name} onClick={this.handleClick}>
+          <img className='navIconButtonImg' src={this.props.icon} />
+          <p className='navIconButtonName'>{this.props.name}</p>
+          {/* <img class='navIconButtonDropImg' src={dropdownLogo} />  add dropdown later*/}
         </a>
 
-        {/* if the button is clicked */}
-        {this.state.isOpen && this.props.displayItems}
+        {/* if isOpen, the html after the && will be rendered if children exist */}
+        {this.state.isOpen && this.props.children}
       </li>
     );
   }
@@ -67,10 +94,19 @@ class NavItem extends Component {
 //    links associated with the NavItem
 // ----------------------------------------------------------------------
 class DropdownMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
   render() {
     return (
       <div className='dropdownMenu'>
-        <DropdownItem></DropdownItem>
+        <ul className='dropdownMenuList'>
+          {this.props.children}
+        </ul>
       </div>
     );
   }
@@ -83,13 +119,25 @@ class DropdownMenu extends Component {
 //    DropdownItems of "detailed view" and "base view"
 // ----------------------------------------------------------------------
 class DropdownItem extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   render() {
+    // these link labels should all be of type string 
+    let menuLinkLabel = this.props.children;
+    // links passed in as props
+    let menuLink = this.props.linkTo;
+
     return (
-      <a href='#' className='dropdownItem'>
-        <span className='leftIcon'>{ this.props.leftIcon }</span>
-        {this.props.displayItems}
-      </a>
+      <li className='dropdownItem'>
+        <div className='dropdownItemContents'>
+          <a href={ menuLink } className='dropdownItemLink'>
+            <span className='leftIcon'></span>
+            <p className='dropdownItemLabel'>{ menuLinkLabel }</p>
+          </a>
+        </div>
+      </li>
     );
   }
 }

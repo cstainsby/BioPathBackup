@@ -110,3 +110,11 @@
 .dropdownItemContents:hover {
   background-color: grey;
 }
+
+.dropdownItemLink {
+  text-decoration: none;;
+}
+
+.dropdownItemLabel {
+  color: black;
+}

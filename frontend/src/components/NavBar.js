@@ -16,13 +16,55 @@ import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
 //    our main model area 
 // ----------------------------------------------------------------------
 export default class NavBar extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      // define openStates for each of the buttons as a disctionary
+      navItemOpenStatusDict: {
+        "File": false,
+        "View": false,
+        "User": false
+      }
+    }
+
+    this.signalChange = this.signalChange.bind(this);
+  }
+
+  // this function will, given the new status for a child is true, 
+  //    change all other children isOpen to false 
+  signalChange(name, newIsOpenStatus) {
+    let currNavOpenDict = this.state.navItemOpenStatusDict;
+
+    let newNavItemOpenStatusDict = currNavOpenDict;
+
+    // for each of the keys not changed, if they are set to open, they need to be closed
+    for(let [key, value] of Object.entries(currNavOpenDict)) {
+      if(key !== name && value === true) {
+        // change all other keys to false if clicked button is expanded 
+        newNavItemOpenStatusDict[key] = false;
+      } 
+      else if(key === name) {
+        // change the clicked key regardless
+        newNavItemOpenStatusDict[key] = newIsOpenStatus;
+      }
+
+      this.setState({
+        navItemOpenStatusDict: newNavItemOpenStatusDict
+      });
+    }
+    console.log(
+      "In signalChange(): \n" +
+      "   New nav dict status for " + name + ": " + this.state.navItemOpenStatusDict[name]);
+    
+  }
 
   render() {
     return (
       <nav className='NavBar'>
         <ul className='NavBarNav'>
           {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
-          <NavItem name='File' icon={ fileLogo }> 
+          <NavItem name='File' icon={ fileLogo } isOpen={ this.state.navItemOpenStatusDict["File"] } signalChange={ this.signalChange }> 
             {/* The Dropdown menu will be passed Dropdown Item children to display */}
             <DropdownMenu>
               {/* Link to subsequent page should be passed as prop */}
@@ -33,15 +75,18 @@ export default class NavBar extends Component {
               <DropdownItem>Delete</DropdownItem>
             </DropdownMenu>
           </NavItem>
-          <NavItem name='View' icon={ viewLogo }>
+          <NavItem name='View' icon={ viewLogo } isOpen={ this.state.navItemOpenStatusDict["View"] } signalChange={ this.signalChange }>
               <DropdownMenu>
                 <DropdownItem>Model</DropdownItem>
                 <DropdownItem>Text</DropdownItem>
               </DropdownMenu>
           </NavItem>
           <NavItem name='Help' icon={ helpLogo } />
-          <NavItem name='User' icon={ userLogo }> 
-            Tests
+          <NavItem name='User' icon={ userLogo } isOpen={ this.state.navItemOpenStatusDict["User"] } signalChange={ this.signalChange }> 
+            <DropdownMenu>
+              {/* Link to subsequent page should be passed as prop */}
+              <DropdownItem>Log In</DropdownItem>
+            </DropdownMenu>
           </NavItem>
         </ul>
       </nav>
@@ -57,8 +102,16 @@ export default class NavBar extends Component {
 class NavItem extends Component {
   constructor(props) {
     super(props);
+
+    // get open state if passed in by prop, assign default false if not
+    let openState = false;
+    if(props.isOpen != null) {
+      if (props.isOpen === true) openState = true;
+      else openState = false;
+    } 
+
     this.state = {
-      isOpen: false // initially set the NavItem to unopened 
+      isOpen: openState // initially set the NavItem to unopened 
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -66,10 +119,21 @@ class NavItem extends Component {
 
   handleClick() {
     // set the isOpen state to true 
+    let newState = !this.props.isOpen;
+    let buttonName = this.props.name;
+
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: newState
     });
-    console.log(this.props.name + " button has been clicked: isOpen set to " + this.state.isOpen);
+    console.log(
+      "In handleClick(): \n" +
+      "   " + buttonName + " button has been clicked: isOpen set to " + newState
+      );
+    
+    // signal parent navbar that this item has been selected if applicable
+    if(this.props.signalChange) {
+      this.props.signalChange(buttonName, newState);
+    }
   }
 
   render() {
@@ -82,7 +146,7 @@ class NavItem extends Component {
         </a>
 
         {/* if isOpen, the html after the && will be rendered if children exist */}
-        {this.state.isOpen && this.props.children}
+        {this.props.isOpen && this.props.children}
       </li>
     );
   }

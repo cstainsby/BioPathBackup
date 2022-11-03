@@ -6,22 +6,25 @@ Description: Defines the models for enzymes, substrates, connections, etc. Djang
 Modified: 10/27 - Josh Schmitz
 """
 
+from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
+class Molecule(models.Model):
+    name = models.CharField(max_length=30, primary_key=True)
+    image = models.CharField(max_length=30) # image is a filepath to a png showing the substrate
+    link = models.URLField()
+    abbreviation = models.CharField(max_length=30)
 
 class Enzyme(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
     reversible = models.BooleanField()
     image = models.CharField(max_length=30) # image is a filepath to a png showing the enzyme
+    cofactors = models.ManyToManyField(Molecule)
 
 
-class Substrate(models.Model):
-    name = models.CharField(max_length=30, primary_key=True)
-    image = models.CharField(max_length=30) # image is a filepath to a png showing the substrate
-
-
-class EnzymeSubstrate(models.Model):
+class EnzymeMolecule(models.Model):
     """
     This model contains information that is intrinsic to an enzyme. It is unnecessary for
         building pathways in the sense that a pathway can be derived without it (ie using
@@ -32,24 +35,24 @@ class EnzymeSubstrate(models.Model):
         integer id primary key and enforce that (enzyme, substrate) is unique.
     """
     enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
-    substrate = models.ForeignKey(to=Substrate, on_delete=models.CASCADE)
-    class SubstrateType(models.TextChoices):
+    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
+    class MoleculeType(models.TextChoices):
         """
         This is essentially defining an enum that the substrate_type field uses.
         """
         INPUT = 'IN', _('Input')
         OUTPUT = 'OUT', _('Output')
-    substrate_type = models.CharField(max_length=3, choices=SubstrateType.choices)
+    substrate_type = models.CharField(max_length=3, choices=MoleculeType.choices)
     focus = models.BooleanField()
 
     class Meta():
         """
         This class describes meta properties of the model. So far we are only using it to
-            ensure that (enzyme, substrate) is unique.
+            ensure that (enzyme, molecule) is unique.
         """
         constraints = [
             models.UniqueConstraint(
-                fields=['enzyme', 'substrate'], name='unique_enzyme_substrate'
+                fields=['enzyme', 'molecule'], name='unique_enzyme_molecule'
             )
         ]
 
@@ -66,7 +69,7 @@ class PathwayConnections(models.Model):
     pathway = models.CharField(max_length=30)
     enzyme_from = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE, related_name="connection_enzyme_from")
     enzyme_to = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE, related_name="connection_enzyme_to")
-    substrate = models.ForeignKey(to=Substrate, on_delete=models.CASCADE)
+    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
 
     class Meta():
         """

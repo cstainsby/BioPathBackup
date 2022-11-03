@@ -31,7 +31,7 @@ class EnzymeViewSet(viewsets.ModelViewSet):
 
 
 class SubstrateViewSet(viewsets.ModelViewSet):
-    queryset = models.Substrate.objects.all()
+    queryset = models.Molecule.objects.all()
     serializer_class = serializers.SubstrateSerializer
     permission_classes = [permissions.IsAuthenticated]
 

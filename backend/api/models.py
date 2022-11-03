@@ -6,6 +6,7 @@ Description: Defines the models for enzymes, substrates, connections, etc. Djang
 Modified: 10/27 - Josh Schmitz
 """
 
+from operator import mod
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,23 +20,32 @@ class Molecule(models.Model):
 
 class Enzyme(Molecule):
     reversible = models.BooleanField()
-    cofactors = models.ManyToManyField(Molecule, through='EnzymeCofactors')
-    substrates = models.ManyToManyField(Molecule, through='EnzymeSubstrates')
-    products = models.ManyToManyField(Molecule, through='EnzymeProducts')
+    cofactors = models.ManyToManyField(Molecule)
+    substrates = models.ManyToManyField(Molecule)
+    products = models.ManyToManyField(Molecule)
 
+class User(models.Model):
+    name = models.CharField(max_length=30)
+
+class Pathway(models.Model):
+    name = models.CharField(max_length=30)
+    author = models.ForeignKey(User)
+    enzymes = models.ManyToManyField(Enzyme, through=PathwayEnzyme)
+    substrates = models.ManyToManyField(Molecule, through=PathwaySubstrate)
+    link = models.URLField()
+    public = models.BooleanField()
+
+class PathwayEnzyme(models.Model):
+    enzyme = models.ForeignKey(Enzyme)
+    pathway = models.ForeignKey(Pathway)
+    x = models.PositiveSmallIntegerField()
+    y = models.PositiveSmallIntegerField()
   
-class EnzymeCofactors(models.Model):
-    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
-    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
-
-class EnzymeSubstrates(models.Model):
-    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
-    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
-
-class EnzymeProducts(models.Model):
-    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
-    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
-
+class PathwayEnzyme(models.Model):
+    substrate = models.ForeignKey(Molecule)
+    pathway = models.ForeignKey(Pathway)
+    x = models.PositiveSmallIntegerField()
+    y = models.PositiveSmallIntegerField()
 
 
 class EnzymeMolecule(models.Model):

@@ -13,15 +13,29 @@ from django.utils.translation import gettext_lazy as _
 
 class Molecule(models.Model):
     name = models.CharField(max_length=30, primary_key=True)
-    image = models.CharField(max_length=30) # image is a filepath to a png showing the substrate
+    image = models.CharField(max_length=30, default="") # image is a filepath to a png showing the substrate
     link = models.URLField()
     abbreviation = models.CharField(max_length=30)
 
-class Enzyme(models.Model):
-    name = models.CharField(max_length=30, primary_key=True)
+class Enzyme(Molecule):
     reversible = models.BooleanField()
-    image = models.CharField(max_length=30) # image is a filepath to a png showing the enzyme
-    cofactors = models.ManyToManyField(Molecule)
+    cofactors = models.ManyToManyField(Molecule, through='EnzymeCofactors')
+    substrates = models.ManyToManyField(Molecule, through='EnzymeSubstrates')
+    products = models.ManyToManyField(Molecule, through='EnzymeProducts')
+
+  
+class EnzymeCofactors(models.Model):
+    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
+    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
+
+class EnzymeSubstrates(models.Model):
+    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
+    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
+
+class EnzymeProducts(models.Model):
+    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
+    molecule = models.ForeignKey(to=Molecule, on_delete=models.CASCADE)
+
 
 
 class EnzymeMolecule(models.Model):

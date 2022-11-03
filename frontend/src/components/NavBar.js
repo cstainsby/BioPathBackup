@@ -20,7 +20,7 @@ export default class NavBar extends Component {
     super(props);
 
     this.state = {
-      // define openStates for each of the buttons as a disctionary
+      // define openStates for each of the buttons as a dictionary
       navItemOpenStatusDict: {
         "File": false,
         "View": false,
@@ -64,25 +64,25 @@ export default class NavBar extends Component {
       <nav className='NavBar'>
         <ul className='NavBarNav'>
           {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
-          <NavItem name='File' icon={ fileLogo } isOpen={ this.state.navItemOpenStatusDict["File"] } signalChange={ this.signalChange }> 
+          <NavItem name='File' icon={ fileLogo } linkTo="/#" isOpen={ this.state.navItemOpenStatusDict["File"] } signalChange={ this.signalChange }> 
             {/* The Dropdown menu will be passed Dropdown Item children to display */}
             <DropdownMenu>
               {/* Link to subsequent page should be passed as prop */}
-              <DropdownItem linkTo="">Save</DropdownItem>
+              <DropdownItem linkTo="savePlace">Save</DropdownItem>
               <DropdownItem>Save As</DropdownItem>
               <DropdownItem>Load</DropdownItem>
               <DropdownItem>New</DropdownItem>
               <DropdownItem>Delete</DropdownItem>
             </DropdownMenu>
           </NavItem>
-          <NavItem name='View' icon={ viewLogo } isOpen={ this.state.navItemOpenStatusDict["View"] } signalChange={ this.signalChange }>
+          <NavItem name='View' icon={ viewLogo } linkTo="/#" isOpen={ this.state.navItemOpenStatusDict["View"] } signalChange={ this.signalChange }>
               <DropdownMenu>
                 <DropdownItem>Model</DropdownItem>
                 <DropdownItem>Text</DropdownItem>
               </DropdownMenu>
           </NavItem>
-          <NavItem name='Help' icon={ helpLogo } />
-          <NavItem name='User' icon={ userLogo } isOpen={ this.state.navItemOpenStatusDict["User"] } signalChange={ this.signalChange }> 
+          <NavItem name='Help' icon={ helpLogo } linkTo="help"/>
+          <NavItem name='User' icon={ userLogo } linkTo="/#" isOpen={ this.state.navItemOpenStatusDict["User"] } signalChange={ this.signalChange }> 
             <DropdownMenu>
               {/* Link to subsequent page should be passed as prop */}
               <DropdownItem>Log In</DropdownItem>
@@ -117,6 +117,8 @@ class NavItem extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+
+  // for dropdowns only 
   handleClick() {
     // set the isOpen state to true 
     let newState = !this.props.isOpen;
@@ -137,9 +139,17 @@ class NavItem extends Component {
   }
 
   render() {
+    // figure out where the button will link 
+    // 
+    let buttonLink = "#";
+
+    if(this.props.linkTo != null) {
+      buttonLink = this.props.linkTo;
+    }
+    
     return (
       <li className='navItem'>
-        <a href='#' className='navIconButton' title={this.props.name} onClick={this.handleClick}>
+        <a href={ buttonLink } className='navIconButton' title={this.props.name} onClick={this.handleClick}>
           <img className='navIconButtonImg' src={this.props.icon} />
           <p className='navIconButtonName'>{this.props.name}</p>
           {/* <img class='navIconButtonDropImg' src={dropdownLogo} />  add dropdown later*/}
@@ -160,9 +170,6 @@ class NavItem extends Component {
 class DropdownMenu extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
   }
 
   render() {

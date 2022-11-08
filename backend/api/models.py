@@ -11,9 +11,8 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-
 class Molecule(models.Model):
-    name = models.CharField(max_length=30, primary_key=True)
+    name = models.CharField(max_length=30)
     image = models.CharField(max_length=30, default="") # image is a filepath to a png showing the substrate
     link = models.URLField()
     abbreviation = models.CharField(max_length=30)
@@ -24,16 +23,17 @@ class Enzyme(Molecule):
     substrates = models.ManyToManyField(Molecule)
     products = models.ManyToManyField(Molecule)
 
-class User(models.Model):
+class PathwayUser(models.Model):
     name = models.CharField(max_length=30)
 
 class Pathway(models.Model):
     name = models.CharField(max_length=30)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(PathwayUser)
     enzymes = models.ManyToManyField(Enzyme, through=PathwayEnzyme)
     substrates = models.ManyToManyField(Molecule, through=PathwaySubstrate)
     link = models.URLField()
     public = models.BooleanField()
+    '''TODO: Add constraint on multiple enzymes in a pathway'''
 
 class PathwayEnzyme(models.Model):
     enzyme = models.ForeignKey(Enzyme)
@@ -41,7 +41,7 @@ class PathwayEnzyme(models.Model):
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()
   
-class PathwayEnzyme(models.Model):
+class PathwayMolecule(models.Model):
     substrate = models.ForeignKey(Molecule)
     pathway = models.ForeignKey(Pathway)
     x = models.PositiveSmallIntegerField()

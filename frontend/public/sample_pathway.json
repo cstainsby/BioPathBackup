@@ -1,0 +1,50 @@
+{
+  "id": "path-12345678",
+  "name": "Path1",
+  "author": "TestUser",
+  "link": "",
+  "enzymes": [
+    {
+      "id": "enz-00000001",
+      "name": "enz1",
+      "image": "",
+      "link": "",
+      "abbr": "e1",
+      "reversible": true,
+      "cofactors": ["sub-00000003"],
+      "substrates": ["sub-00000001"],
+      "products": ["sub-00000002"],
+      "x": 0,
+      "y": 100
+    }
+  ],
+  "substrates": [
+    {
+      "id": "sub-00000001",
+      "name": "sub1",
+      "image": "",
+      "link": "",
+      "abbr": "s1",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": "sub-00000001",
+      "name": "sub1",
+      "image": "",
+      "link": "",
+      "abbr": "s1",
+      "x": 0,
+      "y": 200
+    },
+    {
+      "id": "sub-00000003",
+      "name": "ATP",
+      "image": "",
+      "link": "",
+      "abbr": "",
+      "x": null,
+      "y": null
+    }
+  ]
+}

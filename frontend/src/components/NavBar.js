@@ -63,7 +63,7 @@ export default class NavBar extends Component {
   render() {
     return (
       <nav className='NavBar'>
-        <ul className='NavBarNav'>
+        <ul className='NavBarList'>
           {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
           <NavItem 
             name='File' 

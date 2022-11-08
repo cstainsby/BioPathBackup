@@ -5,23 +5,40 @@
 
   --navBarHeight: 10%;
   --pathwayViewAreaHeight: 90%;
+
+  /* when a sidebar is expanded it should take up about this much space */
+  --sidebarExpandedWidth: 20%;
 }
 
 .NavBar {
   height: var(--navBarHeight);
 }
 
-div.PathwayView {
+div.MainView{
   position: relative;
   height: inherit;
   width: 100%;
 }
 
-div.pathwayViewArea {
+.PathwayView {
   height: var(--pathwayViewAreaHeight);
   display: flex;
-  /* flex-direction: row;
-  flex: 100%; */
+}
+
+.PathwayViewComponentsList {
+  list-style-type: none;
+  
+  background-color: aquamarine;
+  /* background-color: brown; */
+}
+
+.PathwayViewComponentsList.li {
+  display: inline;
+}
+
+.ModelAreaLi {
+  height: 100%;
+  width: auto;
 }
 
 .ModelArea {

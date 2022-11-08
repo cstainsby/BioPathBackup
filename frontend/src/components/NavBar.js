@@ -99,6 +99,11 @@ export default class NavBar extends Component {
             icon={ helpLogo } 
             linkTo="help"
           />
+
+          <NavItem
+            name="Snake Game"
+            linkTo="https://www.google.com/search?client=firefox-b-1-d&q=snake+game"
+          />
           
           <NavItem 
             name='User' 

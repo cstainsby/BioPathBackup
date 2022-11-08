@@ -1,7 +1,40 @@
 import React, { Component } from 'react'
-import './Slider.css'
+import './SliderBar.css'
+import Slider from './Slider.js'
 
-export default class Slider extends Component {
+
+// ----------------------------------------------------------------------
+// SliderBar
+//  This component when rendered will be a LeftSideBar component
+//  where it will have control over the rates of reactions for the 
+//  pathway currently being rendered 
+// ----------------------------------------------------------------------
+export default class SliderSideBar extends Component {
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      componentTitle: "title",    
+      componentDesc: "desc"      
+    }
+  }
+
+  render() {
+    return (
+      <div className='SliderBar'>
+        <h3>{ this.state.title }</h3>
+        <p>{ this.state.desc }</p>
+        <ul>
+          <li><Slider title="ATP" isShowing={true}/></li>
+          <li><Slider title="HCL" isShowing={true}/></li>
+          <li><Slider title="dCL" isShowing={false}/></li>
+        </ul>
+      </div>
+    )
+  }
+}
+
+class Slider extends Component {
   constructor(props) {
     super(props);
     let {title, isShowing} = this.props
@@ -63,3 +96,4 @@ export default class Slider extends Component {
       }
   }
 }
+

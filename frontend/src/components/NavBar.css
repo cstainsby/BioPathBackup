@@ -1,13 +1,16 @@
 /* root variables used in style sheet */
 :root {
-  --nav-bar-size: 75px;
-  --icon-radius: calc(var(--nav-bar-size) * 0.4)
+  --icon-radius: calc(75px * 0.4);
+
+  /* start at 10 to give pathway view enough indices to work with*/
+  --navbar-base-z-index-level: 10;
 }
 
 /* div holding all navbar elements */
 .NavBar {
-  width: inherit;
-  height: var(--nav-bar-size);
+  transform: translateX(-45%);
+  z-index: var(--navbar-base-z-index-level);
+  display: inline-block;
 }
 
 /* the ul holding all navigation elements */
@@ -31,13 +34,12 @@
 
 /* Link to another page, or to dropdown, depending on what children were passed in, <a> */
 .navIconButton {
-  /* height: calc(var(--nav-bar-size) * 0.8);
-  width: calc(var(--nav-bar-size) * 0.8); */
   padding: 3px;
   margin: 2px;
   display: flex;
   justify-content: center;
-  border-radius: 10%;
+  border-radius: 15px;
+  background-color: lightgray;
   text-decoration: none;;
 }
 /* when hovering over a button give visual indication */
@@ -78,8 +80,9 @@
   padding: 1rem;
   overflow: hidden;
   background-color: white;
-  /* display: flex; */
-  z-index: 999; /* make sure that when clicked, dropdown menu appears on top */
+  
+  /* dropdowns should be > one level above the base dropdown */
+  z-index: calc(var(--navbar-base-z-index-level) + 1); 
 }
 
 /* list of all children links in dropdown list, <ul> */

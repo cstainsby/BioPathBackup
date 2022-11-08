@@ -1,3 +1,9 @@
+.SliderBar {
+  border: 5px solid rgba(0, 0, 0);
+  background-color: rgba(127, 255, 212,0.5);
+  width: 300px;
+}
+
 .Slider {
   height: 150px;
   border: 4px solid red;

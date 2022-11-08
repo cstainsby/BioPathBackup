@@ -1,14 +1,27 @@
+
+:root {
+  --pathwayViewHeight: inherit;
+  --pathwayViewWidth: 100%;
+
+  --navBarHeight: 10%;
+  --pathwayViewAreaHeight: 90%;
+}
+
+.NavBar {
+  height: var(--navBarHeight);
+}
+
 div.PathwayView {
+  position: relative;
   height: inherit;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 }
 
 div.pathwayViewArea {
-  height: inherit;
+  height: var(--pathwayViewAreaHeight);
   display: flex;
-  flex-direction: row;
-  flex: 100%;
+  /* flex-direction: row;
+  flex: 100%; */
 }
 
 .ModelArea {

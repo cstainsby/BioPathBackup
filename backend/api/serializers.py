@@ -9,8 +9,7 @@ Modified: 10/27 - Josh Schmitz
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from api.models import Enzyme, Molecule, Pathway, EnzymeSubstrate, PathwayConnections
-
+from api.models import Enzyme, Molecule, Pathway
 
 class EnzymeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -27,7 +26,7 @@ class EnzymeSerializer(serializers.ModelSerializer):
         ]
 
 
-class SubstrateSerializer(serializers.ModelSerializer):
+class MoleculeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Molecule
         fields = [
@@ -38,15 +37,15 @@ class SubstrateSerializer(serializers.ModelSerializer):
         ]
 
 
-class EnzymeSubstrateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EnzymeSubstrate
-        fields = [
-            'enzyme',
-            'substrate',
-            'substrate_type',
-            'focus'
-        ]
+# class EnzymeSubstrateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = EnzymeSubstrate
+#         fields = [
+#             'enzyme',
+#             'substrate',
+#             'substrate_type',
+#             'focus'
+#         ]
 
 
 class PathwaySerializer(serializers.ModelSerializer):

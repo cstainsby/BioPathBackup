@@ -30,22 +30,28 @@ class EnzymeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class SubstrateViewSet(viewsets.ModelViewSet):
+class MoleculeViewSet(viewsets.ModelViewSet):
     queryset = models.Molecule.objects.all()
-    serializer_class = serializers.SubstrateSerializer
+    serializer_class = serializers.MoleculeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-class EnzymeSubstrateViewSet(viewsets.ModelViewSet):
-    queryset = models.EnzymeSubstrate.objects.all()
-    serializer_class = serializers.EnzymeSubstrateSerializer
+class PathwayViewSet(viewsets.ModelViewSet):
+    queryset = models.Pathway.objects.all()
+    serializer_class = serializers.PathwaySerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-class PathwayConnectionsViewSet(viewsets.ModelViewSet):
-    queryset = models.PathwayConnections.objects.all()
-    serializer_class = serializers.PathwayConnectionsSerializer
-    permission_classes = [permissions.IsAuthenticated]
+# class EnzymeSubstrateViewSet(viewsets.ModelViewSet):
+#     queryset = models.EnzymeSubstrate.objects.all()
+#     serializer_class = serializers.EnzymeSubstrateSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+
+
+# class PathwayConnectionsViewSet(viewsets.ModelViewSet):
+#     queryset = models.PathwayConnections.objects.all()
+#     serializer_class = serializers.PathwayConnectionsSerializer
+#     permission_classes = [permissions.IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -9,40 +9,74 @@ Modified: 10/27 - Josh Schmitz
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from api.models import Enzyme, Molecule, EnzymeSubstrate, PathwayConnections
+from api.models import Enzyme, Molecule, Pathway, EnzymeSubstrate, PathwayConnections
 
 
 class EnzymeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Enzyme
-        fields = ['name', 'reversible', 'image']
+        fields = [
+            'name',
+            'image',
+            'link',
+            'abbreviation',
+            'reversible',
+            'cofactors',
+            'substrates',
+            'products'
+        ]
 
 
 class SubstrateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Molecule
-        fields = ['name', 'image']
+        fields = [
+            'name',
+            'image',
+            'link',
+            'abbreviation'
+        ]
 
 
 class EnzymeSubstrateSerializer(serializers.ModelSerializer):
     class Meta:
         model = EnzymeSubstrate
-        fields = ['enzyme', 'substrate', 'substrate_type', 'focus']
+        fields = [
+            'enzyme',
+            'substrate',
+            'substrate_type',
+            'focus'
+        ]
 
 
-class PathwayConnectionsSerializer(serializers.ModelSerializer):
+class PathwaySerializer(serializers.ModelSerializer):
     class Meta:
-        model = PathwayConnections
-        fields = ['pathway', 'enzyme_from', 'enzyme_to', 'substrate']
+        model = Pathway
+        fields = [
+            'name',
+            'author',
+            'link',
+            'public',
+            'enzymes',
+            'substrates'
+        ]
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = [
+            'url',
+            'username',
+            'email',
+            'groups'
+        ]
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
-        fields = ['url', 'name']
+        fields = [
+            'url',
+            'name'
+        ]

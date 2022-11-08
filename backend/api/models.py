@@ -9,7 +9,9 @@ Modified: 10/27 - Josh Schmitz
 from operator import mod
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+
 
 class Molecule(models.Model):
     name = models.CharField(max_length=30)
@@ -23,12 +25,9 @@ class Enzyme(Molecule):
     substrates = models.ManyToManyField(Molecule)
     products = models.ManyToManyField(Molecule)
 
-class PathwayUser(models.Model):
-    name = models.CharField(max_length=30)
-
 class Pathway(models.Model):
     name = models.CharField(max_length=30)
-    author = models.ForeignKey(PathwayUser)
+    author = models.ForeignKey(User)
     enzymes = models.ManyToManyField(Enzyme, through=PathwayEnzyme)
     substrates = models.ManyToManyField(Molecule, through=PathwaySubstrate)
     link = models.URLField()

@@ -71,7 +71,7 @@ class EnzymeSerializer(serializers.ModelSerializer):
 class PathwaySerializer(serializers.ModelSerializer):
     author = UserSerializer()
     enzymes = EnzymeSerializer(many=True)
-    moleculs = MoleculeSerializer(many=True)
+    molecules = MoleculeSerializer(many=True)
     
     class Meta:
         model = models.Pathway

@@ -13,13 +13,12 @@ from django.contrib.auth.models import User
 
 class Molecule(models.Model):
     name = models.CharField(max_length=50)
-
-    # ball_and_stick_image = models.ImageField()
-    # abbreviation = models.CharField(max_length=10)
-    # space_filling_image = models.ImageField()
-    # link = models.URLField()
-    # author = models.ForeignKey(User)
-    # public = models.BooleanField()
+    abbreviation = models.CharField(max_length=10)
+    ball_and_stick_image = models.ImageField()
+    space_filling_image = models.ImageField()
+    link = models.URLField()
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -28,50 +27,48 @@ class Molecule(models.Model):
 class Enzyme(models.Model):
     name = models.CharField(max_length=50)
     reversible = models.BooleanField()
-
-    # you can't (or shouldn't) have multiple manyToMany fields refrencing the same table
-    #   but we could use
-    molecules = models.ManyToManyField(Molecule, through='EnzymeMolecule')
-    # instead of
-    # substrates = models.ManyToManyField(Molecule)
-    # products = models.ManyToManyField(Molecule)
-    # cofactors = models.ManyToManyField(Molecule)
-
-    # abbreviation = models.CharField(max_length=10)
-    # image = models.ImageField() # space filling
-    # link = models.URLField() # link to protopedia
-    # author = models.ForeignKey(User)
-    # public = models.BooleanField()
+    substrates = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_substrates",
+        on_delete=models.PROTECT
+    )
+    products = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_products",
+        on_delete=models.PROTECT
+    )
+    cofactors = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_cofactors",
+        on_delete=models.PROTECT
+    )
+    abbreviation = models.CharField(max_length=10)
+    image = models.ImageField() # space filling
+    link = models.URLField() # link to protopedia
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
-
-class EnzymeMolecule(models.Model):
-    enzyme = models.ForeignKey(Enzyme, on_delete=models.CASCADE)
-    molecule = models.ForeignKey(Molecule, on_delete=models.CASCADE)
-    
-    class MoleculeType(models.TextChoices):
-        """
-        This is essentially defining an enum that the molecule_type field uses.
-        """
-        SUBSTRATE = 'SUB', _('Substrate')
-        PRODUCT = 'PRO', _('Product')
-        COFACTOR = 'COF', _('Cofactor')
-    
-    molecule_type = models.CharField(
-        max_length=3,
-        choices=MoleculeType.choices
-    )
     
 class Pathway(models.Model):
     name = models.CharField(max_length=50)
-    enzymes = models.ManyToManyField(Enzyme, through='PathwayEnzyme')
-    molecules = models.ManyToManyField(Molecule, through='PathwayMolecule')
-    
-    # author = models.ForeignKey(User)
-    # link = models.URLField()
-    # public = models.BooleanField()
+    enzymes = models.ManyToManyField(
+        Enzyme,
+        through='PathwayEnzyme',
+        related_name="pathways_enzyme",
+        on_delete=models.PROTECT
+    )
+    molecules = models.ManyToManyField(
+        Molecule,
+        through='PathwayMolecule',
+        related_name="pathways_molecule",
+        on_delete=models.PROTECT
+    )
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    link = models.URLField()
+    public = models.BooleanField(default=False)
     '''TODO: Add constraint on multiple enzymes in a pathway'''
 
     def __str__(self):
@@ -79,7 +76,7 @@ class Pathway(models.Model):
 
 
 class PathwayEnzyme(models.Model):
-    enzyme = models.ForeignKey(Enzyme, on_delete=models.CASCADE)
+    enzyme = models.ForeignKey(Enzyme, on_delete=models.PROTECT)
     pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()
@@ -90,7 +87,7 @@ class PathwayEnzyme(models.Model):
 
   
 class PathwayMolecule(models.Model):
-    substrate = models.ForeignKey(Molecule, on_delete=models.CASCADE)
+    substrate = models.ForeignKey(Molecule, on_delete=models.PROTECT)
     pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()

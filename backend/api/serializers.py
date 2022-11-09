@@ -11,74 +11,60 @@ from rest_framework import serializers
 
 from . import models
 
+class EnzymeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Enzyme
+        fields = [
+            'name',
+            'image',
+            'link',
+            'abbreviation',
+            'reversible',
+            'cofactors',
+            'substrates',
+            'products'
+        ]
+
 
 class MoleculeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Molecule
-        fields = "__all__"
-
-
-class EnzymeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Enzyme
-        fields = "__all__"
+        fields = [
+            'name',
+            'image',
+            'link',
+            'abbreviation'
+        ]
 
 
 class PathwaySerializer(serializers.ModelSerializer):
-    
-
-
-
-
-
-
-class EnzymeSubstrateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.EnzymeSubstrate
-        fields = ['enzyme', 'substrate', 'substrate_type', 'focus']
-
-
-class EnzymeSerializer(serializers.ModelSerializer):
-    substrate = EnzymeSubstrateSerializer(many=True)
-    
-    class Meta:
-        model = models.Enzyme
-        fields = ['name', 'reversible', 'image', 'substrate']
-
-        
-class SubstrateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Substrate
-        fields = ['name', 'image']
-
-
-class PathwayConnectionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.PathwayConnections
-        fields = ['pathway', 'enzyme_from', 'enzyme_to', 'substrate']
-
-
-# class PathwaySerializer(serializers.ModelSerializer):
-#     enzymes = EnzymeSubstrateSerializer(many=True)
-
-#     class Meta:
-#         model = models.PathwayEnzyme
-#         fields = ['pathway', 'enzyme', 'row']
-
-
-# class PathwayListSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = models.Pathway
-#         fields = ['name']
+        model = models.Pathway
+        fields = [
+            'name',
+            'author',
+            'link',
+            'public',
+            'enzymes',
+            'substrates'
+        ]
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'groups']
+        fields = [
+            'url',
+            'username',
+            'email',
+            'groups'
+        ]
 
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
-        fields = ['url', 'name']
+        fields = [
+            'url',
+            'name'
+        ]

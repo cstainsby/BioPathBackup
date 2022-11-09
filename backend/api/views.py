@@ -10,9 +10,11 @@ Modified: 10/27 - Josh Schmitz
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
+from django.views import View
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
 
 from . import serializers, models
 
@@ -24,10 +26,30 @@ def index(request):
     return HttpResponse(content="Hello, world.")
 
 
+# class PathwayView(View):
+#     def get(self, request):
+#         return models.PathwayConnections.objects.order_by().values('pathway').distinct()
+
+
+#     # queryset = models.PathwayConnections.objects.all()
+
+
+
+
 class EnzymeViewSet(viewsets.ModelViewSet):
     queryset = models.Enzyme.objects.all()
     serializer_class = serializers.EnzymeSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+
+class EnzymeDetailView(generics.RetrieveAPIView):
+    queryset = models.Enzyme.objects.all()
+    # lookup_field = 'name'
+    serializer_class = serializers.EnzymeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 
 
 class SubstrateViewSet(viewsets.ModelViewSet):
@@ -46,6 +68,18 @@ class PathwayConnectionsViewSet(viewsets.ModelViewSet):
     queryset = models.PathwayConnections.objects.all()
     serializer_class = serializers.PathwayConnectionsSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    
+# class PathwayViewSet(viewsets.ModelViewSet):
+#     def list():
+#         queryset = models.Pathway.objects.all()
+#         serializer_class = serializers.PathwayListSerializer
+#         permission_classes = [permissions.IsAuthenticated]
+
+#     def retrieve():
+#         serializer_class = serializers.PathwaySerializer
+#         queryset = models.PathwayEnzyme.objects.all().prefetch_related('enzymes')
+#         permission_classes = [permissions.IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -11,60 +11,77 @@ from rest_framework import serializers
 
 from . import models
 
-class EnzymeSerializer(serializers.ModelSerializer):
+
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Enzyme
+        model = Group
+        fields = ["id", "name"]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    groups = GroupSerializer(many=True)
+    
+    class Meta:
+        model = User
         fields = [
-            'name',
-            'image',
-            'link',
-            'abbreviation',
-            'reversible',
-            'cofactors',
-            'substrates',
-            'products'
+            "id",
+            "username",
+            "groups"
         ]
-
-
+        
+        
 class MoleculeSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    
     class Meta:
         model = models.Molecule
         fields = [
-            'name',
-            'image',
-            'link',
-            'abbreviation'
+            "name",
+            "abbreviation",
+            "ball_and_stick_image",
+            "space_filling_image",
+            "link",
+            "author",
+            "public"
+        ]
+
+
+class EnzymeSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    substrates = MoleculeSerializer(many=True)
+    products = MoleculeSerializer(many=True)
+    cofactors = MoleculeSerializer(many=True)
+    
+    class Meta:
+        model = models.Enzyme
+        fields = [
+            "name",
+            "reversible",
+            "substrates",
+            "products",
+            "cofactors",
+            "abbreviation",
+            "image",
+            "link",
+            "author",
+            "public"
         ]
 
 
 class PathwaySerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    enzymes = EnzymeSerializer(many=True)
+    moleculs = MoleculeSerializer(many=True)
+    
     class Meta:
         model = models.Pathway
         fields = [
-            'name',
-            'author',
-            'link',
-            'public',
-            'enzymes',
-            'substrates'
+            "name",
+            "enzymes",
+            "molecules",
+            "author",
+            "link",
+            "public"
         ]
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = [
-            'url',
-            'username',
-            'email',
-            'groups'
-        ]
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Group
-        fields = [
-            'url',
-            'name'
-        ]

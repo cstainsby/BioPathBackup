@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import SliderSideBar from './SliderSideBar';
+
+
 
 // ----------------------------------------------------------------------
 // RightSideBarArea
@@ -11,5 +14,13 @@ export default class RightSideBarArea extends Component {
     this.state = {title: 'Factor Molecules'}
   }
 
-  
+
+  // For now just set the RightSideBarArea to the 
+  render() {
+    return (
+      <div id="RightSideBarArea">
+        <SliderSideBar/>
+      </div>
+    );
+  }
 }

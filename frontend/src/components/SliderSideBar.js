@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import './SliderBar.css'
-import Slider from './Slider.js'
+import "./SliderSideBar.css";
+
+import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 
 
 // ----------------------------------------------------------------------
@@ -24,7 +25,7 @@ export default class SliderSideBar extends Component {
       <div className='SliderBar'>
         <h3>{ this.state.title }</h3>
         <p>{ this.state.desc }</p>
-        <ul>
+        <ul className='sliderBarList'>
           <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
           <li><Slider title="dCL" isShowing={false}/></li>
@@ -72,10 +73,17 @@ class Slider extends Component {
 
 
   render() {
-    if (this.state.isShowing) {
-      return (
-        <div className='Slider'>
-          <p>{this.props.title} <button onClick={(e) => this.handleClick(e.target.value)}>Close Slider</button></p>
+    const openSlider = 
+      <div className='card'>
+        <ul id='cardHeaderList'>
+          <li>
+            <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+              <img id='cardHeaderCaretWhenOpen' src={dropdownLogo} />
+            </button>
+          </li>
+          <li><h4>{this.props.title}</h4></li>
+        </ul>
+        <div className='sliderCardContents'>
           <input type="range"
             min={0.0}
             step={0.1}
@@ -83,16 +91,29 @@ class Slider extends Component {
             onChange={(e) => this.handleChange(e.target.value)}
             value={this.state.value}
             />
-            <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
+          <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
         </div>
-      )
+      </div>
+
+    const closeSlider = 
+      <div className='card'>
+        <ul id='cardHeaderList'>
+          <li>
+            <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+              <img id='cardHeaderCaretWhenClosed' src={dropdownLogo} />
+            </button>
+          </li>
+          <li><h4>{this.props.title}</h4></li>
+        </ul>
+      </div>
+
+    if (this.state.isShowing) {
+      return openSlider;
     }
 
     else {
       // comment out return statement if you don't want it to show at all
-      return (
-        <div><button onClick={(e) => this.handleClick(e.target.value)}>Show</button></div>
-      )
+      return closeSlider;
       }
   }
 }

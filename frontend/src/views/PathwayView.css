@@ -1,47 +1,48 @@
 
 :root {
-  --pathwayViewHeight: inherit;
-  --pathwayViewWidth: 100%;
+  --total-screen-size: 100vh;
+  --total-screen-width: 100vw;
 
-  --navBarHeight: 10%;
-  --pathwayViewAreaHeight: 90%;
-
-  /* when a sidebar is expanded it should take up about this much space */
-  --sidebarExpandedWidth: 20%;
+  /* 
+    The sizes of all "side" elements will be stated here, 
+    the main pathway view will resize according to their needs 
+  */
+  --navbar-y-size: 75px;
+  --right-side-bar-width: 300px;
 }
 
-.NavBar {
-  height: var(--navBarHeight);
-}
-
-div.MainView{
-  position: relative;
+/* fluid container which holds everything */
+#MainView {
   height: inherit;
-  width: 100%;
+  width: 100vw;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
-.PathwayView {
-  height: var(--pathwayViewAreaHeight);
-  display: flex;
+/* the row holding the main pathway view, and any additional sidebars */
+#PathwayViewRow {
+  height: calc(var(--total-screen-size) - var(--navbar-y-size));
+  width: calc(var(--total-screen-width))
 }
 
-.PathwayViewComponentsList {
-  list-style-type: none;
+/* The nav bar view area */
+#NavBarRow {
+  height: var(--navbar-y-size);
+
+  border-style: solid;
+}
+
+/* Sidebar area */
+#RightSideBarAreaCol {
+  width: var(--right-side-bar-width);
+  border-style: solid;
+}
+
+/* column in pathwayViewRow which holds the main reaction view */
+#ModelAreaCol {
+  height: inherit;
   
-  background-color: aquamarine;
-  /* background-color: brown; */
+  padding-left: 0px;
+  padding-right: 0px;
+  border-style: solid;
 }
-
-.PathwayViewComponentsList.li {
-  display: inline;
-}
-
-.ModelAreaLi {
-  height: 100%;
-  width: auto;
-}
-
-.ModelArea {
-  flex: 100%
-}
-

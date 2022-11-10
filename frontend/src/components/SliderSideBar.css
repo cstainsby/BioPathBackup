@@ -1,7 +1,38 @@
-.SliderBar {
-  border: 5px solid rgba(0, 0, 0);
-  background-color: rgba(127, 255, 212,0.5);
-  width: 300px;
+
+
+
+.sliderBarList {
+  list-style-type: none;
+  margin-left: 4px;
+}
+
+#cardHeaderList {
+  display: flex;
+  list-style-type: none;
+  justify-content: start;
+  padding: 0px;
+}
+#cardHeaderList > li {
+  margin: 4px;
+  display: inline-block;
+}
+#carHeaderList > li > h4 {
+  margin-left: 8px;
+}
+
+.cardHeaderDropdownButton {
+  background: transparent;
+  border: none;
+}
+
+#cardHeaderCaretWhenOpen {
+  max-width: 20px;
+  height: auto;
+}
+#cardHeaderCaretWhenClosed {
+  max-width: 20px;
+  transform: rotate(-90deg);
+  height: auto;
 }
 
 .Slider {

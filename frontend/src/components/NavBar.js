@@ -19,46 +19,8 @@ import finger from "../icons/hand.png";
 export default class NavBar extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      // define openStates for each of the buttons as a dictionary
-      navItemOpenStatusDict: {
-        "File": false,
-        "View": false,
-        "User": false
-      }
-    }
-
-    this.signalChange = this.signalChange.bind(this);
   }
 
-  // this function will, given the new status for a child is true, 
-  //    change all other children isOpen to false 
-  signalChange(name, newIsOpenStatus) {
-    let currNavOpenDict = this.state.navItemOpenStatusDict;
-
-    let newNavItemOpenStatusDict = currNavOpenDict;
-
-    // for each of the keys not changed, if they are set to open, they need to be closed
-    for(let [key, value] of Object.entries(currNavOpenDict)) {
-      if(key !== name && value === true) {
-        // change all other keys to false if clicked button is expanded 
-        newNavItemOpenStatusDict[key] = false;
-      } 
-      else if(key === name) {
-        // change the clicked key regardless
-        newNavItemOpenStatusDict[key] = newIsOpenStatus;
-      }
-
-      this.setState({
-        navItemOpenStatusDict: newNavItemOpenStatusDict
-      });
-    }
-    console.log(
-      "In signalChange(): \n" +
-      "   New nav dict status for " + name + ": " + this.state.navItemOpenStatusDict[name]);
-    
-  }
 
   // this render function holds the main html structure for the entire navbar 
   render() {

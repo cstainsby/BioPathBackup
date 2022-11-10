@@ -14,21 +14,22 @@
 /* fluid container which holds everything */
 #MainView {
   height: inherit;
-  width: 100vw;
+  width: inherit;
   margin-left: 0px;
   margin-right: 0px;
+  padding: 0px;
 }
 
 /* the row holding the main pathway view, and any additional sidebars */
 #PathwayViewRow {
   height: calc(var(--total-screen-size) - var(--navbar-y-size));
-  width: calc(var(--total-screen-width))
+  width: inherit;
 }
 
 /* The nav bar view area */
 #NavBarRow {
   height: var(--navbar-y-size);
-
+  width: inherit;
   border-style: solid;
 }
 

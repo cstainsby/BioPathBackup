@@ -7,6 +7,7 @@ import viewLogo from './../icons/search.png';
 import helpLogo from './../icons/information.png';
 import userLogo from './../icons/user.png';
 import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
+import HelpModal from './HelpModal';
 
 
 // ----------------------------------------------------------------------
@@ -62,62 +63,113 @@ export default class NavBar extends Component {
   // this render function holds the main html structure for the entire navbar 
   render() {
     return (
-      <nav className='NavBar'>
-        <ul className='NavBarList'>
-          {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
-          <NavItem 
-            name='File' 
-            icon={ fileLogo } 
-            linkTo="/#" 
-            isOpen={ this.state.navItemOpenStatusDict["File"] } 
-            signalChange={ this.signalChange }> 
-            {/* The Dropdown menu will be passed Dropdown Item children to display */}
-            <DropdownMenu>
-              {/* Link to subsequent page should be passed as prop */}
-              <DropdownItem linkTo="savePlace">Save</DropdownItem>
-              <DropdownItem>Save As</DropdownItem>
-              <DropdownItem>Load</DropdownItem>
-              <DropdownItem>New</DropdownItem>
-              <DropdownItem>Delete</DropdownItem>
-            </DropdownMenu>
-          </NavItem>
-
-          <NavItem 
-            name='View' 
-            icon={ viewLogo } 
-            linkTo="/#" 
-            isOpen={ this.state.navItemOpenStatusDict["View"] } 
-            signalChange={ this.signalChange }>
-              <DropdownMenu>
-                <DropdownItem>Model</DropdownItem>
-                <DropdownItem>Text</DropdownItem>
-              </DropdownMenu>
-          </NavItem>
-
-          <NavItem 
-            name='Help' 
-            icon={ helpLogo } 
-            linkTo="help"
-          />
-
-          <NavItem
-            name="Snake Game"
-            linkTo="https://www.google.com/search?client=firefox-b-1-d&q=snake+game"
-          />
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          {/* reset button 
+          reset every selectable item, go to base page */}
+          <a className="navbar-brand" href="#">Navbar</a>
           
-          <NavItem 
-            name='User' 
-            icon={ userLogo } 
-            linkTo="/#" 
-            isOpen={ this.state.navItemOpenStatusDict["User"] } 
-            signalChange={ this.signalChange }> 
-            <DropdownMenu>
-              {/* Link to subsequent page should be passed as prop */}
-              <DropdownItem>Log In</DropdownItem>
-            </DropdownMenu>
-          </NavItem>
-        </ul>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {/* File Dropdown */}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  File
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Save</a></li>
+                  <li><a class="dropdown-item" href="#">Save As</a></li>
+                  <li><a class="dropdown-item" href="#">Load</a></li>
+                  <li><a class="dropdown-item" href="#">New</a></li>
+                  <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+              </li>
+
+              {/* View Dropdown */}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  View
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Model</a></li>
+                  <li><a class="dropdown-item" href="#">Text</a></li>
+                </ul>
+              </li>
+
+              {/* help button */}
+              <li class="nav-item">
+                {/* <button type="button" >Help</button> */}
+                <a class="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">Help</a>
+              </li>
+            </ul>
+
+            {/* User Link */}
+            <a class="nav-link" href="#">User</a>
+
+          </div>
+        </div>
+        {/* Define Modals Accessable from navbar */}
+        <HelpModal/>
       </nav>
+
+
+
+      // <nav className='NavBar'>
+      //   <ul className='NavBarList'>
+      //     {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
+      //     <NavItem 
+      //       name='File' 
+      //       icon={ fileLogo } 
+      //       linkTo="/#" 
+      //       isOpen={ this.state.navItemOpenStatusDict["File"] } 
+      //       signalChange={ this.signalChange }> 
+      //       {/* The Dropdown menu will be passed Dropdown Item children to display */}
+      //       <DropdownMenu>
+      //         {/* Link to subsequent page should be passed as prop */}
+      //         <DropdownItem linkTo="savePlace">Save</DropdownItem>
+      //         <DropdownItem>Save As</DropdownItem>
+      //         <DropdownItem>Load</DropdownItem>
+      //         <DropdownItem>New</DropdownItem>
+      //         <DropdownItem>Delete</DropdownItem>
+      //       </DropdownMenu>
+      //     </NavItem>
+
+      //     <NavItem 
+      //       name='View' 
+      //       icon={ viewLogo } 
+      //       linkTo="/#" 
+      //       isOpen={ this.state.navItemOpenStatusDict["View"] } 
+      //       signalChange={ this.signalChange }>
+      //         <DropdownMenu>
+      //           <DropdownItem>Model</DropdownItem>
+      //           <DropdownItem>Text</DropdownItem>
+      //         </DropdownMenu>
+      //     </NavItem>
+
+      //     <NavItem 
+      //       name='Help' 
+      //       icon={ helpLogo } 
+      //       linkTo="help"
+      //     />
+
+      //     <NavItem
+      //       name="Snake Game"
+      //       linkTo="https://www.google.com/search?client=firefox-b-1-d&q=snake+game"
+      //     />
+          
+      //     <NavItem 
+      //       name='User' 
+      //       icon={ userLogo } 
+      //       linkTo="/#" 
+      //       isOpen={ this.state.navItemOpenStatusDict["User"] } 
+      //       signalChange={ this.signalChange }> 
+      //       <DropdownMenu>
+      //         {/* Link to subsequent page should be passed as prop */}
+      //         <DropdownItem>Log In</DropdownItem>
+      //       </DropdownMenu>
+      //     </NavItem>
+      //   </ul>
+      // </nav>
     )
   }
 }

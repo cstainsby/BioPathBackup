@@ -97,14 +97,12 @@ class Slider extends Component {
 
     const closeSlider = 
       <div className='card'>
-        <ul id='cardHeaderList'>
-          <li>
-            <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
-              <img id='cardHeaderCaretWhenClosed' src={dropdownLogo} />
-            </button>
-          </li>
-          <li><h4>{this.props.title}</h4></li>
-        </ul>
+        <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+          <ul id='cardHeaderList'>
+            <li><img id='cardHeaderCaretWhenClosed' src={dropdownLogo} /></li>
+            <li><h4>{this.props.title}</h4></li>
+          </ul>
+        </button>
       </div>
 
     if (this.state.isShowing) {

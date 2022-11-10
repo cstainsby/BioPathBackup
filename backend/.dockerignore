@@ -1,5 +1,11 @@
 *.log
 *.pot
 *.pyc
-__pycache__/
+*.sqlite3
+
+**/.gitignore
+**/__pycache__/
+README.md
+Dockerfile
+
 local_settings.py

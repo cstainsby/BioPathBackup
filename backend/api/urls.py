@@ -21,8 +21,7 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'enzymes', views.EnzymeViewSet)
 router.register(r'molecules', views.MoleculeViewSet)
 router.register(r'pathways', views.PathwayViewSet)
-# router.register(r'enzyme_substrates', views.EnzymeSubstrateViewSet)
-# router.register(r'pathway_connections', views.PathwayConnectionsViewSet)
+
 
 urlpatterns = [
     path(route='hello-world/', view=views.index, name='index'),

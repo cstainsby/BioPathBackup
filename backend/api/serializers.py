@@ -9,73 +9,79 @@ Modified: 10/27 - Josh Schmitz
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from api.models import Enzyme, Molecule, Pathway
+from . import models
 
-class EnzymeSerializer(serializers.ModelSerializer):
+
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Enzyme
-        fields = [
-            'name',
-            'image',
-            'link',
-            'abbreviation',
-            'reversible',
-            'cofactors',
-            'substrates',
-            'products'
-        ]
+        model = Group
+        fields = ["id", "name"]
 
 
-class MoleculeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Molecule
-        fields = [
-            'name',
-            'image',
-            'link',
-            'abbreviation'
-        ]
-
-
-# class EnzymeSubstrateSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = EnzymeSubstrate
-#         fields = [
-#             'enzyme',
-#             'substrate',
-#             'substrate_type',
-#             'focus'
-#         ]
-
-
-class PathwaySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pathway
-        fields = [
-            'name',
-            'author',
-            'link',
-            'public',
-            'enzymes',
-            'substrates'
-        ]
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    groups = GroupSerializer(many=True)
+    
     class Meta:
         model = User
         fields = [
-            'url',
-            'username',
-            'email',
-            'groups'
+            "id",
+            "username",
+            "groups"
         ]
-
-
-class GroupSerializer(serializers.HyperlinkedModelSerializer):
+        
+        
+class MoleculeSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    
     class Meta:
-        model = Group
+        model = models.Molecule
         fields = [
-            'url',
-            'name'
+            "name",
+            "abbreviation",
+            "ball_and_stick_image",
+            "space_filling_image",
+            "link",
+            "author",
+            "public"
         ]
+
+
+class EnzymeSerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    substrates = MoleculeSerializer(many=True)
+    products = MoleculeSerializer(many=True)
+    cofactors = MoleculeSerializer(many=True)
+    
+    class Meta:
+        model = models.Enzyme
+        fields = [
+            "name",
+            "reversible",
+            "substrates",
+            "products",
+            "cofactors",
+            "abbreviation",
+            "image",
+            "link",
+            "author",
+            "public"
+        ]
+
+
+class PathwaySerializer(serializers.ModelSerializer):
+    author = UserSerializer()
+    enzymes = EnzymeSerializer(many=True)
+    molecules = MoleculeSerializer(many=True)
+    
+    class Meta:
+        model = models.Pathway
+        fields = [
+            "name",
+            "enzymes",
+            "molecules",
+            "author",
+            "link",
+            "public"
+        ]
+
+

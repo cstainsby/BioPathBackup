@@ -1,4 +1,8 @@
 # BioPath
+More detailed documentation for each componenet found in the README at...
+* [Backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend#biopath-backend)
+* [Frontend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/frontend)
+
 ### GU BioPath web app
 
 To run:
@@ -17,13 +21,7 @@ To check he status of your Docker containers either
 
 To stop the app: ```$ docker-compose down```
 
-### Django Admin stuff
-To create an admin account just startup the containers per usual and then...
-1. exec into backend container (recommend using docker desktop or vscode extension, but a simple `docker exec -it backend bash` should work)
-1. `python manage.py createsuperuser`
-1. Fill in username and password. I've been using root root but y'all can use whatever.
-1. Go to http://localhost:8000/admin
-1. You should be able to login with the user info you supplied. Now you can administer to your hearts content!
+
 
 ### Filesystem
 ```
@@ -55,35 +53,7 @@ BioPath
 |       |   |   Component.js
 |       |   |   Component.css
 │   
-└───backend
-    │   Dockerfile
-    |   manage.py
-    |   requirements.txt
-    |   settings.ini
-    |
-    └───api $ this is the django app that defines the functionality for the api
-    |   |   admin.py
-    |   |   apps.py
-    |   |   models.py
-    |   |   tests.py
-    |   |   views.py
-    |   │   
-    |   └───migrations
-    |   |   |   $ Neccesary migration files
-    |   
-    └───biopath $ this is the django project that contains the api app
-        │   asgi.py
-        │   settings.py
-        │   urls.py
-        │   wsgi.py
+└───backend: details in backend directories README
+|   |   ...
 ```
-
-### Useful commands
-- View the data tables Django created in our postgres container
-    1. `docker exec -it postgres bash` this will attach a shell to the postgres container
-    1. `psql --user=username BioPath` this starts the CLI for the BioPath database
-    1. `\dt` display tables: lists the tables in the current database
-        - You should see the various tables defined in backend/api/models.py
-        - Django created this tables for us; no sql required!
-
 

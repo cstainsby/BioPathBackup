@@ -83,7 +83,9 @@ target/
 *.pot
 *.pyc
 __pycache__/
+**/__pycache__/
 local_settings.py
+api/migrations
 
 .env
-db.sqlite3
+*.sqlite3

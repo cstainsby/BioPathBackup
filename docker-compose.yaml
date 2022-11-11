@@ -54,6 +54,7 @@ services:
       - POSTGRES_DB=BioPath
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
+      - POSTGRES_DB_HOST=db
     build:
       context: ./backend/
       dockerfile: Dockerfile

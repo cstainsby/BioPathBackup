@@ -32,13 +32,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'api', # added by Josh S
+    'api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -80,10 +81,14 @@ DATABASES = { # edited by Josh S
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get("POSTGRES_DB"),
-        'HOST': 'db', # name of postgres container
+        'HOST': os.environ.get("POSTGRES_DB_HOST"), # 'db', # name of postgres container
         'PORT': 5432, # default port for postgres
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
+    },
+    "test": {
+      'ENGINE': 'django.db.backends.sqlite3',
+      'NAME': os.path.join(BASE_DIR, 'testdb.sqlite3'),
     }
 }
 

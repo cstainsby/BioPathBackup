@@ -1,71 +1,94 @@
 """
-This file describes the models for our api. Django will automatically create tables in our DB for each of the classes below. If this
-    explanation was useful to you, you should spend some time reading up on Django instead of reading my comments!
+File: models.py
+Description: Defines the models for enzymes, substrates, connections, etc. Django uses
+    these models to construct the database tables. They are used by serializers.py which
+    serializes the data into json for easy view building.
+Modified: 11/8 - Zach Burnaby & Josh Schmitz
 """
 
+from operator import mod
+from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User, Group
 
-# Create your models here.
-class Enzyme(models.Model):
-    name = models.CharField(max_length=30, primary_key=True)
-    reversible = models.BooleanField()
-    image = models.CharField(max_length=30) # image is a filepath to a png showing the enzyme
 
-class Substrate(models.Model):
-    name = models.CharField(max_length=30, primary_key=True)
-    image = models.CharField(max_length=30) # image is a filepath to a png showing the substrate
+class Molecule(models.Model):
+    name = models.CharField(max_length=50)
+    abbreviation = models.CharField(max_length=10)
+    ball_and_stick_image = models.ImageField()
+    space_filling_image = models.ImageField()
+    link = models.URLField()
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    public = models.BooleanField(default=False)
 
-class EnzymeSubstrate(models.Model):
-    """
-    This model contains information that is intrinsic to an enzyme. It is unnecessary in the sense that a pathway can be derived
-        without it (ie using only PathwayConnections instead), however it is useful to have this model for storing the substrates
-        and products of an enzyme irrespective of any pathway.
+    def __str__(self):
+        return self.name
+
     
-    Django doesn't allow multi-field primary keys, so instead we allow Django to create an integer id primary key and enforce that
-        (enzyme, substrate) is unique.
-    """
-    enzyme = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE)
-    substrate = models.ForeignKey(to=Substrate, on_delete=models.CASCADE)
-    class SubstrateType(models.TextChoices):
-        """
-        This is essentially defining an enum that the substrate_type field uses.
-        """
-        INPUT = 'IN', _('Input')
-        OUTPUT = 'OUT', _('Output')
-    substrate_type = models.CharField(max_length=3, choices=SubstrateType.choices)
-    focus = models.BooleanField()
+class Enzyme(models.Model):
+    name = models.CharField(max_length=50)
+    reversible = models.BooleanField(default=True)
+    substrates = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_substrates"
+    )
+    products = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_products"
+    )
+    cofactors = models.ManyToManyField(
+        Molecule,
+        related_name="enzymes_cofactors"
+    )
+    abbreviation = models.CharField(max_length=10)
+    image = models.ImageField() # space filling
+    link = models.URLField() # link to protopedia
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    public = models.BooleanField(default=False)
 
-    class Meta():
-        """
-        This class describes meta properties of the model. So far we are only using it to ensure that (enzyme, substrate) is unique.
-        """
-        constraints = [
-            models.UniqueConstraint(
-                fields=['enzyme', 'substrate'], name='unique_enzyme_substrate'
-            )
-        ]
+    def __str__(self):
+        return self.name
 
-class PathwayConnections(models.Model):
-    """
-    This table describes a pathway by listing the various enzyme->enzyme connections within a pathway. There is a START enzyme
-        and an END enzyme which are used to specify initial and terminal substrates within a pathway.
-        
-    Django doesn't allow multi-field primary keys, so instead we allow Django to create an integer id primary key and enforce that
-        (pathway, enzyme_from, enzyme_to) is unique.
-    """
-    pathway = models.CharField(max_length=30)
-    enzyme_from = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE, related_name="connection_enzyme_from")
-    enzyme_to = models.ForeignKey(to=Enzyme, on_delete=models.CASCADE, related_name="connection_enzyme_to")
-    substrate = models.ForeignKey(to=Substrate, on_delete=models.CASCADE)
+    
+class Pathway(models.Model):
+    name = models.CharField(max_length=50)
+    enzymes = models.ManyToManyField(
+        Enzyme,
+        through='PathwayEnzyme',
+        related_name="pathways_enzyme"
+    )
+    molecules = models.ManyToManyField(
+        Molecule,
+        through='PathwayMolecule',
+        related_name="pathways_molecule"
+    )
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    link = models.URLField()
+    public = models.BooleanField(default=False)
+    '''TODO: Add constraint on multiple enzymes in a pathway'''
 
-    class Meta():
-        """
-        This class describes meta properties of the model. So far we are only using it to ensure that
-            (pathway, enzyme_from, enzyme_to) is unique.
-        """
-        constraints = [
-            models.UniqueConstraint(
-                fields=['pathway', 'enzyme_from', 'enzyme_to'], name='unique_pathway_connection'
-            )
-        ]
+    def __str__(self):
+        return self.name
+
+
+class PathwayEnzyme(models.Model):
+    enzyme = models.ForeignKey(Enzyme, on_delete=models.PROTECT)
+    pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
+    x = models.PositiveSmallIntegerField()
+    y = models.PositiveSmallIntegerField()
+    limiting = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.pathway.__str__()} - {self.enzyme.__str__()}"
+
+  
+class PathwayMolecule(models.Model):
+    substrate = models.ForeignKey(Molecule, on_delete=models.PROTECT)
+    pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
+    x = models.PositiveSmallIntegerField()
+    y = models.PositiveSmallIntegerField()
+    
+    def __str__(self):
+        return f"{self.pathway.__str__()} - {self.substrate.__str__()}"

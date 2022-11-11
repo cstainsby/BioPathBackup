@@ -29,14 +29,14 @@ export default class NavBar extends Component {
         <div class="container-fluid">
           {/* reset button 
           reset every selectable item, go to base page */}
-          <a className="navbar-brand" href="#">Biopath</a>
+          <a className="navbar-brand" href="/">Biopath</a>
           
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               {/* File Dropdown */}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src={fileLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img id='navBarFileLogo' src={fileLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   File
                 </a>
                 <ul class="dropdown-menu">
@@ -51,7 +51,7 @@ export default class NavBar extends Component {
               {/* View Dropdown */}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src={viewLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                <img id='navBarViewLogo' src={viewLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   View
                 </a>
                 <ul class="dropdown-menu">
@@ -64,7 +64,7 @@ export default class NavBar extends Component {
               <li class="nav-item">
                 {/* <button type="button" >Help</button> */}
                 <a class="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">
-                <img src={helpLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                  <img id='navBarHelpLogo' src={helpLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   Help
                 </a>
               </li>

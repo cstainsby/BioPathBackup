@@ -6,12 +6,18 @@
   --navbar-base-z-index-level: 10;
 }
 
-/* div holding all navbar elements
+
+
+.navBarHelpLogo {
+  margin-right: 4px;
+}
+
+/* div holding all navbar elements */
 .NavBar {
   transform: translateX(-45%);
   z-index: var(--navbar-base-z-index-level);
   display: inline-block;
-} */
+}
 
 /* the ul holding all navigation elements */
 .NavBarList {

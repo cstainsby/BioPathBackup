@@ -3,8 +3,7 @@ import './PathwayView.css'
 import ModelArea from '../components/ModelArea'
 import NavBar from '../components/NavBar'
 import SliderBar from '../components/SliderBar'
-import { runConcentrations } from '../utils' // added trying to get interactive concentrations
-import {run} from '../utils'
+import RightSideBarArea from '../components/RightSideBarArea';
 
 export default class PathwayView extends Component {
   constructor(props) {
@@ -46,13 +45,21 @@ export default class PathwayView extends Component {
 
   render() {
     return (
-      <div className='PathwayView'>
-        <NavBar/>
-        <div className='pathwayViewArea'>
-        <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/>
-            <SliderBar 
-              titles={['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG']} 
-              onConcentrationChange={this.handleConcChange}/>
+      <div className="container-fluid" id='MainView'>
+        <div className="row" id="NavBarRow">
+          <NavBar />
+        </div>
+
+        {/* the pathway view, left, and right sidebar divs are going to 
+            be held in columns
+         */}
+        <div className="row" id="PathwayViewRow">
+          <div className="col" id="ModelAreaCol">
+          <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/>
+          </div>
+          <div className="col-md-auto" id="RightSideBarAreaCol">
+            <RightSideBarArea/>
+          </div>
         </div>
       </div>
     )

@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react'
 import './PathwayView.css'
 import ModelArea from '../components/ModelArea'
 import NavBar from '../components/NavBar'
-import SliderBar from '../components/SliderBar'
+// import SliderBar from '../components/SliderBar'
 import RightSideBarArea from '../components/RightSideBarArea';
 
 export default class PathwayView extends Component {

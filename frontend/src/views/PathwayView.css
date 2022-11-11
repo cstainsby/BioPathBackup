@@ -1,17 +1,50 @@
-div.PathwayView {
+
+:root {
+  --total-screen-size: 100vh;
+  --total-screen-width: 100vw;
+
+  /* 
+    The sizes of all "side" elements will be stated here, 
+    the main pathway view will resize according to their needs 
+  */
+  --navbar-y-size: 75px;
+  --right-side-bar-width: 300px;
+}
+
+/* fluid container which holds everything */
+#MainView {
   height: inherit;
-  display: flex;
-  flex-direction: column;
+  width: inherit;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
 }
 
-div.pathwayViewArea {
+/* the row holding the main pathway view, and any additional sidebars */
+#PathwayViewRow {
+  height: calc(var(--total-screen-size) - var(--navbar-y-size));
+  width: inherit;
+}
+
+/* The nav bar view area */
+#NavBarRow {
+  height: var(--navbar-y-size);
+  width: inherit;
+  border-style: solid;
+}
+
+/* Sidebar area */
+#RightSideBarAreaCol {
+  /* maybe in the future make fit-content */
+  width: var(--right-side-bar-width);
+  border-style: solid;
+}
+
+/* column in pathwayViewRow which holds the main reaction view */
+#ModelAreaCol {
   height: inherit;
-  display: flex;
-  flex-direction: row;
-  flex: 100%;
+  
+  padding-left: 0px;
+  padding-right: 0px;
+  border-style: solid;
 }
-
-.ModelArea {
-  flex: 100%
-}
-

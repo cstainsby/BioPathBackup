@@ -15,23 +15,24 @@ services:
   #   networks:
   #     - db-net
 
-  db:
-    # Josh S. - Dockerized the DB and changed to postgres
-    container_name: postgres
-    image: postgres:14.1-alpine
-    restart: always
-    volumes: # volume for database persistence while container is down
-             # you must set the environment variable biopath_root_path on your machine
-             #  for me this was just
-             #   'export biopath_root_path="~/Users/joshuaschmitz/Projects/BioPath"'
-      - "${biopath_root_path}/postgres:/var/lib/postgresql/data/"
-    environment:
-      # these are the same as those in backend container
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=BioPath
-    ports:
-      - '5432:5432'
+  # COMMENTED OUT DB FOR NOW DUE TO biopath_root_path causing issues
+  # db:
+  #   # Josh S. - Dockerized the DB and changed to postgres
+  #   container_name: postgres
+  #   image: postgres:14.1-alpine
+  #   restart: always
+  #   volumes: # volume for database persistence while container is down
+  #            # you must set the environment variable biopath_root_path on your machine
+  #            #  for me this was just
+  #            #   'export biopath_root_path="~/Users/joshuaschmitz/Projects/BioPath"'
+  #     - "${biopath_root_path}/postgres:/var/lib/postgresql/data/"
+  #   environment:
+  #     # these are the same as those in backend container
+  #     - POSTGRES_USER=username
+  #     - POSTGRES_PASSWORD=password
+  #     - POSTGRES_DB=BioPath
+  #   ports:
+  #     - '5432:5432'
 
   backend:
     # Josh S - Renamed to backend for consistency purposes
@@ -57,10 +58,13 @@ services:
     build:
       context: ./backend/
       dockerfile: Dockerfile
+    image: backend
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+
+    # comment out dependancy for now
+    # depends_on:
+    #   - db
       # - redis
     # networks:
     #   - db-net
@@ -75,10 +79,19 @@ services:
     ports:
       - "3000:3000"
     stdin_open: true
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
     # networks:
     #   - db-net
+
+  # AWS specific configuration details
+  # logging:
+  #   driver: awslogs 
+  #   options:
+  #     awslogs-group: BiopathLogGroup 
+  #     awslogs-region: us-west-2
+  #     awslogs-stream-prefix:
+
 
 # Josh S - This was unneeded for now; removed to decrease complexity
 # networks:

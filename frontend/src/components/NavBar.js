@@ -7,6 +7,7 @@ import viewLogo from './../icons/search.png';
 import helpLogo from './../icons/information.png';
 import userLogo from './../icons/user.png';
 import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
+import finger from "../icons/hand.png";
 
 
 // ----------------------------------------------------------------------
@@ -18,190 +19,175 @@ import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
 export default class NavBar extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      // define openStates for each of the buttons as a disctionary
-      navItemOpenStatusDict: {
-        "File": false,
-        "View": false,
-        "User": false
-      }
-    }
-
-    this.signalChange = this.signalChange.bind(this);
   }
 
-  // this function will, given the new status for a child is true, 
-  //    change all other children isOpen to false 
-  signalChange(name, newIsOpenStatus) {
-    let currNavOpenDict = this.state.navItemOpenStatusDict;
 
-    let newNavItemOpenStatusDict = currNavOpenDict;
-
-    // for each of the keys not changed, if they are set to open, they need to be closed
-    for(let [key, value] of Object.entries(currNavOpenDict)) {
-      if(key !== name && value === true) {
-        // change all other keys to false if clicked button is expanded 
-        newNavItemOpenStatusDict[key] = false;
-      } 
-      else if(key === name) {
-        // change the clicked key regardless
-        newNavItemOpenStatusDict[key] = newIsOpenStatus;
-      }
-
-      this.setState({
-        navItemOpenStatusDict: newNavItemOpenStatusDict
-      });
-    }
-    console.log(
-      "In signalChange(): \n" +
-      "   New nav dict status for " + name + ": " + this.state.navItemOpenStatusDict[name]);
-    
-  }
-
+  // this render function holds the main html structure for the entire navbar 
   render() {
     return (
-      <nav className='NavBar'>
-        <ul className='NavBarNav'>
-          {/* Note: The dropdown Menu will be passed as props.children in NavItem */}
-          <NavItem name='File' icon={ fileLogo } isOpen={ this.state.navItemOpenStatusDict["File"] } signalChange={ this.signalChange }> 
-            {/* The Dropdown menu will be passed Dropdown Item children to display */}
-            <DropdownMenu>
-              {/* Link to subsequent page should be passed as prop */}
-              <DropdownItem linkTo="">Save</DropdownItem>
-              <DropdownItem>Save As</DropdownItem>
-              <DropdownItem>Load</DropdownItem>
-              <DropdownItem>New</DropdownItem>
-              <DropdownItem>Delete</DropdownItem>
-            </DropdownMenu>
-          </NavItem>
-          <NavItem name='View' icon={ viewLogo } isOpen={ this.state.navItemOpenStatusDict["View"] } signalChange={ this.signalChange }>
-              <DropdownMenu>
-                <DropdownItem>Model</DropdownItem>
-                <DropdownItem>Text</DropdownItem>
-              </DropdownMenu>
-          </NavItem>
-          <NavItem name='Help' icon={ helpLogo } />
-          <NavItem name='User' icon={ userLogo } isOpen={ this.state.navItemOpenStatusDict["User"] } signalChange={ this.signalChange }> 
-            <DropdownMenu>
-              {/* Link to subsequent page should be passed as prop */}
-              <DropdownItem>Log In</DropdownItem>
-            </DropdownMenu>
-          </NavItem>
-        </ul>
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          {/* reset button 
+          reset every selectable item, go to base page */}
+          <a className="navbar-brand" href="/">Biopath</a>
+          
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              {/* File Dropdown */}
+              <li class="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <img id='navBarFileLogo' src={fileLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                  File
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Save</a></li>
+                  <li><a class="dropdown-item" href="#">Save As</a></li>
+                  <li><a class="dropdown-item" href="#">Load</a></li>
+                  <li><a class="dropdown-item" href="#">New</a></li>
+                  <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+              </li>
+
+              {/* View Dropdown */}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <img id='navBarViewLogo' src={viewLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                  View
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Model</a></li>
+                  <li><a class="dropdown-item" href="#">Text</a></li>
+                </ul>
+              </li>
+
+              {/* help button */}
+              <li class="nav-item">
+                {/* <button type="button" >Help</button> */}
+                <a class="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">
+                  <img id='navBarHelpLogo' src={helpLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
+                  Help
+                </a>
+              </li>
+            </ul>
+
+            {/* User Link */}
+            <UserSignInNavBarItem/>
+
+          </div>
+        </div>
+
+
+        {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
+        <HelpModal/>
+        <SignInModal/>
       </nav>
     )
   }
 }
 
+
 // ----------------------------------------------------------------------
-// NavItem
-//  This component when rendered will be the clickable buttons inside 
-//    the navbar 
+// UserSignInNavBarItem
+//  This component will be displayed on the far right of the navbar 
+//    if the user is signed in 
+
+// Note: upon opening the site, prompt the user using the SignInModal
 // ----------------------------------------------------------------------
-class NavItem extends Component {
+class UserSignInNavBarItem extends Component {
   constructor(props) {
     super(props);
 
-    // get open state if passed in by prop, assign default false if not
-    let openState = false;
-    if(props.isOpen != null) {
-      if (props.isOpen === true) openState = true;
-      else openState = false;
-    } 
+    // check if the user is signed in 
 
     this.state = {
-      isOpen: openState // initially set the NavItem to unopened 
-    };
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    // set the isOpen state to true 
-    let newState = !this.props.isOpen;
-    let buttonName = this.props.name;
-
-    this.setState({
-      isOpen: newState
-    });
-    console.log(
-      "In handleClick(): \n" +
-      "   " + buttonName + " button has been clicked: isOpen set to " + newState
-      );
-    
-    // signal parent navbar that this item has been selected if applicable
-    if(this.props.signalChange) {
-      this.props.signalChange(buttonName, newState);
+      signedIn : false
     }
   }
 
   render() {
-    return (
-      <li className='navItem'>
-        <a href='#' className='navIconButton' title={this.props.name} onClick={this.handleClick}>
-          <img className='navIconButtonImg' src={this.props.icon} />
-          <p className='navIconButtonName'>{this.props.name}</p>
-          {/* <img class='navIconButtonDropImg' src={dropdownLogo} />  add dropdown later*/}
-        </a>
 
-        {/* if isOpen, the html after the && will be rendered if children exist */}
-        {this.props.isOpen && this.props.children}
-      </li>
-    );
+    if(this.state.signedIn) {
+
+      return (
+        <></>
+      );
+    }
+    else {
+      //
+      return (
+        <div className='card'>
+          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#signInModal">
+            <img src={userLogo} alt="Logo" width="30" height="24"/>
+            Sign In
+          </button>
+        </div>
+      );
+    }
   }
 }
 
 // ----------------------------------------------------------------------
-// DropdownMenu
-//  This component when rendered will be the menu which will hold all
-//    links associated with the NavItem
+// SignInModal
 // ----------------------------------------------------------------------
-class DropdownMenu extends Component {
+class SignInModal extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    
   }
 
   render() {
     return (
-      <div className='dropdownMenu'>
-        <ul className='dropdownMenuList'>
-          {this.props.children}
-        </ul>
+      <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="signInModalLabel">Sign In</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Put Oath or some other sign in method here
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Skip</button>
+              <button type="button" class="btn btn-primary">Sign In</button>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
+
 // ----------------------------------------------------------------------
-// DropdownItem
-//  This component when rendered will be the "sub-items" that are 
-//    children to each of the navItems, for example view will have 
-//    DropdownItems of "detailed view" and "base view"
+// HelpModal
 // ----------------------------------------------------------------------
-class DropdownItem extends Component {
+class HelpModal extends Component {
   constructor(props) {
     super(props);
+    
   }
 
   render() {
-    // these link labels should all be of type string 
-    let menuLinkLabel = this.props.children;
-    // links passed in as props
-    let menuLink = this.props.linkTo;
-
     return (
-      <li className='dropdownItem'>
-        <div className='dropdownItemContents'>
-          <a href={ menuLink } className='dropdownItemLink'>
-            <span className='leftIcon'></span>
-            <p className='dropdownItemLabel'>{ menuLinkLabel }</p>
-          </a>
+      <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Help Not Implemented</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h3>Help Yourself</h3>
+              <img src={finger}></img>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Welp...</button>
+            </div>
+          </div>
         </div>
-      </li>
+      </div>
     );
   }
 }

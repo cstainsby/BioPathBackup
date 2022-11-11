@@ -1,0 +1,24 @@
+.react-flow__node.substrate {
+    border-radius: 50%;
+    background-image: url(../images/skiPass.jpg);
+    background-size: cover; /* or contain depending on what you want */
+    background-position: center center;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* fontweight: 700;  */
+}
+
+
+.react-flow__node.enzyme {
+    width: 150px;
+    height: 100px;
+    /* transform: skew(20deg); */
+    background: rgb(82, 188, 162);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* fontweight: 700;  */
+}

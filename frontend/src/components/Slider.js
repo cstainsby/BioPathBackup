@@ -4,19 +4,21 @@ import './Slider.css'
 export default class Slider extends Component {
   constructor(props) {
     super(props);
-    let {title, isShowing} = this.props
+    let { title, isShowing } = this.props
     if (isShowing === undefined) {
-      this.state = {value: 1, isShowing: true};
+      this.state = { title: title, value: 1, isShowing: true };
     }
     else {
-      this.state = {value: 1, isShowing: this.props.isShowing};
+      this.state = { title: title, value: 1, isShowing: props.isShowing };
     }
   }
 
   handleChange(e) {
+    // console.log(e);
     this.setState((state, props) => ({
       value: e
     }));
+    this.props.onConcentrationChange(e, this.state.title) // needed for passing state up
   }
 
   handleClick(e) {
@@ -49,8 +51,8 @@ export default class Slider extends Component {
             max={2.0}
             onChange={(e) => this.handleChange(e.target.value)}
             value={this.state.value}
-            />
-            <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
+          />
+          <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
         </div>
       )
     }
@@ -58,8 +60,10 @@ export default class Slider extends Component {
     else {
       // comment out return statement if you don't want it to show at all
       return (
-        <div><button onClick={(e) => this.handleClick(e.target.value)}>Show</button></div>
+        <div>
+          <button onClick={(e) => this.handleClick(e.target.value)}>Show</button>
+        </div>
       )
-      }
+    }
   }
 }

@@ -4,6 +4,7 @@ import ModelArea from '../components/ModelArea'
 import NavBar from '../components/NavBar'
 // import SliderBar from '../components/SliderBar'
 import RightSideBarArea from '../components/RightSideBarArea';
+import Restore from '../components/Restore'
 
 export default class PathwayView extends Component {
   constructor(props) {
@@ -55,7 +56,8 @@ export default class PathwayView extends Component {
          */}
         <div className="row" id="PathwayViewRow">
           <div className="col" id="ModelAreaCol">
-          <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/>
+            <Restore/>
+          {/* <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/> */}
           </div>
           <div className="col-md-auto" id="RightSideBarAreaCol">
             <RightSideBarArea/>

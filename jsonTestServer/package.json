@@ -4,7 +4,7 @@
   "description": "Mock REST API for testing frontend functionality",
   "main": "index.js",
   "scripts": {
-    "json:server-only": "json-server -p 4000 --watch db.json"
+    "json:server-only": "json-server -p 4000 --routes routes.json --watch db.json"
   },
   "author": "",
   "license": "ISC",

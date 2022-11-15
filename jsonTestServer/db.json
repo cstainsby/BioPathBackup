@@ -1,6 +1,7 @@
 {
   "pathways":[
     {
+      "id": "0",
       "name": "Glycolysis",
       "author": "Admin",
       "link": "https://proteopedia.org/wiki/index.php/Glycolysis",
@@ -50,7 +51,4 @@
       ]
     }
   ]
-
-
-  
 }

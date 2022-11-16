@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
     useNodesState,
@@ -34,13 +34,40 @@ const SaveRestore = () => {
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
+    // var [concentrations, setConcentrations] = useState(props.concentration); // new
+
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
+    // useEffect(() => {
+    //     setConcentrations((conc) => 
+    //         concentrations = run(props.concentration, props.reversibleSteps, props.stopSteps)
+    //     );
+    //     setEdges((eds) =>
+    //         eds.map((edge) => {
+    //         // for loop is needed for edges that have the same input, ex. GH3P
+    //         // O(N^2) so might need to change if its too slow for later pathways
+    //         for (let i = 0; i < props.concentration.length; i++) {
+    //             if (edge.data == props.title[i]) {
+    //             // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
+    //                 if (props.factorSteps.includes(i)) { // is a factor step
+    //                     edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
+    //                 }
+    //                 else {
+    //                     edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
+    //                 }
+    //             }
+    //         }
+    
+    //         return edge;
+    //         })
+    //     );
+    // }, [props.concentration[0], props.concentration[1], props.concentration[2], props.concentration[3], props.concentration[4], props.concentration[5], props.concentration[6], props.concentration[7],  setEdges]);
+
     const onSave = useCallback(() => {
-    if (rfInstance) {
-        const flow = rfInstance.toObject();
-        localStorage.setItem(flowKey, JSON.stringify(flow));
-    }
+        if (rfInstance) {
+            const flow = rfInstance.toObject();
+            localStorage.setItem(flowKey, JSON.stringify(flow));
+        }
     }, [rfInstance]);
 
     const onRestore = useCallback(() => {

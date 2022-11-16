@@ -14,21 +14,30 @@ export default class SliderSideBar extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {
+    this.state = { // ask Cole what desc means
       componentTitle: "title",    
-      componentDesc: "desc"      
+      componentDesc: "desc",
+      titles: props.titles // needed for mapping dynamic list of cofactors
     }
   }
 
   render() {
+
+    const sliderItems = this.state.titles.map((title) => 
+      <li>
+        <Slider title={title} onConcentrationChange={this.props.onConcentrationChange}/>
+      </li>
+    );
+    
     return (
       <div className='SliderBar'>
         <h3>{ this.state.title }</h3>
         <p>{ this.state.desc }</p>
         <ul className='sliderBarList'>
-          <li><Slider title="ATP" isShowing={true}/></li>
+          {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
-          <li><Slider title="dCL" isShowing={false}/></li>
+          <li><Slider title="dCL" isShowing={false}/></li> */}
+          {sliderItems}
         </ul>
       </div>
     )

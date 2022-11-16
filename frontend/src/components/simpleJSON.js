@@ -44,11 +44,9 @@ export function buildFlow() {
                 if (substrate.data.title == name) {
                     initialEdges.push({id: edgeId, animated: true, source: substrate.id, target: enzymes[i].id});
                     edgeId++; // update edgeId for next iteration
-                    console.log("goodbye");
                     if (enzymes[i].data.reversible == true) {
                         initialEdges.push({id: edgeId, animated: true, source: enzymes[i].id, target: substrate.id});
                         edgeId++;
-                        console.log("hello");
                     }
                 }
             }
@@ -64,4 +62,100 @@ export function buildFlow() {
     }
 
     return [initialNodes, initialEdges];
+}
+
+const pathwayJson = {
+    "name": "Glycolysis",
+    "author": "Admin",
+    "link": "https://proteopedia.org/wiki/index.php/Glycolysis",
+    "public": true,
+    "enzymes": [
+        {
+            "name": "Hexokinase",
+            "image": "path/to/image",
+            "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+            "author": "Admin",
+            "public": true,
+            "reversible": false,
+            "x": 0,
+            "y": 100,
+            "substrates": [
+                "Glucose",
+                "ATP"
+            ],
+            "products": [
+                "Glucose6P",
+                "ADP"
+            ],
+            "cofactors": ['ATP', 'HCL', 'DCL']
+        },
+        {
+            "name": "Hexokinase",
+            "image": "path/to/image",
+            "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+            "author": "Admin",
+            "public": true,
+            "reversible": false,
+            "x": 0,
+            "y": 100,
+            "substrates": [
+                "Glucose",
+                "ATP"
+            ],
+            "products": [
+                "Glucose6P",
+                "ADP"
+            ],
+            "cofactors": []
+        }
+        ],
+        "molecules": [
+            {
+            "name": "Glucose",
+            "ball_and_stick_image": "path/to/image",
+            "space_filling_image": "path/to/image",
+            "link": "https://en.wikipedia.org/wiki/Glucose",
+            "author": "Admin",
+            "public": true,
+            "x": 0,
+            "y": 0
+            },
+            {
+            "name": "Glucose6P",
+            "ball_and_stick_image": "path/to/image",
+            "space_filling_image": "path/to/image",
+            "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+            "author": "Admin",
+            "public": true,
+            "x": 0,
+            "y": 200
+            }
+        ]
+    }
+
+/*
+    This function is used to parse through the pathway JSON.
+    It loops through each enzyme and if there are cofactors it adds
+    the cofactor name to a list that is returned
+*/
+export function findSliders(pathwayData) {
+    var sliders = []; // list of cofactors extracted from pathway JSON
+
+    // delete later
+    pathwayData = pathwayJson; // this is mocking the json that will be passed in
+
+    for (let i = 0; i < pathwayData.enzymes.length; i++) {
+        if (pathwayData.enzymes[i].cofactors.length > 0) { // if cofactor exists
+            for (const cofactor of pathwayData.enzymes[i].cofactors) { // add each cofactor
+                if (!sliders.includes(cofactor)) { // only add unique cofactors
+                    sliders.push(cofactor);
+                }
+                else {
+                    console.log(cofactor + " already exists in slider list");
+                }
+            }
+        }
+    }
+
+    return sliders;
 }

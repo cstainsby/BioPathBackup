@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SliderSideBar from './SliderSideBar';
 
+import { findSliders } from './simpleJSON';
+
 
 
 // ----------------------------------------------------------------------
@@ -11,7 +13,10 @@ import SliderSideBar from './SliderSideBar';
 export default class RightSideBarArea extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: 'Factor Molecules'}
+    this.state = {
+      title: 'Factor Molecules',
+      sliderNames: findSliders([])
+    }
   }
 
 
@@ -19,7 +24,10 @@ export default class RightSideBarArea extends Component {
   render() {
     return (
       <div id="RightSideBarArea">
-        <SliderSideBar/>
+        <SliderSideBar 
+          titles={this.state.sliderNames}
+          onConcentrationChange={this.handleConcChange}
+        />
       </div>
     );
   }

@@ -6,40 +6,38 @@ import NavBar from '../components/NavBar'
 import RightSideBarArea from '../components/RightSideBarArea';
 import Restore from '../components/Restore'
 
+import { findMolecules } from '../components/simpleJSON'; // maybe delete later
+
 export default class PathwayView extends Component {
   constructor(props) {
     super(props);
+    const molecules_concentrations = findMolecules(); // a list of [[molecules], [baseConcentrations]]
     this.state = {
-      titles: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG'], 
-      concentrations: [100, 100, 100, 100, 100, 100, 100],
+      // titles: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG'],
+      titles: molecules_concentrations[0],
+      // concentrations: [100, 100, 100, 100, 100, 100, 100],
+      concentrations: molecules_concentrations[1], 
       factors: [1],
       factorSteps: [0, 2, 5],
       reversibleSteps: [1, 2, 5],
       stopSteps: [5]
     }
     this.handleConcChange = this.handleConcChange.bind(this)
-    // const titles = ["ATP", "HCL", "dCL"]
   }
 
   /* Function to change the concentration from an adjustment from a slider
-      Currently set to concx
-      TODO: Change to handle dynamic titles based on what is recieved from api
+      TODO: Change to handle dynamic titles based on what is received from api
       currently hard coded pretty hard but works
   */
   handleConcChange(concentration, title){ //, title) {
     for (let i = 0; i < this.state.concentrations.length; i++) {
       if (this.state.titles[i] === title) {
         var tempConcentrations = this.state.concentrations
-        // if (this.state.factorSteps.includes(i)) { // affected by ATP
-          var newConcentration = 100 * concentration
-        // }
-        // else { // not affected by ATP
-        //   var newConcentration = 100
-        // }
-      tempConcentrations[i] = newConcentration
-      this.setState((state, props) => ({
-        concentrations: tempConcentrations
-      }));
+        var newConcentration = 100 * concentration
+        tempConcentrations[i] = newConcentration
+        this.setState((state, props) => ({
+          concentrations: tempConcentrations
+        }));
       }
     }
   }
@@ -60,7 +58,7 @@ export default class PathwayView extends Component {
           {/* <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/> */}
           </div>
           <div className="col-md-auto" id="RightSideBarAreaCol">
-            <RightSideBarArea/>
+            <RightSideBarArea onConcentrationChange={this.handleConcChange}/>
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 // import {nodes as initialnodes} from './simpleJSON';
-import {buildFlow, buildNodes} from './simpleJSON';
+import {buildFlow, buildNodes, generateNodes} from './simpleJSON';
 
 import './indx.css';
 
@@ -26,6 +26,7 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 
 
 const SaveRestore = () => {
+    // generateNodes();
     var initial = buildFlow();
     const initialNodes = initial[0];
     const initialEdges = initial[1];

@@ -49,10 +49,10 @@ class Slider extends Component {
     super(props);
     let {title, isShowing} = this.props
     if (isShowing === undefined) {
-      this.state = {value: 1, isShowing: true};
+      this.state = {title: title, value: 1, isShowing: true};
     }
     else {
-      this.state = {value: 1, isShowing: this.props.isShowing};
+      this.state = {title: title, value: 1, isShowing: this.props.isShowing};
     }
   }
 
@@ -60,6 +60,7 @@ class Slider extends Component {
     this.setState((state, props) => ({
       value: e
     }));
+    this.props.onConcentrationChange(e, this.state.title) // needed for passing state up
   }
 
   handleClick(e) {

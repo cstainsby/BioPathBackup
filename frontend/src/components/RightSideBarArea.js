@@ -15,7 +15,7 @@ export default class RightSideBarArea extends Component {
     super(props);
     this.state = {
       title: 'Factor Molecules',
-      sliderNames: findSliders([])
+      sliderNames: findSliders()
     }
   }
 
@@ -26,7 +26,7 @@ export default class RightSideBarArea extends Component {
       <div id="RightSideBarArea">
         <SliderSideBar 
           titles={this.state.sliderNames}
-          onConcentrationChange={this.handleConcChange}
+          onConcentrationChange={this.props.onConcentrationChange}
         />
       </div>
     );

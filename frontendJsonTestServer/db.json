@@ -15,6 +15,7 @@
 
   "pathways":[
     {
+      "id": "1",
       "name": "Glycolysis",
       "author": "Admin",
       "link": "https://proteopedia.org/wiki/index.php/Glycolysis",

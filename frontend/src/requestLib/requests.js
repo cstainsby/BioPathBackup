@@ -12,10 +12,11 @@
 //  Until we have the time to come up with a smarter, more automated solution where 
 //  the data is being sourced from will need to be manually changed in the code
 
-BACKEND_BASE_API_URL = "localhost:8000/api/"; // API ACCESS
-LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
+let BACKEND_BASE_API_URL = "localhost:8000/api/"; // API ACCESS
+let LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
+let MOCK_API_URL = "localhost:4000/api/";         // MOCK API ACCESS
 
-dataSourceAddress = LOCAL_STORAGE_PATH;       // Choice Definition
+let dataSourceAddress = MOCK_API_URL;       // Choice Definition
 
 // NOTE: the test suite for sample JSON will have a file structure matching the 
 //   endpoints within the backend to keep calls consistent
@@ -36,44 +37,49 @@ function consoleLogRequestResults(status, statusText, endpointExtension, type, d
   );
 }
 
-export default async function getPathwayById(id) {
-  let endpointExtension = "pathways/" + id;
-  let requestUrl = BACKEND_BASE_API_URL + "";
+let requestLib = (function() {
 
-  try {
-    let response = await fetch(requestUrl);
-    let responseJSON = await response.json();
-
-    consoleLogRequestResults(
-      response.status,
-      response.statusText,
-      endpointExtension,
-      "GET",
-      responseJSON
-    );
-    return responseJSON;
-  } catch (error) {
-    console.log(error)
+  async function getPathwayById(id) {
+    let endpointExtension = "pathways/" + id;
+    let requestUrl = BACKEND_BASE_API_URL + "";
+  
+    try {
+      let response = await fetch(requestUrl);
+      let responseJSON = await response.json();
+  
+      consoleLogRequestResults(
+        response.status,
+        response.statusText,
+        endpointExtension,
+        "GET",
+        responseJSON
+      );
+      return responseJSON;
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
-
-export default async function getPathways() {
-  let endpointExtension = "pathways/";
-  let requestUrl = BACKEND_BASE_API_URL + "";
-
-  try {
-    let response = await fetch(requestUrl);
-    let responseJSON = await response.json();
-
-    consoleLogRequestResults(
-      response.status,
-      response.statusText,
-      endpointExtension,
-      "GET",
-      responseJSON
-    );
-    return responseJSON;
-  } catch (error) {
-    console.log(error)
+  
+  async function getPathways() {
+    let endpointExtension = "pathways/";
+    let requestUrl = BACKEND_BASE_API_URL + "";
+  
+    try {
+      let response = await fetch(requestUrl);
+      let responseJSON = await response.json();
+  
+      consoleLogRequestResults(
+        response.status,
+        response.statusText,
+        endpointExtension,
+        "GET",
+        responseJSON
+      );
+      return responseJSON;
+    } catch (error) {
+      console.log(error)
+    }
   }
-}
+
+  return { getPathways, getPathwayById }
+})();

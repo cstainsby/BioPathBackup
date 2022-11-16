@@ -2,9 +2,9 @@ const nodes = [
     { id: '1', className: 'enzyme', data: { label: 'Node 1', reversible: false, substrates: ['Glucose', 'ATP'], products: ['G6P', 'ADP'] }, position: { x: 100, y: 300 } },
     { id: '2', className: 'enzyme', data: { label: 'Node 2', reversible: true, substrates: ['G6P'], products: ['Pyruvate'] }, position: { x: 100, y: 700 } },
     // { id: '3', className: 'enzyme', data: { label: 'Node 1', substrates: [], products: [] }, position: { x: 100, y: 100 } },
-    { id: '4', className: 'substrate', data: { label: 'Glucose', title: 'Glucose'}, position: { x: 100, y: 100 } },
-    { id: '5', className: 'substrate', data: { label: 'G6P', title: 'G6P' }, position: { x: 100, y: 500 } },
-    { id: '6', className: 'substrate', data: { label: 'Pyruvate', title: 'Pyruvate' }, position: { x: 100, y: 900 } }
+    { id: '4', className: 'substrate', data: { label: 'Glucose', title: 'Glucose', concentration: 100}, position: { x: 100, y: 100 } },
+    { id: '5', className: 'substrate', data: { label: 'G6P', title: 'G6P', concentration: 100 }, position: { x: 100, y: 500 } },
+    { id: '6', className: 'substrate', data: { label: 'Pyruvate', title: 'Pyruvate', concentration: 100 }, position: { x: 100, y: 900 } }
 ]
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
@@ -45,36 +45,32 @@ export function buildFlow() {
     }
     // generate edges for enzymes
     for (let i = 0; i < enzymes.length; i++) {
-        console.log("test1");
         var substrateList = enzymes[i].data.substrates;
         var productList = enzymes[i].data.products;
-        console.log(substrateList);
         for (const name of substrateList) {
-            console.log("test2");
-            for (const substrate of nodes) {
-                console.log("test3", substrate.data.title, name);
+            for (const substrate of nodesJson) {
                 if (substrate.data.title == name) {
-                    console.log("test4");
-                    initialEdges.push({id: edgeId, animated: true, source: substrate.id, target: enzymes[i].id});
+                    initialEdges.push({id: String(edgeId), animated: true, source: substrate.id, target: enzymes[i].id});
                     edgeId++; // update edgeId for next iteration
                     if (enzymes[i].data.reversible == true) {
-                        console.log("test5");
-                        initialEdges.push({id: edgeId, animated: true, source: enzymes[i].id, target: substrate.id});
+                        initialEdges.push({id: String(edgeId), animated: true, source: enzymes[i].id, target: substrate.id});
                         edgeId++;
                     }
                 }
             }
         }
         for (const name of productList) {
-            for (const product of nodes) {
+            for (const product of nodesJson) {
                 if (product.data.title == name) {
-                    initialEdges.push({id: edgeId, animated: true, source: enzymes[i].id, target: product.id});
+                    console.log(name, "Higley");
+                    initialEdges.push({id: String(edgeId), animated: true, source: enzymes[i].id, target: product.id});
                     edgeId++; // update edgeId for next iteration
                 }
             }
         }
     }
-    console.log(initialEdges[0]);
+    console.log(initialEdges);
+    console.log(initialNodes);
 
     return [initialNodes, initialEdges];
 }
@@ -92,7 +88,7 @@ export function generateNodes (pathway) {
 
     for (let i = 0; i < pathway.enzymes.length; i++) {
         var newNode = {
-            id: i, 
+            id: String(i), 
             className: 'enzyme', 
             data: {
                 label: pathway.enzymes[i].name, 
@@ -100,25 +96,25 @@ export function generateNodes (pathway) {
                 substrates: pathway.enzymes[i].substrates, 
                 products: pathway.enzymes[i].products
             },
-            position: {x: 100, y: (i + 1) * 300}
+            position: {x: pathway.enzymes[i].x, y: pathway.enzymes[i].y}
         }
         nodes.push(newNode);
     }
     
     for (let i = 0; i < pathway.molecules.length; i++) {
         var newNode = {
-            id: i + pathway.enzymes.length, 
+            id: String(i + pathway.enzymes.length), 
             className: 'substrate', 
             data: {
                 label: pathway.molecules[i].name, 
-                title: pathway.molecules[i].name
+                title: pathway.molecules[i].name,
+                concentration: 100
             },
-            position: {x: 100, y: (i + 1) * 200}
+            position: {x: pathway.molecules[i].x, y: pathway.molecules[i].y}
         }
         nodes.push(newNode);
     }
 
-    console.log(nodes);
     return nodes;
 }
 
@@ -135,8 +131,8 @@ const pathwayJson = {
             "author": "Admin",
             "public": true,
             "reversible": false,
-            "x": 0,
-            "y": 100,
+            "x": 100,
+            "y": 150,
             "substrates": [
                 "Glucose",
                 "ATP"
@@ -145,7 +141,24 @@ const pathwayJson = {
                 "Glucose6P",
                 "ADP"
             ],
-            "cofactors": ['ATP', 'HCL', 'DCL']
+            "cofactors": ['ATP']
+        },
+        {
+            "name": "Phosphohexase",
+            "image": "path/to/image",
+            "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+            "author": "Admin",
+            "public": true,
+            "reversible": true,
+            "x": 100,
+            "y": 450,
+            "substrates": [
+                "Glucose6P",
+            ],
+            "products": [
+                "Fructose6P",
+            ],
+            "cofactors": ['HCL']
         },
         ],
         "molecules": [
@@ -156,7 +169,7 @@ const pathwayJson = {
             "link": "https://en.wikipedia.org/wiki/Glucose",
             "author": "Admin",
             "public": true,
-            "x": 0,
+            "x": 100,
             "y": 0
             },
             {
@@ -166,9 +179,19 @@ const pathwayJson = {
             "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
             "author": "Admin",
             "public": true,
-            "x": 0,
-            "y": 200
-            }
+            "x": 100,
+            "y": 300
+            },
+            {
+                "name": "Fructose6P",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 100,
+                "y": 600
+                }
         ]
     }
 

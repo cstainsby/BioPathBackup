@@ -9,6 +9,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 // import {nodes as initialnodes} from './simpleJSON';
+import { runConcentrations, run, run2 } from '../utils';
 import {buildFlow, buildNodes, generateNodes} from './simpleJSON';
 
 import './indx.css';
@@ -25,7 +26,7 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 // const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 
-const SaveRestore = () => {
+const SaveRestore = (props) => {
     // generateNodes();
     var initial = buildFlow();
     const initialNodes = initial[0];
@@ -35,34 +36,34 @@ const SaveRestore = () => {
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
-    // var [concentrations, setConcentrations] = useState(props.concentration); // new
+    var [concentrations, setConcentrations] = useState(props.concentration); // new
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
-    // useEffect(() => {
-    //     setConcentrations((conc) => 
-    //         concentrations = run(props.concentration, props.reversibleSteps, props.stopSteps)
-    //     );
-    //     setEdges((eds) =>
-    //         eds.map((edge) => {
-    //         // for loop is needed for edges that have the same input, ex. GH3P
-    //         // O(N^2) so might need to change if its too slow for later pathways
-    //         for (let i = 0; i < props.concentration.length; i++) {
-    //             if (edge.data == props.title[i]) {
-    //             // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
-    //                 if (props.factorSteps.includes(i)) { // is a factor step
-    //                     edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
-    //                 }
-    //                 else {
-    //                     edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
-    //                 }
-    //             }
-    //         }
+    useEffect(() => {
+        // setConcentrations((conc) => 
+        //     concentrations = run(props.concentration, props.reversibleSteps, props.stopSteps)
+        // );
+        // setEdges((eds) =>
+        //     eds.map((edge) => {
+        //     // for loop is needed for edges that have the same input, ex. GH3P
+        //     // O(N^2) so might need to change if its too slow for later pathways
+        //     for (let i = 0; i < props.concentration.length; i++) {
+        //         if (edge.data == props.title[i]) {
+        //         // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
+        //             if (props.factorSteps.includes(i)) { // is a factor step
+        //                 edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
+        //             }
+        //             else {
+        //                 edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
+        //             }
+        //         }
+        //     }
     
-    //         return edge;
-    //         })
-    //     );
-    // }, [props.concentration[0], props.concentration[1], props.concentration[2], props.concentration[3], props.concentration[4], props.concentration[5], props.concentration[6], props.concentration[7],  setEdges]);
+        //     return edge;
+        //     })
+        // );
+    }, [props.concentration, setEdges]);
 
     const onSave = useCallback(() => {
         if (rfInstance) {

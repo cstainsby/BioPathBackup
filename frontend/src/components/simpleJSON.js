@@ -191,7 +191,27 @@ const pathwayJson = {
                 "public": true,
                 "x": 100,
                 "y": 600
-                }
+            },
+            {
+                "name": "ATP",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 200,
+                "y": 0
+            },
+            {
+                "name": "ADP",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 200,
+                "y": 300
+            }
         ]
     }
 

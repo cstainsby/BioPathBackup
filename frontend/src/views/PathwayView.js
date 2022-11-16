@@ -54,7 +54,7 @@ export default class PathwayView extends Component {
          */}
         <div className="row" id="PathwayViewRow">
           <div className="col" id="ModelAreaCol">
-            <Restore/>
+            <Restore concentration={this.state.concentrations}/>
           {/* <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps}/> */}
           </div>
           <div className="col-md-auto" id="RightSideBarAreaCol">

@@ -31,8 +31,8 @@ export default class SliderSideBar extends Component {
     
     return (
       <div className='SliderBar'>
-        <h3>{ this.state.title }</h3>
-        <p>{ this.state.desc }</p>
+        <h3>{ this.state.componentTitle }</h3>
+        <p>{ this.state.componentDesc }</p>
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>

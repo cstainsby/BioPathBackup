@@ -94,7 +94,7 @@ async function getPathways() {
       responseJSON
     );
     return responseJSON;
-    
+
   } catch (error) {
     console.log(
       requestUrl + "\n" + 
@@ -104,18 +104,19 @@ async function getPathways() {
   }
 }
 
-async function postPathway() {
+
+async function postPathway(pathwayObj) {
   const methodType = "POST";
   const endpointExtension = "pathways/";
   const requestUrl = dataSourceAddress + endpointExtension;
 
-  const requestOptions = {
-    method: methodType,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: 'POST Pathway Request' })
-  };
-
   try {
+    const requestOptions = {
+      method: methodType,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(pathwayObj)
+    };
+
     const response = await fetch(requestUrl, requestOptions);
     const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
     const responseJSON = isResponseJSON && await response.json();
@@ -143,4 +144,4 @@ async function postPathway() {
   }
 }
 
-export { getPathways, getPathwayById }
+export { getPathways, getPathwayById, postPathway }

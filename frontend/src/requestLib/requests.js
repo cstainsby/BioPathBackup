@@ -37,13 +37,24 @@ function consoleLogRequestResults(status, statusText, endpointExtension, type, d
   );
 }
 
+
+// ----------------------------------------------------------------------
+// PATHWAY ENDPOINTS 
+// ----------------------------------------------------------------------
 async function getPathwayById(id) {
   let endpointExtension = "pathways/" + id;
   let requestUrl = dataSourceAddress + endpointExtension;
 
   try {
-    let response = await fetch(requestUrl);
-    let responseJSON = await response.json();
+    const response = await fetch(requestUrl);
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
 
     consoleLogRequestResults(
       response.status,
@@ -53,8 +64,10 @@ async function getPathwayById(id) {
       responseJSON
     );
     return responseJSON;
+
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    return error;
   }
 }
 
@@ -64,7 +77,14 @@ async function getPathways() {
 
   try {
     const response = await fetch(requestUrl);
-    const responseJSON = await response.json();
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
 
     consoleLogRequestResults(
       response.status,
@@ -74,11 +94,52 @@ async function getPathways() {
       responseJSON
     );
     return responseJSON;
+    
   } catch (error) {
     console.log(
       requestUrl + "\n" + 
       error
-    )
+    );
+    return error;
+  }
+}
+
+async function postPathway() {
+  const methodType = "POST";
+  const endpointExtension = "pathways/";
+  const requestUrl = dataSourceAddress + endpointExtension;
+
+  const requestOptions = {
+    method: methodType,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: 'POST Pathway Request' })
+  };
+
+  try {
+    const response = await fetch(requestUrl, requestOptions);
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    consoleLogRequestResults(
+      response.status,
+      response.statusText,
+      endpointExtension,
+      methodType,
+      responseJSON
+    );
+    return responseJSON;
+  } catch(error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
   }
 }
 

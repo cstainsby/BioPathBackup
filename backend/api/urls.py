@@ -21,10 +21,10 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'enzymes', views.EnzymeViewSet)
 router.register(r'molecules', views.MoleculeViewSet)
 router.register(r'pathways', views.PathwayViewSet)
-
+router.register(r'pathway_enzyme', views.PathwayEnzymeViewSet)
+router.register(r'pathway_molecule', views.PathwayMoleculeViewSet)
 
 urlpatterns = [
-    path(route='hello-world/', view=views.index, name='index'),
     path(route='', view=include(router.urls)),
     path(route='api-auth/', view=include('rest_framework.urls', namespace='rest_framework')),
 ]

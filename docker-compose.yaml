@@ -21,10 +21,10 @@ services:
     image: postgres:14.1-alpine
     restart: always
     volumes: # volume for database persistence while container is down
-             # you must set the environment variable biopath_root_path on your machine
+             # you must set the environment variable BIOPATH_ROOT_PATH on your machine
              #  for me this was just
-             #   'export biopath_root_path="~/Users/joshuaschmitz/Projects/BioPath"'
-      - "${biopath_root_path}/postgres:/var/lib/postgresql/data/"
+             #   'export BIOPATH_ROOT_PATH="~/Users/joshuaschmitz/Projects/BioPath"'
+      - "${BIOPATH_ROOT_PATH}/postgres:/var/lib/postgresql/data/"
     environment:
       # these are the same as those in backend container
       - POSTGRES_USER=username

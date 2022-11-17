@@ -5,23 +5,14 @@ Description: Defines view functions that are mapped to in urls.py for generating
     and prevents us from manually having to individually write out each function for
     POST, GET, PUT, and DELETE methods.
 Modified: 10/27 - Josh Schmitz
+TODO: only show enzyme/molecule/pathway if public or auther=user
 """
 
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import viewsets, permissions
 
 from . import serializers, models
-
-
-def index(request):
-    """
-    Just for fun.
-    """
-    return HttpResponse(content="Hello, world.")
 
 
 class EnzymeViewSet(viewsets.ModelViewSet):
@@ -36,23 +27,22 @@ class MoleculeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class PathwayViewSet(viewsets.ModelViewSet):
+class PathwayViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Pathway.objects.all()
     serializer_class = serializers.PathwaySerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-# class EnzymeSubstrateViewSet(viewsets.ModelViewSet):
-#     queryset = models.EnzymeSubstrate.objects.all()
-#     serializer_class = serializers.EnzymeSubstrateSerializer
-#     permission_classes = [permissions.IsAuthenticated]
+class PathwayMoleculeViewSet(viewsets.ModelViewSet):
+    queryset = models.PathwayMolecule.objects.all()
+    serializer_class = serializers.PathwayMoleculeBasicSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# class PathwayConnectionsViewSet(viewsets.ModelViewSet):
-#     queryset = models.PathwayConnections.objects.all()
-#     serializer_class = serializers.PathwayConnectionsSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-
+class PathwayEnzymeViewSet(viewsets.ModelViewSet):
+    queryset = models.PathwayEnzyme.objects.all()
+    serializer_class = serializers.PathwayEnzymeBasicSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')

@@ -4,6 +4,7 @@ Description: Defines the models for enzymes, substrates, connections, etc. Djang
     these models to construct the database tables. They are used by serializers.py which
     serializes the data into json for easy view building.
 Modified: 11/8 - Zach Burnaby & Josh Schmitz
+TODO default images https://stackoverflow.com/questions/15322391/django-the-image-attribute-has-no-file-associated-with-it
 """
 
 from django.db import models
@@ -23,7 +24,7 @@ class Molecule(models.Model):
     def __str__(self):
         return self.name
 
-    
+
 class Enzyme(models.Model):
     name = models.CharField(max_length=50)
     reversible = models.BooleanField(default=True)
@@ -64,7 +65,7 @@ class Pathway(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     link = models.URLField()
     public = models.BooleanField(default=False)
-    '''TODO: Add constraint on multiple enzymes in a pathway'''
+    
 
     def __str__(self):
         return self.name
@@ -77,15 +78,21 @@ class PathwayEnzyme(models.Model):
     y = models.PositiveSmallIntegerField()
     limiting = models.BooleanField(default=False)
 
+    class Meta:
+        unique_together = ["enzyme", "pathway"]
+
     def __str__(self):
         return f"{self.pathway.__str__()} - {self.enzyme.__str__()}"
 
   
 class PathwayMolecule(models.Model):
-    substrate = models.ForeignKey(Molecule, on_delete=models.PROTECT)
+    molecule = models.ForeignKey(Molecule, on_delete=models.PROTECT)
     pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()
     
+    class Meta:
+        unique_together = ["molecule", "pathway"]
+
     def __str__(self):
-        return f"{self.pathway.__str__()} - {self.substrate.__str__()}"
+        return f"{self.pathway.__str__()} - {self.molecule.__str__()}"

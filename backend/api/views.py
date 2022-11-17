@@ -8,17 +8,19 @@ Modified: 10/27 - Josh Schmitz
 TODO: only show enzyme/molecule/pathway if public or auther=user
 """
 
-from django.http import HttpResponse
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions
+from django.db.models import Q
 
 from . import serializers, models
 
 
 class EnzymeViewSet(viewsets.ModelViewSet):
-    queryset = models.Enzyme.objects.all()
     serializer_class = serializers.EnzymeSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return models.Enzyme.objects.filter(Q(public=True) | Q(author=self.request.user)).all()
 
 
 class MoleculeViewSet(viewsets.ModelViewSet):

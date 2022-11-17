@@ -18,7 +18,7 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'enzymes', views.EnzymeViewSet)
+router.register(r'enzymes', views.EnzymeViewSet, basename="enzymes")
 router.register(r'molecules', views.MoleculeViewSet)
 router.register(r'pathways', views.PathwayViewSet)
 router.register(r'pathway_enzyme', views.PathwayEnzymeViewSet)

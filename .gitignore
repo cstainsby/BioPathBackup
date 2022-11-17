@@ -3,3 +3,6 @@ postgres
 *.code-workspace
 **/*.log
 postgres.log
+
+# ignore private credentials which should be kept local
+AWS/aws_credentials.csv

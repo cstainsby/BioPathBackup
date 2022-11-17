@@ -207,24 +207,55 @@ class LoadPathwayModal extends Component {
     this.state = {
       pathways: []
     }
+
+    // get JSON data for pathways
+    // including function here will force the modal to re-render
+    getPathways()
+      .then(data => {
+        // read list of pathways into a list for state
+        let pathwayList = []
+        for(let i = 0; i < data.length; ++i) {
+          console.log("at " + i + data[i].name)
+          pathwayList.push(data[i]);
+        }
+
+        console.log("data in render: " + JSON.stringify(data));
+
+        this.setState({
+          pathways: pathwayList
+        })
+      });
   }
 
-  buildPathwayCards() {
-    // dynamically builds cards for each pathway for the user to choose from
-    pathwayListHtml = "";
-    return 
+  buildPathwayCardsList() {
+    // helper function which dynamically builds cards list containing each pathway for the user to choose from
+    // NOTE the json Data should be in a list
+    let pathwayListHtml = this.state.pathways.map((pathway) => {
+      return (
+        <li id='loadPathwayListItem'>
+          <div class="card">
+            <div class="card-body">
+              <div class="container text-center">
+                <div class="row">
+                  <div class="col-8">
+                    <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+                    <p>Created By { pathway.author } </p>
+                  </div>
+                  <div class="col-2" id=''>
+                    <button type="button" class="btn btn-primary">Load</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>);
+    });
+    let finalCardListHtml = <ul>{ pathwayListHtml }</ul>;
+    
+    return finalCardListHtml;
   }
 
   render() {
-    // get pathways from backend
-    getPathways()
-      .then((data) => {
-        // generate cards for each of the pathways that can be loaded
-        let pathwayListHtml = ""
-
-        console.log("data: " + data)
-      });
-
     return (
       <div class="modal fade" id="loadPathwayModal" tabindex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -234,7 +265,10 @@ class LoadPathwayModal extends Component {
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              
+              { (this.state.pathways.length > 0)                // if there are pathways to display
+                ? this.buildPathwayCardsList()                  // display them
+                : <h4>Looks like there aren't any pathways</h4> // otherwise send message to user
+              }
             </div>
           </div>
         </div>

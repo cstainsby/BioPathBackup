@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SliderSideBar from './SliderSideBar';
 
-import { findSliders } from './simpleJSON';
+import { findSliders} from '../utils';
 
 
 
@@ -15,7 +15,9 @@ export default class RightSideBarArea extends Component {
     super(props);
     this.state = {
       title: 'Factor Molecules',
-      sliderNames: findSliders()
+      sliderNames: findSliders()[0]
+      // used for testing delete later
+      // sliderNames: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG']
     }
   }
 

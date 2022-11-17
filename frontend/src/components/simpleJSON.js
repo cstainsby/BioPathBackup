@@ -22,10 +22,6 @@ export function buildFlow() {
     // const nodesJson = nodes
     const nodesJson = generateNodes();
 
-    for (const node of nodesJson) {
-        console.log(node.data, node.position);
-    }
-
     var initialNodes = [];
     var initialEdges = [];
 
@@ -50,10 +46,10 @@ export function buildFlow() {
         for (const name of substrateList) {
             for (const substrate of nodesJson) {
                 if (substrate.data.title == name) {
-                    initialEdges.push({id: String(edgeId), animated: true, source: substrate.id, target: enzymes[i].id});
+                    initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: substrate.id, target: enzymes[i].id});
                     edgeId++; // update edgeId for next iteration
-                    if (enzymes[i].data.reversible == true) {
-                        initialEdges.push({id: String(edgeId), animated: true, source: enzymes[i].id, target: substrate.id});
+                    if (enzymes[i].data.reversible == true) { // added data: substrate.data.title
+                        initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: enzymes[i].id, target: substrate.id});
                         edgeId++;
                     }
                 }
@@ -62,15 +58,12 @@ export function buildFlow() {
         for (const name of productList) {
             for (const product of nodesJson) {
                 if (product.data.title == name) {
-                    console.log(name, "Higley");
-                    initialEdges.push({id: String(edgeId), animated: true, source: enzymes[i].id, target: product.id});
+                    initialEdges.push({id: String(edgeId), data: product.data.title, animated: true, source: enzymes[i].id, target: product.id});
                     edgeId++; // update edgeId for next iteration
                 }
             }
         }
     }
-    console.log(initialEdges);
-    console.log(initialNodes);
 
     return [initialNodes, initialEdges];
 }
@@ -118,7 +111,7 @@ export function generateNodes (pathway) {
     return nodes;
 }
 
-const pathwayJson = {
+export const pathwayJson = {
     "name": "Glycolysis",
     "author": "Admin",
     "link": "https://proteopedia.org/wiki/index.php/Glycolysis",
@@ -222,6 +215,7 @@ const pathwayJson = {
 */
 export function findSliders(pathwayData) {
     var sliders = []; // list of cofactors extracted from pathway JSON
+    var percent = []; // new
 
     // delete later
     pathwayData = pathwayJson; // this is mocking the json that will be passed in
@@ -231,6 +225,7 @@ export function findSliders(pathwayData) {
             for (const cofactor of pathwayData.enzymes[i].cofactors) { // add each cofactor
                 if (!sliders.includes(cofactor)) { // only add unique cofactors
                     sliders.push(cofactor);
+                    percent.push(1); // new
                 }
                 else {
                     console.log(cofactor + " already exists in slider list");
@@ -239,7 +234,7 @@ export function findSliders(pathwayData) {
         }
     }
 
-    return sliders;
+    return [sliders, percent];
 }
 
 /*
@@ -251,7 +246,7 @@ export function findSliders(pathwayData) {
     baseConcentration is a value that will set the base concentration 
         for each molecule (optional) 100 is default
 */
-export function findMolecules(pathwayData, baseConcentration=100) {
+export function findMolecules(pathwayData, baseConcentration=10) {
     var molecules = [];
     var concentrations = [];
 
@@ -264,8 +259,6 @@ export function findMolecules(pathwayData, baseConcentration=100) {
         molecules.push(pathwayData.molecules[i].name);
         concentrations.push(baseConcentration);
     }
-
-    console.log(molecules, concentrations);
 
     return [molecules, concentrations];
 }

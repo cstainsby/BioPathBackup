@@ -36,14 +36,17 @@ const SaveRestore = (props) => {
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
+    console.log(props.titles, "dog");
+
     var [concentrations, setConcentrations] = useState(props.concentration); // new
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
     useEffect(() => {
         // setConcentrations((conc) => 
-        //     concentrations = run(props.concentration, props.reversibleSteps, props.stopSteps)
+        //     concentrations = runConcentrations(props.concentration)
         // );
+        console.log(props.concentration, "hello");
         // setEdges((eds) =>
         //     eds.map((edge) => {
         //     // for loop is needed for edges that have the same input, ex. GH3P

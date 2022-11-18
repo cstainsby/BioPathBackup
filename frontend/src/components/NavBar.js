@@ -208,6 +208,10 @@ class LoadPathwayModal extends Component {
       pathways: []
     }
 
+    // loadButtonClicked() {
+    //   return
+    // }
+
     // get JSON data for pathways
     // including function here will force the modal to re-render
     getPathways()

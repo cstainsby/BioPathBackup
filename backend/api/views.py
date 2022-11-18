@@ -15,6 +15,18 @@ from django.db.models import Q
 from . import serializers, models
 
 
+<<<<<<< HEAD
+
+
+def index(request):
+    """
+    Just for fun.
+    """
+    return HttpResponse(content="Hello, world.")
+
+
+=======
+>>>>>>> dev
 class EnzymeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EnzymeSerializer
     permission_classes = [permissions.IsAuthenticated]

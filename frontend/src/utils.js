@@ -25,24 +25,37 @@ export function runConcentrations (concentrations, filled) {
 /* function that deals with reversible reaction
 */
 export function run (concentrations, reversibleSteps, factors, factorSteps) {
-    console.log(factorSteps);
+    console.log(concentrations, reversibleSteps);
+    console.log(factors, factorSteps);
     for (let i = 0; i < concentrations.length; i++) {
         if (factorSteps.includes(i)) { // dependent on cofactor
-            if (i == 0) { // infinite first substrate
-                concentrations[i] = concentrations[i] + .01;
-            }
-            else if (i < concentrations.length - 1) { // all must last substrate
-                if (concentrations[i - 1] > concentrations[i]) { // flows down
-                    concentrations[i - 1] = concentrations[i - 1] - (.01 * factors[0]);
-                    concentrations[i] = concentrations[i] + (.01 * factors[0]);
+            if (i == 0) { // starting step
+                concentrations[i] += .01; // always add constant value to start
+                if (factors[factorSteps.indexOf(i)] > 0) { // if cofactor present
+                    concentrations[i]-= .01 * factors[factorSteps.indexOf(i)];
                 }
             }
-            else { // last substrate subtract so it doesnt get infinitely bigger
-                concentrations[i] = concentrations[i] - .01;
+            else if (i < concentrations.length - 1) { // middle steps
+                if (concentrations[i - 1] >= concentrations[i]) { // flows down
+                    concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
+                    if (concentrations[i - 1] != 0) { // check if 0 because 0 already subtracted
+                        concentrations[i - 1] -= .01 * factors[factorSteps.indexOf(i)];
+                    }
+                }
+                else if (reversibleSteps.includes(i)) { // it is a reversible step
+                    concentrations[i] -= .01 * factors[factorSteps.indexOf(i)];
+                    concentrations[i - 1] += .01 * factors[factorSteps.indexOf(i)];
+                }
+            }
+            else { // last step in pathway
+                if (concentrations[i - 1] > concentrations[i]) { // flows down
+                    concentrations[i - 1] -= .01 * factors[factorSteps.indexOf(i)];
+                    concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
+                    concentrations[i] -= .01; // always substract constant value from end
+                }
             }
         }
         else {
-            console.log("there");
             if (i == 0) { // infinite first substrate
                 concentrations[i] = concentrations[i] + .01;
             }
@@ -51,36 +64,15 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
                     concentrations[i - 1] = concentrations[i - 1] - .01;
                     concentrations[i] = concentrations[i] + .01;
                 }
+                else if (reversibleSteps.includes(i)) { // reversible step
+                    concentrations[i] -= .01;
+                    concentrations[i - 1] += .01;
+                }
             }
             else { // last substrate subtract so it doesnt get infinitely bigger
                 concentrations[i] = concentrations[i] - .01;
             }
         }
-        // if (stopSteps.includes(i)) {
-
-        // }
-        // if (i > 0) { 
-        //     // if concentrations are not first or last egde
-        //     if (concentrations[i - 1] == 0) { // concentration to low for reaction to occur
-        //         concentrations[i] = 0;
-        //     }
-        //     else if (reversibleSteps.includes[i]) {
-        //         if (concentrations[i - 1] > concentrations[i]) {
-        //             concentrations[i-1] = concentrations[i-1] - .05;
-        //             concentrations[i] = concentrations[i] + .05;
-        //         }
-        //         else {
-        //             concentrations[i-1] = concentrations[i-1] + .05;
-        //             concentrations[i] = concentrations[i] - .05;
-        //         }
-        //     }
-        //     else {
-        //         if (concentrations[i - 1] > concentrations[i]) {
-        //             concentrations[i-1] = concentrations[i-1] - .05;
-        //             concentrations[i] = concentrations[i] + .05;
-        //         }
-        //     }
-        // }
     }
     return concentrations;
 }

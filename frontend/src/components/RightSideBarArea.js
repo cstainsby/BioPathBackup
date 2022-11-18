@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SliderSideBar from './SliderSideBar';
 
+import { findSliders} from '../utils';
+
 
 
 // ----------------------------------------------------------------------
@@ -11,7 +13,12 @@ import SliderSideBar from './SliderSideBar';
 export default class RightSideBarArea extends Component {
   constructor(props) {
     super(props);
-    this.state = {title: 'Factor Molecules'}
+    this.state = {
+      title: 'Factor Molecules',
+      sliderNames: findSliders()[0]
+      // used for testing delete later
+      // sliderNames: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG']
+    }
   }
 
 
@@ -19,7 +26,10 @@ export default class RightSideBarArea extends Component {
   render() {
     return (
       <div id="RightSideBarArea">
-        <SliderSideBar/>
+        <SliderSideBar 
+          titles={this.state.sliderNames}
+          onConcentrationChange={this.props.onConcentrationChange}
+        />
       </div>
     );
   }

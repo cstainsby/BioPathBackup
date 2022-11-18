@@ -1,37 +1,129 @@
+/* root variables used in style sheet */
+:root {
+  --icon-radius: calc(75px * 0.4);
+
+  /* start at 10 to give pathway view enough indices to work with*/
+  --navbar-base-z-index-level: 10;
+}
+
+
+
+.navBarHelpLogo {
+  margin-right: 4px;
+}
+
+/* div holding all navbar elements */
 .NavBar {
-  width: inherit;
-  height: 75px;
+  transform: translateX(-45%);
+  z-index: var(--navbar-base-z-index-level);
+  display: inline-block;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+/* the ul holding all navigation elements */
+.NavBarList {
+  max-width: 100%;
+  height: 100%;
+  display: flex; /* make display flexible */
+  justify-content: flex-start; /* sends items to given side */ 
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 16px;
+}
+
+/* li item which fills NavBarNav, each item holds the contents of a button */
+.navItem {
+  display: flex;
+  align-items: center; /* push items in the nav list to the center */ 
+  justify-content: center;
+  margin: 16px;
+}
+
+/* Link to another page, or to dropdown, depending on what children were passed in, <a> */
+.navIconButton {
+  padding: 3px;
+  margin: 2px;
+  display: flex;
+  justify-content: center;
+  border-radius: 15px;
+  background-color: lightgray;
+  text-decoration: none;;
+}
+/* when hovering over a button give visual indication */
+.navIconButton:hover {
+  background-color: grey;
+}
+
+/* Name of button <p> */
+.navIconButtonName {
+  padding-left: 8px;
+  margin-right: 8px;
+  color: black;
+}
+
+/* image attached to each button <img> */
+.navIconButtonImg {
+  margin: 12px;
+  max-width: var(--icon-radius);
+  max-height: var(--icon-radius);
+  /* border-radius: 90%; */
+}
+
+/* caret image displayed for any button with a dropdown, <img> */
+.navIconButtonDropImg {
+  margin: 12px;
+  max-width: var(--icon-radius);
+  max-height: var(--icon-radius);
+}
+
+/* menu displayed when click on button with dropdown attached <div>*/
+.dropdownMenu {
+  position: absolute;
+  top: 58px;
+  width: 300px;
+  transform: translateX(25%);
+  border: solid;
+  border-radius: 8px;
+  padding: 1rem;
   overflow: hidden;
-  height: inherit;
+  background-color: white;
+  
+  /* dropdowns should be > one level above the base dropdown */
+  z-index: calc(var(--navbar-base-z-index-level) + 1); 
 }
 
-li {
-  height: inherit;
+/* list of all children links in dropdown list, <ul> */
+.dropdownMenuList {
+  list-style-type: none;
+  width: 100%;
+  margin-left: 0px;
+  padding-left: 0px;
+  align-items: center;
+  justify-content: center;
 }
 
-.left {
-  float: left;
+/* list item of each dropdown item <li> */
+.dropdownItem {
+  width: 100%;
+  display: flex;
 }
 
-.right {
-  float: right;
+/* contents of dropdown item inside each list item <div> */
+.dropdownItemContents {
+  width: 300px;
+  height: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  border-radius: 3%;
+}
+/* show visual cue for when hovering over dropdown item */
+.dropdownItemContents:hover {
+  background-color: grey;
 }
 
-.left li {
-  float: left;
+.dropdownItemLink {
+  text-decoration: none;;
 }
 
-.right li {
-  float: right;
-}
-
-li button {
-  height: inherit;
-  width: 100px;
+.dropdownItemLabel {
+  color: black;
 }

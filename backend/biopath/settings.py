@@ -85,6 +85,10 @@ DATABASES = { # edited by Josh S
         'PORT': 5432, # default port for postgres
         'USER': os.environ.get('POSTGRES_USER'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
+    },
+    "test": {
+      'ENGINE': 'django.db.backends.sqlite3',
+      'NAME': os.path.join(BASE_DIR, 'testdb.sqlite3'),
     }
 }
 

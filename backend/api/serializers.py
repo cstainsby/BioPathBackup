@@ -4,7 +4,7 @@ Description: Defines the serializers for serializing various models in
     models.py into json. These serializers are used to create viewsets in
     views.py to simplify and standardize the data format that is returned by
     the API.
-Modified: 10/27 - Josh Schmitz
+Modified: 11/17 - Josh Schmitz
 TODO: If you explicitly specify a relational field pointing to a ManyToManyField with a through model, be sure to set read_only to True.
 TODO: Optimmize with prefetch_related or select_related https://www.django-rest-framework.org/api-guide/relations/
 """
@@ -43,19 +43,7 @@ class MoleculeSerializer(serializers.ModelSerializer):
 class EnzymeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Enzyme
-        fields = [
-            "id",
-            "name",
-            "reversible",
-            "substrates",
-            "products",
-            "cofactors",
-            "abbreviation",
-            "image",
-            "link",
-            "author",
-            "public"
-        ]
+        fields = "__all__"
 
 
 class PathwayEnzymeDetailSerializer(serializers.ModelSerializer):
@@ -85,7 +73,21 @@ class PathwayEnzymeDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.PathwayEnzyme
-        fields = '__all__'
+        fields = [
+            "id",
+            "name",
+            "x",
+            "y",
+            "abbreviation",
+            "image",
+            "reversible",
+            "substrates",
+            "products",
+            "cofactors",
+            "link",
+            "author",
+            "public"
+        ]
 
     def get_substrates(self, obj):
         enzyme = models.Enzyme.objects.get(id=obj.enzyme.id)
@@ -139,12 +141,14 @@ class PathwayMoleculeDetailSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
+            "x",
+            "y",
             "abbreviation",
             "ball_and_stick_image",
             "space_filling_image",
-            "public",
             "link",
-            "author"
+            "author",
+            "public"
         ]
 
 
@@ -166,13 +170,5 @@ class PathwaySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.Pathway
-        fields = [
-            "id",
-            "name",
-            "author",
-            "link",
-            "public",
-            "enzymes",
-            "molecules"
-        ]
+        fields = "__all__"
         

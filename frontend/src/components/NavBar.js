@@ -9,6 +9,9 @@ import userLogo from './../icons/user.png';
 import dropdownLogo from './../icons/arrow-down-sign-to-navigate.png';
 import finger from "../icons/hand.png";
 
+// import requests lib 
+import { getPathways, getPathwayById } from "../requestLib/requests";
+
 
 // ----------------------------------------------------------------------
 // Navbar
@@ -42,7 +45,7 @@ export default class NavBar extends Component {
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Save</a></li>
                   <li><a class="dropdown-item" href="#">Save As</a></li>
-                  <li><a class="dropdown-item" href="#">Load</a></li>
+                  <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loadPathwayModal">Load</a></li>
                   <li><a class="dropdown-item" href="#">New</a></li>
                   <li><a class="dropdown-item" href="#">Delete</a></li>
                 </ul>
@@ -80,6 +83,7 @@ export default class NavBar extends Component {
         {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
         <HelpModal/>
         <SignInModal/>
+        <LoadPathwayModal/>
       </nav>
     )
   }
@@ -175,7 +179,7 @@ class HelpModal extends Component {
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Help Not Implemented</h1>
+              <h1 class="modal-title fs-5" id="helpModalLabel">Help Not Implemented</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -184,6 +188,87 @@ class HelpModal extends Component {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Welp...</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+// ----------------------------------------------------------------------
+// LoadPathwayModal
+// ----------------------------------------------------------------------
+class LoadPathwayModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pathways: []
+    }
+
+    // get JSON data for pathways
+    // including function here will force the modal to re-render
+    getPathways()
+      .then(data => {
+        // read list of pathways into a list for state
+        let pathwayList = []
+        for(let i = 0; i < data.length; ++i) {
+          console.log("at " + i + data[i].name)
+          pathwayList.push(data[i]);
+        }
+
+        console.log("data in render: " + JSON.stringify(data));
+
+        this.setState({
+          pathways: pathwayList
+        })
+      });
+  }
+
+  buildPathwayCardsList() {
+    // helper function which dynamically builds cards list containing each pathway for the user to choose from
+    // NOTE the json Data should be in a list
+    let pathwayListHtml = this.state.pathways.map((pathway) => {
+      return (
+        <li id='loadPathwayListItem'>
+          <div class="card">
+            <div class="card-body">
+              <div class="container text-center">
+                <div class="row">
+                  <div class="col-8">
+                    <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+                    <p>Created By { pathway.author } </p>
+                  </div>
+                  <div class="col-2" id=''>
+                    <button type="button" class="btn btn-primary">Load</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>);
+    });
+    let finalCardListHtml = <ul>{ pathwayListHtml }</ul>;
+    
+    return finalCardListHtml;
+  }
+
+  render() {
+    return (
+      <div class="modal fade" id="loadPathwayModal" tabindex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="loadPathwayModalLabel">Load In Pathway</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              { (this.state.pathways.length > 0)                // if there are pathways to display
+                ? this.buildPathwayCardsList()                  // display them
+                : <h4>Looks like there aren't any pathways</h4> // otherwise send message to user
+              }
             </div>
           </div>
         </div>

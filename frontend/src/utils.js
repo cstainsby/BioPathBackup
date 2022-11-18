@@ -78,10 +78,10 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
 }
 
 
-export function buildFlow() {
+export function buildFlow(pathway) {
     // these are mocked for testing fix later
     // const nodesJson = nodes
-    const nodesJson = generateNodes();
+    const nodesJson = generateNodes(pathway);
 
     var initialNodes = [];
     var initialEdges = [];
@@ -138,7 +138,7 @@ export function generateNodes (pathway) {
     var nodes = []
 
     // delete later
-    pathway = pathwayJson; // this is mocking the json that will be passed in
+    // pathway = pathwayJson; // this is mocking the json that will be passed in
 
     for (let i = 0; i < pathway.enzymes.length; i++) {
         var newNode = {

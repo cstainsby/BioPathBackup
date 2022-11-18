@@ -7,6 +7,9 @@
 }
 
 
+#loadPathwayListItem {
+  list-style-type: none;
+}
 
 .navBarHelpLogo {
   margin-right: 4px;

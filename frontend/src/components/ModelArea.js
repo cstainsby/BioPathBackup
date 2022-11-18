@@ -12,18 +12,25 @@ import { run } from '../utils';
 // import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 
 import { buildFlow} from '../utils';
+import { getPathwayById } from '../requestLib/requests';
 import 'reactflow/dist/style.css';
 import './overview.css';
 
-var initial = buildFlow();
-const initialNodes = initial[0];
-const initialEdges = initial[1];
-
 
 const UpdatableEdge = (props) => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   var [concentrations, setConcentrations] = useState(props.concentration);
+
+  getPathwayById('1')
+  .then(data => {
+    console.log(data);
+    var inital = buildFlow(data);
+    console.log(inital[0], "ben")
+    setNodes(inital[0])
+    setEdges(inital[1])
+  });
 
   const [edgeName, setEdgeName] = useState(100);
 

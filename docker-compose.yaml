@@ -57,10 +57,13 @@ services:
     build:
       context: ./backend/
       dockerfile: Dockerfile
+    image: backend
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+
+    # comment out dependancy for now
+    # depends_on:
+    #   - db
       # - redis
     # networks:
     #   - db-net
@@ -75,10 +78,19 @@ services:
     ports:
       - "3000:3000"
     stdin_open: true
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
     # networks:
     #   - db-net
+
+  # AWS specific configuration details
+  # logging:
+  #   driver: awslogs 
+  #   options:
+  #     awslogs-group: BiopathLogGroup 
+  #     awslogs-region: us-west-2
+  #     awslogs-stream-prefix:
+
 
 # Josh S - This was unneeded for now; removed to decrease complexity
 # networks:

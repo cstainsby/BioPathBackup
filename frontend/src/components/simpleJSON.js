@@ -1,87 +1,26 @@
-import { pathwayJson } from "./components/simpleJSON";
+const nodes = [
+    { id: '1', className: 'enzyme', data: { label: 'Node 1', reversible: false, substrates: ['Glucose', 'ATP'], products: ['G6P', 'ADP'] }, position: { x: 100, y: 300 } },
+    { id: '2', className: 'enzyme', data: { label: 'Node 2', reversible: true, substrates: ['G6P'], products: ['Pyruvate'] }, position: { x: 100, y: 700 } },
+    // { id: '3', className: 'enzyme', data: { label: 'Node 1', substrates: [], products: [] }, position: { x: 100, y: 100 } },
+    { id: '4', className: 'substrate', data: { label: 'Glucose', title: 'Glucose', concentration: 100}, position: { x: 100, y: 100 } },
+    { id: '5', className: 'substrate', data: { label: 'G6P', title: 'G6P', concentration: 100 }, position: { x: 100, y: 500 } },
+    { id: '6', className: 'substrate', data: { label: 'Pyruvate', title: 'Pyruvate', concentration: 100 }, position: { x: 100, y: 900 } }
+]
 
-/* basic function where if concentration[i] greater than previous you subtract
-from i - 1 and add to i
-*/
-export function runConcentrations (concentrations, filled) {
-    for (let i = 0; i < concentrations.length; i++) {
-        if (i > 0) { 
-            // if concentrations are not first or last egde
-            if (concentrations[i - 1] < 5) { // concentration to low for reaction to occur
-                concentrations[i] = 0;
-            }
-            else if (concentrations[i - 1] > concentrations[i]) {
-                concentrations[i-1] = concentrations[i-1] - .05;
-                concentrations[i] = concentrations[i] + .05;
-            }
-            else if (concentrations[i - 1] < concentrations[i]) { // TODO:
-                // if reaction is reversible, molecule at (i) converted to molecule at (i-1)
-            }
-        }
+const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+export function buildNodes () {
+    var initialNodes = [];
+    for (let i = 0; i < nodes.length; i++) {
+        initialNodes.push(nodes[i]);
     }
-    return concentrations;
+    return initialNodes;
 }
 
-/* function that deals with reversible reaction
-*/
-export function run (concentrations, reversibleSteps, factors, factorSteps) {
-    console.log(concentrations, reversibleSteps);
-    console.log(factors, factorSteps);
-    for (let i = 0; i < concentrations.length; i++) {
-        if (factorSteps.includes(i)) { // dependent on cofactor
-            if (i == 0) { // starting step
-                concentrations[i] += .01; // always add constant value to start
-                if (factors[factorSteps.indexOf(i)] > 0) { // if cofactor present
-                    concentrations[i]-= .01 * factors[factorSteps.indexOf(i)];
-                }
-            }
-            else if (i < concentrations.length - 1) { // middle steps
-                if (concentrations[i - 1] >= concentrations[i]) { // flows down
-                    concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
-                    if (concentrations[i - 1] != 0) { // check if 0 because 0 already subtracted
-                        concentrations[i - 1] -= .01 * factors[factorSteps.indexOf(i)];
-                    }
-                }
-                else if (reversibleSteps.includes(i)) { // it is a reversible step
-                    concentrations[i] -= .01 * factors[factorSteps.indexOf(i)];
-                    concentrations[i - 1] += .01 * factors[factorSteps.indexOf(i)];
-                }
-            }
-            else { // last step in pathway
-                if (concentrations[i - 1] > concentrations[i]) { // flows down
-                    concentrations[i - 1] -= .01 * factors[factorSteps.indexOf(i)];
-                    concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
-                    concentrations[i] -= .01; // always substract constant value from end
-                }
-            }
-        }
-        else {
-            if (i == 0) { // infinite first substrate
-                concentrations[i] = concentrations[i] + .01;
-            }
-            else if (i < concentrations.length - 1) { // all must last substrate
-                if (concentrations[i - 1] > concentrations[i]) { // flows down
-                    concentrations[i - 1] = concentrations[i - 1] - .01;
-                    concentrations[i] = concentrations[i] + .01;
-                }
-                else if (reversibleSteps.includes(i)) { // reversible step
-                    concentrations[i] -= .01;
-                    concentrations[i - 1] += .01;
-                }
-            }
-            else { // last substrate subtract so it doesnt get infinitely bigger
-                concentrations[i] = concentrations[i] - .01;
-            }
-        }
-    }
-    return concentrations;
-}
-
-
-export function buildFlow(pathway) {
+export function buildFlow() {
     // these are mocked for testing fix later
     // const nodesJson = nodes
-    const nodesJson = generateNodes(pathway);
+    const nodesJson = generateNodes();
 
     var initialNodes = [];
     var initialEdges = [];
@@ -138,7 +77,7 @@ export function generateNodes (pathway) {
     var nodes = []
 
     // delete later
-    // pathway = pathwayJson; // this is mocking the json that will be passed in
+    pathway = pathwayJson; // this is mocking the json that will be passed in
 
     for (let i = 0; i < pathway.enzymes.length; i++) {
         var newNode = {
@@ -172,6 +111,103 @@ export function generateNodes (pathway) {
     return nodes;
 }
 
+export const pathwayJson = {
+    "name": "Glycolysis",
+    "author": "Admin",
+    "link": "https://proteopedia.org/wiki/index.php/Glycolysis",
+    "public": true,
+    "enzymes": [
+        {
+            "name": "Hexokinase",
+            "image": "path/to/image",
+            "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+            "author": "Admin",
+            "public": true,
+            "reversible": false,
+            "x": 100,
+            "y": 150,
+            "substrates": [
+                "Glucose",
+                "ATP"
+            ],
+            "products": [
+                "Glucose6P",
+                "ADP"
+            ],
+            "cofactors": ['ATP']
+        },
+        {
+            "name": "Phosphohexase",
+            "image": "path/to/image",
+            "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+            "author": "Admin",
+            "public": true,
+            "reversible": true,
+            "x": 100,
+            "y": 450,
+            "substrates": [
+                "Glucose6P",
+            ],
+            "products": [
+                "Fructose6P",
+            ],
+            "cofactors": ['HCL']
+        },
+        ],
+        "molecules": [
+            {
+            "name": "Glucose",
+            "ball_and_stick_image": "path/to/image",
+            "space_filling_image": "path/to/image",
+            "link": "https://en.wikipedia.org/wiki/Glucose",
+            "author": "Admin",
+            "public": true,
+            "x": 100,
+            "y": 0
+            },
+            {
+            "name": "Glucose6P",
+            "ball_and_stick_image": "path/to/image",
+            "space_filling_image": "path/to/image",
+            "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+            "author": "Admin",
+            "public": true,
+            "x": 100,
+            "y": 300
+            },
+            {
+                "name": "Fructose6P",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 100,
+                "y": 600
+            },
+            {
+                "name": "ATP",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 200,
+                "y": 0
+            },
+            {
+                "name": "ADP",
+                "ball_and_stick_image": "path/to/image",
+                "space_filling_image": "path/to/image",
+                "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+                "author": "Admin",
+                "public": true,
+                "x": 200,
+                "y": 300
+            }
+        ]
+    }
+
 /*
     This function is used to parse through the pathway JSON.
     It loops through each enzyme and if there are cofactors it adds
@@ -200,7 +236,6 @@ export function findSliders(pathwayData) {
 
     return [sliders, percent];
 }
-
 
 /*
     Function to generate the molecules that will be tracked in a pathway

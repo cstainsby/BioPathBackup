@@ -1,4 +1,4 @@
-import { pathwayJson } from "./components/simpleJSON";
+import { pathwayJson } from "./simpleJSON";
 
 /* basic function where if concentration[i] greater than previous you subtract
 from i - 1 and add to i
@@ -29,7 +29,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
     console.log(factors, factorSteps);
     for (let i = 0; i < concentrations.length; i++) {
         if (factorSteps.includes(i)) { // dependent on cofactor
-            if (i == 0) { // starting step
+            if (i === 0) { // starting step
                 concentrations[i] += .01; // always add constant value to start
                 if (factors[factorSteps.indexOf(i)] > 0) { // if cofactor present
                     concentrations[i]-= .01 * factors[factorSteps.indexOf(i)];

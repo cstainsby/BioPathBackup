@@ -1,13 +1,14 @@
 import React, { Component, useState, useEffect } from 'react'
-import './PathwayView.css'
-import ModelArea from '../components/ModelArea'
-import NavBar from '../components/NavBar'
+
+import ModelArea from './ModelArea'
+import NavBar from './NavBar'
 // import SliderBar from '../components/SliderBar'
-import RightSideBarArea from '../components/RightSideBarArea';
-import Restore from '../components/Restore'
+import RightSideBarArea from './RightSideBarArea';
+import Restore from './Restore';
+import './css/PathwayView.css'
 
 // import { findMolecules, findSliders } from '../components/simpleJSON'; // maybe delete later
-import { findMolecules, findSliders} from '../utils';
+import { findMolecules, findSliders} from './utils/pathwayComponentUtils';
 
 export default class PathwayView extends Component {
   constructor(props) {

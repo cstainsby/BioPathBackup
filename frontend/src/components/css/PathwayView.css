@@ -1,3 +1,9 @@
+/* 
+    NAME: PathwayView.css
+    LAST_EDIT_BY: Cole S.
+    FILE_RESPONSIBILITY: 
+        This file will hold all css pertaining to the main pathway view containing all other components
+ */
 
 :root {
   --total-screen-size: 100vh;

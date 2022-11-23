@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component }  from 'react'; // added this for an error meesage
-import PathwayView from './views/PathwayView';
+import PathwayView from './components/PathwayView';
 
 function App() {
   return (

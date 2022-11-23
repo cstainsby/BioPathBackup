@@ -1,0 +1,13 @@
+/* 
+    NAME: ModelArea.css
+    LAST_EDIT_BY: Cole S.
+    FILE_RESPONSIBILITY: 
+        This file will hold all css pertaining to the model area which holds the react flow pathway
+ */
+
+.ModelArea {
+  height: inherit;
+  width: inherit;
+  display: flex;
+  background-color: rgba(0, 0, 255, 0.5);
+}

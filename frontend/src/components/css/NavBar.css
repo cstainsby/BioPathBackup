@@ -1,3 +1,10 @@
+/* 
+    NAME: NavBar.css
+    LAST_EDIT_BY: Cole S.
+    FILE_RESPONSIBILITY: 
+        This file will hold all css pertaining to the top NavBar 
+ */
+
 /* root variables used in style sheet */
 :root {
   --icon-radius: calc(75px * 0.4);

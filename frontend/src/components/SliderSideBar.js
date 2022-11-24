@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import "./SliderSideBar.css";
+import "./css/SliderSideBar.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 
@@ -14,9 +14,9 @@ export default class SliderSideBar extends Component {
   constructor(props) {
     super(props);
     
-    this.state = { // ask Cole what desc means
+    this.state = { 
       componentTitle: "title",    
-      componentDesc: "desc",
+      componentDescription: "description",
       titles: props.titles // needed for mapping dynamic list of cofactors
     }
   }
@@ -32,7 +32,7 @@ export default class SliderSideBar extends Component {
     return (
       <div className='SliderBar'>
         <h3>{ this.state.componentTitle }</h3>
-        <p>{ this.state.componentDesc }</p>
+        <p>{ this.state.componentDescription }</p>
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>

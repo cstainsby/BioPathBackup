@@ -9,10 +9,10 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 // import {nodes as initialnodes} from './simpleJSON';
-import { runConcentrations, run, run2 } from '../utils';
-import {buildFlow, buildNodes, generateNodes} from './simpleJSON';
+import { runConcentrations, run, run2 } from './utils/pathwayComponentUtils';
+import {buildFlow, buildNodes, generateNodes} from './utils/simpleJSON';
 
-import './indx.css';
+import './css/Restore.css';
 
 const flowKey = 'example-flow';
 

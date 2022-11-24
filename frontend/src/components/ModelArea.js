@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import './ModelArea.css'
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -8,13 +7,13 @@ import ReactFlow, {
   useEdgesState,
   addEdge,
 } from 'reactflow'
-import { run } from '../utils';
-// import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 
-import { buildFlow} from '../utils';
+import { run, buildFlow } from './utils/pathwayComponentUtils';
+// import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 import { getPathwayById } from '../requestLib/requests';
 import 'reactflow/dist/style.css';
-import './overview.css';
+import './css/ReactFlowArea.css';
+import './css/ModelArea.css'
 
 
 const UpdatableEdge = (props) => {

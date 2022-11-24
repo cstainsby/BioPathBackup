@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react'
-import './NavBar.css';
+import './css/NavBar.css';
 
 // import logos 
 import fileLogo from './../icons/folder.png';
@@ -207,6 +207,10 @@ class LoadPathwayModal extends Component {
     this.state = {
       pathways: []
     }
+
+    // loadButtonClicked() {
+    //   return
+    // }
 
     // get JSON data for pathways
     // including function here will force the modal to re-render

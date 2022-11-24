@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SliderSideBar from './SliderSideBar';
 
-import { findSliders} from '../utils';
+import { findSliders } from './utils/pathwayComponentUtils';
 
 
 

@@ -31,8 +31,8 @@ export default class SliderSideBar extends Component {
     
     return (
       <div className='SliderBar'>
-        <h3>{ this.state.componentTitle }</h3>
-        <p>{ this.state.componentDescription }</p>
+        {/* <h3>{ this.state.componentTitle }</h3>
+        <p>{ this.state.componentDescription }</p> */}
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
@@ -71,6 +71,7 @@ class Slider extends Component {
     */
     if (this.state.isShowing) {
       this.setState((state, props) => ({
+
         isShowing: false
       }));
     }
@@ -83,46 +84,48 @@ class Slider extends Component {
 
 
   render() {
-    const openSlider = 
-      <div className='card'>
+    const openHeader = 
+      <ul id='cardHeaderList'>
+       <li>
+          <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+            <img 
+              id='cardHeaderCaret' 
+              style={{
+                transform: "rotate(-90deg)"
+              }} 
+              src={dropdownLogo} />
+          </button>
+        </li>
+        <li><h4>{this.props.title}</h4></li>
+      </ul>
+
+    const closeHeader = 
+      <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
         <ul id='cardHeaderList'>
-          <li>
-            <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
-              <img id='cardHeaderCaretWhenOpen' src={dropdownLogo} />
-            </button>
-          </li>
+          <li><img id='cardHeaderCaret' src={dropdownLogo} /></li>
           <li><h4>{this.props.title}</h4></li>
         </ul>
-        <div className='sliderCardContents'>
-          <input type="range"
-            min={0.0}
-            step={0.1}
-            max={2.0}
-            onChange={(e) => this.handleChange(e.target.value)}
-            value={this.state.value}
-            />
-          <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
-        </div>
+      </button>
+
+    const cardContents = 
+      <div className='sliderCardContents'>
+        <input type="range"
+          min={0.0}
+          step={0.1}
+          max={2.0}
+          onChange={(e) => this.handleChange(e.target.value)}
+          value={this.state.value}
+          />
+        <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
       </div>
 
-    const closeSlider = 
-      <div className='card'>
-        <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
-          <ul id='cardHeaderList'>
-            <li><img id='cardHeaderCaretWhenClosed' src={dropdownLogo} /></li>
-            <li><h4>{this.props.title}</h4></li>
-          </ul>
-        </button>
+    const card = 
+      <div className='card' id='sliderCard'>
+        { this.state.isShowing ? openHeader : closeHeader}
+        { !this.state.isShowing ? cardContents : null }
       </div>
 
-    if (this.state.isShowing) {
-      return openSlider;
-    }
-
-    else {
-      // comment out return statement if you don't want it to show at all
-      return closeSlider;
-      }
+    return card;
   }
 }
 

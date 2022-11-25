@@ -39,13 +39,12 @@ export default class NavBar extends Component {
               {/* File Dropdown */}
               <li class="nav-item dropdown">
                 <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img id='navBarFileLogo' src={fileLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   File
                 </a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="#">Save</a></li>
                   <li><a class="dropdown-item" href="#">Save As</a></li>
-                  <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loadPathwayModal">Load</a></li>
+                  <li><a class="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
                   <li><a class="dropdown-item" href="#">New</a></li>
                   <li><a class="dropdown-item" href="#">Delete</a></li>
                 </ul>
@@ -54,7 +53,6 @@ export default class NavBar extends Component {
               {/* View Dropdown */}
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id='navBarViewLogo' src={viewLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   View
                 </a>
                 <ul class="dropdown-menu">
@@ -67,7 +65,6 @@ export default class NavBar extends Component {
               <li class="nav-item">
                 {/* <button type="button" >Help</button> */}
                 <a class="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">
-                  <img id='navBarHelpLogo' src={helpLogo} alt="Logo" width="30" height="24" className='d-inline-block align-text-top'/>
                   Help
                 </a>
               </li>
@@ -120,8 +117,7 @@ class UserSignInNavBarItem extends Component {
       //
       return (
         <div className='card'>
-          <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#signInModal">
-            <img src={userLogo} alt="Logo" width="30" height="24"/>
+          <button class="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
             Sign In
           </button>
         </div>

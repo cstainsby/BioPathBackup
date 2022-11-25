@@ -13,7 +13,9 @@ import { findMolecules, findSliders} from './utils/pathwayComponentUtils';
 export default class PathwayView extends Component {
   constructor(props) {
     super(props);
+
     const molecules_concentrations = findMolecules(); // a list of [[molecules], [baseConcentrations]]
+
     this.state = {
       // titles: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG'],
       titles: molecules_concentrations[0],
@@ -25,6 +27,7 @@ export default class PathwayView extends Component {
       reversibleSteps: [2],
       stopSteps: [5]
     }
+
     this.handleConcChange = this.handleConcChange.bind(this)
   }
 
@@ -69,9 +72,15 @@ export default class PathwayView extends Component {
          */}
         <div className="row" id="PathwayViewRow">
           <div className="col" id="ModelAreaCol">
-            {/* <Restore concentration={this.state.titles}/> */}
-          <ModelArea title={this.state.titles} stopSteps={this.state.stopSteps} concentration={this.state.concentrations} reversibleSteps={this.state.reversibleSteps} factorSteps={this.state.factorSteps} factors={this.state.factors}/>
+            <ModelArea 
+              title={this.state.titles} 
+              stopSteps={this.state.stopSteps} 
+              concentration={this.state.concentrations} 
+              reversibleSteps={this.state.reversibleSteps} 
+              factorSteps={this.state.factorSteps} 
+              factors={this.state.factors}/>
           </div>
+          
           <div className="col-md-auto" id="RightSideBarAreaCol">
             <RightSideBarArea onConcentrationChange={this.handleConcChange}/>
           </div>

@@ -47,6 +47,10 @@ export default class SliderSideBar extends Component {
 class Slider extends Component {
   constructor(props) {
     super(props);
+
+    this.eventTypeId = "Update Concentration Data";
+
+
     let {title, isShowing} = this.props
     if (isShowing === undefined) {
       this.state = {title: title, value: 1, isShowing: true};
@@ -124,6 +128,8 @@ class Slider extends Component {
         { this.state.isShowing ? openHeader : closeHeader}
         { !this.state.isShowing ? cardContents : null }
       </div>
+
+    
 
     return card;
   }

@@ -80,7 +80,7 @@ export default class PathwayView extends Component {
               factorSteps={this.state.factorSteps} 
               factors={this.state.factors}/>
           </div>
-          
+
           <div className="col-md-auto" id="RightSideBarAreaCol">
             <RightSideBarArea onConcentrationChange={this.handleConcChange}/>
           </div>
@@ -89,3 +89,4 @@ export default class PathwayView extends Component {
     )
   }
 }
+

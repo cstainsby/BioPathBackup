@@ -1,16 +1,16 @@
 
 
 
-class PathwayInteractiveComponent extends Component {
-  constructor(props) {
-    if(this.constructor === PathwayInteractiveComponent) {
-      throw new Error("Abstract PathwayInteractiveComponent cannot be instantiated directly");
-    }
+// class PathwayInteractiveComponent extends Component {
+//   constructor(props) {
+//     if(this.constructor === PathwayInteractiveComponent) {
+//       throw new Error("Abstract PathwayInteractiveComponent cannot be instantiated directly");
+//     }
     
-    this.eventTypeId = "";
-  }
+//     this.eventTypeId = "";
+//   }
 
-}
+// }
 
 
 // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ class PathwayInteractiveComponent extends Component {
 //    them (one to many) to any observers which rely on that data within
 //    the pathway
 // ----------------------------------------------------------------------
-class userInputInteractionList {
+export default class userInputInteractionList {
   constructor() {
     //-------------------------------------------------------------------
     // DEFINED TYPES:
@@ -32,8 +32,8 @@ class userInputInteractionList {
     //    YOU'RE DOING IT WRONG 
     //
     // List:
-    //  - "Update Concentration Data"
-    //  - "Load Pathway"
+    //  - "concentrationChange"
+    //  - "loadPathway"
     //
     // NOTE: this should be added to if more event types are needed
     //       as convention, their names should be what they return
@@ -42,7 +42,7 @@ class userInputInteractionList {
 
     // SUBSCRIBERS LIST 
     // this dictionary will map:
-    //  (eventType) : (eventHandler)
+    //  (eventType) : (eventHandlerFunction)
     // it will be used to make the conversion from a 
     this.observerMapping = {};
   }
@@ -55,37 +55,31 @@ class userInputInteractionList {
   //  its specific event where it can find said event which will handle 
   //  making the changes needed in the pathway
   postEvent(eventTypeId, jsonData) {
-   handlers = this.observerMapping[eventTypeId]
+    let handlers = this.observerMapping[eventTypeId]
 
-    if(handlers === null || handlers.length === 0) {
+    if(typeof handlers === "undefined") {
+      console.log("postEvent called with undefined handler");
+      return;
+    }
+    else if(handlers === null || handlers.length === 0) {
+      console.log("postEvent called but handlers are empty");
       return;
     }
     else {
-      handlers.array.forEach(handler => {
-        handler.handle(jsonData);
-      });
+      console.log("postEvent invoked for id: " + eventTypeId + " with JSON: " + jsonData);
+
+      for (const eventTypeIdKey of Object.keys(this.observerMapping)) {
+        console.log(eventTypeIdKey + " : " + this.observerMapping[eventTypeIdKey])
+
+        let handlerFunction = this.observerMapping[eventTypeIdKey]
+        handlerFunction(jsonData)
+      }
     }
   }
 
 
-  subscribe() {
-
+  subscribe(eventTypeId, eventHandlerFunction) {
+    if(eventTypeId in this.observerMapping) return;
+    else this.observerMapping[eventTypeId] = eventHandlerFunction;
   }
-
-  // attach an observer at the 
-  attachObserverAtIndex(index) {
-
-  }
-  
-  push() {
-
-  }
-  
-  remove(index) {
-    
-  }
-}
-
-class SliderEventHandler {
-  
 }

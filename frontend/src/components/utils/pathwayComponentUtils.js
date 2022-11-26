@@ -25,8 +25,7 @@ export function runConcentrations (concentrations, filled) {
 /* function that deals with reversible reaction
 */
 export function run (concentrations, reversibleSteps, factors, factorSteps) {
-    console.log(concentrations, reversibleSteps);
-    console.log(factors, factorSteps);
+    
     for (let i = 0; i < concentrations.length; i++) {
         if (factorSteps.includes(i)) { // dependent on cofactor
             if (i === 0) { // starting step
@@ -38,7 +37,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
             else if (i < concentrations.length - 1) { // middle steps
                 if (concentrations[i - 1] >= concentrations[i]) { // flows down
                     concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
-                    if (concentrations[i - 1] != 0) { // check if 0 because 0 already subtracted
+                    if (concentrations[i - 1] !== 0) { // check if 0 because 0 already subtracted
                         concentrations[i - 1] -= .01 * factors[factorSteps.indexOf(i)];
                     }
                 }
@@ -56,7 +55,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
             }
         }
         else {
-            if (i == 0) { // infinite first substrate
+            if (i === 0) { // infinite first substrate
                 concentrations[i] = concentrations[i] + .01;
             }
             else if (i < concentrations.length - 1) { // all must last substrate
@@ -81,7 +80,14 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
 export function buildFlow(pathway) {
     // these are mocked for testing fix later
     // const nodesJson = nodes
+    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") { 
+        console.log("buildFlow: Invalid pathway passed");
+        return;
+    }
+
     const nodesJson = generateNodes(pathway);
+
+
 
     var initialNodes = [];
     var initialEdges = [];
@@ -92,7 +98,7 @@ export function buildFlow(pathway) {
     var enzymes = [];
 
     for (let i = 0; i < nodesJson.length; i++) {
-        if (nodesJson[i].className == 'substrate') {
+        if (nodesJson[i].className === 'substrate') {
             substrates.push(nodesJson[i])
         }
         else {
@@ -106,10 +112,10 @@ export function buildFlow(pathway) {
         var productList = enzymes[i].data.products;
         for (const name of substrateList) {
             for (const substrate of nodesJson) {
-                if (substrate.data.title == name) {
+                if (substrate.data.title === name) {
                     initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: substrate.id, target: enzymes[i].id});
                     edgeId++; // update edgeId for next iteration
-                    if (enzymes[i].data.reversible == true) { // added data: substrate.data.title
+                    if (enzymes[i].data.reversible === true) { // added data: substrate.data.title
                         initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: enzymes[i].id, target: substrate.id});
                         edgeId++;
                     }
@@ -118,7 +124,7 @@ export function buildFlow(pathway) {
         }
         for (const name of productList) {
             for (const product of nodesJson) {
-                if (product.data.title == name) {
+                if (product.data.title === name) {
                     initialEdges.push({id: String(edgeId), data: product.data.title, animated: true, source: enzymes[i].id, target: product.id});
                     edgeId++; // update edgeId for next iteration
                 }
@@ -135,13 +141,19 @@ export function buildFlow(pathway) {
     pathwayData is the JSON that will be passed in from the API
 */
 export function generateNodes (pathway) {
+    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") { 
+        console.log("generateNodes: Invalid pathway passed");
+        return;
+    }
+
     var nodes = []
+    let newNode = null;
 
     // delete later
     // pathway = pathwayJson; // this is mocking the json that will be passed in
 
     for (let i = 0; i < pathway.enzymes.length; i++) {
-        var newNode = {
+        newNode = {
             id: String(i), 
             className: 'enzyme', 
             data: {
@@ -156,7 +168,7 @@ export function generateNodes (pathway) {
     }
     
     for (let i = 0; i < pathway.molecules.length; i++) {
-        var newNode = {
+        newNode = {
             id: String(i + pathway.enzymes.length), 
             className: 'substrate', 
             data: {

@@ -25,7 +25,7 @@ export default class SliderSideBar extends Component {
 
     const sliderItems = this.state.titles.map((title) => 
       <li>
-        <Slider title={title} onConcentrationChange={this.props.onConcentrationChange}/>
+        <Slider title={title} dataObserver={ this.props.dataObserver }/>
       </li>
     );
     
@@ -48,7 +48,7 @@ class Slider extends Component {
   constructor(props) {
     super(props);
 
-    this.eventTypeId = "Update Concentration Data";
+    this.eventTypeId = "concentrationChange";
 
 
     let {title, isShowing} = this.props
@@ -60,11 +60,18 @@ class Slider extends Component {
     }
   }
 
-  handleChange(e) {
+  handleSliderValueChange(e) {
     this.setState((state, props) => ({
       value: e
     }));
-    this.props.onConcentrationChange(e, this.state.title) // needed for passing state up
+
+    const jsonUpdateResponse = JSON.stringify({
+      title : this.state.title,
+      concentration : e
+    });
+
+    this.props.dataObserver.postEvent(this.eventTypeId, jsonUpdateResponse);
+    // this.props.onConcentrationChange(e, this.state.title) // needed for passing state up
   }
 
   handleClick(e) {
@@ -117,7 +124,7 @@ class Slider extends Component {
           min={0.0}
           step={0.1}
           max={2.0}
-          onChange={(e) => this.handleChange(e.target.value)}
+          onChange={(e) => this.handleSliderValueChange(e.target.value)}
           value={this.state.value}
           />
         <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}

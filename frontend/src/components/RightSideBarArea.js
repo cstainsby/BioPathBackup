@@ -28,36 +28,9 @@ export default class RightSideBarArea extends Component {
       <div id="RightSideBarArea">
         <SliderSideBar 
           titles={this.state.sliderNames}
-          onConcentrationChange={this.props.onConcentrationChange}
+          dataObserver={this.props.dataObserver}
         />
       </div>
     );
-  }
-}
-
-// ----------------------------------------------------------------------
-// userInputInteractionList
-//  This stack object will exclusivly deal in storing active rightSideBar
-//    Components which the user can currently interact with, it will have
-//    a function which can be used to get the current status of the bars
-//  It will be the interface the pathway model will use to interact with
-//    the user's input
-// ----------------------------------------------------------------------
-class userInputInteractionList {
-  constructor() {
-    this.dataInputs = [];
-  }
-
-  // attach an observer at the 
-  attachObserverAtIndex(index) {
-
-  }
-  
-  push() {
-
-  }
-  
-  remove(index) {
-    
   }
 }

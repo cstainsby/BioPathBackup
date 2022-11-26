@@ -8,7 +8,8 @@ import Restore from './Restore';
 import './css/PathwayView.css'
 
 // import { findMolecules, findSliders } from '../components/simpleJSON'; // maybe delete later
-import { findMolecules, findSliders} from './utils/pathwayComponentUtils';
+import { findMolecules, findSliders } from './utils/pathwayComponentUtils';
+import userInputInteractionList from './PathwayInteractiveComponent';
 
 export default class PathwayView extends Component {
   constructor(props) {
@@ -29,42 +30,59 @@ export default class PathwayView extends Component {
     }
 
     this.handleConcChange = this.handleConcChange.bind(this)
+
+    // setup observers for all inputs which affect the pathway 
+    //  this observer list will be passed into each of the non-modelArea 
+    //  components
+    this.pathwayUserInputSubList = new userInputInteractionList;
+    this.pathwayUserInputSubList.subscribe("concentrationChange", this.handleConcChange);
   }
 
   /* Function to change the concentration from an adjustment from a slider
       TODO: Change to handle dynamic titles based on what is received from api
       currently hard coded pretty hard but works
   */
-  handleConcChange(concentration, title){ //, title) {
-    for (let i = 0; i < this.state.concentrations.length; i++) {
-      if (this.state.titles[i] === title) {
-        var tempConcentrations = this.state.concentrations
-        var newConcentration = 10 * concentration
-        tempConcentrations[i] = newConcentration
-        this.setState((state, props) => ({
-          concentrations: tempConcentrations
-        }));
-      }
-    }
-    // this is for changing cofactor ratio
-    for (let i = 0; i < this.state.factors.length; i++) {
-      if (this.state.factorTitle[i] === title) {
-        console.log("test1", title);
-        var tempPercents = this.state.factors;
-        var newPercent = 1 * concentration;
-        tempPercents[i] = newPercent;
-        this.setState((state, props) => ({
-          factors: tempPercents
-        }));
-      }
-    }
+  handleConcChange(changesJson) { 
+    let changesObj = JSON.parse(changesJson);
+    let title = changesObj.title;
+    let concentration = changesObj.concentration;
+
+    console.log("handling concentration change: title: " + title + " concentration: " + concentration);
+
+    // this is where the issue is coming from
+
+    // for (let i = 0; i < this.state.concentrations.length; i++) {
+    //   if (this.state.titles[i] === title) {
+    //     var tempConcentrations = this.state.concentrations
+    //     var newConcentration = 10 * concentration
+
+    //     tempConcentrations[i] = newConcentration
+
+    //     this.setState((state, props) => ({
+    //       concentrations: tempConcentrations
+    //     }));
+    //   }
+    // }
+    // // this is for changing cofactor ratio
+    // for (let i = 0; i < this.state.factors.length; i++) {
+    //   if (this.state.factorTitle[i] === title) {
+        
+    //     var tempPercents = this.state.factors;
+    //     var newPercent = 1 * concentration;
+    //     tempPercents[i] = newPercent;
+
+    //     this.setState((state, props) => ({
+    //       factors: tempPercents
+    //     }));
+    //   }
+    // }
   }
 
   render() {
     return (
       <div className="container-fluid" id='MainView'>
         <div className="row" id="NavBarRow">
-          <NavBar />
+          <NavBar dataObserver={ this.pathwayUserInputSubList } />
         </div>
 
         {/* the pathway view, left, and right sidebar divs are going to 
@@ -82,7 +100,7 @@ export default class PathwayView extends Component {
           </div>
 
           <div className="col-md-auto" id="RightSideBarAreaCol">
-            <RightSideBarArea onConcentrationChange={this.handleConcChange}/>
+            <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
           </div>
         </div>
       </div>

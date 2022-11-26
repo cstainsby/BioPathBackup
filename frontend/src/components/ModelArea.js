@@ -24,9 +24,9 @@ const UpdatableEdge = (props) => {
 
   getPathwayById('1')
   .then(data => {
-    console.log(data);
+    // console.log(data);
     var inital = buildFlow(data);
-    console.log(inital[0], "ben")
+    // console.log(inital[0], "ben")
     setNodes(inital[0])
     setEdges(inital[1])
   });

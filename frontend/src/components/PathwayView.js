@@ -26,7 +26,8 @@ export default class PathwayView extends Component {
       factors: findSliders()[1], // represents the percent value from sliders
       factorSteps: [0],
       reversibleSteps: [2],
-      stopSteps: [5]
+      stopSteps: [5],
+      loadedPathway: null
     }
 
     this.handleConcChange = this.handleConcChange.bind(this)
@@ -36,6 +37,7 @@ export default class PathwayView extends Component {
     //  components
     this.pathwayUserInputSubList = new userInputInteractionList;
     this.pathwayUserInputSubList.subscribe("concentrationChange", this.handleConcChange);
+    this.pathwayUserInputSubList.subscribe("loadPathway", this.handlePathwayLoad);
   }
 
   /* Function to change the concentration from an adjustment from a slider
@@ -78,6 +80,14 @@ export default class PathwayView extends Component {
     // }
   }
 
+  handlePathwayLoad = (newPathwayJson) => {
+    console.log("handle pathway load: " + JSON.stringify(newPathwayJson));
+    
+    this.setState({
+      loadedPathway: newPathwayJson
+    });
+  }
+
   render() {
     return (
       <div className="container-fluid" id='MainView'>
@@ -96,7 +106,8 @@ export default class PathwayView extends Component {
               concentration={this.state.concentrations} 
               reversibleSteps={this.state.reversibleSteps} 
               factorSteps={this.state.factorSteps} 
-              factors={this.state.factors}/>
+              factors={this.state.factors}
+              pathwayJson={this.loadedPathway}/>
           </div>
 
           <div className="col-md-auto" id="RightSideBarAreaCol">

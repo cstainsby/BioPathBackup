@@ -80,7 +80,7 @@ export default class NavBar extends Component {
         {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
         <HelpModal/>
         <SignInModal/>
-        <LoadPathwayModal/>
+        <LoadPathwayModal dataObserver={ this.props.dataObserver }/>
       </nav>
     )
   }
@@ -200,13 +200,11 @@ class LoadPathwayModal extends Component {
   constructor(props) {
     super(props);
 
+    this.eventTypeId = "loadPathway";
+
     this.state = {
       pathways: []
     }
-
-    // loadButtonClicked() {
-    //   return
-    // }
 
     // get JSON data for pathways
     // including function here will force the modal to re-render
@@ -227,6 +225,15 @@ class LoadPathwayModal extends Component {
       });
   }
 
+
+  onPathwaySelected = (pathwayId) => {
+    console.log("load pathway button selected: " + pathwayId)
+    getPathwayById(pathwayId)
+    .then(data => {
+      this.props.dataObserver.postEvent(this.eventTypeId, data);
+    });
+  }
+
   buildPathwayCardsList() {
     // helper function which dynamically builds cards list containing each pathway for the user to choose from
     // NOTE the json Data should be in a list
@@ -242,7 +249,12 @@ class LoadPathwayModal extends Component {
                     <p>Created By { pathway.author } </p>
                   </div>
                   <div className="col-2" id=''>
-                    <button type="button" className="btn btn-primary">Load</button>
+                    <button 
+                      type="button" 
+                      className="btn btn-primary" 
+                      data-bs-dismiss="modal" 
+                      onClick={ (e) => this.onPathwaySelected(pathway.id, e) 
+                      }>Load</button>
                   </div>
                 </div>
               </div>

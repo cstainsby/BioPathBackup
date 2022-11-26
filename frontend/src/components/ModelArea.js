@@ -15,21 +15,23 @@ import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
 import './css/ModelArea.css'
 
-
-const UpdatableEdge = (props) => {
+const FlowModel = (props) => {
 
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   var [concentrations, setConcentrations] = useState(props.concentration);
 
-  getPathwayById('1')
-  .then(data => {
-    // console.log(data);
-    var inital = buildFlow(data);
-    // console.log(inital[0], "ben")
-    setNodes(inital[0])
-    setEdges(inital[1])
-  });
+  console.log("titles: " + props.title);
+  console.log("In flow Model: " + JSON.stringify(props.pathwayJson));
+  // if passed a pathwayJson through props, load it in 
+  if(typeof props.pathwayJson !== "undefined" && props.pathwayJson !== null) {
+    console.log("setting pathway in model Area")
+    let pathwayObj = JSON.parse(props.pathwayJson);
+    let flowDict = buildFlow(pathwayObj);
+
+    setNodes(flowDict["nodes"]);
+    setEdges(flowDict["edges"]);
+  }
 
   const [edgeName, setEdgeName] = useState(100);
 
@@ -77,4 +79,4 @@ const UpdatableEdge = (props) => {
   );
 };
 
-export default UpdatableEdge;
+export default FlowModel;

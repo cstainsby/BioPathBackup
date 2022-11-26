@@ -77,6 +77,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
 }
 
 
+// Build a flow model from pathway json
 export function buildFlow(pathway) {
     // these are mocked for testing fix later
     // const nodesJson = nodes
@@ -86,7 +87,6 @@ export function buildFlow(pathway) {
     }
 
     const nodesJson = generateNodes(pathway);
-
 
 
     var initialNodes = [];
@@ -132,7 +132,8 @@ export function buildFlow(pathway) {
         }
     }
 
-    return [initialNodes, initialEdges];
+    // MAKING CHANGE TO DICTIONARY LIKE THIS TO HELP READBILITY
+    return {"nodes": initialNodes, "edges": initialEdges};
 }
 
 /*

@@ -42,7 +42,7 @@ export default class userInputInteractionList {
 
     // SUBSCRIBERS LIST 
     // this dictionary will map:
-    //  (eventType) : (eventHandlerFunction)
+    //  (eventType) : [eventHandlerFunctions]
     // it will be used to make the conversion from a 
     this.observerMapping = {};
   }
@@ -67,19 +67,23 @@ export default class userInputInteractionList {
     }
     else {
       console.log("postEvent invoked for id: " + eventTypeId + " with JSON: " + jsonData);
+      console.log(this.observerMapping)
 
-      for (const eventTypeIdKey of Object.keys(this.observerMapping)) {
-        console.log(eventTypeIdKey + " : " + this.observerMapping[eventTypeIdKey])
+      let mappedToFunctions = this.observerMapping[eventTypeId];
 
-        let handlerFunction = this.observerMapping[eventTypeIdKey]
-        handlerFunction(jsonData)
+      for (const handlerFunction of mappedToFunctions) {
+          handlerFunction(jsonData)
       }
     }
   }
 
 
   subscribe(eventTypeId, eventHandlerFunction) {
-    if(eventTypeId in this.observerMapping) return;
-    else this.observerMapping[eventTypeId] = eventHandlerFunction;
+    if(eventTypeId in this.observerMapping){
+      this.observerMapping[eventTypeId].push(eventHandlerFunction);
+    }
+    else {
+      this.observerMapping[eventTypeId] = [eventHandlerFunction];
+    }
   }
 }

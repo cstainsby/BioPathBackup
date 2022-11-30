@@ -66,9 +66,6 @@ export default class userInputInteractionList {
       return;
     }
     else {
-      console.log("postEvent invoked for id: " + eventTypeId + " with JSON: " + jsonData);
-      console.log(this.observerMapping)
-
       let mappedToFunctions = this.observerMapping[eventTypeId];
 
       for (const handlerFunction of mappedToFunctions) {

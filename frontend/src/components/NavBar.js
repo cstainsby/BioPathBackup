@@ -200,8 +200,6 @@ class LoadPathwayModal extends Component {
   constructor(props) {
     super(props);
 
-    this.eventTypeId = "loadPathway";
-
     this.state = {
       pathways: []
     }
@@ -213,11 +211,8 @@ class LoadPathwayModal extends Component {
         // read list of pathways into a list for state
         let pathwayList = []
         for(let i = 0; i < data.length; ++i) {
-          console.log("at " + i + data[i].name)
           pathwayList.push(data[i]);
         }
-
-        console.log("data in render: " + JSON.stringify(data));
 
         this.setState({
           pathways: pathwayList
@@ -227,10 +222,9 @@ class LoadPathwayModal extends Component {
 
 
   onPathwaySelected = (pathwayId) => {
-    console.log("load pathway button selected: " + pathwayId)
     getPathwayById(pathwayId)
     .then(data => {
-      this.props.dataObserver.postEvent(this.eventTypeId, data);
+      this.props.dataObserver.postEvent("loadPathway", data);
     });
   }
 

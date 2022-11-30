@@ -19,53 +19,40 @@ const FlowModel = (props) => {
   const initialNodes = [];
   const initialEdges = [];
 
+  let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
   const [userInteractionList, setUserInteractionList] = useState(props.dataObserver)
 
-  const findMoleculesRes = findMolecules()
-  let [titles, setTitles] = useState(findMoleculesRes["molecules"]);
-  let [concentrations, setConcentrations] = useState(findMoleculesRes["concentrations"]);
+  let [titles, setTitles] = useState([]);
+  let [concentrations, setConcentrations] = useState([]);
 
-  let [factorTitle, setFactorTitle] = useState(findSliders()[0])
-  let [factors, setFactors] = useState(findSliders()[1]) // represents the percent value from sliders
+  let [factorTitle, setFactorTitle] = useState([]);
+  let [factors, setFactors] = useState([]); // represents the percent value from sliders
   let [factorSteps, setFactorSteps] = useState([0])
   let [reversibleSteps, setReversibleSteps] = useState([0])
   let [stopSteps, setStopSteps] = useState([0])
 
-  let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  // if passed a pathwayJson through props, load it in 
-  // if((typeof props.pathwayEdges !== "undefined" && props.pathwayEdges !== null)
-  //     && (typeof props.pathwayNodes !== "undefined" && props.pathwayNodes !== null)) {
-    
-  //   console.log("valid nodes and edges")
-  //   console.log("in flow model nodes: " + JSON.stringify(props.pathwayNodes));
-  //   console.log("in flow model edges: " + JSON.stringify(props.pathwayEdges));
-  //   nodes = props.pathwayNodes;
-  //   edges = props.pathwayEdges;
-  // }
-
   const [edgeName, setEdgeName] = useState(100);
 
-
   const [recievedElements, setRecievedElements] = useState();
-
-  // useEffect(() => {
-  //   setRecievedElements(elements)
-  // })
 
   // ------------------------------------------------------------------------
   //  onUserInput functions
   // ------------------------------------------------------------------------
   const handlePathwayLoad = (newPathwayJson) => {
-
-    let nodesAndEdgesDict = buildFlow(newPathwayJson)
-
-    console.log("in handle nodes: " + JSON.stringify(nodesAndEdgesDict["nodes"]));
-    console.log("in handle edges: " + JSON.stringify(nodesAndEdgesDict["edges"]));
+    let nodesAndEdgesDict = buildFlow(newPathwayJson);
     
     setNodes(nodesAndEdgesDict["nodes"]);
     setEdges(nodesAndEdgesDict["edges"]);
+
+    const findMoleculesRes = findMolecules(newPathwayJson);
+    setTitles(findMoleculesRes["molecules"]);
+    // setConcentrations(findMoleculesRes["concentrations"]); // running this will cause inifinite loop 
+    
+    const findSlidersRes = findSliders(newPathwayJson);
+    setFactorTitle(findSlidersRes["sliders"]);
+    setFactors(findSlidersRes["percent"]);
   }
   
   /* Function to change the concentration from an adjustment from a slider
@@ -73,13 +60,10 @@ const FlowModel = (props) => {
       currently hard coded pretty hard but works
   */
   const handleConcChange = (changesJson) => { 
+    console.log("handleConc change")
     let changesObj = JSON.parse(changesJson);
     let title = changesObj.title;
     let concentration = changesObj.concentration;
-
-    console.log("handling concentration change: title: " + title + " concentration: " + concentration);
-
-    // this is where the issue is coming from
 
     for (let i = 0; i < concentrations.length; i++) {
       if (titles[i] === title) {

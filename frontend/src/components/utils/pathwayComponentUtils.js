@@ -1,5 +1,3 @@
-import { pathwayJson } from "./simpleJSON";
-
 /* basic function where if concentration[i] greater than previous you subtract
 from i - 1 and add to i
 */
@@ -150,9 +148,6 @@ export function generateNodes (pathway) {
     var nodes = []
     let newNode = null;
 
-    // delete later
-    // pathway = pathwayJson; // this is mocking the json that will be passed in
-
     for (let i = 0; i < pathway.enzymes.length; i++) {
         newNode = {
             id: String(i), 
@@ -194,9 +189,6 @@ export function findSliders(pathwayData) {
     var sliders = []; // list of cofactors extracted from pathway JSON
     var percent = []; // new
 
-    // delete later
-    pathwayData = pathwayJson; // this is mocking the json that will be passed in
-
     for (let i = 0; i < pathwayData.enzymes.length; i++) {
         if (pathwayData.enzymes[i].cofactors.length > 0) { // if cofactor exists
             for (const cofactor of pathwayData.enzymes[i].cofactors) { // add each cofactor
@@ -210,8 +202,11 @@ export function findSliders(pathwayData) {
             }
         }
     }
-
-    return [sliders, percent];
+    
+    return {
+        "sliders": sliders,
+        "percent": percent
+    };
 }
 
 
@@ -227,9 +222,6 @@ export function findSliders(pathwayData) {
 export function findMolecules(pathwayData, baseConcentration=10) {
     var molecules = [];
     var concentrations = [];
-
-    // delete later
-    pathwayData = pathwayJson; // this is mocking the json that will be passed in
 
     for (let i = 0; i < pathwayData.molecules.length; i++) {
         // probably need to add some error checking like a molecule without name

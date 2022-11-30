@@ -7,7 +7,7 @@ import RightSideBarArea from './RightSideBarArea';
 import Restore from './Restore';
 import './css/PathwayView.css'
 
-// import { findMolecules, findSliders } from '../components/simpleJSON'; // maybe delete later
+
 import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
 

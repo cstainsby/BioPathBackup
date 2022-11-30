@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import "./css/SliderSideBar.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
+import { findSliders } from "./utils/pathwayComponentUtils"
 
 
 // ----------------------------------------------------------------------
@@ -13,12 +14,22 @@ import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 export default class SliderSideBar extends Component {
   constructor(props) {
     super(props);
+
+    this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway)
     
     this.state = { 
       componentTitle: "title",    
       componentDescription: "description",
-      titles: props.titles // needed for mapping dynamic list of cofactors
+      titles: [] // needed for mapping dynamic list of cofactors
     }
+  }
+
+  handleLoadNewPathway = (pathwayJson) => {
+    const newTitles = findSliders(pathwayJson)["sliders"];
+    
+    this.setState({
+      titles: newTitles
+    });
   }
 
   render() {
@@ -48,9 +59,6 @@ class Slider extends Component {
   constructor(props) {
     super(props);
 
-    this.eventTypeId = "concentrationChange";
-
-
     let {title, isShowing} = this.props
     if (isShowing === undefined) {
       this.state = {title: title, value: 1, isShowing: true};
@@ -70,8 +78,7 @@ class Slider extends Component {
       concentration : e
     });
 
-    this.props.dataObserver.postEvent(this.eventTypeId, jsonUpdateResponse);
-    // this.props.onConcentrationChange(e, this.state.title) // needed for passing state up
+    this.props.dataObserver.postEvent("concentrationChange", jsonUpdateResponse);
   }
 
   handleClick(e) {

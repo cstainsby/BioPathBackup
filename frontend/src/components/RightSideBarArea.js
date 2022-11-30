@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import SliderSideBar from './SliderSideBar';
 
-import { findSliders } from './utils/pathwayComponentUtils';
-
 
 
 // ----------------------------------------------------------------------
@@ -15,7 +13,6 @@ export default class RightSideBarArea extends Component {
     super(props);
     this.state = {
       title: 'Factor Molecules',
-      sliderNames: findSliders()[0]
       // used for testing delete later
       // sliderNames: ['Glucose', 'G6P', 'F6P', 'F1,6BP', 'DHAP', 'GH3P', '1,3BPG']
     }
@@ -27,7 +24,6 @@ export default class RightSideBarArea extends Component {
     return (
       <div id="RightSideBarArea">
         <SliderSideBar 
-          titles={this.state.sliderNames}
           dataObserver={this.props.dataObserver}
         />
       </div>

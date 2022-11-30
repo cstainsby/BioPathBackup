@@ -238,5 +238,8 @@ export function findMolecules(pathwayData, baseConcentration=10) {
         concentrations.push(baseConcentration);
     }
 
-    return [molecules, concentrations];
+    return {
+        "molecules": molecules, 
+        "concentrations": concentrations
+    };
 }

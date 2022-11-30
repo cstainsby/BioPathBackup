@@ -44,7 +44,8 @@
 #RightSideBarAreaCol {
   /* maybe in the future make fit-content */
   width: var(--right-side-bar-width);
-  /* border-style: solid; */
+  border-left: solid grey 2px;
+  padding: 4px;
 }
 
 /* column in pathwayViewRow which holds the main reaction view */

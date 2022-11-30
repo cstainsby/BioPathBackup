@@ -241,28 +241,16 @@ class LoadPathwayModal extends Component {
       return (
         <li id='loadPathwayListItem'>
           <div className="card">
-            <div className="card-body">
+            <div className="card-body" id="loadPathwaySelect" data-bs-dismiss="modal" onClick={ (e) => this.onPathwaySelected(pathway.id, e)} >
               <div className="container text-center">
-                <div className="row">
-                  <div className="col-8">
-                    <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
-                    <p>Created By { pathway.author } </p>
-                  </div>
-                  <div className="col-2" id=''>
-                    <button 
-                      type="button" 
-                      className="btn btn-primary" 
-                      data-bs-dismiss="modal" 
-                      onClick={ (e) => this.onPathwaySelected(pathway.id, e) 
-                      }>Load</button>
-                  </div>
-                </div>
+                <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+                <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
               </div>
             </div>
           </div>
         </li>);
     });
-    let finalCardListHtml = <ul>{ pathwayListHtml }</ul>;
+    let finalCardListHtml = <ul id="loadPathwayList">{ pathwayListHtml }</ul>;
     
     return finalCardListHtml;
   }
@@ -270,10 +258,10 @@ class LoadPathwayModal extends Component {
   render() {
     return (
       <div className="modal fade" id="loadPathwayModal" tabIndex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-xl modal-dialog-scrollable">
+        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Load In Pathway</h1>
+              <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Open</h1>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">

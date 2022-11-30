@@ -17,23 +17,33 @@ import './css/ModelArea.css'
 
 const FlowModel = (props) => {
 
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const initialNodes = [];
+  const initialEdges = [];
+
+  let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   var [concentrations, setConcentrations] = useState(props.concentration);
 
-  console.log("titles: " + props.title);
-  console.log("In flow Model: " + JSON.stringify(props.pathwayJson));
   // if passed a pathwayJson through props, load it in 
-  if(typeof props.pathwayJson !== "undefined" && props.pathwayJson !== null) {
-    console.log("setting pathway in model Area")
-    let pathwayObj = JSON.parse(props.pathwayJson);
-    let flowDict = buildFlow(pathwayObj);
-
-    setNodes(flowDict["nodes"]);
-    setEdges(flowDict["edges"]);
+  if((typeof props.pathwayEdges !== "undefined" && props.pathwayEdges !== null)
+      && (typeof props.pathwayNodes !== "undefined" && props.pathwayNodes !== null)) {
+    
+    console.log("valid nodes and edges")
+    console.log("in flow model nodes: " + JSON.stringify(props.pathwayNodes));
+    console.log("in flow model edges: " + JSON.stringify(props.pathwayEdges));
+    nodes = props.pathwayNodes;
+    edges = props.pathwayEdges;
   }
 
   const [edgeName, setEdgeName] = useState(100);
+
+
+  const [recievedElements, setRecievedElements] = useState();
+
+  // useEffect(() => {
+  //   setRecievedElements(elements)
+  // })
+  
 
   const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
@@ -61,7 +71,7 @@ const FlowModel = (props) => {
     );
   }, [props.factors[0], props.factors[1], concentrations[0], setEdges]);
 
-  return (
+  return ( 
     <div className='ModelArea'>
       <ReactFlow
         nodes={nodes}

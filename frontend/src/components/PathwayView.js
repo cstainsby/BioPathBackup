@@ -8,7 +8,7 @@ import Restore from './Restore';
 import './css/PathwayView.css'
 
 // import { findMolecules, findSliders } from '../components/simpleJSON'; // maybe delete later
-import { findMolecules, findSliders } from './utils/pathwayComponentUtils';
+import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
 
 export default class PathwayView extends Component {
@@ -26,11 +26,10 @@ export default class PathwayView extends Component {
       factors: findSliders()[1], // represents the percent value from sliders
       factorSteps: [0],
       reversibleSteps: [2],
-      stopSteps: [5],
-      loadedPathway: null
+      stopSteps: [5]
     }
 
-    this.handleConcChange = this.handleConcChange.bind(this)
+    // this.handleConcChange = this.handleConcChange.bind(this)
 
     // setup observers for all inputs which affect the pathway 
     //  this observer list will be passed into each of the non-modelArea 
@@ -81,10 +80,21 @@ export default class PathwayView extends Component {
   }
 
   handlePathwayLoad = (newPathwayJson) => {
+    console.log("handle type: " + typeof JSON.stringify(newPathwayJson))
     console.log("handle pathway load: " + JSON.stringify(newPathwayJson));
+    console.log(newPathwayJson["enzymes"])
+
+    // let newPathwayObj = JSON.parse(newPathwayJson);
+    // console.log("handle pathway load: " + newPathwayJson);
+
+    let nodesAndEdgesDict = buildFlow(newPathwayJson)
+
+    console.log("in handle nodes: " + JSON.stringify(nodesAndEdgesDict["nodes"]));
+    console.log("in handle edges: " + JSON.stringify(nodesAndEdgesDict["edges"]));
     
     this.setState({
-      loadedPathway: newPathwayJson
+      pathwayEdges: nodesAndEdgesDict["edges"],
+      pathwayNodes: nodesAndEdgesDict["nodes"]
     });
   }
 
@@ -107,7 +117,8 @@ export default class PathwayView extends Component {
               reversibleSteps={this.state.reversibleSteps} 
               factorSteps={this.state.factorSteps} 
               factors={this.state.factors}
-              pathwayJson={this.loadedPathway}/>
+              pathwayEdges={this.state.pathwayEdges}
+              pathwayNodes={this.state.pathwayNodes}/>
           </div>
 
           <div className="col-md-auto" id="RightSideBarAreaCol">

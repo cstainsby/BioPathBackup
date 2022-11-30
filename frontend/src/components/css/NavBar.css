@@ -5,135 +5,29 @@
         This file will hold all css pertaining to the top NavBar 
  */
 
-/* root variables used in style sheet */
-:root {
-  --icon-radius: calc(75px * 0.4);
 
-  /* start at 10 to give pathway view enough indices to work with*/
-  --navbar-base-z-index-level: 10;
+#loadPathwayList {
+  padding-left: 0px;
 }
-
 
 #loadPathwayListItem {
   list-style-type: none;
 }
 
-.navBarHelpLogo {
-  margin-right: 4px;
+#loadPathwaySelect {
+  margin: 0px;
+  padding: 8px;
 }
 
-/* div holding all navbar elements */
-.NavBar {
-  transform: translateX(-45%);
-  z-index: var(--navbar-base-z-index-level);
-  display: inline-block;
-}
-
-/* the ul holding all navigation elements */
-.NavBarList {
-  max-width: 100%;
-  height: 100%;
-  display: flex; /* make display flexible */
-  justify-content: flex-start; /* sends items to given side */ 
-  margin-top: 0px;
-  margin-bottom: 0px;
-  margin-right: 16px;
-}
-
-/* li item which fills NavBarNav, each item holds the contents of a button */
-.navItem {
-  display: flex;
-  align-items: center; /* push items in the nav list to the center */ 
-  justify-content: center;
-  margin: 16px;
-}
-
-/* Link to another page, or to dropdown, depending on what children were passed in, <a> */
-.navIconButton {
-  padding: 3px;
-  margin: 2px;
-  display: flex;
-  justify-content: center;
-  border-radius: 15px;
-  background-color: lightgray;
-  text-decoration: none;;
-}
-/* when hovering over a button give visual indication */
-.navIconButton:hover {
+#loadPathwaySelect:hover {
   background-color: grey;
 }
 
-/* Name of button <p> */
-.navIconButtonName {
-  padding-left: 8px;
-  margin-right: 8px;
-  color: black;
+.loadPathwayListTitle {
+  text-align: left;
 }
 
-/* image attached to each button <img> */
-.navIconButtonImg {
-  margin: 12px;
-  max-width: var(--icon-radius);
-  max-height: var(--icon-radius);
-  /* border-radius: 90%; */
-}
-
-/* caret image displayed for any button with a dropdown, <img> */
-.navIconButtonDropImg {
-  margin: 12px;
-  max-width: var(--icon-radius);
-  max-height: var(--icon-radius);
-}
-
-/* menu displayed when click on button with dropdown attached <div>*/
-.dropdownMenu {
-  position: absolute;
-  top: 58px;
-  width: 300px;
-  transform: translateX(25%);
-  border: solid;
-  border-radius: 8px;
-  padding: 1rem;
-  overflow: hidden;
-  background-color: white;
-  
-  /* dropdowns should be > one level above the base dropdown */
-  z-index: calc(var(--navbar-base-z-index-level) + 1); 
-}
-
-/* list of all children links in dropdown list, <ul> */
-.dropdownMenuList {
-  list-style-type: none;
-  width: 100%;
-  margin-left: 0px;
-  padding-left: 0px;
-  align-items: center;
-  justify-content: center;
-}
-
-/* list item of each dropdown item <li> */
-.dropdownItem {
-  width: 100%;
-  display: flex;
-}
-
-/* contents of dropdown item inside each list item <div> */
-.dropdownItemContents {
-  width: 300px;
-  height: 50px;
-  align-items: flex-start;
-  justify-content: center;
-  border-radius: 3%;
-}
-/* show visual cue for when hovering over dropdown item */
-.dropdownItemContents:hover {
-  background-color: grey;
-}
-
-.dropdownItemLink {
-  text-decoration: none;;
-}
-
-.dropdownItemLabel {
-  color: black;
+.loadPathwayListAuthor {
+  text-align: left;
+  padding-left: 16px;
 }

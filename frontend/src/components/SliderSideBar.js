@@ -7,7 +7,7 @@ import { findSliders } from "./utils/pathwayComponentUtils"
 
 // ----------------------------------------------------------------------
 // SliderBar
-//  This component when rendered will be a LeftSideBar component
+//  This component when rendered will be a RightSideBar component
 //  where it will have control over the rates of reactions for the 
 //  pathway currently being rendered 
 // ----------------------------------------------------------------------
@@ -15,18 +15,25 @@ export default class SliderSideBar extends Component {
   constructor(props) {
     super(props);
 
-    this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway)
+    this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway);
     
+
     this.state = { 
-      componentTitle: "title",    
-      componentDescription: "description",
-      titles: [] // needed for mapping dynamic list of cofactors
+      componentTitle: props.title,    
+      componentDescription: props.description,
+
+      // needed for mapping dynamic list of cofactors
+      titles: JSON.parse(window.localStorage.getItem("SliderSideBarTitles").split(",")) || []
     }
+    console.log("retrieved: " + JSON.parse(window.localStorage.getItem("SliderSideBarTitles")))
+    // console.log("of type " + typewindow.localStorage.getItem("SliderSideBarTitles")) 
   }
 
   handleLoadNewPathway = (pathwayJson) => {
     const newTitles = findSliders(pathwayJson)["sliders"];
     
+    window.localStorage.setItem("SliderSideBarTitles", JSON.stringify(newTitles));
+    console.log("Push to local storage " + JSON.stringify(newTitles))
     this.setState({
       titles: newTitles
     });

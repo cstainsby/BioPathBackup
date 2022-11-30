@@ -1,3 +1,5 @@
+import { Component } from 'react';
+
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
   MiniMap,
@@ -41,8 +43,11 @@ const FlowModel = (props) => {
   //  onUserInput functions
   // ------------------------------------------------------------------------
   const handlePathwayLoad = (newPathwayJson) => {
+    // TODO: build checks for correct JSON 
+    //  should be able to pass in empty JSON to "exit" 
+    //  if any component below is missing exit and say something is missing
+
     let nodesAndEdgesDict = buildFlow(newPathwayJson);
-    
     setNodes(nodesAndEdgesDict["nodes"]);
     setEdges(nodesAndEdgesDict["edges"]);
 
@@ -53,6 +58,10 @@ const FlowModel = (props) => {
     const findSlidersRes = findSliders(newPathwayJson);
     setFactorTitle(findSlidersRes["sliders"]);
     setFactors(findSlidersRes["percent"]);
+
+    // save all of these elements to local storage in case of refresh
+    //  will reload with it
+    window.localStorage.setItem("pathwayState", JSON.stringify(newPathwayJson));
   }
   
   /* Function to change the concentration from an adjustment from a slider
@@ -93,6 +102,15 @@ const FlowModel = (props) => {
     if(constructorHasRun) return; // block if constructor has already been run
     userInteractionList.subscribe("concentrationChange", handleConcChange);
     userInteractionList.subscribe("loadPathway", handlePathwayLoad);
+
+    // i
+    const localPathway = window.localStorage.getItem("pathwayState");
+    console.log("local pathway: " + localPathway);
+    console.log(typeof localPathway)
+    if(localPathway) {
+      console.log("loading in pathway from local store")
+      handlePathwayLoad(JSON.parse(localPathway));
+    }
 
     setConstructorHasRun(true);
   }
@@ -142,5 +160,23 @@ const FlowModel = (props) => {
     </div>
   );
 };
+
+class FlowModelPopup extends Component {
+  constructor(props) {
+    
+    this.state = {
+      visible: false
+    }
+  }
+
+  render() {
+
+    return (
+      <div>
+
+      </div>
+    );
+  }
+}
 
 export default FlowModel;

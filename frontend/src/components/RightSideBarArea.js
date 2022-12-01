@@ -50,7 +50,7 @@ export default class RightSideBarArea extends Component {
     return (
       <div id="RightSideBarArea">
         { (this.state.title !== "") && (
-          <div id="RightSideBarHeader" className='card text-start'>
+          <div id="RightSideBarPathwayDisplay">
             <ul id='RightSideBarList'>
               <li><img src={ menuLogo } width="30" height="auto" className='growButton'></img></li>
               <li><h2 id='PathwayTitle'>{ this.state.title }</h2></li>

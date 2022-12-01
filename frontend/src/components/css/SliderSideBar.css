@@ -9,6 +9,11 @@
 /* ------------------------------------------------------- */
 /* Slider Siderbar Compnent css */
 /* ------------------------------------------------------- */
+.sliderBar {
+  margin: 8px;
+  margin-top: 4px;
+}
+
 .sliderBarList {
   list-style-type: none;
   /* margin-left: 4px; */
@@ -17,6 +22,11 @@
 }
 .sliderBarList > li {
   margin: 8px;
+}
+
+#sliderComponentTitle {
+  padding: 8px;
+  margin: 0px;
 }
 
 /* ------------------------------------------------------- */
@@ -49,4 +59,8 @@
 #cardHeaderCaret {
   max-width: 20px;
   height: auto;
+}
+
+.sliderCardContents {
+  margin-left: 16px;
 }

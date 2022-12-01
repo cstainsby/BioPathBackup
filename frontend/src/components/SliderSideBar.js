@@ -44,15 +44,15 @@ export default class SliderSideBar extends Component {
   render() {
 
     const sliderItems = this.state.titles.map((title) => 
-      <li className='growCard'>
+      <li>
         <Slider title={title} dataObserver={ this.props.dataObserver }/>
       </li>
     );
     
     return (
-      <div className='SliderBar'>
-        {/* <h3>{ this.state.componentTitle }</h3>
-        <p>{ this.state.componentDescription }</p> */}
+      <div className='card sliderBar text-start'>
+        <h3 id="sliderComponentTitle">{ this.state.componentTitle }</h3>
+        { (this.state.componentDescription != "") && <p>{ this.state.componentDescription }</p> }
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
@@ -117,9 +117,6 @@ class Slider extends Component {
           <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
             <img 
               id='cardHeaderCaret' 
-              style={{
-                transform: "rotate(-90deg)"
-              }} 
               src={dropdownLogo} />
           </button>
         </li>
@@ -129,7 +126,7 @@ class Slider extends Component {
     const closeHeader = 
       <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
         <ul id='cardHeaderList'>
-          <li><img id='cardHeaderCaret' src={dropdownLogo} /></li>
+          <li><img id='cardHeaderCaret' src={dropdownLogo} style={{ transform: "rotate(-90deg)"}}  /></li>
           <li><h4>{this.props.title}</h4></li>
         </ul>
       </button>
@@ -147,7 +144,7 @@ class Slider extends Component {
       </div>
 
     const card = 
-      <div className='card' id='sliderCard'>
+      <div className='card growCard' id='sliderCard'>
         { !this.state.isShowing ? openHeader : closeHeader}
         { !this.state.isShowing ? cardContents : null }
       </div>

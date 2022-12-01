@@ -1,5 +1,7 @@
 import React, { Component, useState } from 'react'
+
 import './css/NavBar.css';
+import "./css/stylesheet.css";
 
 // import logos 
 import fileLogo from './../icons/folder.png';
@@ -233,7 +235,7 @@ class LoadPathwayModal extends Component {
     // NOTE the json Data should be in a list
     let pathwayListHtml = this.state.pathways.map((pathway) => {
       return (
-        <li id='loadPathwayListItem'>
+        <li id='loadPathwayListItem' className='growCard'>
           <div className="card">
             <div className="card-body" id="loadPathwaySelect" data-bs-dismiss="modal" onClick={ (e) => this.onPathwaySelected(pathway.id, e)} >
               <div className="container text-center">

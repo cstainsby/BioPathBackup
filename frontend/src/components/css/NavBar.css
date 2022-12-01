@@ -12,15 +12,12 @@
 
 #loadPathwayListItem {
   list-style-type: none;
+  margin: 8px;
 }
 
 #loadPathwaySelect {
   margin: 0px;
-  padding: 8px;
-}
-
-#loadPathwaySelect:hover {
-  background-color: grey;
+  padding: 4px;
 }
 
 .loadPathwayListTitle {

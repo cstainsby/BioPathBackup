@@ -109,6 +109,83 @@
           "y": 300
         }
       ]
+    },
+    {
+      "id": "2",
+      "name": "Citric Acid Cycle",
+      "author": "Admin",
+      "link": "https://proteopedia.org/wiki/index.php/Glycolysis",
+      "public": true,
+      "enzymes": [
+        {
+          "name": "Citrate synthase",
+          "image": "path/to/image",
+          "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+          "author": "Admin",
+          "public": true,
+          "reversible": false,
+          "x": 0,
+          "y": 100,
+          "substrates": [
+            "Puruvate",
+            "Acetyl-CoA"
+          ],
+          "products": [
+            "Citrate",
+            "CoA"
+          ],
+          "cofactors": []
+        },
+        {
+          "name": "Isocitrate dehydrogenase",
+          "image": "path/to/image",
+          "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
+          "author": "Admin",
+          "public": true,
+          "reversible": false,
+          "x": 0,
+          "y": 500,
+          "substrates": [
+            "Citrate"
+          ],
+          "products": [
+            "Citrate"
+          ],
+          "cofactors": ["NADH"]
+        }
+      ],
+      "molecules": [
+        {
+          "name": "Puruvate",
+          "ball_and_stick_image": "path/to/image",
+          "space_filling_image": "path/to/image",
+          "link": "https://en.wikipedia.org/wiki/Glucose",
+          "author": "Admin",
+          "public": true,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "name": "Acetyl-CoA",
+          "ball_and_stick_image": "path/to/image",
+          "space_filling_image": "path/to/image",
+          "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+          "author": "Admin",
+          "public": true,
+          "x": 200,
+          "y": 0
+        },
+        {
+          "name": "Citrate",
+          "ball_and_stick_image": "path/to/image",
+          "space_filling_image": "path/to/image",
+          "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+          "author": "Admin",
+          "public": true,
+          "x": 0,
+          "y": 300
+        }
+      ]
     }
   ]
 }

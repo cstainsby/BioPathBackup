@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+
 import "./css/SliderSideBar.css";
+import "./css/stylesheet.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 import { findSliders } from "./utils/pathwayComponentUtils"
@@ -42,7 +44,7 @@ export default class SliderSideBar extends Component {
   render() {
 
     const sliderItems = this.state.titles.map((title) => 
-      <li>
+      <li className='growCard'>
         <Slider title={title} dataObserver={ this.props.dataObserver }/>
       </li>
     );
@@ -146,7 +148,7 @@ class Slider extends Component {
 
     const card = 
       <div className='card' id='sliderCard'>
-        { this.state.isShowing ? openHeader : closeHeader}
+        { !this.state.isShowing ? openHeader : closeHeader}
         { !this.state.isShowing ? cardContents : null }
       </div>
 

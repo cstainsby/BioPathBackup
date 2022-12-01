@@ -1,24 +1,24 @@
-name: AWS Deployment
+# name: AWS Deployment
 
-# when we merge a pull request into the main branch this file will be run
-on:
-  push:
-    branches: [main]
+# # when we merge a pull request into the main branch this file will be run
+# on:
+#   push:
+#     branches: [main]
 
 
-jobs:
-  BuildDockerImages:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      # - run: |
-      #   docker build -t biopath_frontend:frontend_latest ./frontend/
-      #   docker build -t biopath_backend:backend_latest ./backend/
-      #   aws ecr get-login-password --region us-west-2 \
-      #     | docker login \
-      #       --username AWS \
-      #       --password-stdin <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com
-      #   docker tag 
+# jobs:
+#   BuildDockerImages:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       # - run: |
+#       #   docker build -t biopath_frontend:frontend_latest ./frontend/
+#       #   docker build -t biopath_backend:backend_latest ./backend/
+#       #   aws ecr get-login-password --region us-west-2 \
+#       #     | docker login \
+#       #       --username AWS \
+#       #       --password-stdin <aws_account_id>.dkr.ecr.us-west-2.amazonaws.com
+#       #   docker tag 
 
         
 

@@ -243,12 +243,14 @@ class LoadPathwayModal extends Component {
       return (
         <li id='loadPathwayListItem' className='growCard'>
           <div className="card">
-            <div className="card-body" id="loadPathwaySelect" data-bs-dismiss="modal" onClick={ (e) => this.onPathwaySelected(pathway.id, e)} >
-              <div className="container text-center">
-                <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
-                <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
+            <button id="loadPathwaySelect" onClick={ (e) => this.onPathwaySelected(pathway.id, e)}>
+              <div className="card-body" data-bs-dismiss="modal">
+                <div className="container text-center">
+                  <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+                  <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
+                </div>
               </div>
-            </div>
+            </button>
           </div>
         </li>);
     });

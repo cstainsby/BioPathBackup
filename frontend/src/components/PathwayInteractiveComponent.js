@@ -34,6 +34,7 @@ export default class userInputInteractionList {
     // List:
     //  - "concentrationChange"
     //  - "loadPathway"
+    //  - "closePathway"
     //
     // NOTE: this should be added to if more event types are needed
     //       as convention, their names should be what they return

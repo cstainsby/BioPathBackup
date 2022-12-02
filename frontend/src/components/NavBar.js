@@ -26,6 +26,11 @@ export default class NavBar extends Component {
     super(props);
   }
 
+  // onPathwayCloseButtonClick = () => {
+  //   console.log("close pathway Fired");
+  //   this.props.dataObserver.postEvent("closePathway");
+  // }
+
 
   // this render function holds the main html structure for the entire navbar 
   render() {
@@ -46,9 +51,11 @@ export default class NavBar extends Component {
                 <ul className="dropdown-menu">
                   <li><a className="dropdown-item" href="#">Save</a></li>
                   <li><a className="dropdown-item" href="#">Save As</a></li>
+                  <li><hr class="dropdown-divider"/></li>
                   <li><a className="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
                   <li><a className="dropdown-item" href="#">New</a></li>
-                  <li><a className="dropdown-item" href="#">Delete</a></li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li><a className="dropdown-item" href="#">Close</a></li>
                 </ul>
               </li>
 
@@ -221,7 +228,6 @@ class LoadPathwayModal extends Component {
         })
       });
   }
-
 
   onPathwaySelected = (pathwayId) => {
     getPathwayById(pathwayId)

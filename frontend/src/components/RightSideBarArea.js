@@ -23,6 +23,7 @@ export default class RightSideBarArea extends Component {
     };
 
     this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway);
+    // this.props.dataObserver.subscribe("closePathway", this.handleCloseCurrentPathway);
   }
 
   handleLoadNewPathway = (pathwayJson) => {
@@ -33,6 +34,17 @@ export default class RightSideBarArea extends Component {
       title: newTitle
     });
   }
+
+  // handleCloseCurrentPathway = () => {
+  //   // the pathway Json should be ignored, will be empty anyways
+  //   console.log("close pathway right side bar")
+  //   const newTitle = "";
+  //   window.localStorage.setItem("RightSideBarTitle", newTitle);
+    
+  //   this.setState({
+  //     title: newTitle
+  //   });
+  // }
 
   // handleChangeSideBarToggle = () => {
   //   const isOpenState = !this.state.isOpen;

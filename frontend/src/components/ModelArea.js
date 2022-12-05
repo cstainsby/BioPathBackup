@@ -11,6 +11,8 @@ import ReactFlow, {
   addEdge,
 } from 'reactflow'
 
+import SliderSideBar  from "./SliderSideBar";
+
 import { run, buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 // import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 import { getPathwayById } from '../requestLib/requests';
@@ -18,15 +20,23 @@ import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
 import './css/ModelArea.css'
 
+import boogyImg from "../images/boogy.PNG"
+
+import './css/RightSideBarArea.css';
+
 
 const FlowModel = (props) => {
+
+  let [isPathwayCurrentlyLoaded, setIsPathwayCurrentlyLoaded] = useState(false);
+  let [pathwayTitle, setPathwayTitle] = useState("");
+  let [pathwayDescription, setPathwayDescription] = useState("");
+  let [pathwayAuthor, setPathwayAuthor] = useState("");
+
   const initialNodes = [];
   const initialEdges = [];
 
   let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const [userInteractionList, setUserInteractionList] = useState(props.dataObserver)
 
   let [titles, setTitles] = useState([]);
   let [concentrations, setConcentrations] = useState([]);
@@ -64,6 +74,13 @@ const FlowModel = (props) => {
   // ------------------------------------------------------------------------
 
   const handlePathwayOpen = (data) => {
+    console.log("handle pathway load: " + JSON.stringify(data))
+    setIsPathwayCurrentlyLoaded(true);
+
+    setPathwayTitle(data["name"]);
+    setPathwayDescription("about the pathway");
+    setPathwayAuthor(data["author"]);
+
     let nodesAndEdgesDict = buildFlow(data);
     setNodes(nodesAndEdgesDict["nodes"]);
     setEdges(nodesAndEdgesDict["edges"]);
@@ -78,7 +95,7 @@ const FlowModel = (props) => {
   }
 
   const handlePathwayClose = () => {
-    // userInteractionList.
+    setIsPathwayCurrentlyLoaded(false);
     setNodes([]);
     setEdges([]);
     setTitles([]);
@@ -127,7 +144,7 @@ const FlowModel = (props) => {
   const [constructorHasRun, setConstructorHasRun] = useState(false);
   const constructor = () => {
     if(constructorHasRun) return; // block if constructor has already been run
-    userInteractionList.subscribe("concentrationChange", handleConcChange);
+    // userInteractionList.subscribe("concentrationChange", handleConcChange);
     // userInteractionList.subscribe("closePathway", handlePathwayClose);
 
     setConstructorHasRun(true);
@@ -143,9 +160,10 @@ const FlowModel = (props) => {
     );
     setEdges((eds) =>
       eds.map((edge) => {
+        console.log("SETTING EDGES")
         // for loop is needed for edges that have the same input, ex. GH3P
         for (let i = 0; i < concentrations.length; i++) {
-            if (edge.data == titles[i]) {
+            if (edge.data === titles[i]) {
               // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
               if (factorSteps.includes(i)) { // is a factor step
                 edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
@@ -163,7 +181,15 @@ const FlowModel = (props) => {
 
   return ( 
     <div className='ModelArea'>
-      <ReactFlow
+      <div>
+        { isPathwayCurrentlyLoaded && <PathwayTitleCard pathwayTitle={ pathwayTitle } 
+                                                        pathwayDescription={ pathwayDescription }
+                                                        pathwayAuthor={ pathwayAuthor }
+                                                        additionalImage={ boogyImg } /> }
+
+        { isPathwayCurrentlyLoaded && <SliderSideBar  />}
+      </div>
+      <ReactFlow className='ModelAreaChild ReactFlow'
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -178,5 +204,37 @@ const FlowModel = (props) => {
     </div>
   );
 };
+
+const PathwayTitleCard = (props) => {
+  // props that should be passed in:
+  //  pathwayTitle: string 
+  //  pathwayDescription: string
+  //  pathwayAuthor: string
+  //  additionalImage: png img to display (optional)
+
+  return (
+    <div id="PathwayTitleCard" className='ModelAreaChild'>
+      { (props.pathwayTitle !== "") && (
+        <div className="card mb-3" >
+          <div class="row g-0">
+            { props.additionalImage && 
+              <div class="col-md-4">
+                <img src={ props.additionalImage } height="120" width="120" className="img-fluid rounded-start"/>
+              </div>
+            }
+            <div className="col-md-8">
+              <div className="card-body" id='PathwayTitleTextBox'>
+                <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
+                <p className="card-text">{ props.pathwayDescription }</p>
+                <p className="card-text"><small class="text-muted">Created By { props.pathwayAuthor }</small></p>
+                {/* <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> */}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default FlowModel;

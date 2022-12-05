@@ -10,4 +10,28 @@
   width: inherit;
   display: flex;
   background-color: #e6ebf2;
+
+  position: relative;
+}
+
+.ModelAreaChild {
+  position: absolute;
+}
+
+.ReactFlow {
+  z-index: 1;
+}
+
+#PathwayTitleCard {
+  right: 12px;
+  top: 20px;
+  z-index: 99;
+  width: fit-content;
+  height: 200px;
+}
+
+#PathwaySliderBox {
+  left: 4px;
+  top: 64px;
+  z-index: 98;
 }

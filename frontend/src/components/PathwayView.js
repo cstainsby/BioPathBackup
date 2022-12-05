@@ -27,24 +27,23 @@ export default class PathwayView extends Component {
 
   render() {
     const pathwayView = <div className="container-fluid" id='MainView'>
-                                <div className="row" id="NavBarRow">
-                                  <NavBar />
-                                </div>
+                          <div className="row" id="NavBarRow">
+                            <NavBar />
+                          </div>
 
-                                {/* the pathway view, left, and right sidebar divs are going to 
-                                    be held in columns
-                                */}
-                                <div className="row" id="PathwayViewRow">
-                                  <div className="col" id="ModelAreaCol">
-                                    <ModelArea 
-                                      dataObserver={ this.pathwayUserInputSubList }/>
-                                  </div>
+                          {/* the pathway view, left, and right sidebar divs are going to 
+                              be held in columns
+                          */}
+                          <div className="row" id="PathwayViewRow">
+                            <div className="col" id="ModelAreaCol">
+                              <ModelArea />
+                            </div>
 
-                                  <div className="col-md-auto" id="RightSideBarAreaCol">
-                                    <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
-                                  </div>
-                                </div>
-                              </div>
+                            {/* <div className="col-md-auto" id="RightSideBarAreaCol">
+                              <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
+                            </div> */}
+                          </div>
+                        </div>
 
     return (
       <BrowserRouter>

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 
 import "./css/SliderSideBar.css";
 import "./css/stylesheet.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
-import { findSliders } from "./utils/pathwayComponentUtils"
+import { findSliders } from "./utils/pathwayComponentUtils";
 
 
 // ----------------------------------------------------------------------
@@ -13,42 +13,29 @@ import { findSliders } from "./utils/pathwayComponentUtils"
 //  where it will have control over the rates of reactions for the 
 //  pathway currently being rendered 
 // ----------------------------------------------------------------------
-export default class SliderSideBar extends Component {
-  constructor(props) {
-    super(props);
+const SliderSideBar = (props) => {
+  // props that should be passed in:
+  //  pathwayTitle: string 
+  //  pathwayDescription: string
 
-    this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway);
-    
+  let [pathway, setPathway] = useState(null);
+  let [titles, setTitles] = useState([]);
 
-    this.state = { 
-      componentTitle: props.title,    
-      componentDescription: props.description,
-
-      // needed for mapping dynamic list of cofactors
-      titles: []
-    }
-  }
-
-  handleLoadNewPathway = (pathwayJson) => {
+  const handleLoadNewPathway = (pathwayJson) => {
     const newTitles = findSliders(pathwayJson)["sliders"];
-
-    this.setState({
-      titles: newTitles
-    });
+    setTitles(newTitles);
   }
 
-  render() {
-
-    const sliderItems = this.state.titles.map((title) => 
+  const sliderItems = titles.map((title) => 
       <li>
-        <Slider title={title} dataObserver={ this.props.dataObserver }/>
+        <Slider title={title} />
       </li>
     );
-    
+
     return (
-      <div className='card sliderBar text-start'>
-        <h3 id="sliderComponentTitle">{ this.state.componentTitle }</h3>
-        { (this.state.componentDescription != "") && <p>{ this.state.componentDescription }</p> }
+      <div className='card sliderBar text-start ModelAreaChild' id='PathwaySliderBox'>
+        <h3 id="sliderComponentTitle">{ props.pathwayTitle }</h3>
+        {( props.pathwayDescription != "") && <p>{ props.pathwayDescription }</p> }
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
@@ -57,73 +44,45 @@ export default class SliderSideBar extends Component {
         </ul>
       </div>
     )
-  }
 }
 
-class Slider extends Component {
-  constructor(props) {
-    super(props);
+const Slider = (props) => {
+  // props that should be passed in:
+  //  title: string 
 
-    let {title, isShowing} = this.props
-    if (isShowing === undefined) {
-      this.state = {title: title, value: 1, isShowing: true};
-    }
-    else {
-      this.state = {title: title, value: 1, isShowing: this.props.isShowing};
-    }
-  }
+  let [isExpanded, setIsExpanded] = useState(false);
+  let [sliderValue, setSliderValue] = useState(50);
 
-  handleSliderValueChange(e) {
-    this.setState((state, props) => ({
-      value: e
-    }));
+  const handleSliderValueChange = (newSliderValue) => {
+    setSliderValue(newSliderValue);
 
     const jsonUpdateResponse = JSON.stringify({
       title : this.state.title,
-      concentration : e
+      concentration : newSliderValue
     });
-
-    this.props.dataObserver.postEvent("concentrationChange", jsonUpdateResponse);
   }
 
-  handleClick(e) {
-    /* this function is for showing or removing factor molecules
-        hopefully will be able to use pathway specific settings to show
-        correct pathway specific molecules
-        TODO: change from on/off based on buttons to based on pathway config
-    */
-    if (this.state.isShowing) {
-      this.setState((state, props) => ({
-
-        isShowing: false
-      }));
-    }
-    else {
-      this.setState((state, props) => ({
-        isShowing: true
-      }));
-    }
+  const handleClick = (e) => {
+    setIsExpanded(!isExpanded);
   }
 
-
-  render() {
-    const openHeader = 
+  const openHeader = 
       <ul id='cardHeaderList'>
        <li>
-          <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+          <button className='cardHeaderDropdownButton' onClick={(e) => handleClick(e.target.value)}>
             <img 
               id='cardHeaderCaret' 
               src={dropdownLogo} />
           </button>
         </li>
-        <li><h4>{this.props.title}</h4></li>
+        <li><h4>{props.title}</h4></li>
       </ul>
 
     const closeHeader = 
-      <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+      <button className='cardHeaderDropdownButton' onClick={(e) => handleClick(e.target.value)}>
         <ul id='cardHeaderList'>
           <li><img id='cardHeaderCaret' src={dropdownLogo} style={{ transform: "rotate(-90deg)"}}  /></li>
-          <li><h4>{this.props.title}</h4></li>
+          <li><h4>{props.title}</h4></li>
         </ul>
       </button>
 
@@ -133,21 +92,20 @@ class Slider extends Component {
           min={0.0}
           step={0.1}
           max={2.0}
-          onChange={(e) => this.handleSliderValueChange(e.target.value)}
-          value={this.state.value}
+          onChange={(e) => handleSliderValueChange(e.target.value)}
+          value={sliderValue}
           />
-        <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
+        <p>{parseInt(sliderValue * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
       </div>
+      
 
-    const card = 
-      <div className='card growCard' id='sliderCard'>
-        { !this.state.isShowing ? openHeader : closeHeader}
-        { !this.state.isShowing ? cardContents : null }
-      </div>
+  return (
+    <div className='card growCard' id='sliderCard'>
+      { !isExpanded ? openHeader : closeHeader}
+      { !isExpanded ? cardContents : null }
+    </div>
+  )
 
-    
-
-    return card;
-  }
 }
 
+export default SliderSideBar;

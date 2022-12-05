@@ -1,9 +1,11 @@
 import React, { Component, useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ModelArea from './ModelArea'
 import NavBar from './NavBar'
-// import SliderBar from '../components/SliderBar'
 import RightSideBarArea from './RightSideBarArea';
+import Error from "./Error";
+
 import Restore from './Restore';
 import './css/PathwayView.css'
 
@@ -24,26 +26,39 @@ export default class PathwayView extends Component {
   }
 
   render() {
+    const pathwayView = <div className="container-fluid" id='MainView'>
+                                <div className="row" id="NavBarRow">
+                                  <NavBar dataObserver={ this.pathwayUserInputSubList } />
+                                </div>
+
+                                {/* the pathway view, left, and right sidebar divs are going to 
+                                    be held in columns
+                                */}
+                                <div className="row" id="PathwayViewRow">
+                                  <div className="col" id="ModelAreaCol">
+                                    <ModelArea 
+                                      dataObserver={ this.pathwayUserInputSubList }/>
+                                  </div>
+
+                                  <div className="col-md-auto" id="RightSideBarAreaCol">
+                                    <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
+                                  </div>
+                                </div>
+                              </div>
+
     return (
-      <div className="container-fluid" id='MainView'>
-        <div className="row" id="NavBarRow">
-          <NavBar dataObserver={ this.pathwayUserInputSubList } />
-        </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={ pathwayView }>
+            <Route path="pathway/:pathwayId" element={ pathwayView }/>
+          </Route>
 
-        {/* the pathway view, left, and right sidebar divs are going to 
-            be held in columns
-         */}
-        <div className="row" id="PathwayViewRow">
-          <div className="col" id="ModelAreaCol">
-            <ModelArea 
-              dataObserver={ this.pathwayUserInputSubList }/>
-          </div>
-
-          <div className="col-md-auto" id="RightSideBarAreaCol">
-            <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
-          </div>
-        </div>
-      </div>
+          {/* for user authentication later on,  */}
+          <Route path="auth" element={ pathwayView }>
+          </Route>
+          <Route path="*" element={ <Error /> }/>
+        </Routes>
+      </BrowserRouter>
     )
   }
 }

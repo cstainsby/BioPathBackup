@@ -25,17 +25,13 @@ export default class SliderSideBar extends Component {
       componentDescription: props.description,
 
       // needed for mapping dynamic list of cofactors
-      titles: JSON.parse(window.localStorage.getItem("SliderSideBarTitles").split(",")) || []
+      titles: []
     }
-    console.log("retrieved: " + JSON.parse(window.localStorage.getItem("SliderSideBarTitles")))
-    // console.log("of type " + typewindow.localStorage.getItem("SliderSideBarTitles")) 
   }
 
   handleLoadNewPathway = (pathwayJson) => {
     const newTitles = findSliders(pathwayJson)["sliders"];
-    
-    window.localStorage.setItem("SliderSideBarTitles", JSON.stringify(newTitles));
-    console.log("Push to local storage " + JSON.stringify(newTitles))
+
     this.setState({
       titles: newTitles
     });

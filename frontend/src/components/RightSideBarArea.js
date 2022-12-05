@@ -16,7 +16,7 @@ export default class RightSideBarArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: window.localStorage.getItem("RightSideBarTitle") || "",
+      title: "",
       isOpen: false,
 
       additionalImage: boogyImg
@@ -28,7 +28,6 @@ export default class RightSideBarArea extends Component {
 
   handleLoadNewPathway = (pathwayJson) => {
     const newTitle = pathwayJson.name;
-    window.localStorage.setItem("RightSideBarTitle", newTitle);
     
     this.setState({
       title: newTitle
@@ -39,7 +38,6 @@ export default class RightSideBarArea extends Component {
   //   // the pathway Json should be ignored, will be empty anyways
   //   console.log("close pathway right side bar")
   //   const newTitle = "";
-  //   window.localStorage.setItem("RightSideBarTitle", newTitle);
     
   //   this.setState({
   //     title: newTitle
@@ -51,7 +49,6 @@ export default class RightSideBarArea extends Component {
   //   console.log("is open toggled to: " + isOpenState)
     
 
-  //   window.localStorage.setItem("RideSideBarMenuToggle", JSON.stringify(isOpenState));
   //   this.setState({
   //     isOpen: isOpenState
   //   });

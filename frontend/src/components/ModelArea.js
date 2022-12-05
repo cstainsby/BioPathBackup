@@ -54,15 +54,12 @@ const FlowModel = (props) => {
 
       const findMoleculesRes = findMolecules(newPathwayJson);
       setTitles(findMoleculesRes["molecules"]);
-      // setConcentrations(findMoleculesRes["concentrations"]); // running this will cause inifinite loop 
+      console.log("handle Load titles: " + findMoleculesRes["molecules"]);
+      setConcentrations(findMoleculesRes["concentrations"]); 
       
       const findSlidersRes = findSliders(newPathwayJson);
       setFactorTitle(findSlidersRes["sliders"]);
       setFactors(findSlidersRes["percent"]);
-
-      // save all of these elements to local storage in case of refresh
-      //  will reload with it
-      window.localStorage.setItem("pathwayState", JSON.stringify(newPathwayJson));
     }
     catch(error) {
       console.log("invalid pathway passed")
@@ -76,7 +73,6 @@ const FlowModel = (props) => {
   //   setTitles([]);
   //   setFactorTitle([]);
   //   setFactors([]);
-  //   window.localStorage.setItem("pathwayState", JSON.stringify([]));
   // }
   
   /* Function to change the concentration from an adjustment from a slider
@@ -84,13 +80,17 @@ const FlowModel = (props) => {
       currently hard coded pretty hard but works
   */
   const handleConcChange = (changesJson) => { 
-    console.log("handleConc change")
+    console.log("handleConc change " + changesJson)
     let changesObj = JSON.parse(changesJson);
     let title = changesObj.title;
     let concentration = changesObj.concentration;
 
+    if(concentration) console.log("concentrations:" + concentration)
+    if(titles) console.log("titles: " + title);
+
     for (let i = 0; i < concentrations.length; i++) {
       if (titles[i] === title) {
+        console.log("titles[i] : titles " + titles[i] + " : " + title)
         var tempConcentrations = concentrations
         var newConcentration = 10 * concentration
 
@@ -118,15 +118,6 @@ const FlowModel = (props) => {
     userInteractionList.subscribe("concentrationChange", handleConcChange);
     userInteractionList.subscribe("loadPathway", handlePathwayLoad);
     // userInteractionList.subscribe("closePathway", handlePathwayClose);
-
-    // i
-    const localPathway = window.localStorage.getItem("pathwayState");
-    console.log("local pathway: " + localPathway);
-    console.log(typeof localPathway)
-    if(localPathway) {
-      console.log("loading in pathway from local store")
-      handlePathwayLoad(JSON.parse(localPathway));
-    }
 
     setConstructorHasRun(true);
   }

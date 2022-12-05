@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 
 import './css/NavBar.css';
 import "./css/stylesheet.css";
@@ -13,6 +13,7 @@ import finger from "../icons/hand.png";
 
 // import requests lib 
 import { getPathways, getPathwayById } from "../requestLib/requests";
+import { Link } from 'react-router-dom';
 
 
 // ----------------------------------------------------------------------
@@ -103,119 +104,82 @@ export default class NavBar extends Component {
 
 // Note: upon opening the site, prompt the user using the SignInModal
 // ----------------------------------------------------------------------
-class UserSignInNavBarItem extends Component {
-  constructor(props) {
-    super(props);
+const UserSignInNavBarItem = (props) => {
+  let [signedIn, setSignedIn] = useState(false)
 
-    // check if the user is signed in 
-
-    this.state = {
-      signedIn : false
-    }
-  }
-
-  render() {
-
-    if(this.state.signedIn) {
-
-      return (
-        <></>
-      );
-    }
-    else {
-      //
-      return (
-        <div className='card'>
-          <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
-            Sign In
-          </button>
-        </div>
-      );
-    }
-  }
+  return (
+    <div className='card'>
+      <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
+        Sign In
+      </button>
+    </div>
+  );
 }
 
 // ----------------------------------------------------------------------
 // SignInModal
 // ----------------------------------------------------------------------
-class SignInModal extends Component {
-  constructor(props) {
-    super(props);
-    
-  }
-
-  render() {
-    return (
-      <div className="modal fade" id="signInModal" tabIndex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="signInModalLabel">Sign In</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              Put Oath or some other sign in method here
-              
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Skip</button>
-              <button type="button" className="btn btn-primary">Sign In</button>
-            </div>
+const SignInModal = (props) => {
+  return (
+    <div className="modal fade" id="signInModal" tabIndex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="signInModalLabel">Sign In</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            Put Oath or some other sign in method here
+            
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Skip</button>
+            <button type="button" className="btn btn-primary">Sign In</button>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 
 // ----------------------------------------------------------------------
 // HelpModal
 // ----------------------------------------------------------------------
-class HelpModal extends Component {
-  constructor(props) {
-    super(props);
-    
-  }
-
-  render() {
-    return (
-      <div className="modal fade" id="helpModal" tabIndex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="helpModalLabel">Help Not Implemented</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              <h3>Help Yourself</h3>
-              <img src={finger}></img>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Welp...</button>
-            </div>
+const HelpModal = (props) => {
+  return (
+    <div className="modal fade" id="helpModal" tabIndex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="helpModalLabel">Help Not Implemented</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            <h3>Help Yourself</h3>
+            <img src={finger}></img>
+          </div>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Welp...</button>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 
 // ----------------------------------------------------------------------
 // LoadPathwayModal
 // ----------------------------------------------------------------------
-class LoadPathwayModal extends Component {
-  constructor(props) {
-    super(props);
+const LoadPathwayModal = (props) => {
 
-    this.state = {
-      pathways: []
-    }
+  const [pathways, setPathways] = useState(null);
 
+  useEffect(() => {
     // get JSON data for pathways
     // including function here will force the modal to re-render
-    getPathways()
+    setPathways(pathways => getPathways()
       .then(data => {
         // read list of pathways into a list for state
         let pathwayList = []
@@ -223,33 +187,30 @@ class LoadPathwayModal extends Component {
           pathwayList.push(data[i]);
         }
 
-        this.setState({
-          pathways: pathwayList
-        })
-      });
-  }
+        setPathways(pathways => pathwayList);
+      })
+      .catch(error => {
+        console.error("Error in getPathways loadModal", error);
+      }));
+  }, []);
 
-  onPathwaySelected = (pathwayId) => {
-    getPathwayById(pathwayId)
-    .then(data => {
-      this.props.dataObserver.postEvent("loadPathway", data);
-    });
-  }
-
-  buildPathwayCardsList() {
+  const buildPathwayCardsList = () => {
     // helper function which dynamically builds cards list containing each pathway for the user to choose from
     // NOTE the json Data should be in a list
-    let pathwayListHtml = this.state.pathways.map((pathway) => {
+    // onClick={ (e) => this.onPathwaySelected(pathway.id, e)}
+    let pathwayListHtml = pathways.map((pathway) => {
       return (
         <li id='loadPathwayListItem' className='growCard'>
           <div className="card">
-            <button id="loadPathwaySelect" onClick={ (e) => this.onPathwaySelected(pathway.id, e)}>
-              <div className="card-body" data-bs-dismiss="modal">
-                <div className="container text-center">
-                  <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
-                  <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
+            <button id="loadPathwaySelect" >
+              <Link to={ "/pathway/" + pathway.id }>
+                <div className="card-body" data-bs-dismiss="modal">
+                  <div className="container text-center">
+                    <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+                    <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </button>
           </div>
         </li>);
@@ -259,24 +220,125 @@ class LoadPathwayModal extends Component {
     return finalCardListHtml;
   }
 
-  render() {
-    return (
-      <div className="modal fade" id="loadPathwayModal" tabIndex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Open</h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div className="modal-body">
-              { (this.state.pathways.length > 0)                // if there are pathways to display
-                ? this.buildPathwayCardsList()                  // display them
-                : <h4>Looks like there aren't any pathways</h4> // otherwise send message to user
-              }
-            </div>
+  return (
+    <div className="modal fade" id="loadPathwayModal" tabIndex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Open</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            { ( pathways !== null)
+              ? (( pathways.length > 0 )                           // if there are pathways to display
+                ? buildPathwayCardsList(pathways)                  // display them
+                : <h4>Looks like there aren't any pathways</h4>)   // otherwise send message to user
+              : <h4>Error</h4> 
+            }
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  )
 }
+
+// class LoadPathwayModal extends Component {
+//   constructor(props) {
+//     super(props);
+
+//     this.state = {
+//       pathways: []
+//     }
+
+//     // get JSON data for pathways
+//     // including function here will force the modal to re-render
+//     getPathways()
+//       .then(data => {
+//         // read list of pathways into a list for state
+//         let pathwayList = []
+//         for(let i = 0; i < data.length; ++i) {
+//           pathwayList.push(data[i]);
+//         }
+
+//         this.state = {
+//           pathways: pathwayList
+//         }
+//       })
+//       .catch(error => {
+//         console.error("Error in getPathways loadModal", error);
+//       });
+//   }
+
+//   // onPathwaySelected = (pathwayId) => {
+//   //   getPathwayById(pathwayId)
+//   //   .then(data => {
+//   //     this.props.dataObserver.postEvent("loadPathway", data);
+//   //   });
+//   // }
+
+//   componentDidMount() {
+    
+//   }
+
+//   buildPathwayCardsList() {
+//     // helper function which dynamically builds cards list containing each pathway for the user to choose from
+//     // NOTE the json Data should be in a list
+//     // onClick={ (e) => this.onPathwaySelected(pathway.id, e)}
+//     let pathwayListHtml = this.state.pathways.map((pathway) => {
+//       return (
+//         <li id='loadPathwayListItem' className='growCard'>
+//           <div className="card">
+//             <button id="loadPathwaySelect" >
+//               <Link to={ "/pathway/" + pathway.id }>
+//                 <div className="card-body" data-bs-dismiss="modal">
+//                   <div className="container text-center">
+//                     <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
+//                     <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
+//                   </div>
+//                 </div>
+//               </Link>
+//             </button>
+//           </div>
+//         </li>);
+//     });
+//     let finalCardListHtml = <ul id="loadPathwayList">{ pathwayListHtml }</ul>;
+    
+//     return finalCardListHtml;
+//   }
+
+//   render() {
+//     // get JSON data for pathways
+//     // including function here will force the modal to re-render
+//     getPathways()
+//       .then(data => {
+//         // read list of pathways into a list for state
+//         let pathwayList = []
+//         for(let i = 0; i < data.length; ++i) {
+//           pathwayList.push(data[i]);
+//         }
+
+//         this.setState({
+//           pathways: pathwayList
+//         })
+//       });
+    
+//     return (
+//       <div className="modal fade" id="loadPathwayModal" tabIndex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
+//         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+//           <div className="modal-content">
+//             <div className="modal-header">
+//               <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Open</h1>
+//               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+//             </div>
+//             <div className="modal-body">
+//               { (this.state.pathways.length > 0)                // if there are pathways to display
+//                 ? this.buildPathwayCardsList()                  // display them
+//                 : <h4>Looks like there aren't any pathways</h4> // otherwise send message to user
+//               }
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }

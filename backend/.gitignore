@@ -87,6 +87,8 @@ __pycache__/
 local_settings.py
 api/migrations
 
+!api/migrations/__init__.py
+
 *.env
 *.venv
 *.sqlite3

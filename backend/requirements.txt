@@ -4,6 +4,6 @@ Django==4.1.1
 djangorestframework==3.13.1
 drf_yasg==1.21.3
 sqlparse==0.4.2
-psycopg2>=2.8
-djangorestframework>=3.4.4
+psycopg2-binary>=2.8
 Pillow
+django-cors-headers

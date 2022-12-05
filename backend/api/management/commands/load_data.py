@@ -5,8 +5,9 @@ from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     def handle(self, **options):
+        
         # now do the things that you want with your models here
-        u1 = User.objects.filter(id=1)[0]
+        
         for e in models.PathwayEnzyme.objects.all():
           e.delete()
         for e in models.PathwayMolecule.objects.all():
@@ -17,7 +18,10 @@ class Command(BaseCommand):
           e.delete()
         for e in models.Pathway.objects.all():
           e.delete()
+        for e in User.objects.all():
+          e.delete()
 
+        u1 = User.objects.create_superuser('root', 'root@biopath.com', 'root')
         m1 = models.Molecule(
           name="molecule1",
           link="",

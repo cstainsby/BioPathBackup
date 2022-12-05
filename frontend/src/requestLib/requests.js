@@ -12,11 +12,11 @@
 //  Until we have the time to come up with a smarter, more automated solution where 
 //  the data is being sourced from will need to be manually changed in the code
 
-let BACKEND_BASE_API_URL = "localhost:8000/api/"; // API ACCESS
+let BACKEND_BASE_API_URL = "http://localhost:8000/api/"; // API ACCESS
 let LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
 let MOCK_API_URL = "http://localhost:4000/api/";  // MOCK API ACCESS
 
-let dataSourceAddress = MOCK_API_URL;       // Choice Definition
+let dataSourceAddress = BACKEND_BASE_API_URL;       // Choice Definition
 
 // NOTE: the test suite for sample JSON will have a file structure matching the 
 //   endpoints within the backend to keep calls consistent
@@ -46,7 +46,12 @@ async function getPathwayById(id) {
   let requestUrl = dataSourceAddress + endpointExtension;
 
   try {
-    const response = await fetch(requestUrl);
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
     const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
     const responseJSON = isResponseJSON && await response.json();
 
@@ -76,7 +81,12 @@ async function getPathways() {
   const requestUrl = dataSourceAddress + endpointExtension;
 
   try {
-    const response = await fetch(requestUrl);
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
     const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
     const responseJSON = isResponseJSON && await response.json();
     

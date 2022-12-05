@@ -13,14 +13,12 @@
     The sizes of all "side" elements will be stated here, 
     the main pathway view will resize according to their needs 
   */
-  --navbar-y-size: 75px;
+  --navbar-y-size: 60px;
   --right-side-bar-width: 300px;
 }
 
 /* fluid container which holds everything */
 #MainView {
-  height: inherit;
-  width: inherit;
   margin-left: 0px;
   margin-right: 0px;
   padding: 0px;
@@ -30,20 +28,24 @@
 #PathwayViewRow {
   height: calc(var(--total-screen-size) - var(--navbar-y-size));
   width: inherit;
+  margin: 0px;
 }
 
 /* The nav bar view area */
 #NavBarRow {
   height: var(--navbar-y-size);
   width: inherit;
-  border-style: solid;
+  border-bottom: solid grey 2px;
+
+  margin: 0px;
 }
 
 /* Sidebar area */
 #RightSideBarAreaCol {
   /* maybe in the future make fit-content */
   width: var(--right-side-bar-width);
-  border-style: solid;
+  border-left: solid grey 2px;
+  padding: 4px;
 }
 
 /* column in pathwayViewRow which holds the main reaction view */
@@ -52,5 +54,4 @@
   
   padding-left: 0px;
   padding-right: 0px;
-  border-style: solid;
 }

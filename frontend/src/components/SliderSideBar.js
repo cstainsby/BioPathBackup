@@ -19,13 +19,12 @@ export default class SliderSideBar extends Component {
 
     this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway);
     
-
     this.state = { 
       componentTitle: props.title,    
       componentDescription: props.description,
 
       // needed for mapping dynamic list of cofactors
-      titles: JSON.parse(window.localStorage.getItem("SliderSideBarTitles").split(",")) || []
+      titles: JSON.parse(window.localStorage.getItem("SliderSideBarTitles")) || []
     }
     console.log("retrieved: " + JSON.parse(window.localStorage.getItem("SliderSideBarTitles")))
     // console.log("of type " + typewindow.localStorage.getItem("SliderSideBarTitles")) 
@@ -44,7 +43,7 @@ export default class SliderSideBar extends Component {
   render() {
 
     const sliderItems = this.state.titles.map((title) => 
-      <li>
+      <li key={title.toString()}>
         <Slider title={title} dataObserver={ this.props.dataObserver }/>
       </li>
     );

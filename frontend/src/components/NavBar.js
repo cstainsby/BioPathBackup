@@ -51,10 +51,10 @@ export default class NavBar extends Component {
                 <ul className="dropdown-menu">
                   <li><a className="dropdown-item" href="#">Save</a></li>
                   <li><a className="dropdown-item" href="#">Save As</a></li>
-                  <li><hr class="dropdown-divider"/></li>
+                  <li><hr className="dropdown-divider"/></li>
                   <li><a className="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
                   <li><a className="dropdown-item" href="#">New</a></li>
-                  <li><hr class="dropdown-divider"/></li>
+                  <li><hr className="dropdown-divider"/></li>
                   <li><a className="dropdown-item" href="#">Close</a></li>
                 </ul>
               </li>
@@ -85,7 +85,6 @@ export default class NavBar extends Component {
           </div>
         </div>
 
-
         {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
         <HelpModal/>
         <SignInModal/>
@@ -108,22 +107,18 @@ class UserSignInNavBarItem extends Component {
     super(props);
 
     // check if the user is signed in 
-
     this.state = {
       signedIn : false
     }
   }
 
   render() {
-
     if(this.state.signedIn) {
-
       return (
         <></>
       );
     }
     else {
-      //
       return (
         <div className='card'>
           <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
@@ -141,7 +136,6 @@ class UserSignInNavBarItem extends Component {
 class SignInModal extends Component {
   constructor(props) {
     super(props);
-    
   }
 
   render() {
@@ -175,7 +169,6 @@ class SignInModal extends Component {
 class HelpModal extends Component {
   constructor(props) {
     super(props);
-    
   }
 
   render() {
@@ -212,7 +205,9 @@ class LoadPathwayModal extends Component {
     this.state = {
       pathways: []
     }
+  }
 
+  componentDidMount() {
     // get JSON data for pathways
     // including function here will force the modal to re-render
     getPathways()
@@ -229,7 +224,7 @@ class LoadPathwayModal extends Component {
       });
   }
 
-  onPathwaySelected = (pathwayId) => {
+  onPathwaySelected = async (pathwayId) => {
     getPathwayById(pathwayId)
     .then(data => {
       this.props.dataObserver.postEvent("loadPathway", data);
@@ -241,7 +236,7 @@ class LoadPathwayModal extends Component {
     // NOTE the json Data should be in a list
     let pathwayListHtml = this.state.pathways.map((pathway) => {
       return (
-        <li id='loadPathwayListItem' className='growCard'>
+        <li id='loadPathwayListItem' className='growCard' key={pathway.id}>
           <div className="card">
             <button id="loadPathwaySelect" onClick={ (e) => this.onPathwaySelected(pathway.id, e)}>
               <div className="card-body" data-bs-dismiss="modal">

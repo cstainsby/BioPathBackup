@@ -68,18 +68,18 @@ export default class RightSideBarArea extends Component {
               <li><h2 id='PathwayTitle'>{ this.state.title }</h2></li>
             </ul>
 
-            <div class="card mb-3" id='RightSideBarDescription'>
-              <div class="row g-0">
+            <div className="card mb-3" id='RightSideBarDescription'>
+              <div className="row g-0">
                 {this.state.additionalImage && 
-                  <div class="col-md-4">
+                  <div className="col-md-4">
                     <img src={ this.state.additionalImage } className="img-fluid rounded-start"/>
                   </div>
                 }
                 
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    {/* <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> */}
+                <div className="col-md-8">
+                  <div className="card-body">
+                    <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    {/* <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p> */}
                   </div>
                 </div>
               </div>

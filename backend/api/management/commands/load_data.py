@@ -1,3 +1,12 @@
+"""
+File: load_data.py
+
+Script for clearing and loading fresh data into the database.
+Ideally used for testing and to have a consistent database everytime.
+This script is called using "python manage.py load_data" from setup.sh
+and can be ommitted to retain old database data. 
+"""
+
 import api.models as models
 from django.contrib.auth.models import User
 

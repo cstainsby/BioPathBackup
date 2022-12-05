@@ -28,7 +28,7 @@ export default class PathwayView extends Component {
   render() {
     const pathwayView = <div className="container-fluid" id='MainView'>
                                 <div className="row" id="NavBarRow">
-                                  <NavBar dataObserver={ this.pathwayUserInputSubList } />
+                                  <NavBar />
                                 </div>
 
                                 {/* the pathway view, left, and right sidebar divs are going to 

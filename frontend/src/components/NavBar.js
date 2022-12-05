@@ -22,78 +22,65 @@ import { Link } from 'react-router-dom';
 //  This component when rendered will be the main navigation bar above 
 //    our main model area 
 // ----------------------------------------------------------------------
-export default class NavBar extends Component {
-  constructor(props) {
-    super(props);
-  }
+const Navbar = (props) => {
+  return (
+    <nav className="navbar navbar-expand-lg bg-light">
+      <div className="container-fluid">
+        {/* reset button 
+        reset every selectable item, go to base page */}
+        <a className="navbar-brand" href="/">Biopath</a>
+        
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {/* File Dropdown */}
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                File
+              </a>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Save</a></li>
+                <li><a className="dropdown-item" href="#">Save As</a></li>
+                <li><hr class="dropdown-divider"/></li>
+                <li><a className="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
+                <li><a className="dropdown-item" href="#">New</a></li>
+                <li><hr class="dropdown-divider"/></li>
+                <li><Link className='dropdown-item' to="/">Close</Link></li>
+              </ul>
+            </li>
 
-  // onPathwayCloseButtonClick = () => {
-  //   console.log("close pathway Fired");
-  //   this.props.dataObserver.postEvent("closePathway");
-  // }
+            {/* View Dropdown */}
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                View
+              </a>
+              <ul className="dropdown-menu">
+                <li><a className="dropdown-item" href="#">Model</a></li>
+                <li><a className="dropdown-item" href="#">Text</a></li>
+              </ul>
+            </li>
 
+            {/* help button */}
+            <li className="nav-item">
+              {/* <button type="button" >Help</button> */}
+              <a className="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">
+                Help
+              </a>
+            </li>
+          </ul>
 
-  // this render function holds the main html structure for the entire navbar 
-  render() {
-    return (
-      <nav className="navbar navbar-expand-lg bg-light">
-        <div className="container-fluid">
-          {/* reset button 
-          reset every selectable item, go to base page */}
-          <a className="navbar-brand" href="/">Biopath</a>
-          
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* File Dropdown */}
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  File
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Save</a></li>
-                  <li><a className="dropdown-item" href="#">Save As</a></li>
-                  <li><hr class="dropdown-divider"/></li>
-                  <li><a className="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
-                  <li><a className="dropdown-item" href="#">New</a></li>
-                  <li><hr class="dropdown-divider"/></li>
-                  <li><a className="dropdown-item" href="#">Close</a></li>
-                </ul>
-              </li>
+          {/* User Link */}
+          <UserSignInNavBarItem/>
 
-              {/* View Dropdown */}
-              <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  View
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Model</a></li>
-                  <li><a className="dropdown-item" href="#">Text</a></li>
-                </ul>
-              </li>
-
-              {/* help button */}
-              <li className="nav-item">
-                {/* <button type="button" >Help</button> */}
-                <a className="nav-link" href="#helpModal" data-bs-toggle="modal" data-bs-target="#helpModal">
-                  Help
-                </a>
-              </li>
-            </ul>
-
-            {/* User Link */}
-            <UserSignInNavBarItem/>
-
-          </div>
         </div>
+      </div>
 
 
-        {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
-        <HelpModal/>
-        <SignInModal/>
-        <LoadPathwayModal dataObserver={ this.props.dataObserver }/>
-      </nav>
-    )
-  }
+      {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
+      <HelpModal/>
+      <SignInModal/>
+      <LoadPathwayModal />
+    </nav>
+  );
 }
 
 
@@ -242,103 +229,4 @@ const LoadPathwayModal = (props) => {
   )
 }
 
-// class LoadPathwayModal extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-//       pathways: []
-//     }
-
-//     // get JSON data for pathways
-//     // including function here will force the modal to re-render
-//     getPathways()
-//       .then(data => {
-//         // read list of pathways into a list for state
-//         let pathwayList = []
-//         for(let i = 0; i < data.length; ++i) {
-//           pathwayList.push(data[i]);
-//         }
-
-//         this.state = {
-//           pathways: pathwayList
-//         }
-//       })
-//       .catch(error => {
-//         console.error("Error in getPathways loadModal", error);
-//       });
-//   }
-
-//   // onPathwaySelected = (pathwayId) => {
-//   //   getPathwayById(pathwayId)
-//   //   .then(data => {
-//   //     this.props.dataObserver.postEvent("loadPathway", data);
-//   //   });
-//   // }
-
-//   componentDidMount() {
-    
-//   }
-
-//   buildPathwayCardsList() {
-//     // helper function which dynamically builds cards list containing each pathway for the user to choose from
-//     // NOTE the json Data should be in a list
-//     // onClick={ (e) => this.onPathwaySelected(pathway.id, e)}
-//     let pathwayListHtml = this.state.pathways.map((pathway) => {
-//       return (
-//         <li id='loadPathwayListItem' className='growCard'>
-//           <div className="card">
-//             <button id="loadPathwaySelect" >
-//               <Link to={ "/pathway/" + pathway.id }>
-//                 <div className="card-body" data-bs-dismiss="modal">
-//                   <div className="container text-center">
-//                     <h3 className='loadPathwayListTitle'>{ pathway.name }</h3>
-//                     <p className='loadPathwayListAuthor'>Created By { pathway.author } </p>
-//                   </div>
-//                 </div>
-//               </Link>
-//             </button>
-//           </div>
-//         </li>);
-//     });
-//     let finalCardListHtml = <ul id="loadPathwayList">{ pathwayListHtml }</ul>;
-    
-//     return finalCardListHtml;
-//   }
-
-//   render() {
-//     // get JSON data for pathways
-//     // including function here will force the modal to re-render
-//     getPathways()
-//       .then(data => {
-//         // read list of pathways into a list for state
-//         let pathwayList = []
-//         for(let i = 0; i < data.length; ++i) {
-//           pathwayList.push(data[i]);
-//         }
-
-//         this.setState({
-//           pathways: pathwayList
-//         })
-//       });
-    
-//     return (
-//       <div className="modal fade" id="loadPathwayModal" tabIndex="-1" aria-labelledby="loadPathwayModalLabel" aria-hidden="true">
-//         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-//           <div className="modal-content">
-//             <div className="modal-header">
-//               <h1 className="modal-title fs-5" id="loadPathwayModalLabel">Open</h1>
-//               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//             </div>
-//             <div className="modal-body">
-//               { (this.state.pathways.length > 0)                // if there are pathways to display
-//                 ? this.buildPathwayCardsList()                  // display them
-//                 : <h4>Looks like there aren't any pathways</h4> // otherwise send message to user
-//               }
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     );
-//   }
-// }
+export default Navbar;

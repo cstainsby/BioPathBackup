@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { useParams } from 'react-router-dom';
 
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
@@ -16,6 +17,7 @@ import { getPathwayById } from '../requestLib/requests';
 import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
 import './css/ModelArea.css'
+
 
 const FlowModel = (props) => {
   const initialNodes = [];
@@ -37,43 +39,53 @@ const FlowModel = (props) => {
 
   const [edgeName, setEdgeName] = useState(100);
 
-  const [recievedElements, setRecievedElements] = useState();
+  
+
+  let { pathwayId } = useParams(); // import params from router
+  useEffect(() => { 
+    if(pathwayId) {
+      // get JSON data for pathways
+      // including function here will force the modal to re-render
+      getPathwayById(pathwayId)
+        .then(data => {
+          handlePathwayOpen(data);
+        })
+        .catch(error => {
+          console.error("Error in getPathways loadModal", error);
+        });
+    }
+    else {
+      handlePathwayClose();
+    }
+  }, [pathwayId]); // monitor pathwayId for changes
 
   // ------------------------------------------------------------------------
-  //  onUserInput functions
+  //  onUserInput helper functions
   // ------------------------------------------------------------------------
-  const handlePathwayLoad = (newPathwayJson) => {
-    // TODO: build checks for correct JSON 
-    //  should be able to pass in empty JSON to "exit" 
-    //  if any component below is missing exit and say something is missing
 
-    try {
-      let nodesAndEdgesDict = buildFlow(newPathwayJson);
-      setNodes(nodesAndEdgesDict["nodes"]);
-      setEdges(nodesAndEdgesDict["edges"]);
+  const handlePathwayOpen = (data) => {
+    let nodesAndEdgesDict = buildFlow(data);
+    setNodes(nodesAndEdgesDict["nodes"]);
+    setEdges(nodesAndEdgesDict["edges"]);
 
-      const findMoleculesRes = findMolecules(newPathwayJson);
-      setTitles(findMoleculesRes["molecules"]);
-      console.log("handle Load titles: " + findMoleculesRes["molecules"]);
-      setConcentrations(findMoleculesRes["concentrations"]); 
-      
-      const findSlidersRes = findSliders(newPathwayJson);
-      setFactorTitle(findSlidersRes["sliders"]);
-      setFactors(findSlidersRes["percent"]);
-    }
-    catch(error) {
-      console.log("invalid pathway passed")
-    }
+    const findMoleculesRes = findMolecules(data);
+    setTitles(findMoleculesRes["molecules"]);
+    setConcentrations(findMoleculesRes["concentrations"]); 
+    
+    const findSlidersRes = findSliders(data);
+    setFactorTitle(findSlidersRes["sliders"]);
+    setFactors(findSlidersRes["percent"]);
   }
 
-  // const handlePathwayClose = (newPathwayJson) => {
-  //   console.log("pathway close called");
-  //   setNodes([]);
-  //   setEdges([]);
-  //   setTitles([]);
-  //   setFactorTitle([]);
-  //   setFactors([]);
-  // }
+  const handlePathwayClose = () => {
+    // userInteractionList.
+    setNodes([]);
+    setEdges([]);
+    setTitles([]);
+    setConcentrations([]);
+    setFactorTitle([]);
+    setFactors([]);
+  }
   
   /* Function to change the concentration from an adjustment from a slider
       TODO: Change to handle dynamic titles based on what is received from api
@@ -116,7 +128,6 @@ const FlowModel = (props) => {
   const constructor = () => {
     if(constructorHasRun) return; // block if constructor has already been run
     userInteractionList.subscribe("concentrationChange", handleConcChange);
-    userInteractionList.subscribe("loadPathway", handlePathwayLoad);
     // userInteractionList.subscribe("closePathway", handlePathwayClose);
 
     setConstructorHasRun(true);
@@ -167,23 +178,5 @@ const FlowModel = (props) => {
     </div>
   );
 };
-
-class FlowModelPopup extends Component {
-  constructor(props) {
-    
-    this.state = {
-      visible: false
-    }
-  }
-
-  render() {
-
-    return (
-      <div>
-
-      </div>
-    );
-  }
-}
 
 export default FlowModel;

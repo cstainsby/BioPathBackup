@@ -187,7 +187,7 @@ const LoadPathwayModal = (props) => {
     // onClick={ (e) => this.onPathwaySelected(pathway.id, e)}
     let pathwayListHtml = pathways.map((pathway) => {
       return (
-        <li id='loadPathwayListItem' className='growCard'>
+        <li id='loadPathwayListItem' className='growCard' key={pathway.id}>
           <div className="card">
             <button id="loadPathwaySelect" >
               <Link to={ "/pathway/" + pathway.id }>

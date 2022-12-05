@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
-  MiniMap,
-  Controls,
-  Background,
-  useNodesState,
-  useEdgesState,
-  addEdge,
+	MiniMap,
+	Controls,
+	Background,
+	useNodesState,
+	useEdgesState,
+	addEdge,
 } from 'reactflow'
 
 import SliderSideBar  from "./SliderSideBar";
@@ -35,8 +35,8 @@ const FlowModel = (props) => {
   const initialNodes = [];
   const initialEdges = [];
 
-  let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+	let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+	let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   let [titles, setTitles] = useState([]);
   let [concentrations, setConcentrations] = useState([]);
@@ -47,7 +47,7 @@ const FlowModel = (props) => {
   let [reversibleSteps, setReversibleSteps] = useState([0])
   let [stopSteps, setStopSteps] = useState([0])
 
-  const [edgeName, setEdgeName] = useState(100);
+	const [edgeName, setEdgeName] = useState(100);
 
   
 
@@ -147,7 +147,7 @@ const FlowModel = (props) => {
 
 
 
-  const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
+	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
   useEffect(() => {
     setConcentrations((newConcentration) => {

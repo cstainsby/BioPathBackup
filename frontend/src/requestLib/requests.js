@@ -49,6 +49,7 @@ async function getPathwayById(id) {
     const response = await fetch(requestUrl, {
         headers: {
             "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
             'Authorization': 'Basic ' + btoa("root:root")
         }
     });
@@ -84,6 +85,7 @@ async function getPathways() {
     const response = await fetch(requestUrl, {
         headers: {
             "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
             'Authorization': 'Basic ' + btoa("root:root")
         }
     });

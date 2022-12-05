@@ -9,10 +9,25 @@
 /* ------------------------------------------------------- */
 /* Slider Siderbar Compnent css */
 /* ------------------------------------------------------- */
-.sliderBar {
+/* .sliderBar {
   margin: 8px;
   margin-top: 4px;
-}
+  padding: 8px;
+  height: fit-content;
+  overflow-x: hidden;
+  overflow-y: auto;
+} */
+
+/* div.scroll {
+                  margin:4px, 4px;
+                  padding:4px;
+                  background-color: green;
+                  width: 500px;
+                  height: 110px;
+                  overflow-x: hidden;
+                  overflow-y: auto;
+                  text-align:justify;
+              } */
 
 .sliderBarList {
   list-style-type: none;
@@ -40,7 +55,6 @@
 #cardHeaderList {
   display: flex;
   list-style-type: none;
-  justify-content: start;
   padding: 0px;
 }
 #cardHeaderList > li {
@@ -61,6 +75,11 @@
   height: auto;
 }
 
-.sliderCardContents {
-  margin-left: 16px;
+/* .sliderCardContents {
+  margin-left: 0px;
+} */
+
+#concentrationSlider {
+  box-sizing: border-box;
 }
+

@@ -14,24 +14,19 @@
   position: relative;
 }
 
-.ModelAreaChild {
-  position: absolute;
-}
-
-.ReactFlow {
-  z-index: 1;
-}
-
 #PathwayTitleCard {
   right: 12px;
-  top: 20px;
+  top: 12px;
   z-index: 99;
   width: fit-content;
-  height: 200px;
+  height: 150px;
 }
 
 #PathwaySliderBox {
-  left: 4px;
-  top: 64px;
+  left: 12px;
+  top: 12px;
   z-index: 98;
+  display: flex;
+  height: auto;
+  width: 250px;
 }

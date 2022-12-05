@@ -41,8 +41,8 @@ const FlowModel = (props) => {
   let [titles, setTitles] = useState([]);
   let [concentrations, setConcentrations] = useState([]);
 
-  let [factorTitle, setFactorTitle] = useState([]);
-  let [factors, setFactors] = useState([]); // represents the percent value from sliders
+  let [factorTitles, setFactorTitles] = useState([]);
+  let [factorsPercent, setFactorsPercent] = useState([]); // represents the percent value from sliders
   let [factorSteps, setFactorSteps] = useState([0])
   let [reversibleSteps, setReversibleSteps] = useState([0])
   let [stopSteps, setStopSteps] = useState([0])
@@ -88,10 +88,12 @@ const FlowModel = (props) => {
     const findMoleculesRes = findMolecules(data);
     setTitles(findMoleculesRes["molecules"]);
     setConcentrations(findMoleculesRes["concentrations"]); 
+    console.log("ON LOAD: concentrations are " + findMoleculesRes["concentrations"])
     
     const findSlidersRes = findSliders(data);
-    setFactorTitle(findSlidersRes["sliders"]);
-    setFactors(findSlidersRes["percent"]);
+    setFactorTitles(findSlidersRes["sliders"]);
+    setFactorsPercent(findSlidersRes["percent"]);
+
   }
 
   const handlePathwayClose = () => {
@@ -100,8 +102,8 @@ const FlowModel = (props) => {
     setEdges([]);
     setTitles([]);
     setConcentrations([]);
-    setFactorTitle([]);
-    setFactors([]);
+    setFactorTitles([]);
+    setFactorsPercent([]);
   }
   
   /* Function to change the concentration from an adjustment from a slider
@@ -110,9 +112,9 @@ const FlowModel = (props) => {
   */
   const handleConcChange = (changesJson) => { 
     console.log("handleConc change " + changesJson)
-    let changesObj = JSON.parse(changesJson);
-    let title = changesObj.title;
-    let concentration = changesObj.concentration;
+    let changesObj = changesJson;
+    let title = changesObj.cofactorTitle;
+    let concentration = changesObj.newConcentration;
 
     if(concentration) console.log("concentrations:" + concentration)
     if(titles) console.log("titles: " + title);
@@ -122,42 +124,41 @@ const FlowModel = (props) => {
         console.log("titles[i] : titles " + titles[i] + " : " + title)
         var tempConcentrations = concentrations
         var newConcentration = 10 * concentration
+        console.log("setting concentration: " + newConcentration)
 
         tempConcentrations[i] = newConcentration
-
+    
         setConcentrations(tempConcentrations);
+        console.log(concentrations)
       }
     }
     // this is for changing cofactor ratio
-    for (let i = 0; i < factors.length; i++) {
-      if (factorTitle[i] === title) {
+    for (let i = 0; i < factorsPercent.length; i++) {
+      if (factorTitles[i] === title) {
         
-        var tempPercents = factors;
+        var tempPercents = factorsPercent;
         var newPercent = 1 * concentration;
         tempPercents[i] = newPercent;
 
-        setFactors(tempPercents);
+        setFactorsPercent(tempPercents);
       }
     }
   }
 
-  const [constructorHasRun, setConstructorHasRun] = useState(false);
-  const constructor = () => {
-    if(constructorHasRun) return; // block if constructor has already been run
-    // userInteractionList.subscribe("concentrationChange", handleConcChange);
-    // userInteractionList.subscribe("closePathway", handlePathwayClose);
-
-    setConstructorHasRun(true);
-  }
-  constructor(); // rerun constructor on each render
 
 
   const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
   useEffect(() => {
-    setConcentrations((conc) => 
-      concentrations = run(concentrations, reversibleSteps, factors, factorSteps)
-    );
+    setConcentrations((newConcentration) => {
+      const adjustedConcentrations = run(newConcentration, reversibleSteps, factorsPercent, factorSteps);
+      console.log("new adjusted concentrations: " + adjustedConcentrations);
+
+      return adjustedConcentrations;
+    });
+  }, [concentrations])
+
+  useEffect(() => {
     setEdges((eds) =>
       eds.map((edge) => {
         console.log("SETTING EDGES")
@@ -177,18 +178,10 @@ const FlowModel = (props) => {
         return edge;
       })
     );
-  }, [factors[0], factors[1], concentrations[0], setEdges]);
+  }, [factorsPercent[0], factorsPercent[1], setEdges]);
 
   return ( 
     <div className='ModelArea'>
-      <div>
-        { isPathwayCurrentlyLoaded && <PathwayTitleCard pathwayTitle={ pathwayTitle } 
-                                                        pathwayDescription={ pathwayDescription }
-                                                        pathwayAuthor={ pathwayAuthor }
-                                                        additionalImage={ boogyImg } /> }
-
-        { isPathwayCurrentlyLoaded && <SliderSideBar  />}
-      </div>
       <ReactFlow className='ModelAreaChild ReactFlow'
         nodes={nodes}
         edges={edges}
@@ -199,7 +192,18 @@ const FlowModel = (props) => {
         fitView
         attributionPosition="top-right"
       >
-        <Controls />
+        <Controls position='bottom-right' />
+
+        { isPathwayCurrentlyLoaded && <PathwayTitleCard pathwayTitle={ pathwayTitle } 
+                                                      pathwayDescription={ pathwayDescription }
+                                                      pathwayAuthor={ pathwayAuthor }
+                                                      additionalImage={ boogyImg } /> }
+
+      { isPathwayCurrentlyLoaded && <SliderSideBar slidersTitle="Cofactors"
+                                                   slidersDescription="Adjust cofactor concentrations"
+                                                   titles={ factorTitles }
+                                                   initialConcs={ factorsPercent }
+                                                   handleConcentrationChange={ handleConcChange } />}
       </ReactFlow>
     </div>
   );

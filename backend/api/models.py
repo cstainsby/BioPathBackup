@@ -78,8 +78,8 @@ class PathwayEnzyme(models.Model):
     y = models.PositiveSmallIntegerField()
     limiting = models.BooleanField(default=False)
 
-    class Meta:
-        unique_together = ["enzyme", "pathway"]
+    # class Meta:
+    #     unique_together = ["enzyme", "pathway"]
 
     def __str__(self):
         return f"{self.pathway.__str__()} - {self.enzyme.__str__()}"
@@ -91,8 +91,8 @@ class PathwayMolecule(models.Model):
     x = models.PositiveSmallIntegerField()
     y = models.PositiveSmallIntegerField()
     
-    class Meta:
-        unique_together = ["molecule", "pathway"]
+    # class Meta:
+    #     unique_together = ["molecule", "pathway"]
 
     def __str__(self):
         return f"{self.pathway.__str__()} - {self.molecule.__str__()}"

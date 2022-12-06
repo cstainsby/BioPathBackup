@@ -78,52 +78,63 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
 // Build a flow model from pathway json
 export function buildFlow(pathway) {
     // these are mocked for testing fix later
-    // const nodesJson = nodes
-    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") { 
+    // const initialNodes = nodes
+    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") {
         console.log("buildFlow: Invalid pathway passed");
         return;
     }
 
-    const nodesJson = generateNodes(pathway);
+    const [enzymeNodes, moleculeNodes] = generateNodes(pathway);
 
+    let initialNodes = [];
+    let initialEdges = [];
 
-    var initialNodes = [];
-    var initialEdges = [];
+    let edgeId = 1;
 
-    var edgeId = 1;
-
-    var substrates = [];
-    var enzymes = [];
-
-    for (let i = 0; i < nodesJson.length; i++) {
-        if (nodesJson[i].className === 'substrate') {
-            substrates.push(nodesJson[i])
-        }
-        else {
-            enzymes.push(nodesJson[i]);
-        }
-        initialNodes.push(nodesJson[i]);
+    for (const enzyme of enzymeNodes) {
+        initialNodes.push(enzyme);
     }
-    // generate edges for enzymes
-    for (let i = 0; i < enzymes.length; i++) {
-        var substrateList = enzymes[i].data.substrates;
-        var productList = enzymes[i].data.products;
-        for (const name of substrateList) {
-            for (const substrate of nodesJson) {
-                if (substrate.data.title === name) {
-                    initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: substrate.id, target: enzymes[i].id});
+    for (const molecule of moleculeNodes) {
+        initialNodes.push(molecule);
+    }
+
+    
+    for (const enzymeNode of enzymeNodes) {
+        for (const moleculeID of enzymeNode.data.substrates) {
+            for (const substrate of moleculeNodes) {
+                if (substrate.id === String(moleculeID)) {
+                    initialEdges.push({
+                        id: String(edgeId), 
+                        data: substrate.id, 
+                        animated: true, 
+                        source: substrate.id, 
+                        target: enzymeNode.id
+                    });
                     edgeId++; // update edgeId for next iteration
-                    if (enzymes[i].data.reversible === true) { // added data: substrate.data.title
-                        initialEdges.push({id: String(edgeId), data: substrate.data.title, animated: true, source: enzymes[i].id, target: substrate.id});
-                        edgeId++;
-                    }
+
+                    // Inlcude for Reversible Edges
+                    // if (enzymes[i].data.reversible === true) { // added data: substrate.data.title
+                    //     initialEdges.push({
+                    //         id: String(edgeId),
+                    //         data: substrate.id, 
+                    //         animated: true, 
+                    //         source: enzymes[i].id, 
+                    //         target: substrate.id
+                    //     });
+                    //     edgeId++;
+                    // }
                 }
             }
         }
-        for (const name of productList) {
-            for (const product of nodesJson) {
-                if (product.data.title === name) {
-                    initialEdges.push({id: String(edgeId), data: product.data.title, animated: true, source: enzymes[i].id, target: product.id});
+        for (const moleculeID of enzymeNode.data.products) {
+            for (const product of moleculeNodes) {
+                if (product.id === String(moleculeID)) {
+                    initialEdges.push({
+                        id: String(edgeId),
+                        data: product.id,
+                        animated: true, 
+                        source: enzymeNode.id, 
+                        target: product.id});
                     edgeId++; // update edgeId for next iteration
                 }
             }
@@ -145,39 +156,35 @@ export function generateNodes (pathway) {
         return;
     }
 
-    var nodes = []
-    let newNode = null;
+    let enzymes = []
+    let molecules = []
 
-    for (let i = 0; i < pathway.enzymes.length; i++) {
-        newNode = {
-            id: String(i), 
-            className: 'enzyme', 
+    for (const enzyme of pathway.enzymes) {
+        enzymes.push({
+            id: String(enzyme.id),
+            className: 'enzyme',
             data: {
-                label: pathway.enzymes[i].name, 
-                reversible: pathway.enzymes[i].reversible,
-                substrates: pathway.enzymes[i].substrates, 
-                products: pathway.enzymes[i].products
+                label: enzyme.name, 
+                reversible: enzyme.reversible,
+                substrates: enzyme.substrates, 
+                products: enzyme.products
             },
-            position: {x: pathway.enzymes[i].x, y: pathway.enzymes[i].y}
-        }
-        nodes.push(newNode);
+            position: {x: enzyme.x, y: enzyme.y}
+        });
     }
-    
-    for (let i = 0; i < pathway.molecules.length; i++) {
-        newNode = {
-            id: String(i + pathway.enzymes.length), 
-            className: 'substrate', 
+    for (const molecule of pathway.molecules) {
+        molecules.push({
+            id: String(molecule.id),
+            className: 'substrate',
             data: {
-                label: pathway.molecules[i].name, 
-                title: pathway.molecules[i].name,
+                label: molecule.name,
                 concentration: 100
             },
-            position: {x: pathway.molecules[i].x, y: pathway.molecules[i].y}
-        }
-        nodes.push(newNode);
+            position: {x: molecule.x, y: molecule.y}
+        })
     }
 
-    return nodes;
+    return [enzymes, molecules];
 }
 
 /*
@@ -189,9 +196,10 @@ export function findSliders(pathwayData) {
     var sliders = []; // list of cofactors extracted from pathway JSON
     var percent = []; // new
 
-    for (let i = 0; i < pathwayData.enzymes.length; i++) {
-        if (pathwayData.enzymes[i].cofactors.length > 0) { // if cofactor exists
-            for (const cofactor of pathwayData.enzymes[i].cofactors) { // add each cofactor
+    for (const enzyme of pathwayData.enzymes) {
+        if (enzyme.cofactors.length > 0) { // if cofactor exists
+            for (const cofactor of enzyme.cofactors) { // add each cofactor
+                // TODO: Map cofactorID to pathwayData.molecules name
                 if (!sliders.includes(cofactor)) { // only add unique cofactors
                     sliders.push(cofactor);
                     percent.push(1); // new
@@ -212,7 +220,7 @@ export function findSliders(pathwayData) {
 
 /*
     Function to generate the molecules that will be tracked in a pathway
-    returns the list of molecules and their corresponding concentrations
+    returns the list of molecule IDs and their corresponding concentrations
     All molecules start with the same baseConcentration
 
     pathwayData is the JSON passed in
@@ -226,7 +234,7 @@ export function findMolecules(pathwayData, baseConcentration=10) {
     for (let i = 0; i < pathwayData.molecules.length; i++) {
         // probably need to add some error checking like a molecule without name
         // might need to switch to id instead of name depending on how we do JSON
-        molecules.push(pathwayData.molecules[i].name);
+        molecules.push(pathwayData.molecules[i].id);
         concentrations.push(baseConcentration);
     }
 

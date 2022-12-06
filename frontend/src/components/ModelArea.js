@@ -153,7 +153,6 @@ const FlowModel = (props) => {
     setConcentrations((newConcentration) => {
       const adjustedConcentrations = run(newConcentration, reversibleSteps, factorsPercent, factorSteps);
       console.log("new adjusted concentrations: " + adjustedConcentrations);
-
       return adjustedConcentrations;
     });
   }, [concentrations])
@@ -178,7 +177,7 @@ const FlowModel = (props) => {
         return edge;
       })
     );
-  }, [factorsPercent[0], factorsPercent[1], setEdges]);
+  }, [factorsPercent[0], factorsPercent[1], setEdges, concentrations]);
 
   return ( 
     <div className='ModelArea'>
@@ -219,21 +218,17 @@ const PathwayTitleCard = (props) => {
   return (
     <div id="PathwayTitleCard" className='ModelAreaChild'>
       { (props.pathwayTitle !== "") && (
-        <div className="card mb-3" >
-          <div class="row g-0">
-            { props.additionalImage && 
-              <div class="col-md-4">
-                <img src={ props.additionalImage } height="120" width="120" className="img-fluid rounded-start"/>
-              </div>
-            }
-            <div className="col-md-8">
-              <div className="card-body" id='PathwayTitleTextBox'>
-                <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
-                <p className="card-text">{ props.pathwayDescription }</p>
-                <p className="card-text"><small class="text-muted">Created By { props.pathwayAuthor }</small></p>
-                {/* <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p> */}
-              </div>
-            </div>
+        <div className="card" >
+          { props.additionalImage && 
+            <img src={ props.additionalImage } width="10" height="150" className="card-img-top"/>
+          }
+          <div className="card-body" id='PathwayTitleTextBox'>
+            <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
+            <p className="card-text">{ props.pathwayDescription }</p>
+            <p className="card-text"><small class="text-muted">Created By { props.pathwayAuthor }</small></p>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago by { props.pathwayAuthor }</small>
           </div>
         </div>
       )}

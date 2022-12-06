@@ -84,6 +84,7 @@ export function buildFlow(pathway) {
         return;
     }
 
+<<<<<<< HEAD
     const [enzymeNodes, moleculeNodes] = generateNodes(pathway);
 
     let initialNodes = [];
@@ -92,12 +93,24 @@ export function buildFlow(pathway) {
     let edgeId = 1;
 
     for (const enzyme of enzymeNodes) {
+=======
+    const [enzymes, moleculeNodes] = generateNodes(pathway);
+
+
+    let initialNodes = [];
+    let initialEdges = [];
+
+    let edgeId = 1;
+
+    for (const enzyme of enzymes) {
+>>>>>>> 1be6136382a54297d832b2454f28e99a20794aff
         initialNodes.push(enzyme);
     }
     for (const molecule of moleculeNodes) {
         initialNodes.push(molecule);
     }
 
+<<<<<<< HEAD
     
     for (const enzymeNode of enzymeNodes) {
         for (const moleculeID of enzymeNode.data.substrates) {
@@ -117,6 +130,59 @@ export function buildFlow(pathway) {
                     //     initialEdges.push({
                     //         id: String(edgeId),
                     //         data: substrate.id, 
+=======
+    // generate edges for enzymes
+    // for (const enzyme of pathway.enzymes) {
+    //     for (const enzymeMolecule of enzyme.substrates) {
+    //         for (const moleculeNode of moleculeNodes) {
+    //             if (enzymeMolecule === moleculeNode.id) {
+    //                 initialEdges.push({
+    //                     id: String(edgeId),
+    //                     data: moleculeNode.data.title,
+    //                     animated: true,
+    //                     source: moleculeNode.id,
+    //                     target: enzyme.id
+    //                 });
+    //                 edgeId++; // update edgeId for next iteration
+    //             }
+    //         }
+    //     }
+    //     for (const enzymeMolecule of enzyme.products) {
+    //         for (const moleculeNode of moleculeNodes) {
+    //             if (enzymeMolecule === moleculeNode.id) {
+    //                 initialEdges.push({
+    //                     id: String(edgeId), 
+    //                     data: moleculeNode.data.title, 
+    //                     animated: true, 
+    //                     source: enzyme.id, 
+    //                     target: moleculeNode.id
+    //                 });
+    //                 edgeId++; // update edgeId for next iteration
+    //             }
+    //         }
+    //     }
+    // }
+
+    
+    for (let i = 0; i < enzymes.length; i++) {
+        var substrateList = enzymes[i].data.substrates;
+        var productList = enzymes[i].data.products;
+        for (const name of substrateList) {
+            for (const substrate of initialNodes) {
+                if (substrate.data.label === name) {
+                    initialEdges.push({
+                        id: String(edgeId), 
+                        data: substrate.data.title, 
+                        animated: true, 
+                        source: substrate.id, 
+                        target: enzymes[i].id
+                    });
+                    edgeId++; // update edgeId for next iteration
+                    // if (enzymes[i].data.reversible === true) { // added data: substrate.data.title
+                    //     initialEdges.push({
+                    //         id: String(edgeId),
+                    //         data: substrate.data.title, 
+>>>>>>> 1be6136382a54297d832b2454f28e99a20794aff
                     //         animated: true, 
                     //         source: enzymes[i].id, 
                     //         target: substrate.id
@@ -126,6 +192,7 @@ export function buildFlow(pathway) {
                 }
             }
         }
+<<<<<<< HEAD
         for (const moleculeID of enzymeNode.data.products) {
             for (const product of moleculeNodes) {
                 if (product.id === String(moleculeID)) {
@@ -134,6 +201,16 @@ export function buildFlow(pathway) {
                         data: product.id,
                         animated: true, 
                         source: enzymeNode.id, 
+=======
+        for (const name of productList) {
+            for (const product of initialNodes) {
+                if (product.data.label === name) {
+                    initialEdges.push({
+                        id: String(edgeId),
+                        data: product.data.title, 
+                        animated: true, 
+                        source: enzymes[i].id, 
+>>>>>>> 1be6136382a54297d832b2454f28e99a20794aff
                         target: product.id});
                     edgeId++; // update edgeId for next iteration
                 }
@@ -177,7 +254,12 @@ export function generateNodes (pathway) {
             id: String(molecule.id),
             className: 'substrate',
             data: {
+<<<<<<< HEAD
                 label: molecule.name,
+=======
+                label: molecule.id, 
+                title: molecule.name,
+>>>>>>> 1be6136382a54297d832b2454f28e99a20794aff
                 concentration: 100
             },
             position: {x: molecule.x, y: molecule.y}

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { useParams } from 'react-router-dom';
 
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
@@ -10,6 +11,8 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 
+import SliderSideBar  from "./SliderSideBar";
+
 import { run, buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 // import { nodes as initialNodes, edges as initialEdges } from './initial-elements';
 import { getPathwayById } from '../requestLib/requests';
@@ -17,185 +20,220 @@ import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
 import './css/ModelArea.css'
 
+import boogyImg from "../images/boogy.PNG"
+
+import './css/RightSideBarArea.css';
+
+
 const FlowModel = (props) => {
-	const initialNodes = [];
-	const initialEdges = [];
+
+  let [isPathwayCurrentlyLoaded, setIsPathwayCurrentlyLoaded] = useState(false);
+  let [pathwayTitle, setPathwayTitle] = useState("");
+  let [pathwayDescription, setPathwayDescription] = useState("");
+  let [pathwayAuthor, setPathwayAuthor] = useState("");
+
+  const initialNodes = [];
+  const initialEdges = [];
 
 	let [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
 	let [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-	const [userInteractionList, setUserInteractionList] = useState(props.dataObserver)
+  let [titles, setTitles] = useState([]);
+  let [concentrations, setConcentrations] = useState([]);
 
-	let [titles, setTitles] = useState([]);
-	let [concentrations, setConcentrations] = useState([]);
-
-	let [factorTitle, setFactorTitle] = useState([]);
-	let [factors, setFactors] = useState([]); // represents the percent value from sliders
-	let [factorSteps, setFactorSteps] = useState([0])
-	let [reversibleSteps, setReversibleSteps] = useState([0])
-	let [stopSteps, setStopSteps] = useState([0])
+  let [factorTitles, setFactorTitles] = useState([]);
+  let [factorsPercent, setFactorsPercent] = useState([]); // represents the percent value from sliders
+  let [factorSteps, setFactorSteps] = useState([0])
+  let [reversibleSteps, setReversibleSteps] = useState([0])
+  let [stopSteps, setStopSteps] = useState([0])
 
 	const [edgeName, setEdgeName] = useState(100);
 
-	const [recievedElements, setRecievedElements] = useState();
+  
 
-	// ------------------------------------------------------------------------
-	//  onUserInput functions
-	// ------------------------------------------------------------------------
-	const handlePathwayLoad = (newPathwayJson) => {
-		// TODO: build checks for correct JSON 
-		//  should be able to pass in empty JSON to "exit" 
-		//  if any component below is missing exit and say something is missing
+  let { pathwayId } = useParams(); // import params from router
+  useEffect(() => { 
+    if(pathwayId) {
+      // get JSON data for pathways
+      // including function here will force the modal to re-render
+      getPathwayById(pathwayId)
+        .then(data => {
+          handlePathwayOpen(data);
+        })
+        .catch(error => {
+          console.error("Error in getPathways loadModal", error);
+        });
+    }
+    else {
+      handlePathwayClose();
+    }
+  }, [pathwayId]); // monitor pathwayId for changes
 
-		try {
-			let nodesAndEdgesDict = buildFlow(newPathwayJson);
-			setNodes(nodesAndEdgesDict["nodes"]);
-			setEdges(nodesAndEdgesDict["edges"]);
+  // ------------------------------------------------------------------------
+  //  onUserInput helper functions
+  // ------------------------------------------------------------------------
 
-			const findMoleculesRes = findMolecules(newPathwayJson);
-			setTitles(findMoleculesRes["molecules"]);
-			// setConcentrations(findMoleculesRes["concentrations"]); // running this will cause inifinite loop 
-			
-			const findSlidersRes = findSliders(newPathwayJson);
-			setFactorTitle(findSlidersRes["sliders"]);
-			setFactors(findSlidersRes["percent"]);
+  const handlePathwayOpen = (data) => {
+    console.log("handle pathway load: " + JSON.stringify(data))
+    setIsPathwayCurrentlyLoaded(true);
 
-			// save all of these elements to local storage in case of refresh
-			//  will reload with it
-			window.localStorage.setItem("pathwayState", JSON.stringify(newPathwayJson));
-		}
-		catch(error) {
-			console.log("invalid pathway passed")
-		}
-	}
+    setPathwayTitle(data["name"]);
+    setPathwayDescription("about the pathway");
+    setPathwayAuthor(data["author"]);
 
-	// const handlePathwayClose = (newPathwayJson) => {
-	//   console.log("pathway close called");
-	//   setNodes([]);
-	//   setEdges([]);
-	//   setTitles([]);
-	//   setFactorTitle([]);
-	//   setFactors([]);
-	//   window.localStorage.setItem("pathwayState", JSON.stringify([]));
-	// }
-	
-	/* Function to change the concentration from an adjustment from a slider
-			TODO: Change to handle dynamic titles based on what is received from api
-			currently hard coded pretty hard but works
-	*/
-	const handleConcChange = (changesJson) => { 
-		console.log("handleConc change")
-		let changesObj = JSON.parse(changesJson);
-		let title = changesObj.title;
-		let concentration = changesObj.concentration;
+    let nodesAndEdgesDict = buildFlow(data);
+    setNodes(nodesAndEdgesDict["nodes"]);
+    setEdges(nodesAndEdgesDict["edges"]);
 
-		for (let i = 0; i < concentrations.length; i++) {
-			if (titles[i] === title) {
-				var tempConcentrations = concentrations
-				var newConcentration = 10 * concentration
+    const findMoleculesRes = findMolecules(data);
+    setTitles(findMoleculesRes["molecules"]);
+    setConcentrations(findMoleculesRes["concentrations"]); 
+    console.log("ON LOAD: concentrations are " + findMoleculesRes["concentrations"])
+    
+    const findSlidersRes = findSliders(data);
+    setFactorTitles(findSlidersRes["sliders"]);
+    setFactorsPercent(findSlidersRes["percent"]);
 
-				tempConcentrations[i] = newConcentration
+  }
 
-				setConcentrations(tempConcentrations);
-			}
-		}
-		// this is for changing cofactor ratio
-		for (let i = 0; i < factors.length; i++) {
-			if (factorTitle[i] === title) {
-				
-				var tempPercents = factors;
-				var newPercent = 1 * concentration;
-				tempPercents[i] = newPercent;
+  const handlePathwayClose = () => {
+    setIsPathwayCurrentlyLoaded(false);
+    setNodes([]);
+    setEdges([]);
+    setTitles([]);
+    setConcentrations([]);
+    setFactorTitles([]);
+    setFactorsPercent([]);
+  }
+  
+  /* Function to change the concentration from an adjustment from a slider
+      TODO: Change to handle dynamic titles based on what is received from api
+      currently hard coded pretty hard but works
+  */
+  const handleConcChange = (changesJson) => { 
+    console.log("handleConc change " + changesJson)
+    let changesObj = changesJson;
+    let title = changesObj.cofactorTitle;
+    let concentration = changesObj.newConcentration;
 
-				setFactors(tempPercents);
-			}
-		}
-	}
+    if(concentration) console.log("concentrations:" + concentration)
+    if(titles) console.log("titles: " + title);
 
-	const [constructorHasRun, setConstructorHasRun] = useState(false);
-	const constructor = () => {
-		if(constructorHasRun) return; // block if constructor has already been run
-		userInteractionList.subscribe("concentrationChange", handleConcChange);
-		userInteractionList.subscribe("loadPathway", handlePathwayLoad);
-		// userInteractionList.subscribe("closePathway", handlePathwayClose);
+    for (let i = 0; i < concentrations.length; i++) {
+      if (titles[i] === title) {
+        console.log("titles[i] : titles " + titles[i] + " : " + title)
+        var tempConcentrations = concentrations
+        var newConcentration = 10 * concentration
+        console.log("setting concentration: " + newConcentration)
 
-		// i
-		const localPathway = window.localStorage.getItem("pathwayState");
-		console.log("local pathway: " + localPathway);
-		console.log(typeof localPathway)
-		if(localPathway) {
-			console.log("loading in pathway from local store")
-			handlePathwayLoad(JSON.parse(localPathway));
-		}
+        tempConcentrations[i] = newConcentration
+    
+        setConcentrations(tempConcentrations);
+        console.log(concentrations)
+      }
+    }
+    // this is for changing cofactor ratio
+    for (let i = 0; i < factorsPercent.length; i++) {
+      if (factorTitles[i] === title) {
+        
+        var tempPercents = factorsPercent;
+        var newPercent = 1 * concentration;
+        tempPercents[i] = newPercent;
 
-		setConstructorHasRun(true);
-	}
-	constructor(); // rerun constructor on each render
+        setFactorsPercent(tempPercents);
+      }
+    }
+  }
+
 
 
 	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), []);
 
-	useEffect(() => {
-        setConcentrations((conc) => 
-            concentrations = run(concentrations, reversibleSteps, factors, factorSteps)
-        );
-	}, [concentrations[0]])
+  useEffect(() => {
+    setConcentrations((newConcentration) => {
+      const adjustedConcentrations = run(newConcentration, reversibleSteps, factorsPercent, factorSteps);
+      console.log("new adjusted concentrations: " + adjustedConcentrations);
+      return adjustedConcentrations;
+    });
+  }, [concentrations])
 
-	useEffect(() => {
-		setEdges((eds) =>
-			eds.map((edge) => {
-				// for loop is needed for edges that have the same input, ex. GH3P
-				for (let i = 0; i < concentrations.length; i++) {
-						if (edge.data == titles[i]) {
-							// edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
-							if (factorSteps.includes(i)) { // is a factor step
-								edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
-							}
-							else {
-								edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
-							}
-						}
-				}
+  useEffect(() => {
+    setEdges((eds) =>
+      eds.map((edge) => {
+        console.log("SETTING EDGES")
+        // for loop is needed for edges that have the same input, ex. GH3P
+        for (let i = 0; i < concentrations.length; i++) {
+            if (edge.data === titles[i]) {
+              // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
+              if (factorSteps.includes(i)) { // is a factor step
+                edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
+              }
+              else {
+                edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
+              }
+            }
+        }
 
-				return edge;
-			})
-		);
-	}, [factors[0], factors[1], setEdges]);
+        return edge;
+      })
+    );
+  }, [factorsPercent[0], factorsPercent[1], setEdges, concentrations]);
 
-	return ( 
-		<div className='ModelArea'>
-			<ReactFlow
-				nodes={nodes}
-				edges={edges}
-				onNodesChange={onNodesChange}
-				onEdgesChange={onEdgesChange}
-				snapToGrid
-				onConnect={onConnect}
-				fitView
-				attributionPosition="top-right"
-			>
-				<Controls />
-			</ReactFlow>
-		</div>
-	);
+  return ( 
+    <div className='ModelArea'>
+      <ReactFlow className='ModelAreaChild ReactFlow'
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        snapToGrid
+        onConnect={onConnect}
+        fitView
+        attributionPosition="top-right"
+      >
+        <Controls position='bottom-right' />
+
+        { isPathwayCurrentlyLoaded && <PathwayTitleCard pathwayTitle={ pathwayTitle } 
+                                                      pathwayDescription={ pathwayDescription }
+                                                      pathwayAuthor={ pathwayAuthor }
+                                                      additionalImage={ boogyImg } /> }
+
+      { isPathwayCurrentlyLoaded && <SliderSideBar slidersTitle="Cofactors"
+                                                   slidersDescription="Adjust cofactor concentrations"
+                                                   titles={ factorTitles }
+                                                   initialConcs={ factorsPercent }
+                                                   handleConcentrationChange={ handleConcChange } />}
+      </ReactFlow>
+    </div>
+  );
 };
 
-class FlowModelPopup extends Component {
-	constructor(props) {
-		
-		this.state = {
-			visible: false
-		}
-	}
+const PathwayTitleCard = (props) => {
+  // props that should be passed in:
+  //  pathwayTitle: string 
+  //  pathwayDescription: string
+  //  pathwayAuthor: string
+  //  additionalImage: png img to display (optional)
 
-	render() {
-
-		return (
-			<div>
-
-			</div>
-		);
-	}
+  return (
+    <div id="PathwayTitleCard" className='ModelAreaChild'>
+      { (props.pathwayTitle !== "") && (
+        <div className="card" >
+          { props.additionalImage && 
+            <img src={ props.additionalImage } width="10" height="150" className="card-img-top"/>
+          }
+          <div className="card-body" id='PathwayTitleTextBox'>
+            <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
+            <p className="card-text">{ props.pathwayDescription }</p>
+            <p className="card-text"><small class="text-muted">Created By { props.pathwayAuthor }</small></p>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago by { props.pathwayAuthor }</small>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default FlowModel;

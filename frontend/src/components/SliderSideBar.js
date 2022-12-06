@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 
 import "./css/SliderSideBar.css";
 import "./css/stylesheet.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
-import { findSliders } from "./utils/pathwayComponentUtils"
+import { findSliders } from "./utils/pathwayComponentUtils";
 
 
 // ----------------------------------------------------------------------
@@ -13,45 +13,49 @@ import { findSliders } from "./utils/pathwayComponentUtils"
 //  where it will have control over the rates of reactions for the 
 //  pathway currently being rendered 
 // ----------------------------------------------------------------------
-export default class SliderSideBar extends Component {
-  constructor(props) {
-    super(props);
+const SliderSideBar = (props) => {
+  // props that should be passed in:
+  //  slidersTitle: string 
+  //  slidersDescription: string
 
-    this.props.dataObserver.subscribe("loadPathway", this.handleLoadNewPathway);
-    
-    this.state = { 
-      componentTitle: props.title,    
-      componentDescription: props.description,
+  let [pathway, setPathway] = useState(null);
 
-      // needed for mapping dynamic list of cofactors
-      titles: JSON.parse(window.localStorage.getItem("SliderSideBarTitles")) || []
+  useEffect(() => {
+
+  }, [])
+
+  // const handleLoadNewPathway = (pathwayJson) => {
+  //   const newTitles = findSliders(pathwayJson)["sliders"];
+  //   setTitles(newTitles);
+  // }
+
+  const handleSliderChange = (cofactorTitle, newConcentration) => {
+    const newConcentrationObj ={
+      cofactorTitle: cofactorTitle,
+      newConcentration: newConcentration
     }
-    console.log("retrieved: " + JSON.parse(window.localStorage.getItem("SliderSideBarTitles")))
-    // console.log("of type " + typewindow.localStorage.getItem("SliderSideBarTitles")) 
+
+    props.handleConcentrationChange(newConcentrationObj);
   }
 
-  handleLoadNewPathway = (pathwayJson) => {
-    const newTitles = findSliders(pathwayJson)["sliders"];
-    
-    window.localStorage.setItem("SliderSideBarTitles", JSON.stringify(newTitles));
-    console.log("Push to local storage " + JSON.stringify(newTitles))
-    this.setState({
-      titles: newTitles
-    });
+  const handleSliderOpen = (cofactorTitle, newOpenStatus) => {
+    if(newOpenStatus === true) {
+      // close all others when another slider has been set to open
+    }
   }
 
-  render() {
-
-    const sliderItems = this.state.titles.map((title) => 
-      <li key={title.toString()}>
-        <Slider title={title} dataObserver={ this.props.dataObserver }/>
+  const sliderItems = props.titles.map((title) => 
+      <li>
+        <Slider 
+          title={title}
+          handleSliderChange={ handleSliderChange } />
       </li>
     );
-    
+
     return (
-      <div className='card sliderBar text-start'>
-        <h3 id="sliderComponentTitle">{ this.state.componentTitle }</h3>
-        { (this.state.componentDescription != "") && <p>{ this.state.componentDescription }</p> }
+      <div className='card ModelAreaChild' id='PathwaySliderBox'>
+        <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
+        {( props.slidersDescription != "") && <p><small class="text-muted">{ props.slidersDescription }</small></p> }
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>
@@ -60,97 +64,69 @@ export default class SliderSideBar extends Component {
         </ul>
       </div>
     )
-  }
 }
 
-class Slider extends Component {
-  constructor(props) {
-    super(props);
+const Slider = (props) => {
+  // props that should be passed in:
+  //  title: string 
 
-    let {title, isShowing} = this.props
-    if (isShowing === undefined) {
-      this.state = {title: title, value: 1, isShowing: true};
-    }
-    else {
-      this.state = {title: title, value: 1, isShowing: this.props.isShowing};
-    }
+  let [isExpanded, setIsExpanded] = useState(false);
+  let [sliderValue, setSliderValue] = useState(1.0);
+
+  const handleSliderValueChange = (newSliderValue) => {
+    setSliderValue(newSliderValue);
+
+    props.handleSliderChange(props.title, newSliderValue);
   }
 
-  handleSliderValueChange(e) {
-    this.setState((state, props) => ({
-      value: e
-    }));
-
-    const jsonUpdateResponse = JSON.stringify({
-      title : this.state.title,
-      concentration : e
-    });
-
-    this.props.dataObserver.postEvent("concentrationChange", jsonUpdateResponse);
+  const handleClick = (e) => {
+    setIsExpanded(!isExpanded);
   }
 
-  handleClick(e) {
-    /* this function is for showing or removing factor molecules
-        hopefully will be able to use pathway specific settings to show
-        correct pathway specific molecules
-        TODO: change from on/off based on buttons to based on pathway config
-    */
-    if (this.state.isShowing) {
-      this.setState((state, props) => ({
-
-        isShowing: false
-      }));
-    }
-    else {
-      this.setState((state, props) => ({
-        isShowing: true
-      }));
-    }
-  }
-
-
-  render() {
-    const openHeader = 
+  const openHeader = 
       <ul id='cardHeaderList'>
        <li>
-          <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+          <button className='cardHeaderDropdownButton' onClick={(e) => handleClick(e.target.value)}>
             <img 
               id='cardHeaderCaret' 
               src={dropdownLogo} />
           </button>
         </li>
-        <li><h4>{this.props.title}</h4></li>
+        <li><h5>{props.title}</h5></li>
       </ul>
 
     const closeHeader = 
-      <button className='cardHeaderDropdownButton' onClick={(e) => this.handleClick(e.target.value)}>
+      <button className='cardHeaderDropdownButton' onClick={(e) => handleClick(e.target.value)}>
         <ul id='cardHeaderList'>
           <li><img id='cardHeaderCaret' src={dropdownLogo} style={{ transform: "rotate(-90deg)"}}  /></li>
-          <li><h4>{this.props.title}</h4></li>
+          <li><h5>{props.title}</h5></li>
+          <li><small class="text-muted">{ sliderValue * 100 }%</small></li>
         </ul>
       </button>
 
     const cardContents = 
-      <div className='sliderCardContents'>
-        <input type="range"
+      <div className='card-body sliderCardContents'>
+        <input 
+          id="concentrationSlider"
+          className='slider'
+          type="range"
           min={0.0}
           step={0.1}
           max={2.0}
-          onChange={(e) => this.handleSliderValueChange(e.target.value)}
-          value={this.state.value}
+          onChange={(e) => handleSliderValueChange(e.target.value)}
+          value={sliderValue}
           />
-        <p>{parseInt(this.state.value * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
+        <p className='card-text'>{parseInt(sliderValue * 100)}% of concentration</p> {/* parseInt because 110% was giving a long float */}
       </div>
+      
 
-    const card = 
-      <div className='card growCard' id='sliderCard'>
-        { !this.state.isShowing ? openHeader : closeHeader}
-        { !this.state.isShowing ? cardContents : null }
-      </div>
+  return (
+    <div className='card growCard' id='sliderCard'>
+      { isExpanded ? openHeader : closeHeader}
+      { isExpanded ? cardContents : null }
+    </div>
+  )
 
-    
-
-    return card;
-  }
 }
 
+export default SliderSideBar;

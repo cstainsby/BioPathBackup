@@ -14,7 +14,7 @@
 
 let BACKEND_BASE_API_URL = "localhost:8000/api/"; // API ACCESS
 let LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
-let MOCK_API_URL = "http://localhost:4000/api/";         // MOCK API ACCESS
+let MOCK_API_URL = "http://localhost:4000/api/";  // MOCK API ACCESS
 
 let dataSourceAddress = MOCK_API_URL;       // Choice Definition
 

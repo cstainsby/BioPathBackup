@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 
 import './css/NavBar.css';
 import "./css/stylesheet.css";
@@ -40,10 +40,10 @@ const Navbar = (props) => {
               <ul className="dropdown-menu">
                 <li><a className="dropdown-item" href="#">Save</a></li>
                 <li><a className="dropdown-item" href="#">Save As</a></li>
-                <li><hr class="dropdown-divider"/></li>
+                <li><hr className="dropdown-divider"/></li>
                 <li><a className="dropdown-item" data-bs-toggle="modal" href="#loadPathwayModal">Open</a></li>
                 <li><a className="dropdown-item" href="#">New</a></li>
-                <li><hr class="dropdown-divider"/></li>
+                <li><hr className="dropdown-divider"/></li>
                 <li><Link className='dropdown-item' to="/">Close</Link></li>
               </ul>
             </li>

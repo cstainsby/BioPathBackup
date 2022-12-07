@@ -1,10 +1,10 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./css/SliderSideBar.css";
 import "./css/stylesheet.css";
 
 import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
-import { findSliders } from "./utils/pathwayComponentUtils";
+//import { findSliders } from "./utils/pathwayComponentUtils";
 
 
 // ----------------------------------------------------------------------
@@ -55,7 +55,7 @@ const SliderSideBar = (props) => {
     return (
       <div className='card ModelAreaChild' id='PathwaySliderBox'>
         <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
-        {( props.slidersDescription != "") && <p><small class="text-muted">{ props.slidersDescription }</small></p> }
+        {( props.slidersDescription !== "") && <p><small class="text-muted">{ props.slidersDescription }</small></p> }
         <ul className='sliderBarList'>
           {/* <li><Slider title="ATP" isShowing={true}/></li>
           <li><Slider title="HCL" isShowing={true}/></li>

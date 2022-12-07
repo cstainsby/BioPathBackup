@@ -7,7 +7,7 @@
 
 .react-flow__node.substrate {
     border-radius: 50%;
-    background-image: url(../../images/skiPass.jpg);
+    /* background-image: url(../../images/skiPass.jpg); */
     background-size: cover; /* or contain depending on what you want */
     background-position: center center;
     width: 60px;

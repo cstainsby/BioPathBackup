@@ -1,11 +1,10 @@
-import { Component } from 'react';
 import { useParams } from 'react-router-dom';
 
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
-	MiniMap,
+	// MiniMap,
 	Controls,
-	Background,
+	// Background,
 	useNodesState,
 	useEdgesState,
 	addEdge,
@@ -47,7 +46,11 @@ const FlowModel = (props) => {
     let [reversibleSteps, setReversibleSteps] = useState([0])
     let [stopSteps, setStopSteps] = useState([0])
 
-    const [edgeName, setEdgeName] = useState(100);
+    //const [edgeName, setEdgeName] = useState(100);
+
+    // useEffect(() => {
+    //     console.log(nodes);
+    // }, [nodes])
 
     let { pathwayId } = useParams(); // import params from router
     useEffect(() => { 
@@ -120,8 +123,8 @@ const FlowModel = (props) => {
         for (let i = 0; i < moleculeConcentrations.length; i++) {
         if (moleculeIDs[i] === title) {
             console.log("titles[i] : titles " + moleculeIDs[i] + " : " + title)
-            var tempConcentrations = moleculeConcentrations
-            var newConcentration = 10 * concentration
+            let tempConcentrations = moleculeConcentrations
+            let newConcentration = 10 * concentration
             console.log("setting concentration: " + newConcentration)
 
             tempConcentrations[i] = newConcentration
@@ -134,8 +137,8 @@ const FlowModel = (props) => {
         for (let i = 0; i < cofactorPercents.length; i++) {
         if (cofactorTitles[i] === title) {
             
-            var tempPercents = cofactorPercents;
-            var newPercent = 1 * concentration;
+            let tempPercents = cofactorPercents;
+            let newPercent = 1 * concentration;
             tempPercents[i] = newPercent;
 
             setcofactorPercents(tempPercents);
@@ -159,7 +162,7 @@ const FlowModel = (props) => {
             console.log("SETTING EDGES")
             // for loop is needed for edges that have the same input, ex. GH3P
             for (let i = 0; i < moleculeConcentrations.length; i++) {
-                if (edge.data === String(moleculeIDs[i])) {
+                if (edge.data.molecule_id === String(moleculeIDs[i])) {
                     // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
                     if (cofactorSteps.includes(i)) { // is a cofactor step
                         edge.style = {strokeWidth: moleculeConcentrations[i], stroke: 'yellow'};
@@ -177,6 +180,7 @@ const FlowModel = (props) => {
 
     return ( 
         <div className='ModelArea'>
+            { !isPathwayCurrentlyLoaded && <h1>Click File&gt;Open to load a pathway!</h1>}
             <ReactFlow className='ModelAreaChild ReactFlow'
                 nodes={nodes}
                 edges={edges}
@@ -205,7 +209,7 @@ const FlowModel = (props) => {
 };
 
 const PathwayTitleCard = (props) => {
-    // props that should be passed in:
+    //  props that should be passed in:
     //  pathwayTitle: string 
     //  pathwayDescription: string
     //  pathwayAuthor: string

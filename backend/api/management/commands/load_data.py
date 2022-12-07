@@ -86,22 +86,22 @@ class Command(BaseCommand):
         pm1 = models.PathwayMolecule(
             molecule=m1,
             pathway=p1,
-            x=0,
+            x=45,
             y=0
         )
         pm1.save()
         pm2 = models.PathwayMolecule(
             molecule=m2,
             pathway=p1,
-            x=0,
-            y=200
+            x=45,
+            y=240
         )
         pm2.save()
         pm3 = models.PathwayMolecule(
             molecule=m3,
             pathway=p1,
-            x=400,
-            y=100
+            x=195,
+            y=120
         )
         pm3.save()
 
@@ -284,6 +284,72 @@ class Command(BaseCommand):
         )
         adp.save()
 
+        atp1 = models.Molecule(
+            name="ATP",
+            abbreviation="ATP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        atp1.save()
+
+        adp1 = models.Molecule(
+            name="ADP",
+            abbreviation="ADP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        adp1.save()
+
+        atp2 = models.Molecule(
+            name="ATP",
+            abbreviation="ATP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        atp2.save()
+
+        adp2 = models.Molecule(
+            name="ADP",
+            abbreviation="ADP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        adp2.save()
+
+        atp3 = models.Molecule(
+            name="ATP",
+            abbreviation="ATP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        atp3.save()
+
+        adp3 = models.Molecule(
+            name="ADP",
+            abbreviation="ADP",
+            #ball_and_stick_image=,
+            #space_filling_image=,
+            # link=,
+            author=root,
+            public=True
+        )
+        adp3.save()
+
         h2o = models.Molecule(
             name="Hydrogen Dioxide",
             abbreviation="H2O",
@@ -342,8 +408,8 @@ class Command(BaseCommand):
             # cofactors=[]
         )
         phosphofructokinase.save()
-        phosphofructokinase.substrates.add(f6p, atp)
-        phosphofructokinase.products.add(f16bp, adp)
+        phosphofructokinase.substrates.add(f6p, atp1)
+        phosphofructokinase.products.add(f16bp, adp1)
 
         aldolase = models.Enzyme(
             name="Aldolase",
@@ -406,8 +472,8 @@ class Command(BaseCommand):
             # cofactors=[]
         )
         phosphoglycerokinase.save()
-        phosphoglycerokinase.substrates.add(bpg, atp)
-        phosphoglycerokinase.products.add(pg3, adp)
+        phosphoglycerokinase.substrates.add(bpg, atp2)
+        phosphoglycerokinase.products.add(pg3, adp2)
 
         phosphoglyceromutase = models.Enzyme(
             name="Phosphoglyceromutase",
@@ -454,8 +520,8 @@ class Command(BaseCommand):
             # cofactors=[]
         )
         pyrk.save()
-        pyrk.substrates.add(pep, atp)
-        pyrk.products.add(pyr, adp)
+        pyrk.substrates.add(pep, atp3)
+        pyrk.products.add(pyr, adp3)
 
 
         # ----- pathway -----
@@ -483,6 +549,10 @@ class Command(BaseCommand):
         #     h,
         #     atp,
         #     adp,
+        #     atp1,
+        #     adp1,
+        #     atp2,
+        #     adp2,
         #     h2o
         # )
         # glycolysis.enzymes.add(
@@ -622,7 +692,7 @@ class Command(BaseCommand):
         pm5.save()
 
         pm6 = models.PathwayMolecule(
-            molecule=atp,
+            molecule=atp1,
             pathway=glycolysis,
             x=400,
             y=750
@@ -637,13 +707,13 @@ class Command(BaseCommand):
         )
         pm7.save()
 
-        # pm8 = models.PathwayMolecule(
-        #     molecule=adp,
-        #     pathway=glycolysis,
-        #     x=400,
-        #     y=1050
-        # )
-        # pm8.save()
+        pm8 = models.PathwayMolecule(
+            molecule=adp1,
+            pathway=glycolysis,
+            x=400,
+            y=1050
+        )
+        pm8.save()
 
         pm9 = models.PathwayMolecule(
             molecule=dhap,
@@ -686,7 +756,7 @@ class Command(BaseCommand):
         pm13.save()
 
         pm14 = models.PathwayMolecule(
-            molecule=adp,
+            molecule=adp2,
             pathway=glycolysis,
             x=500,
             y=1650
@@ -701,13 +771,13 @@ class Command(BaseCommand):
         )
         pm15.save()
 
-        # pm16 = models.PathwayMolecule(
-        #     molecule=atp,
-        #     pathway=glycolysis,
-        #     x=400,
-        #     y=1950
-        # )
-        # pm16.save()
+        pm16 = models.PathwayMolecule(
+            molecule=atp2,
+            pathway=glycolysis,
+            x=400,
+            y=1950
+        )
+        pm16.save()
 
         pm17 = models.PathwayMolecule(
             molecule=pg2,
@@ -725,13 +795,13 @@ class Command(BaseCommand):
         )
         pm18.save()
 
-        # pm19 = models.PathwayMolecule(
-        #     molecule=adp,
-        #     pathway=glycolysis,
-        #     x=400,
-        #     y=2550
-        # )
-        # pm19.save()
+        pm19 = models.PathwayMolecule(
+            molecule=atp3,
+            pathway=glycolysis,
+            x=200,
+            y=2750
+        )
+        pm19.save()
 
         pm20 = models.PathwayMolecule(
             molecule=pyr,
@@ -741,10 +811,10 @@ class Command(BaseCommand):
         )
         pm20.save()
 
-        # pm21 = models.PathwayMolecule(
-        #     molecule=atp,
-        #     pathway=glycolysis,
-        #     x=400,
-        #     y=2850
-        # )
-        # pm21.save()
+        pm21 = models.PathwayMolecule(
+            molecule=adp3,
+            pathway=glycolysis,
+            x=200,
+            y=2950
+        )
+        pm21.save()

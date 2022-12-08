@@ -573,32 +573,32 @@ class Command(BaseCommand):
         pe1 = models.PathwayEnzyme(
             enzyme=hexokinase,
             pathway=glycolysis,
-            x=300,
-            y=300
+            x=210,
+            y=240
         )
         pe1.save()
 
         pe2 = models.PathwayEnzyme(
             enzyme=phosphoglucoisomerase,
             pathway=glycolysis,
-            x=300,
-            y=600
+            x=210,
+            y=480
         )
         pe2.save()
 
         pe3 = models.PathwayEnzyme(
             enzyme=phosphofructokinase,
             pathway=glycolysis,
-            x=300,
-            y=900
+            x=210,
+            y=720
         )
         pe3.save()
 
         pe4 = models.PathwayEnzyme(
             enzyme=aldolase,
             pathway=glycolysis,
-            x=300,
-            y=1200
+            x=210,
+            y=945
         )
         pe4.save()
 
@@ -606,47 +606,47 @@ class Command(BaseCommand):
             enzyme=triose_phosphate_isomerase,
             pathway=glycolysis,
             x=300,
-            y=1500
+            y=1200
         )
         pe5.save()
 
         pe6 = models.PathwayEnzyme(
             enzyme=tpd,
             pathway=glycolysis,
-            x=300,
-            y=1800
+            x=225,
+            y=1425
         )
         pe6.save()
 
         pe7 = models.PathwayEnzyme(
             enzyme=phosphoglycerokinase,
             pathway=glycolysis,
-            x=300,
-            y=2100
+            x=225,
+            y=1725
         )
         pe7.save()
 
         pe8 = models.PathwayEnzyme(
             enzyme=phosphoglyceromutase,
             pathway=glycolysis,
-            x=300,
-            y=2400
+            x=225,
+            y=1965
         )
         pe8.save()
 
         pe9 = models.PathwayEnzyme(
             enzyme=enolase,
             pathway=glycolysis,
-            x=300,
-            y=2700
+            x=225,
+            y=2235
         )
         pe9.save()
 
         pe10 = models.PathwayEnzyme(
             enzyme=pyrk,
             pathway=glycolysis,
-            x=300,
-            y=3000
+            x=225,
+            y=2520
         )
         pe10.save()
 
@@ -662,7 +662,7 @@ class Command(BaseCommand):
         pm2 = models.PathwayMolecule(
             molecule=atp,
             pathway=glycolysis,
-            x=400,
+            x=315,
             y=150
         )
         pm2.save()
@@ -670,151 +670,151 @@ class Command(BaseCommand):
         pm3 = models.PathwayMolecule(
             molecule=g6p,
             pathway=glycolysis,
-            x=200,
-            y=450
+            x=195,
+            y=390
         )
         pm3.save()
 
         pm4 = models.PathwayMolecule(
             molecule=adp,
             pathway=glycolysis,
-            x=400,
-            y=450
+            x=315,
+            y=390
         )
         pm4.save()
 
         pm5 = models.PathwayMolecule(
             molecule=f6p,
             pathway=glycolysis,
-            x=200,
-            y=750
+            x=195,
+            y=615
         )
         pm5.save()
 
         pm6 = models.PathwayMolecule(
             molecule=atp1,
             pathway=glycolysis,
-            x=400,
-            y=750
+            x=315,
+            y=615
         )
         pm6.save()
 
         pm7 = models.PathwayMolecule(
             molecule=f16bp,
             pathway=glycolysis,
-            x=200,
-            y=1050
+            x=210,
+            y=855
         )
         pm7.save()
 
         pm8 = models.PathwayMolecule(
             molecule=adp1,
             pathway=glycolysis,
-            x=400,
-            y=1050
+            x=300,
+            y=855
         )
         pm8.save()
 
         pm9 = models.PathwayMolecule(
             molecule=dhap,
             pathway=glycolysis,
-            x=450,
-            y=1500
+            x=345,
+            y=1110
         )
         pm9.save()
 
         pm10 = models.PathwayMolecule(
             molecule=g3p,
             pathway=glycolysis,
-            x=150,
-            y=1500
+            x=195,
+            y=1335
         )
         pm10.save()
 
         pm11 = models.PathwayMolecule(
             molecule=nad,
             pathway=glycolysis,
-            x=350,
-            y=1500
+            x=330,
+            y=1335
         )
         pm11.save()
 
         pm12 = models.PathwayMolecule(
             molecule=bpg,
             pathway=glycolysis,
-            x=200,
-            y=1650
+            x=225,
+            y=1560
         )
         pm12.save()
 
         pm13 = models.PathwayMolecule(
             molecule=nadh,
             pathway=glycolysis,
-            x=400,
-            y=1650
+            x=315,
+            y=1560
         )
         pm13.save()
 
         pm14 = models.PathwayMolecule(
             molecule=adp2,
             pathway=glycolysis,
-            x=500,
-            y=1650
+            x=315,
+            y=1875
         )
         pm14.save()
 
         pm15 = models.PathwayMolecule(
             molecule=pg3,
             pathway=glycolysis,
-            x=200,
-            y=1950
+            x=225,
+            y=1875
         )
         pm15.save()
 
         pm16 = models.PathwayMolecule(
             molecule=atp2,
             pathway=glycolysis,
-            x=400,
-            y=1950
+            x=315,
+            y=1635
         )
         pm16.save()
 
         pm17 = models.PathwayMolecule(
             molecule=pg2,
             pathway=glycolysis,
-            x=350,
-            y=2250
+            x=270,
+            y=2130
         )
         pm17.save()
 
         pm18 = models.PathwayMolecule(
             molecule=pep,
             pathway=glycolysis,
-            x=200,
-            y=2550
+            x=210,
+            y=2385
         )
         pm18.save()
 
         pm19 = models.PathwayMolecule(
             molecule=atp3,
             pathway=glycolysis,
-            x=200,
-            y=2750
+            x=330,
+            y=2385
         )
         pm19.save()
 
         pm20 = models.PathwayMolecule(
             molecule=pyr,
             pathway=glycolysis,
-            x=200,
-            y=2850
+            x=210,
+            y=2670
         )
         pm20.save()
 
         pm21 = models.PathwayMolecule(
             molecule=adp3,
             pathway=glycolysis,
-            x=200,
-            y=2950
+            x=330,
+            y=2670
         )
         pm21.save()

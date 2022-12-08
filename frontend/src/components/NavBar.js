@@ -143,8 +143,8 @@ const HelpModal = (props) => {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <h3>Help Yourself</h3>
-            <img src={finger}></img>
+            <h3>TODO</h3>
+            {/* <img src={finger}></img> */}
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Welp...</button>

@@ -49,7 +49,14 @@ const FlowModel = (props) => {
     //const [edgeName, setEdgeName] = useState(100);
 
     // useEffect(() => {
-    //     console.log(nodes);
+    //     let out = []
+    //     for (const node of nodes) {
+    //         out.push({
+    //             id: node.data.label,
+    //             pos: node.position
+    //         })
+    //     }
+    //     console.log(out);
     // }, [nodes])
 
     let { pathwayId } = useParams(); // import params from router

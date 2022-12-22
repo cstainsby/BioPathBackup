@@ -27,6 +27,7 @@ class Molecule(models.Model):
 
 class Enzyme(models.Model):
     name = models.CharField(max_length=50)
+    abbreviation = models.CharField(max_length=10)
     reversible = models.BooleanField(default=True)
     substrates = models.ManyToManyField(
         Molecule,
@@ -40,7 +41,6 @@ class Enzyme(models.Model):
         Molecule,
         related_name="enzymes_cofactors"
     )
-    abbreviation = models.CharField(max_length=10)
     image = models.ImageField() # space filling
     link = models.URLField() # link to protopedia
     author = models.ForeignKey(User, on_delete=models.PROTECT)

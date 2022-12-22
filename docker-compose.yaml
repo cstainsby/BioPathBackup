@@ -38,6 +38,7 @@ services:
     # Zach B - We ran into constant restart issues, fixed when we removed this
     # restart: always
     container_name: backend
+    platform: linux/amd64
     # Josh S - Edited command to wait until DB is ready to accept connections before migrating and then starting server
     #   Not sure if we should actually makemigrations and migrate every startup, but it works for now
     #command: bash -c "/app/api/startup.sh"

@@ -52,6 +52,7 @@ class EnzymeTestCase(TestCase):
       All tests for the Enzyme model. Author is 'EnzymeTestCase'.
       """
 
+      @classmethod
       def setUpTestData(cls):
             """
             Set up functionality: ran once per TestClass (class level).
@@ -120,7 +121,7 @@ class EnzymeTestCase(TestCase):
             Testing query-abilility using .get() on name, field access, and Enzyme.__str__()
             """
             test_author = models.User.objects.get(username="EnzymeTestCase")
-            e1 = models.Enzyme.objects.get(name="e1")
+            e1 = models.Enzyme.objects.get(name="Enzyme 1")
 
             self.assertEqual(e1.name, "Enzyme 1")
             self.assertEqual(e1.abbreviation, "e1")
@@ -139,6 +140,6 @@ class EnzymeTestCase(TestCase):
             m2 = models.Molecule.objects.get(name="Molecule 2")
             m3 = models.Molecule.objects.get(name="Molecule 3")
 
-            self.assertEqual(e1.substrates.first, m1)
-            self.assertEqual(e1.products.first, m2)
-            self.assertEqual(e1.cofactors.first, m3)
+            self.assertEqual(e1.substrates.all()[0], m1)
+            self.assertEqual(e1.products.all()[0], m2)
+            self.assertEqual(e1.cofactors.all()[0], m3)

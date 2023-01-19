@@ -101,7 +101,6 @@ const FlowModel = (props) => {
         const findSlidersRes = findSliders(newPathwayJSON);
         setFactorTitles(findSlidersRes["sliders"]);
         setcofactorPercents(findSlidersRes["percent"]);
-
     }
 
     const handlePathwayClose = () => {

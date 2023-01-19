@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Component }  from 'react'; // added this for an error meesage
+import React from 'react'; // added this for an error meesage
 import PathwayView from './components/PathwayView';
 
 function App() {

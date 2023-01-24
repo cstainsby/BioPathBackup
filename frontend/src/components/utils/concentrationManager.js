@@ -24,7 +24,7 @@ export default class ConcentrationManager {
          */
         this.enzymes = enzymes;
         this.molecule_concentrations = [];
-        this.initConcentrations(this.enzymes);
+        this.setEnzymes(this.enzymes);
         this.listeners = [];
         this.interval = null;
     }
@@ -37,7 +37,7 @@ export default class ConcentrationManager {
      * @param enzymes[].products list of output molecules to the enzyme
      * @param enzymes[].cofactors list of molecules effecting the enzyme's production
      */
-    initConcentrations(enzymes) {
+    setEnzymes(enzymes) {
         for (const enzyme of enzymes) {
             for (const substrate of enzyme.substrates) {
                 this.molecule_concentrations[substrate] = 100;
@@ -120,7 +120,7 @@ export default class ConcentrationManager {
     }
 
     /**
-     * Stops the running interval
+     * Stops the running {@link updateConcentrations} interval
      */
     stop() {
         if (this.interval) {
@@ -129,7 +129,7 @@ export default class ConcentrationManager {
     }
 
     /**
-     * Updates the current interval to new milliseconds
+     * Updates the current {@link updateConcentrations} interval to new milliseconds
      * @param {int} milliseconds 
      */
     updateInterval(milliseconds) {

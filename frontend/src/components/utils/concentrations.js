@@ -70,6 +70,14 @@ export default class Concentrations {
                 this.molecule_concentrations[product] += min_substrate_conc * 0.1;
             }
         }
+        this.notifyListeners();
+    }
+
+    /**
+     * Passes current molecule concentrations to all listening functions
+     * @function
+     */
+    notifyListeners() {
         for (const listener of this.listeners) {
             listener(this.molecule_concentrations);
         }

@@ -1,7 +1,7 @@
 """
 File: test_models.py
 Description: Unit tests for Django models.
-Modified: 12/21 - Josh Schmitz
+Modified: 12/28 - Josh Schmitz
 TODO test images
 """
 
@@ -28,7 +28,7 @@ class MoleculeTestCase(TestCase):
             "abbreviation": "m1",
             "ball_and_stick_image": None, # TODO test images
             "space_filling_image": None,
-            "link": "hi",#"https://www.django-rest-framework.org/api-guide/testing/",
+            "link": "hi", #"https://www.django-rest-framework.org/api-guide/testing/",
             "author": self.test_author,
             "public": True
         }

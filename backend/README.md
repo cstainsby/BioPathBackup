@@ -61,3 +61,11 @@ To create an admin account just startup the containers per usual and then...
 1. Fill in username and password. I've been using root root but y'all can use whatever in dev.
 1. Go to [http://localhost:8000/admin](http://localhost:8000/admin)
 1. You should be able to login with the user info you supplied. Now you can administer to your hearts content!
+
+## Tests
+The philosophy for testing your views is the same as for testing your
+models; you need to test anything that you've coded or your design 
+specifies, but not the behavior of the underlying framework and other 
+third party libraries.
+
+https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing

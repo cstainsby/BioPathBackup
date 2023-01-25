@@ -1,12 +1,13 @@
 """
 File: test_serializers.py
 Description: Unit tests for Django serializers.
-Modified: 12/25 - Josh Schmitz
+Modified: 12/28 - Josh Schmitz
 TODO test images
 TODO test creation/modification
 """
 
 from django.test import TestCase
+
 from api import models, serializers
 
 

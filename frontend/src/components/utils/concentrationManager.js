@@ -60,7 +60,8 @@ export default class ConcentrationManager {
         for (const enzyme of this.enzymes) {
             let min_substrate_conc = 0;
             for (const substrate of enzyme.substrates) {
-                if (old_concentrations[substrate] > min_substrate_conc) {
+                // TODO: Fix to actually get min
+                if (old_concentrations[substrate] < min_substrate_conc) {
                     min_substrate_conc = old_concentrations[substrate];
                 }
             }

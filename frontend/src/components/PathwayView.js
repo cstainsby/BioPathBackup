@@ -3,14 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import ModelArea from './ModelArea'
 import NavBar from './NavBar'
-import RightSideBarArea from './RightSideBarArea';
+//import RightSideBarArea from './RightSideBarArea';
 import Error from "./Error";
 
-import Restore from './Restore';
+//import Restore from './Restore';
 import './css/PathwayView.css'
 
 
-import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
+//import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
 
 export default class PathwayView extends Component {

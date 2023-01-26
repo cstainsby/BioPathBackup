@@ -1,4 +1,4 @@
-import Concentrations from "./concentrations";
+import ConcentrationManager from "./ConcentrationManager";
 
 describe('concentrations', () => {
     test('init', () => {
@@ -10,9 +10,9 @@ describe('concentrations', () => {
             }
         ]
         let c = new ConcentrationManager(enzymes);
-        expect(c.molecule_concentrations["G"]).toBe(100);
-        expect(c.molecule_concentrations["G6"]).toBe(100);
-        expect(c.molecule_concentrations["Na"]).toBe(100);
+        expect(c.moleculeConcentrations["G"]).toBe(100);
+        expect(c.moleculeConcentrations["G6"]).toBe(100);
+        expect(c.moleculeConcentrations["Na"]).toBe(100);
     });
     
     test('update', () => {
@@ -25,8 +25,8 @@ describe('concentrations', () => {
         ]
         let c = new ConcentrationManager(enzymes);
         c.updateConcentrations();
-        expect(c.molecule_concentrations["G"]).toBe(90);
-        expect(c.molecule_concentrations["G6"]).toBe(110);
+        expect(c.moleculeConcentrations["G"]).toBe(90);
+        expect(c.moleculeConcentrations["G6"]).toBe(110);
     });
     
     test('addListener', () => {
@@ -59,5 +59,21 @@ describe('concentrations', () => {
         c.removeListener(listener_a);
         c.updateConcentrations;
         expect(listener_a).toHaveBeenCalledTimes(1);     
+    });
+
+    test('setConcentration', () => {
+        let enzymes = [
+            {
+                substrates: ["G"],
+                products: ["G6"],
+                cofactors: ["Na"]
+            }
+        ]
+        let c = new ConcentrationManager(enzymes);
+        let listener_a = jest.fn();
+        c.addListener(listener_a);
+        c.setConcentration("G", 20);
+        expect(c.moleculeConcentrations["G"]).toBe(20);
+        expect(listener_a).toHaveBeenCalledTimes(1);
     });
 });

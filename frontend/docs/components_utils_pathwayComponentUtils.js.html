@@ -1,18 +1,46 @@
-/* basic function where if concentration[i] greater than previous you subtract
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/utils/pathwayComponentUtils.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/utils/pathwayComponentUtils.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* basic function where if concentration[i] greater than previous you subtract
 from i - 1 and add to i
 */
 export function runConcentrations (concentrations, filled) {
-    for (let i = 0; i < concentrations.length; i++) {
+    for (let i = 0; i &lt; concentrations.length; i++) {
         if (i > 0) { 
             // if concentrations are not first or last egde
-            if (concentrations[i - 1] < 5) { // concentration to low for reaction to occur
+            if (concentrations[i - 1] &lt; 5) { // concentration to low for reaction to occur
                 concentrations[i] = 0;
             }
             else if (concentrations[i - 1] > concentrations[i]) {
                 concentrations[i-1] = concentrations[i-1] - .05;
                 concentrations[i] = concentrations[i] + .05;
             }
-            else if (concentrations[i - 1] < concentrations[i]) { // TODO:
+            else if (concentrations[i - 1] &lt; concentrations[i]) { // TODO:
                 // if reaction is reversible, molecule at (i) converted to molecule at (i-1)
             }
         }
@@ -24,7 +52,7 @@ export function runConcentrations (concentrations, filled) {
 */
 export function run (concentrations, reversibleSteps, factors, factorSteps) {
     
-    for (let i = 0; i < concentrations.length; i++) {
+    for (let i = 0; i &lt; concentrations.length; i++) {
         if (factorSteps.includes(i)) { // dependent on cofactor
             if (i === 0) { // starting step
                 concentrations[i] += .01; // always add constant value to start
@@ -32,7 +60,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
                     concentrations[i]-= .01 * factors[factorSteps.indexOf(i)];
                 }
             }
-            else if (i < concentrations.length - 1) { // middle steps
+            else if (i &lt; concentrations.length - 1) { // middle steps
                 if (concentrations[i - 1] >= concentrations[i]) { // flows down
                     concentrations[i] += .01 * factors[factorSteps.indexOf(i)];
                     if (concentrations[i - 1] !== 0) { // check if 0 because 0 already subtracted
@@ -56,7 +84,7 @@ export function run (concentrations, reversibleSteps, factors, factorSteps) {
             if (i === 0) { // infinite first substrate
                 concentrations[i] = concentrations[i] + .01;
             }
-            else if (i < concentrations.length - 1) { // all must last substrate
+            else if (i &lt; concentrations.length - 1) { // all must last substrate
                 if (concentrations[i - 1] > concentrations[i]) { // flows down
                     concentrations[i - 1] = concentrations[i - 1] - .01;
                     concentrations[i] = concentrations[i] + .01;
@@ -194,7 +222,7 @@ export function findSliders(pathwayData) {
     let sliders = []; // list of cofactors extracted from pathway JSON
     let percent = []; // new
 
-    for (let i = 0; i < pathwayData.enzymes.length; i++) {
+    for (let i = 0; i &lt; pathwayData.enzymes.length; i++) {
         if (pathwayData.enzymes[i].cofactors.length > 0) { // if cofactor exists
             for (const cofactor of pathwayData.enzymes[i].cofactors) { // add each cofactor
                 if (!sliders.includes(cofactor)) { // only add unique cofactors
@@ -250,4 +278,26 @@ export function parseEnzymesForSliders(pathwayData) {
             cofactors: enzyme.cofactors
         })
     }
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ConcentrationManager.html">ConcentrationManager</a></li></ul><h3>Global</h3><ul><li><a href="global.html#buildFlow">buildFlow</a></li><li><a href="global.html#findMolecules">findMolecules</a></li><li><a href="global.html#findSliders">findSliders</a></li><li><a href="global.html#FlowModel">FlowModel</a></li><li><a href="global.html#generateEdges">generateEdges</a></li><li><a href="global.html#generateNodes">generateNodes</a></li><li><a href="global.html#getPathwayById">getPathwayById</a></li><li><a href="global.html#Slider">Slider</a></li><li><a href="global.html#SliderSideBar">SliderSideBar</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Thu Jan 26 2023 13:30:51 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

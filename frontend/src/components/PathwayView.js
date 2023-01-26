@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import ModelArea from './ModelArea'
+import FlowModel from './FlowModel'
 import NavBar from './NavBar'
 //import RightSideBarArea from './RightSideBarArea';
 import Error from "./Error";
@@ -36,7 +36,7 @@ export default class PathwayView extends Component {
                           */}
                           <div className="row" id="PathwayViewRow">
                             <div className="col" id="ModelAreaCol">
-                              <ModelArea />
+                              <FlowModel />
                             </div>
 
                             {/* <div className="col-md-auto" id="RightSideBarAreaCol">

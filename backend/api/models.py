@@ -9,15 +9,32 @@ TODO default images https://stackoverflow.com/questions/15322391/django-the-imag
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.core.validators import MinLengthValidator
 
 
 class Molecule(models.Model):
-    name = models.CharField(max_length=50)
-    abbreviation = models.CharField(max_length=10)
-    ball_and_stick_image = models.ImageField()
-    space_filling_image = models.ImageField()
-    link = models.URLField()
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(1)]
+    )
+    abbreviation = models.CharField(
+        max_length=10,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(1)]
+    )
+    ball_and_stick_image = models.ImageField(
+        null=True,
+        blank=True
+    )
+    space_filling_image = models.ImageField(
+        null=True,
+        blank=True
+    )
+    link = models.URLField(null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     public = models.BooleanField(default=False)
 
@@ -26,8 +43,23 @@ class Molecule(models.Model):
 
 
 class Enzyme(models.Model):
-    name = models.CharField(max_length=50)
-    reversible = models.BooleanField(default=True)
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(1)]
+    )
+    abbreviation = models.CharField(
+        max_length=10,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(1)]
+    )
+    reversible = models.BooleanField(
+        default=True,
+        null=False,
+        blank=False
+    )
     substrates = models.ManyToManyField(
         Molecule,
         related_name="enzymes_substrates"
@@ -40,9 +72,8 @@ class Enzyme(models.Model):
         Molecule,
         related_name="enzymes_cofactors"
     )
-    abbreviation = models.CharField(max_length=10)
-    image = models.ImageField() # space filling
-    link = models.URLField() # link to protopedia
+    image = models.ImageField(null=True, blank=True) # space filling
+    link = models.URLField(null=True, blank=True) # link to protopedia
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     public = models.BooleanField(default=False)
 
@@ -51,7 +82,12 @@ class Enzyme(models.Model):
 
     
 class Pathway(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        validators=[MinLengthValidator(1)]
+    )
     enzymes = models.ManyToManyField(
         Enzyme,
         through='PathwayEnzyme',
@@ -63,9 +99,8 @@ class Pathway(models.Model):
         related_name="pathways_molecule"
     )
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    link = models.URLField()
+    link = models.URLField(null=True, blank=True)
     public = models.BooleanField(default=False)
-    
 
     def __str__(self):
         return self.name
@@ -74,12 +109,9 @@ class Pathway(models.Model):
 class PathwayEnzyme(models.Model):
     enzyme = models.ForeignKey(Enzyme, on_delete=models.PROTECT)
     pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
-    x = models.PositiveSmallIntegerField()
-    y = models.PositiveSmallIntegerField()
+    x = models.PositiveSmallIntegerField(null=False, blank=False)
+    y = models.PositiveSmallIntegerField(null=False, blank=False)
     limiting = models.BooleanField(default=False)
-
-    # class Meta:
-    #     unique_together = ["enzyme", "pathway"]
 
     def __str__(self):
         return f"{self.pathway.__str__()} - {self.enzyme.__str__()}"
@@ -88,11 +120,8 @@ class PathwayEnzyme(models.Model):
 class PathwayMolecule(models.Model):
     molecule = models.ForeignKey(Molecule, on_delete=models.PROTECT)
     pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
-    x = models.PositiveSmallIntegerField()
-    y = models.PositiveSmallIntegerField()
-    
-    # class Meta:
-    #     unique_together = ["molecule", "pathway"]
+    x = models.PositiveSmallIntegerField(null=False, blank=False)
+    y = models.PositiveSmallIntegerField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.pathway.__str__()} - {self.molecule.__str__()}"

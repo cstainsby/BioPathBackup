@@ -12,7 +12,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions
 from django.db.models import Q
 
-from . import serializers, models
+from api import serializers, models
 
 class EnzymeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EnzymeSerializer

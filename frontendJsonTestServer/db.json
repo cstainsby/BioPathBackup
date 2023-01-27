@@ -21,6 +21,7 @@
       "public": true,
       "enzymes": [
         {
+          "id": 1,
           "name": "Hexokinase",
           "image": "path/to/image",
           "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
@@ -30,16 +31,17 @@
           "x": 100,
           "y": 150,
           "substrates": [
-            "Glucose",
-            "ATP"
+            "1",
+            "4"
           ],
           "products": [
-            "Glucose6P",
-            "ADP"
+            "2",
+            "5"
           ],
           "cofactors": ["ATP"]
         },
         {
+          "id": 2,
           "name": "Phosphohexase",
           "image": "path/to/image",
           "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
@@ -49,16 +51,17 @@
           "x": 100,
           "y": 450,
           "substrates": [
-            "Glucose6P"
+            "2"
           ],
           "products": [
-            "Fructose6P"
+            "3"
           ],
           "cofactors": ["HCL"]
         }
       ],
       "molecules": [
         {
+          "id": 1,
           "name": "Glucose",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -69,6 +72,7 @@
           "y": 0
         },
         {
+          "id": 2,
           "name": "Glucose6P",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -79,6 +83,7 @@
           "y": 300
         },
         {
+          "id": 3,
           "name": "Fructose6P",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -89,6 +94,7 @@
           "y": 600
         },
         {
+          "id": 4,
           "name": "ATP",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -99,6 +105,7 @@
           "y": 0
         },
         {
+          "id": 5,
           "name": "ADP",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -118,6 +125,7 @@
       "public": true,
       "enzymes": [
         {
+          "id": 3,
           "name": "Citrate synthase",
           "image": "path/to/image",
           "link": "https://proteopedia.org/wiki/index.php/Kyle_Schroering_Sandbox",
@@ -127,12 +135,12 @@
           "x": 0,
           "y": 100,
           "substrates": [
-            "Puruvate",
-            "Acetyl-CoA"
+            "1",
+            "2"
           ],
           "products": [
-            "Citrate",
-            "CoA"
+            "3",
+            "4"
           ],
           "cofactors": []
         },
@@ -146,16 +154,17 @@
           "x": 0,
           "y": 500,
           "substrates": [
-            "Citrate"
+            "3"
           ],
           "products": [
-            "Citrate"
+            "3"
           ],
           "cofactors": ["NADH"]
         }
       ],
       "molecules": [
         {
+          "id": 1,
           "name": "Puruvate",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -166,6 +175,7 @@
           "y": 0
         },
         {
+          "id": 2,
           "name": "Acetyl-CoA",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -176,6 +186,7 @@
           "y": 0
         },
         {
+          "id": 3,
           "name": "Citrate",
           "ball_and_stick_image": "path/to/image",
           "space_filling_image": "path/to/image",
@@ -183,6 +194,17 @@
           "author": "Admin",
           "public": true,
           "x": 0,
+          "y": 300
+        },
+        {
+          "id": 4,
+          "name": "CoA",
+          "ball_and_stick_image": "path/to/image",
+          "space_filling_image": "path/to/image",
+          "link": "https://en.wikipedia.org/wiki/Glucose_6-phosphate",
+          "author": "Admin",
+          "public": true,
+          "x": 200,
           "y": 300
         }
       ]

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,7 +89,11 @@ DATABASES = { # edited by Josh S
         'HOST': os.environ.get("POSTGRES_DB_HOST"), # 'db', # name of postgres container
         'PORT': 5432, # default port for postgres
         'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD')
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'TEST': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': f'{BASE_DIR}/db.sqlite3',
+        }
     }
 }
 

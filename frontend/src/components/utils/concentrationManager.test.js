@@ -9,7 +9,8 @@ describe('concentrations', () => {
                 cofactors: ["Na"]
             }
         ]
-        let c = new ConcentrationManager(enzymes);
+        let c = new ConcentrationManager();
+        c.parseEnzymes(enzymes);
         expect(c.moleculeConcentrations["G"]).toBe(100);
         expect(c.moleculeConcentrations["G6"]).toBe(100);
         expect(c.moleculeConcentrations["Na"]).toBe(100);
@@ -23,7 +24,8 @@ describe('concentrations', () => {
                 cofactors: ["Na"]
             }
         ]
-        let c = new ConcentrationManager(enzymes);
+        let c = new ConcentrationManager();
+        c.parseEnzymes(enzymes);
         c.updateConcentrations();
         expect(c.moleculeConcentrations["G"]).toBe(90);
         expect(c.moleculeConcentrations["G6"]).toBe(110);
@@ -37,7 +39,8 @@ describe('concentrations', () => {
                 cofactors: ["Na"]
             }
         ]
-        let c = new ConcentrationManager(enzymes);
+        let c = new ConcentrationManager();
+        c.parseEnzymes(enzymes);
         let listener = jest.fn();
         c.addListener(listener);
         c.updateConcentrations();
@@ -52,7 +55,8 @@ describe('concentrations', () => {
                 cofactors: ["Na"]
             }
         ]
-        let c = new ConcentrationManager(enzymes);
+        let c = new ConcentrationManager();
+        c.parseEnzymes(enzymes);
         let listener_a = jest.fn();
         c.addListener(listener_a);
         c.updateConcentrations();
@@ -69,7 +73,8 @@ describe('concentrations', () => {
                 cofactors: ["Na"]
             }
         ]
-        let c = new ConcentrationManager(enzymes);
+        let c = new ConcentrationManager();
+        c.parseEnzymes(enzymes);
         let listener_a = jest.fn();
         c.addListener(listener_a);
         c.setConcentration("G", 20);

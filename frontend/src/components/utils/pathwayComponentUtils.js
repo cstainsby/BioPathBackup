@@ -241,13 +241,46 @@ export function findMolecules(pathwayData, baseConcentration=10) {
     };
 }
 
+/**
+ * Parses a list of enzyme data from pathway data
+ * @param pathwayData data from backend
+ * @returns list of enzymes with substrates, products, and cofactors
+ */
 export function parseEnzymesForSliders(pathwayData) {
-    enzymes = [];
-    for (const enzyme of pathwayData) {
-        enzymes.push({
-            substrates: enzyme.substrates,
-            products: enzyme.products,
-            cofactors: enzyme.cofactors
-        })
+    let enzymes = [];
+    for (const enzyme of pathwayData.enzymes) {
+        let e = {
+            "substrates": [],
+            "products": [],
+            "cofactors": []
+        }
+
+        // Get abbreviations for molecule IDs
+        for (const substrate of enzyme["substrates"]) {
+            let m = pathwayData["molecules"].filter(o => {
+                return o.id === substrate;
+            });
+            if (m.length > 0) {
+                e["substrates"].push(m[0]["abbreviation"]);
+            }
+        }
+        for (const product of enzyme["products"]) {
+            let m = pathwayData["molecules"].filter(o => {
+                return o.id === product;
+            });
+            if (m.length > 0) {
+                e["products"].push(m[0]["abbreviation"]);
+            }
+        }
+        for (const cofactor of enzyme["cofactors"]) {
+            let m = pathwayData["molecules"].filter(o => {
+                return o.id === cofactor;
+            });
+            if (m.length > 0) {
+                e["cofactors"].push(m[0]["abbreviation"]);
+            }
+        }
+        enzymes.push(e);
     }
+    return enzymes;
 }

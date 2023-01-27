@@ -9,35 +9,36 @@ import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 /**
  * Display and control concentration of pathway cofactors
  * @param props
- * @prop {sliderMolecule[]} molecules
- * @param molecules[].string
- * @param molecules[].value
- * @prop handleSliderChange(string, int): void
+ * @prop {Object[]} molecules
+ * @prop molecules[].title
+ * @prop molecules[].value
+ * @prop handleConcentrationChange(string, int): void
  */
 const SliderSideBar = (props) => {
-  const handleSliderOpen = (cofactorTitle, newOpenStatus) => {
-    if(newOpenStatus === true) {
-      // close all others when another slider has been set to open
+    const handleSliderOpen = (cofactorTitle, newOpenStatus) => {
+        if(newOpenStatus === true) {
+        // close all others when another slider has been set to open
+        }
     }
-  }
 
-  const sliderItems = props.molecule.map((molecule) => 
-      <li>
-        <Slider 
-          title={ molecule.title }
-          value={ molecule.value }
-          handleSliderChange={ props.handleSliderChange } />
-      </li>
+    const sliderItems = props.molecules.map((molecule) => 
+        <li key={molecule.title}>
+            <Slider 
+                title={ molecule.title }
+                value={ molecule.value }
+                handleConcentrationChange={ props.handleConcentrationChange } 
+            />
+        </li>
     );
 
     return (
-      <div className='card ModelAreaChild' id='PathwaySliderBox'>
-        <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
-        {( props.slidersDescription !== "") && <p><small class="text-muted">{ props.slidersDescription }</small></p> }
-        <ul className='sliderBarList'>
-          {sliderItems}
-        </ul>
-      </div>
+        <div className='card ModelAreaChild' id='PathwaySliderBox'>
+            <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
+            {( props.slidersDescription !== "") && <p><small className="text-muted">{ props.slidersDescription }</small></p> }
+            <ul className='sliderBarList'>
+                {sliderItems}
+            </ul>
+        </div>
     )
 }
 
@@ -45,13 +46,13 @@ const SliderSideBar = (props) => {
  * Named slider selector
  * @prop title - title of the substrate passed in
  * @prop value
- * @prop handleSliderChange 
+ * @prop handleConcentrationChange 
  */
 const Slider = (props) => {
   let [isExpanded, setIsExpanded] = useState(false);
 
   const handleSliderValueChange = (newSliderValue) => {
-    props.handleSliderChange(props.title, newSliderValue);
+    props.handleConcentrationChange(props.title, newSliderValue);
   }
 
   const handleClick = (e) => {
@@ -62,9 +63,10 @@ const Slider = (props) => {
         <ul id='cardHeaderList'>
             <li>
                 <button className='cardHeaderDropdownButton' onClick={(e) => handleClick(e.target.value)}>
-                <img 
-                id='cardHeaderCaret' 
-                src={dropdownLogo} />
+                    <img 
+                        id='cardHeaderCaret' 
+                        src={dropdownLogo} 
+                    />
                 </button>
             </li>
         <li><h5>{props.title}</h5></li>
@@ -75,7 +77,7 @@ const Slider = (props) => {
             <ul id='cardHeaderList'>
             <li><img id='cardHeaderCaret' src={dropdownLogo} style={{ transform: "rotate(-90deg)"}}  /></li>
             <li><h5>{props.title}</h5></li>
-            <li><small class="text-muted">{ props.value * 100 }%</small></li>
+            <li><small className="text-muted">{ props.value * 100 }%</small></li>
             </ul>
         </button>
 

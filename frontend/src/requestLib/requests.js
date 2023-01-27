@@ -29,11 +29,11 @@ function consoleLogRequestResults(status, statusText, endpointExtension, type, d
   //  type: str describing type of request e.g. POST
   //  data: the JSON object sent or recieved (infered by type) 
   console.log(
-    "STATUS OF REQUEST: " + status + "\n" +
-    "STATUS TEXT: " + statusText + "\n" + 
-    "to endpoint: " + dataSourceAddress + endpointExtension + "\n" +
-    "type of request: " + type + "\n" +
-    "data: " + JSON.stringify(data) 
+    // "STATUS OF REQUEST: " + status + "\n" +
+    // "STATUS TEXT: " + statusText + "\n" + 
+    // "to endpoint: " + dataSourceAddress + endpointExtension + "\n" +
+    // "type of request: " + type + "\n" +
+    // "data: " + JSON.stringify(data) 
   );
 }
 

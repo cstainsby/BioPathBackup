@@ -10,22 +10,10 @@
 class ConcentrationManager {
     /**
      * @constructor
-     * @param {Object[]} enzymes list of enzymes
-     * @param enzymes[].substrates list of input moleules to the enzyme
-     * @param enzymes[].products list of output molecules to the enzyme
-     * @param enzymes[].cofactors list of molecules effecting the enzyme's production
      */
-    constructor(enzymes) {
-        /*
-         * {
-         *  substrates: ["G", "ATP"],
-         *  products: ["G6", "ADP"],
-         *  cofactors: ["Na"]
-         * }
-         */
-        this.enzymes = enzymes;
+    constructor() {
         this.moleculeConcentrations = [];
-        this.setEnzymes(this.enzymes);
+        this.enzymes = [];
         this.listeners = [];
         this.interval = null;
     }
@@ -38,18 +26,27 @@ class ConcentrationManager {
      * @param enzymes[].products list of output molecules to the enzyme
      * @param enzymes[].cofactors list of molecules effecting the enzyme's production
      */
-    setEnzymes(enzymes) {
+    parseEnzymes(enzymes) {
+        this.moleculeConcentrations = [];
         for (const enzyme of enzymes) {
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate] = 100;
+                this.moleculeConcentrations[substrate] = 1;
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product] = 100;
+                this.moleculeConcentrations[product] = 1;
             }
             for (const cofactor of enzyme.cofactors) {
-                this.moleculeConcentrations[cofactor] = 100;
+                this.moleculeConcentrations[cofactor] = 1;
             }
         }
+        this.enzymes = enzymes;
+        // for (let enzyme of this.enzymes) {
+        //     console.log(enzyme);
+        // }
+        // for (const m in this.moleculeConcentrations) {
+        //     console.log(m + ":" + this.moleculeConcentrations[m]);
+        // }
+        this.notifyListeners();
     }
 
     /**
@@ -79,6 +76,7 @@ class ConcentrationManager {
                 }
             }
         }
+        console.log("UpdateConcentrations()");
         this.notifyListeners();
     }
 
@@ -94,7 +92,7 @@ class ConcentrationManager {
 
     /**
      * @callback onUpdateConcentration
-     * @param {Object[]} molecule_concentrations
+     * @param {Object[]} moleculeConcentrations
      */
 
     /**
@@ -124,6 +122,7 @@ class ConcentrationManager {
      * @param {int} milliseconds time between function calls
      */
     run(milliseconds) {
+        console.log("Start manager at " + milliseconds);
         this.interval = setInterval(this.updateConcentrations(), milliseconds);
     }
 
@@ -132,6 +131,7 @@ class ConcentrationManager {
      */
     stop() {
         if (this.interval) {
+            console.log("Stop manager");
             clearInterval(this.interval);
         }
     }
@@ -153,8 +153,16 @@ class ConcentrationManager {
      * @param {int} value 
      */
     setConcentration(title, value) {
-        this.moleculeConcentrations[title] = value;
-        this.notifyListeners();
+        if (this.moleculeConcentrations) {
+            this.moleculeConcentrations[title] = parseFloat(value);
+            this.notifyListeners();
+        } else {
+            console.log("No Concentrations");
+        }
+    }
+
+    getMolculeConcentrations() {
+        return this.moleculeConcentrations;
     }
 }
 

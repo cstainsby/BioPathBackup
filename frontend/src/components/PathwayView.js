@@ -1,17 +1,18 @@
 import React, { Component, useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import ModelArea from './ModelArea'
+import FlowModel from './FlowModel'
 import NavBar from './NavBar'
-import RightSideBarArea from './RightSideBarArea';
+//import RightSideBarArea from './RightSideBarArea';
 import Error from "./Error";
 
-import Restore from './Restore';
+//import Restore from './Restore';
 import './css/PathwayView.css'
 
 
-import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
+//import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
+import ConcentrationManager from './utils/ConcentrationManager';
 
 export default class PathwayView extends Component {
   constructor(props) {
@@ -22,7 +23,8 @@ export default class PathwayView extends Component {
     // setup observers for all inputs which affect the pathway 
     //  this observer list will be passed into each of the non-modelArea 
     //  components
-    this.pathwayUserInputSubList = new userInputInteractionList;
+    this.pathwayUserInputSubList = new userInputInteractionList();
+    this.concentrationManager = new ConcentrationManager();
   }
 
   render() {
@@ -36,7 +38,10 @@ export default class PathwayView extends Component {
                           */}
                           <div className="row" id="PathwayViewRow">
                             <div className="col" id="ModelAreaCol">
-                              <ModelArea />
+                              <FlowModel 
+                                concentrationManager= {this.concentrationManager}
+                              />
+                              
                             </div>
 
                             {/* <div className="col-md-auto" id="RightSideBarAreaCol">
@@ -49,7 +54,7 @@ export default class PathwayView extends Component {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={ pathwayView }>
-            <Route path="pathway/:pathwayId" element={ pathwayView }/>
+            <Route path="pathway/:pathwayID" element={ pathwayView }/>
           </Route>
 
           {/* for user authentication later on,  */}

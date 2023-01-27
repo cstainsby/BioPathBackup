@@ -11,7 +11,7 @@ import ReactFlow, {
 import SliderSideBar  from "./SliderSideBar";
 import { buildFlow, parseEnzymesForSliders } from './utils/pathwayComponentUtils';
 import { getPathwayById } from '../requestLib/requests';
-import ConcentrationManager from './utils/ConcentrationManager';
+import ConcentrationManager from './utils/concentrationManager';
 
 import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
@@ -19,6 +19,13 @@ import './css/ModelArea.css'
 import './css/RightSideBarArea.css';
 
 import boogyImg from "../images/boogy.PNG"
+
+
+import ReversibleEnzyme from'./utils/ReversibleEnzyme'
+const initBgColor = '#1A192B';
+const nodeTypes = {
+    selectorNode: ReversibleEnzyme,
+};
 
 /**
  * Wrapper for ReactFlow and concentration sliders. Main 
@@ -90,6 +97,10 @@ const FlowModel = (props) => {
 
         // Create the nodes and edges for ReactFlow
         let nodesAndEdgesDict = buildFlow(newPathway);
+        console.log(nodesAndEdgesDict["nodes"], "nodes and edges")
+        console.log(nodesAndEdgesDict["nodes"][1], "tebebe")
+        nodesAndEdgesDict["nodes"][1].type = "selectorNode"
+        console.log(nodesAndEdgesDict["nodes"][1], "tebebe")
         setNodes(nodesAndEdgesDict["nodes"]);
         setEdges(nodesAndEdgesDict["edges"]);
 
@@ -102,6 +113,7 @@ const FlowModel = (props) => {
                     "value": moleculeConcentrations[m]
                 });
             }
+            console.log("moleculesFlow", mList)
             setMolecules(mList);
         });
         props.concentrationManager.parseEnzymes(enzymesForSliders);
@@ -174,6 +186,7 @@ const FlowModel = (props) => {
                 onEdgesChange={onEdgesChange}
                 snapToGrid
                 onConnect={onConnect}
+                nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
                 attributionPosition="top-right"
             >

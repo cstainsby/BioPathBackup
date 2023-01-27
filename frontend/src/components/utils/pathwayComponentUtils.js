@@ -191,6 +191,7 @@ export function generateNodes(pathway) {
     the cofactor name to a list that is returned
 */
 export function findSliders(pathwayData) {
+    console.log("finding sliders")
     let sliders = []; // list of cofactors extracted from pathway JSON
     let percent = []; // new
 
@@ -258,7 +259,7 @@ export function parseEnzymesForSliders(pathwayData) {
         // Get abbreviations for molecule IDs
         for (const substrate of enzyme["substrates"]) {
             let m = pathwayData["molecules"].filter(o => {
-                return o.id === substrate;
+                return o.id === parseInt(substrate);
             });
             if (m.length > 0) {
                 e["substrates"].push(m[0]["abbreviation"]);
@@ -282,5 +283,6 @@ export function parseEnzymesForSliders(pathwayData) {
         }
         enzymes.push(e);
     }
+    console.log("Enzymes", enzymes)
     return enzymes;
 }

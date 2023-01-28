@@ -1,3 +1,5 @@
+import ReversibleEnzyme from "../customNodes/ReversibleEnzyme";
+
 /* basic function where if concentration[i] greater than previous you subtract
 from i - 1 and add to i
 */
@@ -97,18 +99,7 @@ export function generateEdges(pathway) {
     for (const enzyme of pathway.enzymes) {
         // Make edge from substrate to enzyme
         for (const substrate_id of enzyme.substrates) {
-            edges.push({
-                id: String(substrate_id) + "_" + String(enzyme.id),
-                data: {
-                    "title": String(substrate_id) + " to " + String(enzyme.id),
-                    "molecule_id": String(substrate_id)
-                },
-                animated: true,
-                source: String(substrate_id) + "_molecule",
-                target: String(enzyme.id) + "_enzyme"
-            });
             if (enzyme.reversible) {
-                /* 
                 edges.push({
                     id: String(substrate_id) + "_" + String(enzyme.id),
                     data: {
@@ -116,26 +107,76 @@ export function generateEdges(pathway) {
                         "molecule_id": String(substrate_id)
                     },
                     animated: true,
-                    source: String(enzyme.id) + "_enzyme",
-                    target: String(molecule_id) + "_molecule"
+                    source: String(substrate_id) + "_molecule",
+                    sourceHandle: "c",
+                    target: String(enzyme.id) + "_enzyme"
                 });
-                */
+                edges.push({
+                    id: "R_" + String(enzyme.id) + "_" + String(substrate_id),
+                    data: {
+                        "title": String(substrate_id) + " to " + String(enzyme.id),
+                        "molecule_id": String(substrate_id)
+                    },
+                    animated: true,
+                    source: String(enzyme.id) + "_enzyme",
+                    sourceHandle: "d", // this sets which hanlder to connect to
+                    target: String(substrate_id) + "_molecule"
+                });
+            }
+            else { // not a ReversibleEnzyme only need one edge
+                edges.push({
+                    id: String(substrate_id) + "_" + String(enzyme.id),
+                    data: {
+                        "title": String(substrate_id) + " to " + String(enzyme.id),
+                        "molecule_id": String(substrate_id)
+                    },
+                    animated: true,
+                    source: String(substrate_id) + "_molecule",
+                    target: String(enzyme.id) + "_enzyme"
+                });
             }
         }
         // Make edge from enzyme to product
         for (const product_id of enzyme.products) {
-            edges.push({
-                id: String(enzyme.id) + "_" + String(product_id),
-                data: {
-                    "title": String(product_id) + " to " + String(enzyme.id),
-                    "molecule_id": String(product_id)
-                },
-                animated: true,
-                source: String(enzyme.id) + "_enzyme",
-                target: String(product_id) + "_molecule"
-            });
+            if (enzyme.reversible) {
+                edges.push({
+                    id: String(enzyme.id) + "_" + String(product_id),
+                    data: {
+                        "title": String(product_id) + " to " + String(enzyme.id),
+                        "molecule_id": String(product_id)
+                    },
+                    animated: true,
+                    source: String(enzyme.id) + "_enzyme",
+                    sourceHandle: "a",
+                    target: String(product_id) + "_molecule"
+                });
+                edges.push({
+                    id: "R_" + String(enzyme.id) + "_" + String(product_id),
+                    data: {
+                        "title": String(product_id) + " to " + String(enzyme.id),
+                        "molecule_id": String(product_id)
+                    },
+                    animated: true,
+                    source: String(product_id) + "_molecule",
+                    sourceHandle: "b",
+                    target: String(enzyme.id) + "_enzyme"
+                });
+            }
+            else {
+                edges.push({
+                    id: String(enzyme.id) + "_" + String(product_id),
+                    data: {
+                        "title": String(product_id) + " to " + String(enzyme.id),
+                        "molecule_id": String(product_id)
+                    },
+                    animated: true,
+                    source: String(enzyme.id) + "_enzyme",
+                    target: String(product_id) + "_molecule"
+                });
+            }
         }
     }
+    console.log("edges", edges)
     return edges;
 }
 
@@ -154,18 +195,35 @@ export function generateNodes(pathway) {
 
     for (const enzyme of pathway.enzymes) {
         // Reactflow node
-        nodes.push({
-            id: String(enzyme.id) + "_enzyme", 
-            className: 'enzyme', 
-            data: {
-                label: enzyme.name, 
-                type: "enzyme",
-                reversible: enzyme.reversible,
-                substrates: enzyme.substrates, 
-                products: enzyme.products
-            },
-            position: {x: enzyme.x, y: enzyme.y}
-        });
+        if (enzyme.reversible) { // new for multi handlers
+            nodes.push({
+                id: String(enzyme.id) + "_enzyme", 
+                className: 'enzyme', 
+                data: {
+                    label: enzyme.name, 
+                    type: "enzyme",
+                    reversible: enzyme.reversible,
+                    substrates: enzyme.substrates, 
+                    products: enzyme.products
+                },
+                type: "selectorNode",
+                position: {x: enzyme.x, y: enzyme.y}
+            });   
+        }
+        else {
+            nodes.push({
+                id: String(enzyme.id) + "_enzyme", 
+                className: 'enzyme', 
+                data: {
+                    label: enzyme.name, 
+                    type: "enzyme",
+                    reversible: enzyme.reversible,
+                    substrates: enzyme.substrates, 
+                    products: enzyme.products
+                },
+                position: {x: enzyme.x, y: enzyme.y}
+            });
+        }
     }
     
     for (const molecule of pathway.molecules) {
@@ -182,6 +240,7 @@ export function generateNodes(pathway) {
             position: {x: molecule.x, y: molecule.y}
         });
     }
+    console.log("nodes", nodes)
     return nodes;
 }
 
@@ -283,6 +342,5 @@ export function parseEnzymesForSliders(pathwayData) {
         }
         enzymes.push(e);
     }
-    console.log("Enzymes", enzymes)
     return enzymes;
 }

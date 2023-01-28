@@ -21,7 +21,7 @@ import './css/RightSideBarArea.css';
 import boogyImg from "../images/boogy.PNG"
 
 
-import ReversibleEnzyme from'./utils/ReversibleEnzyme'
+import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 const initBgColor = '#1A192B';
 const nodeTypes = {
     selectorNode: ReversibleEnzyme,
@@ -97,10 +97,6 @@ const FlowModel = (props) => {
 
         // Create the nodes and edges for ReactFlow
         let nodesAndEdgesDict = buildFlow(newPathway);
-        console.log(nodesAndEdgesDict["nodes"], "nodes and edges")
-        console.log(nodesAndEdgesDict["nodes"][1], "tebebe")
-        nodesAndEdgesDict["nodes"][1].type = "selectorNode"
-        console.log(nodesAndEdgesDict["nodes"][1], "tebebe")
         setNodes(nodesAndEdgesDict["nodes"]);
         setEdges(nodesAndEdgesDict["edges"]);
 
@@ -113,7 +109,6 @@ const FlowModel = (props) => {
                     "value": moleculeConcentrations[m]
                 });
             }
-            console.log("moleculesFlow", mList)
             setMolecules(mList);
         });
         props.concentrationManager.parseEnzymes(enzymesForSliders);

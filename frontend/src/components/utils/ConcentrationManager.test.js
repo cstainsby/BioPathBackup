@@ -11,9 +11,9 @@ describe('concentrations', () => {
         ]
         let c = new ConcentrationManager();
         c.parseEnzymes(enzymes);
-        expect(c.moleculeConcentrations["G"]).toBe(100);
-        expect(c.moleculeConcentrations["G6"]).toBe(100);
-        expect(c.moleculeConcentrations["Na"]).toBe(100);
+        expect(c.moleculeConcentrations["G"]).toBe(1);
+        expect(c.moleculeConcentrations["G6"]).toBe(1);
+        expect(c.moleculeConcentrations["Na"]).toBe(1);
     });
     
     test('update', () => {
@@ -27,8 +27,8 @@ describe('concentrations', () => {
         let c = new ConcentrationManager();
         c.parseEnzymes(enzymes);
         c.updateConcentrations();
-        expect(c.moleculeConcentrations["G"]).toBe(90);
-        expect(c.moleculeConcentrations["G6"]).toBe(110);
+        expect(c.moleculeConcentrations["G"]).toBe(0.9);
+        expect(c.moleculeConcentrations["G6"]).toBe(1.1);
     });
     
     test('addListener', () => {
@@ -77,8 +77,8 @@ describe('concentrations', () => {
         c.parseEnzymes(enzymes);
         let listener_a = jest.fn();
         c.addListener(listener_a);
-        c.setConcentration("G", 20);
-        expect(c.moleculeConcentrations["G"]).toBe(20);
+        c.setConcentration("G", 0.2);
+        expect(c.moleculeConcentrations["G"]).toBe(0.2);
         expect(listener_a).toHaveBeenCalledTimes(1);
     });
 });

@@ -73,12 +73,14 @@ def create_aws_credentials():
   """
   If the credentials file is missing, enter in requested info and it will make it for you
   """
+  column_names = ["User Name", "Account ID", "Access Key ID", "Secret Access Key", "Password"]
+  print()
   print("Before signing into AWS, you will need to make a credentials file")
+  print("Information needed: " + str(column_names))
   with open(AWS_CRED_FILE_NAME, "w") as csv_cred_file:
     writer = csv.writer(csv_cred_file)
 
     # write in column names
-    column_names = ["User Name", "Account ID", "Access Key ID", "Secret Access Key", "Password"]
     writer.writerow(column_names)
 
     column_values = [input("Please enter your {}: ".format(item)) for item in column_names]

@@ -1,30 +1,63 @@
-# name: Continuous Integration
+name: Continuous Integration
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-# # on pull requests to the main branch this file should trigger github actions 
-# # to do a series of defined actions
-# on:
-#   pull_request:
-#     branches: [main] 
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: [ "main", "dev" ]
 
+jobs:
+  build-frontend:
 
-# jobs:
-#   # Runs all unit tests  
-#   #TODO: as we figure out what tests we are going to be running we should
-#   # add them here 
-#   test_pull_request:
-#     runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-#     # runs build tests across multiple versions of node 
-#     strategy:
-#       matrix:
-#         # specify any other versions we want to test here
-#         node-version: [13.x]
+    # specify where the frontend code is
+    defaults:
+      run:
+        working-directory: frontend
 
-#     steps:
-#       - uses: actions/checkout@v3
-#       - name: Using Node.js version ${{matrix.node_version}}
-#         uses: actions/setup-node@v3
-#         with: node-version: ${{matrix.node_version}}
-#       - run: npm ci
-#       - run: npm run build
-#       - run: npm test
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: CI=false npm run build --if-present
+    - run: npm test
+  
+  build-backend:
+
+    runs-on: ubuntu-latest
+
+    # specify where the backend code is
+    defaults:
+      run:
+        working-directory: backend
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests
+      run: |
+        python manage.py test

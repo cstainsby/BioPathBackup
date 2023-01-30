@@ -112,6 +112,7 @@ const FlowModel = (props) => {
             setMolecules(mList);
         });
         props.concentrationManager.parseEnzymes(enzymesForSliders);
+        console.log(props.concentrationManager, "concentration manager")
     }
 
     const handleConcentrationChange = (title, value) => {

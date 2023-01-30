@@ -240,7 +240,6 @@ export function generateNodes(pathway) {
             position: {x: molecule.x, y: molecule.y}
         });
     }
-    console.log("nodes", nodes)
     return nodes;
 }
 

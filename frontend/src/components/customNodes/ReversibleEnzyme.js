@@ -17,7 +17,7 @@ export default memo(({ data, isConnectable }) => {
         onConnect={(params) => console.log('handle onConnect', params)}
         isConnectable={isConnectable}
       />
-      {/* <Handle
+      <Handle
         type="source"
         position="top"
         id="d"
@@ -25,7 +25,7 @@ export default memo(({ data, isConnectable }) => {
         style={{ left: 50, background: '#555' }}
         onConnect={(params) => console.log('handle onConnect', params)}
         isConnectable={isConnectable}
-      /> */}
+      />
       <div>
         Reversible Enzyme <strong>{data.label}</strong>
         <img src="../../images/skiPass.jpg" alt="skiPass"/>
@@ -40,13 +40,13 @@ export default memo(({ data, isConnectable }) => {
         style={{background: '#555' }}
         isConnectable={isConnectable}
       />
-      {/* <Handle
+      <Handle
         type="target"
         position="bottom"
         id="b"
         style={{ right: 100, background: '#555' }}
         isConnectable={isConnectable}
-      /> */}
+      />
     </>
   );
 });

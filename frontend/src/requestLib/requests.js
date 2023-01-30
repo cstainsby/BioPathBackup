@@ -16,7 +16,7 @@ let BACKEND_BASE_API_URL = "http://localhost:8000/api/"; // API ACCESS
 let LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
 let MOCK_API_URL = "http://localhost:4000/api/";  // MOCK API ACCESS
 
-let dataSourceAddress = BACKEND_BASE_API_URL;       // Choice Definition
+let dataSourceAddress = MOCK_API_URL;       // Choice Definition
 
 // NOTE: the test suite for sample JSON will have a file structure matching the 
 //   endpoints within the backend to keep calls consistent

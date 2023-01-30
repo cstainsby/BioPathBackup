@@ -108,7 +108,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
-                    sourceHandle: "c",
+                    sourceHandle: "ts",
                     target: String(enzyme.id) + "_enzyme"
                 });
                 edges.push({
@@ -119,7 +119,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
-                    sourceHandle: "d", // this sets which hanlder to connect to
+                    sourceHandle: "tt", // this sets which hanlder to connect to
                     target: String(substrate_id) + "_molecule"
                 });
             }
@@ -147,7 +147,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
-                    sourceHandle: "a",
+                    sourceHandle: "bs",
                     target: String(product_id) + "_molecule"
                 });
                 edges.push({
@@ -158,7 +158,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(product_id) + "_molecule",
-                    sourceHandle: "b",
+                    sourceHandle: "bt",
                     target: String(enzyme.id) + "_enzyme"
                 });
             }

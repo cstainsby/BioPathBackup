@@ -11,7 +11,6 @@ import ReactFlow, {
 import SliderSideBar  from "./SliderSideBar";
 import { buildFlow, parseEnzymesForSliders } from './utils/pathwayComponentUtils';
 import { getPathwayById } from '../requestLib/requests';
-import ConcentrationManager from './utils/concentrationManager';
 
 import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';

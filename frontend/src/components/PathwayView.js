@@ -12,7 +12,7 @@ import './css/PathwayView.css'
 
 //import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
-import ConcentrationManager from './utils/concentrationManager';
+import ConcentrationManager from './utils/ConcentrationManager';
 
 export default class PathwayView extends Component {
   constructor(props) {

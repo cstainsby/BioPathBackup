@@ -118,36 +118,6 @@ class ConcentrationManager {
     }
 
     /**
-     * Adds an interval to call {@link updateConcentrations} every milliseconds
-     * @param {int} milliseconds time between function calls
-     */
-    run(milliseconds) {
-        console.log("Start manager at " + milliseconds);
-        this.interval = setInterval(this.updateConcentrations(), milliseconds);
-    }
-
-    /**
-     * Stops the running {@link updateConcentrations} interval
-     */
-    stop() {
-        if (this.interval) {
-            console.log("Stop manager");
-            clearInterval(this.interval);
-        }
-    }
-
-    /**
-     * Updates the current {@link updateConcentrations} interval to new milliseconds
-     * @param {int} milliseconds 
-     */
-    updateInterval(milliseconds) {
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = setInterval(this.updateConcentrations(), milliseconds);
-        }
-    }
-
-    /**
      * Manually set the concentration of a molecule
      * @param {string} title 
      * @param {int} value 

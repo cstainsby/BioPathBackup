@@ -35,6 +35,7 @@ const FlowModel = (props) => {
 	let [nodes, setNodes, onNodesChange] = useNodesState([]);
 	let [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
+    // molecules[] = [{"title": "ATP", "value": 10}]
     let [molecules, setMolecules] = useState([]);
 
     /**
@@ -74,7 +75,6 @@ const FlowModel = (props) => {
             handlePathwayClose();
         }
     }, [pathwayID]); // monitor pathwayID for changes
-
 
     /**
      * Initializes the model given a newPathway
@@ -121,7 +121,6 @@ const FlowModel = (props) => {
         setEdges([]);
     }
   
-    
     // Used by ReactFlow whenever an edge is connected between nodes
 	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), [setEdges]);
 
@@ -148,6 +147,23 @@ const FlowModel = (props) => {
     //     );
     // }, [cofactorPercents[0], cofactorPercents[1], setEdges, moleculeConcentrations]);
 
+    
+    // Updates the concentrations every 1000 milliseconds
+    let [running, setRunning] = useState(false);
+    let [speed, setSpeed] = useState(1000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (running) {
+                props.concentrationManager.updateConcentrations();
+            }
+        }, speed);
+        
+        return () => {
+            clearInterval(interval);
+            console.log("clearInterval");
+        };
+    }, [running, speed]);
+
     return (
         <div className='ModelArea'>
             { !isPathwayCurrentlyLoaded && <h1>Click File&gt;Open to load a pathway!</h1>}
@@ -158,7 +174,7 @@ const FlowModel = (props) => {
                 onEdgesChange={onEdgesChange}
                 snapToGrid
                 onConnect={onConnect}
-                fitView
+                fitView={true}
                 attributionPosition="top-right"
             >
             <Controls position='bottom-right' />
@@ -175,8 +191,10 @@ const FlowModel = (props) => {
                     slidersDescription="Adjust cofactor concentrations"
                     molecules={molecules}
                     handleConcentrationChange={ handleConcentrationChange }
+                    run = {() => {setRunning(true)}}
+                    stop = {() => {setRunning(false)}}
                 />}
-            </ReactFlow>
+            </ReactFlow>            
         </div>
     );
 };

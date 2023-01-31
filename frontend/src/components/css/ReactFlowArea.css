@@ -29,3 +29,13 @@
     align-items: center;
     /* fontweight: 700;  */
 }
+
+/* new maybe delete soon
+*/
+.react-flow__node.ReversibleEnzyme {
+    font-size: 12px;
+    background: #eee;
+    border: 1px solid #555;
+    border-radius: 5px;
+    text-align: center;
+  }

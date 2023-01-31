@@ -9,8 +9,6 @@ import Error from "./Error";
 //import Restore from './Restore';
 import './css/PathwayView.css'
 
-
-//import { buildFlow, findMolecules, findSliders } from './utils/pathwayComponentUtils';
 import userInputInteractionList from './PathwayInteractiveComponent';
 import ConcentrationManager from './utils/ConcentrationManager';
 
@@ -18,12 +16,6 @@ export default class PathwayView extends Component {
   constructor(props) {
     super(props);
 
-    // this.handleConcChange = this.handleConcChange.bind(this)
-
-    // setup observers for all inputs which affect the pathway 
-    //  this observer list will be passed into each of the non-modelArea 
-    //  components
-    this.pathwayUserInputSubList = new userInputInteractionList();
     this.concentrationManager = new ConcentrationManager();
   }
 
@@ -43,10 +35,6 @@ export default class PathwayView extends Component {
                               />
                               
                             </div>
-
-                            {/* <div className="col-md-auto" id="RightSideBarAreaCol">
-                              <RightSideBarArea dataObserver={ this.pathwayUserInputSubList }/>
-                            </div> */}
                           </div>
                         </div>
 

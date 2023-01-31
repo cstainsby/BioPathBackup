@@ -31,12 +31,12 @@
           "x": 100,
           "y": 150,
           "substrates": [
-            "1",
-            "4"
+            1,
+            4
           ],
           "products": [
-            "2",
-            "5"
+            2,
+            5
           ],
           "cofactors": ["ATP"]
         },
@@ -51,10 +51,10 @@
           "x": 100,
           "y": 450,
           "substrates": [
-            "2"
+            2
           ],
           "products": [
-            "3"
+            3
           ],
           "cofactors": ["HCL"]
         }
@@ -135,12 +135,12 @@
           "x": 0,
           "y": 100,
           "substrates": [
-            "1",
-            "2"
+            1,
+            2
           ],
           "products": [
-            "3",
-            "4"
+            3,
+            4
           ],
           "cofactors": []
         },
@@ -154,10 +154,10 @@
           "x": 0,
           "y": 500,
           "substrates": [
-            "3"
+            3
           ],
           "products": [
-            "3"
+            3
           ],
           "cofactors": ["NADH"]
         }

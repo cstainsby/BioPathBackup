@@ -20,12 +20,11 @@ const SliderSideBar = (props) => {
         // close all others when another slider has been set to open
         }
     }
-
-    const sliderItems = props.molecules.map((molecule) => 
-        <li key={molecule.title}>
+    const sliderItems = Object.entries(props.molecules).map(([id, data]) => 
+        <li key={id}>
             <Slider 
-                title={ molecule.title }
-                value={ molecule.value }
+                title={ data.title }
+                value={ data.value.toFixed(2) }
                 handleConcentrationChange={ props.handleConcentrationChange } 
             />
         </li>
@@ -33,11 +32,14 @@ const SliderSideBar = (props) => {
 
     return (
         <div className='card ModelAreaChild' id='PathwaySliderBox'>
+            <button className="btn btn-primary" style={{margin: "10px"}} onClick={() => {props.run()}}>Run</button>
+            <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.stop()}}>Stop</button>
             <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
             {( props.slidersDescription !== "") && <p><small className="text-muted">{ props.slidersDescription }</small></p> }
             <ul className='sliderBarList'>
                 {sliderItems}
             </ul>
+            
         </div>
     )
 }

@@ -12,7 +12,7 @@ class ConcentrationManager {
      * @constructor
      */
     constructor() {
-        this.moleculeConcentrations = [];
+        this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
         this.enzymes = [];
         this.listeners = [];
         this.interval = null;
@@ -30,22 +30,16 @@ class ConcentrationManager {
         this.moleculeConcentrations = [];
         for (const enzyme of enzymes) {
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate] = 1;
+                this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product] = 1;
+                this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
             }
             for (const cofactor of enzyme.cofactors) {
-                this.moleculeConcentrations[cofactor] = 1;
+                this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
             }
         }
         this.enzymes = enzymes;
-        // for (let enzyme of this.enzymes) {
-        //     console.log(enzyme);
-        // }
-        // for (const m in this.moleculeConcentrations) {
-        //     console.log(m + ":" + this.moleculeConcentrations[m]);
-        // }
         this.notifyListeners();
     }
 
@@ -59,20 +53,20 @@ class ConcentrationManager {
             let minSubstrateConc = null;
             for (const substrate of enzyme.substrates) {
                 if (!minSubstrateConc) {
-                    minSubstrateConc = cachedConcentrations[substrate];
+                    minSubstrateConc = cachedConcentrations[substrate.id].value;
                 }
                 if (cachedConcentrations[substrate] < minSubstrateConc) {
-                    minSubstrateConc = cachedConcentrations[substrate];
+                    minSubstrateConc = cachedConcentrations[substrate.id].value;
                 }
             }
             for (const substrate of enzyme.substrates) {
                 if (minSubstrateConc) {
-                    this.moleculeConcentrations[substrate] -= minSubstrateConc * 0.1;
+                    this.moleculeConcentrations[substrate.id].value -= minSubstrateConc * 0.1;
                 }
             }
             for (const product of enzyme.products) {
                 if (minSubstrateConc) {
-                    this.moleculeConcentrations[product] += minSubstrateConc * 0.1;
+                    this.moleculeConcentrations[product.id].value += minSubstrateConc * 0.1;
                 }
             }
         }
@@ -118,43 +112,13 @@ class ConcentrationManager {
     }
 
     /**
-     * Adds an interval to call {@link updateConcentrations} every milliseconds
-     * @param {int} milliseconds time between function calls
-     */
-    run(milliseconds) {
-        console.log("Start manager at " + milliseconds);
-        this.interval = setInterval(this.updateConcentrations(), milliseconds);
-    }
-
-    /**
-     * Stops the running {@link updateConcentrations} interval
-     */
-    stop() {
-        if (this.interval) {
-            console.log("Stop manager");
-            clearInterval(this.interval);
-        }
-    }
-
-    /**
-     * Updates the current {@link updateConcentrations} interval to new milliseconds
-     * @param {int} milliseconds 
-     */
-    updateInterval(milliseconds) {
-        if (this.interval) {
-            clearInterval(this.interval);
-            this.interval = setInterval(this.updateConcentrations(), milliseconds);
-        }
-    }
-
-    /**
      * Manually set the concentration of a molecule
-     * @param {string} title 
-     * @param {int} value 
+     * @param {int} id
+     * @param {int} value
      */
-    setConcentration(title, value) {
+    setConcentration(id, value) {
         if (this.moleculeConcentrations) {
-            this.moleculeConcentrations[title] = parseFloat(value);
+            this.moleculeConcentrations[id].value = parseFloat(value);
             this.notifyListeners();
         } else {
             console.log("No Concentrations");

@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
 import { Handle } from 'reactflow';
-import skiPass from '../../images/skiPass.jpg'
 
 export default memo(({ data, isConnectable }) => {
   return (

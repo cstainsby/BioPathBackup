@@ -21,9 +21,8 @@ import boogyImg from "../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
-const initBgColor = '#1A192B';
 const nodeTypes = {
-    selectorNode: ReversibleEnzyme,
+    reversibleEnzyme: ReversibleEnzyme,
 };
 
 /**

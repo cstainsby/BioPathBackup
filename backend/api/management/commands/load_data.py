@@ -7,9 +7,7 @@ This script is called using "python manage.py load_data" from setup.sh
 and can be ommitted to retain old database data. 
 """
 
-import api.models as models
-from django.contrib.auth.models import User
-
+from api import models
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
@@ -27,10 +25,14 @@ class Command(BaseCommand):
           e.delete()
         for e in models.Pathway.objects.all():
           e.delete()
-        for e in User.objects.all():
-          e.delete()
+        # for e in models.User.objects.all():
+        #   e.delete()
 
-        root = User.objects.create_superuser('root', 'root@biopath.com', 'root')
+        try:
+            root = models.User.objects.get(username="root")
+        except:
+            root = models.User.objects.create_superuser('root', '', 'root')
+        
         m1 = models.Molecule(
             name="molecule1",
             link="",

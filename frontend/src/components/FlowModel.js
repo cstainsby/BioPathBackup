@@ -40,7 +40,7 @@ const FlowModel = (props) => {
 	let [nodes, setNodes, onNodesChange] = useNodesState([]);
 	let [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-    // molecules[] = [{"title": "ATP", "value": 10}]
+    // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
 
     /**
@@ -101,29 +101,25 @@ const FlowModel = (props) => {
         const enzymesForSliders = parseEnzymesForSliders(newPathway);
         props.concentrationManager.addListener((moleculeConcentrations) => {
             let mList = [];
-            for (const m in moleculeConcentrations) {
-                mList.push({
-                    "title": m,
-                    "value": moleculeConcentrations[m]
-                });
+            for (const [id, data] of Object.entries(moleculeConcentrations)) {
+                mList[id] = {
+                    "title": data.title,
+                    "value": data.value
+                };
             }
+            setMolecules(mList);
             setEdges((edges) =>
                 edges.map((edge) => {
-                    for (const item of mList) {
-                        if (edge.data.molecule_id === item["title"]) {
-                            edge.style = {strokeWidth: item["value"] * 10, stroke: 'red'};
-                        }
-                    }
+                    edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 10, stroke: 'red'};
                     return edge;
                 })
             );
-            setMolecules(mList);
         });
         props.concentrationManager.parseEnzymes(enzymesForSliders);
     }
 
-    const handleConcentrationChange = (title, value) => {
-        props.concentrationManager.setConcentration(title, value);
+    const handleConcentrationChange = (id, value) => {
+        props.concentrationManager.setConcentration(id, value);
     }
 
     /**

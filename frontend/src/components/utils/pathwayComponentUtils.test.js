@@ -26,9 +26,9 @@ describe('pathwayComponentUtils', () => {
         let enzymes = parseEnzymesForSliders(data);
         expect(enzymes.length).toEqual(1);
         for (const e of enzymes) {
-            expect(e["substrates"]).toContain("m1");
-            expect(e["products"]).toContain("m2");
-            expect(e["cofactors"]).toContain("m3");
+            expect(e["substrates"]).toContainEqual({"id": 56, "title": "m1"});
+            expect(e["products"]).toContainEqual({"id": 57, "title": "m2"});
+            expect(e["cofactors"]).toContainEqual({"id": 58, "title": "m3"});
         }
     });
 });

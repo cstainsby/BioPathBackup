@@ -35,11 +35,25 @@ class Molecule(models.Model):
         blank=True
     )
     link = models.URLField(null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        null=False,
+        blank=False
+    )
     public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+
+class MoleculeInstance(models.Model):
+    molecule = models.ForeignKey(Molecule, on_delete=models.PROTECT)
+    x = models.PositiveSmallIntegerField(null=False, blank=False)
+    y = models.PositiveSmallIntegerField(null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.molecule.name} @ ({self.x},{self.y})"
 
 
 class Enzyme(models.Model):
@@ -74,13 +88,41 @@ class Enzyme(models.Model):
     )
     image = models.ImageField(null=True, blank=True) # space filling
     link = models.URLField(null=True, blank=True) # link to protopedia
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.PROTECT,
+        null=False,
+        blank=False
+    )
     public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
 
-    
+
+class EnzymeInstance(models.Model):
+    enzyme = models.ForeignKey(Enzyme, on_delete=models.PROTECT)
+    x = models.PositiveSmallIntegerField(null=False, blank=False)
+    y = models.PositiveSmallIntegerField(null=False, blank=False)
+    limiting = models.BooleanField(default=False)
+    # TODO what happens if a substrate, product, or cofactor is deleted?
+    substrates = models.ManyToManyField(
+        MoleculeInstance,
+        related_name="enzyme_instances_substrates"
+    )
+    products = models.ManyToManyField(
+        MoleculeInstance,
+        related_name="enzyme_instances_products"
+    )
+    cofactors = models.ManyToManyField(
+        MoleculeInstance,
+        related_name="enzyme_instances_cofactors"
+    )
+
+    def __str__(self):
+        return f"{self.enzyme.name} @ ({self.x},{self.y})"
+
+
 class Pathway(models.Model):
     name = models.CharField(
         max_length=50,
@@ -88,40 +130,22 @@ class Pathway(models.Model):
         blank=False,
         validators=[MinLengthValidator(1)]
     )
-    enzymes = models.ManyToManyField(
-        Enzyme,
-        through='PathwayEnzyme',
-        related_name="pathways_enzyme"
+    enzyme_instances = models.ManyToManyField(
+        EnzymeInstance,
+        related_name="pathways_enzyme_instances"
     )
-    molecules = models.ManyToManyField(
-        Molecule,
-        through='PathwayMolecule',
-        related_name="pathways_molecule"
+    molecule_instances = models.ManyToManyField(
+        MoleculeInstance,
+        related_name="pathways_molecule_instances"
     )
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False
+    )
     link = models.URLField(null=True, blank=True)
     public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
-
-
-class PathwayEnzyme(models.Model):
-    enzyme = models.ForeignKey(Enzyme, on_delete=models.PROTECT)
-    pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
-    x = models.PositiveSmallIntegerField(null=False, blank=False)
-    y = models.PositiveSmallIntegerField(null=False, blank=False)
-    limiting = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.pathway.__str__()} - {self.enzyme.__str__()}"
-
-  
-class PathwayMolecule(models.Model):
-    molecule = models.ForeignKey(Molecule, on_delete=models.PROTECT)
-    pathway = models.ForeignKey(Pathway, on_delete=models.CASCADE)
-    x = models.PositiveSmallIntegerField(null=False, blank=False)
-    y = models.PositiveSmallIntegerField(null=False, blank=False)
-
-    def __str__(self):
-        return f"{self.pathway.__str__()} - {self.molecule.__str__()}"

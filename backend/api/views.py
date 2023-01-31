@@ -14,18 +14,6 @@ from django.db.models import Q
 
 from api import serializers, models
 
-class EnzymeViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.EnzymeSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Enzyme.objects.all()
-        else:
-            return models.Enzyme.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
-
 
 class MoleculeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MoleculeSerializer
@@ -40,8 +28,33 @@ class MoleculeViewSet(viewsets.ModelViewSet):
             )
 
 
+class MoleculeInstanceViewSet(viewsets.ModelViewSet):
+    queryset = models.MoleculeInstance.objects.all()
+    serializer_class = serializers.MoleculeInstanceDetailSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class EnzymeViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.EnzymeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return models.Enzyme.objects.all()
+        else:
+            return models.Enzyme.objects.filter(
+                Q(public=True) | Q(author=self.request.user)
+            )
+
+
+class EnzymeInstanceViewSet(viewsets.ModelViewSet):
+    queryset = models.EnzymeInstance.objects.all()
+    serializer_class = serializers.EnzymeInstanceDetailSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 class PathwayViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = serializers.PathwaySerializer
+    serializer_class = serializers.PathwayDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
@@ -51,18 +64,6 @@ class PathwayViewSet(viewsets.ReadOnlyModelViewSet):
             return models.Pathway.objects.filter(
                 Q(public=True) | Q(author=self.request.user)
             )
-
-
-class PathwayMoleculeViewSet(viewsets.ModelViewSet):
-    queryset = models.PathwayMolecule.objects.all()
-    serializer_class = serializers.PathwayMoleculeBasicSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class PathwayEnzymeViewSet(viewsets.ModelViewSet):
-    queryset = models.PathwayEnzyme.objects.all()
-    serializer_class = serializers.PathwayEnzymeBasicSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class UserViewSet(viewsets.ModelViewSet):

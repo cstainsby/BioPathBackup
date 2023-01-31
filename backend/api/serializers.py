@@ -47,7 +47,16 @@ class EnzymeSerializer(serializers.ModelSerializer):
 
 
 class PathwayEnzymeDetailSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source="enzyme.id")
+    """
+    Detailed pathway enzyme serializer. Used by PathwaySerializer.
+    location_id is the unique id for the pathway enzyme
+    enzyme_id is the id of the enzyme
+    We need both because the same enzyme can occur multiple times
+        within one pathway. They will have the same enzyme_id, but
+        different location_id's and different x,y coords.
+    """
+    location_id = serializers.ReadOnlyField(source="id")
+    enzyme_id = serializers.ReadOnlyField(source="enzyme.id")
     name = serializers.CharField(
         source="enzyme.name",
         max_length=50
@@ -74,7 +83,8 @@ class PathwayEnzymeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PathwayEnzyme
         fields = [
-            "id",
+            "location_id",
+            "enzyme_id",
             "name",
             "x",
             "y",
@@ -112,7 +122,16 @@ class PathwayEnzymeBasicSerializer(serializers.ModelSerializer):
 
 
 class PathwayMoleculeDetailSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source="molecule.id")
+    """
+    Detailed pathway molecule serializer. Used by PathwaySerializer.
+    location_id is the unique id for the pathway molecule
+    molecule_id is the id of the molecule
+    We need both because the same molecule can occur multiple times
+        within one pathway. They will have the same molecule_id, but
+        different location_id's and different x,y coords.
+    """
+    location_id = serializers.ReadOnlyField(source="id")
+    molecule_id = serializers.ReadOnlyField(source="molecule.id")
     name = serializers.CharField(
         source="molecule.name",
         max_length=50
@@ -139,7 +158,8 @@ class PathwayMoleculeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.PathwayMolecule
         fields = [
-            "id",
+            "location_id",
+            "molecule_id",
             "name",
             "x",
             "y",

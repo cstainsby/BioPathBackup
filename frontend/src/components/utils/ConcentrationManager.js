@@ -40,12 +40,6 @@ class ConcentrationManager {
             }
         }
         this.enzymes = enzymes;
-        // for (let enzyme of this.enzymes) {
-        //     console.log(enzyme);
-        // }
-        // for (const m in this.moleculeConcentrations) {
-        //     console.log(m + ":" + this.moleculeConcentrations[m]);
-        // }
         this.notifyListeners();
     }
 

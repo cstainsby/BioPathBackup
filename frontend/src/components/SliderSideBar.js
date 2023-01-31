@@ -20,7 +20,6 @@ const SliderSideBar = (props) => {
         // close all others when another slider has been set to open
         }
     }
-
     const sliderItems = props.molecules.map((molecule) => 
         <li key={molecule.title}>
             <Slider 

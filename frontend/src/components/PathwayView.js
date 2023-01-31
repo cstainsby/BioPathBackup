@@ -25,6 +25,7 @@ export default class PathwayView extends Component {
     //  components
     this.pathwayUserInputSubList = new userInputInteractionList();
     this.concentrationManager = new ConcentrationManager();
+    
   }
 
   render() {

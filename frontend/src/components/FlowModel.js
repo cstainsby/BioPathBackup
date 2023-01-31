@@ -11,7 +11,6 @@ import ReactFlow, {
 import SliderSideBar  from "./SliderSideBar";
 import { buildFlow, parseEnzymesForSliders } from './utils/pathwayComponentUtils';
 import { getPathwayById } from '../requestLib/requests';
-import ConcentrationManager from './utils/ConcentrationManager';
 
 import 'reactflow/dist/style.css';
 import './css/ReactFlowArea.css';
@@ -19,6 +18,12 @@ import './css/ModelArea.css'
 import './css/RightSideBarArea.css';
 
 import boogyImg from "../images/boogy.PNG"
+
+
+import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+const nodeTypes = {
+    reversibleEnzyme: ReversibleEnzyme,
+};
 
 /**
  * Wrapper for ReactFlow and concentration sliders. Main 
@@ -102,6 +107,16 @@ const FlowModel = (props) => {
                     "value": moleculeConcentrations[m]
                 });
             }
+            setEdges((edges) =>
+                edges.map((edge) => {
+                    for (const item of mList) {
+                        if (edge.data.molecule_id === item["title"]) {
+                            edge.style = {strokeWidth: item["value"] * 10, stroke: 'red'};
+                        }
+                    }
+                    return edge;
+                })
+            );
             setMolecules(mList);
         });
         props.concentrationManager.parseEnzymes(enzymesForSliders);
@@ -123,30 +138,6 @@ const FlowModel = (props) => {
   
     // Used by ReactFlow whenever an edge is connected between nodes
 	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), [setEdges]);
-
-    // Used to set the color of different edges
-    // useEffect(() => {
-    //     setEdges((eds) =>
-    //     eds.map((edge) => {
-    //         console.log("SETTING EDGES")
-    //         // for loop is needed for edges that have the same input, ex. GH3P
-    //         for (let i = 0; i < moleculeConcentrations.length; i++) {
-    //             if (edge.data.molecule_id === String(moleculeIDs[i])) {
-    //                 // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
-    //                 if (cofactorSteps.includes(i)) { // is a cofactor step
-    //                     edge.style = {strokeWidth: moleculeConcentrations[i], stroke: 'yellow'};
-    //                 }
-    //                 else {
-    //                     edge.style = {strokeWidth: moleculeConcentrations[i], stroke: 'red'};
-    //                 }
-    //             }
-    //         }
-
-    //         return edge;
-    //     })
-    //     );
-    // }, [cofactorPercents[0], cofactorPercents[1], setEdges, moleculeConcentrations]);
-
     
     // Updates the concentrations every 1000 milliseconds
     let [running, setRunning] = useState(false);
@@ -160,7 +151,7 @@ const FlowModel = (props) => {
         
         return () => {
             clearInterval(interval);
-            console.log("clearInterval");
+            // console.log("clearInterval");
         };
     }, [running, speed]);
 
@@ -174,6 +165,7 @@ const FlowModel = (props) => {
                 onEdgesChange={onEdgesChange}
                 snapToGrid
                 onConnect={onConnect}
+                nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
                 attributionPosition="top-right"
             >

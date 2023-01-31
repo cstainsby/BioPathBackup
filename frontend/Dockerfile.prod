@@ -1,0 +1,14 @@
+# This dockerfile is a optimized version of the original which takes advantage of a multistage build to reduce overall package size 
+# work based on: https://mherman.org/blog/dockerizing-a-react-app/ 
+
+FROM node:13.12.0-alpine as build
+WORKDIR /app/frontend
+ENV PATH /app/frontend/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci 
+RUN npm install react-scripts@3.4.1 -g 
+COPY . ./
+RUN npm run build
+
+EXPOSE 3000

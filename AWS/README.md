@@ -7,6 +7,18 @@ Here is a link to [copilot installation](https://docs.aws.amazon.com/AmazonECS/l
 
 Link to documentation on the [copilot tool and basic AWS concepts](https://aws.github.io/copilot-cli/docs/overview/)
 
+## Important Commands
+copilot has really good explanations how to use their commands 
+
+Run: *copilot* to get a quick explanation of where to start
+
+The following commands I found to be super helpful when getting a nice description of whats going in each section of the AWS project
+- *copilot app show*
+- *copilot svc show*
+- *copilot env show*
+- *copilot pipeline show*
+
+
 ## File Overivew
 Within this directory we have 
 1. **copilot dir** which is an auto-generated directory for aws copilot which is a tool which will be needed for more direct AWS infrastructure work. 
@@ -29,6 +41,7 @@ Enviornments in copilot are areas where builds (services) can be running. For no
 As mentioned in the Enviornment section, we will have a frontend and backend service. Both of these will be induvidually linked to their respective dockerfiles within frontend/ and backend/
 
 ## CI/CD Pipeline
+
 
 ## Setup 
 **Important**: When creating AWS accounts, keep track of your:

@@ -12,7 +12,7 @@ TODO: Optimmize with prefetch_related or select_related https://www.django-rest-
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 
-from . import models
+from api import models
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -40,151 +40,72 @@ class MoleculeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class MoleculeInstanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.MoleculeInstance
+        fields = "__all__"
+
+
+class MoleculeInstanceDetailSerializer(serializers.ModelSerializer):
+    molecule_name = serializers.ReadOnlyField(source="molecule.name")
+    abbreviation = serializers.ReadOnlyField(source="molecule.abbreviation")
+    # TODO change images to read only
+    ball_and_stick_image = serializers.ImageField(source="molecule.ball_and_stick_image")
+    space_filling_image = serializers.ImageField(source="molecule.space_filling_image")
+    link = serializers.ReadOnlyField(source="molecule.link")
+    author = serializers.ReadOnlyField(source="molecule.author.id")
+    public = serializers.ReadOnlyField(source="molecule.public")
+
+    class Meta:
+        model = models.MoleculeInstance
+        fields = "__all__"
+
+
 class EnzymeSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Enzyme
         fields = "__all__"
 
 
-class PathwayEnzymeDetailSerializer(serializers.ModelSerializer):
+class EnzymeInstanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.EnzymeInstance
+        fields = "__all__"
+
+
+class EnzymeInstanceDetailSerializer(serializers.ModelSerializer):
     """
-    Detailed pathway enzyme serializer. Used by PathwaySerializer.
-    location_id is the unique id for the pathway enzyme
-    enzyme_id is the id of the enzyme
-    We need both because the same enzyme can occur multiple times
-        within one pathway. They will have the same enzyme_id, but
-        different location_id's and different x,y coords.
+    note that substrate, product, cofactor aren't defined here. this is because
+        we want it to display the ones from EnzymeInstance, not Enzyme.
     """
-    location_id = serializers.ReadOnlyField(source="id")
-    enzyme_id = serializers.ReadOnlyField(source="enzyme.id")
-    name = serializers.CharField(
-        source="enzyme.name",
-        max_length=50
-    )
-    abbreviation = serializers.CharField(
-        source="enzyme.abbreviation",
-        max_length=10
-    )
+    name = serializers.ReadOnlyField(source="enzyme.name")
+    abbreviation = serializers.ReadOnlyField(source="enzyme.abbreviation")
     image = serializers.ImageField(
         source="enzyme.image",
         allow_empty_file=True
     )
-    reversible = serializers.BooleanField(source="enzyme.reversible")
-    substrates = serializers.SerializerMethodField()
-    products = serializers.SerializerMethodField()
-    cofactors = serializers.SerializerMethodField()
-    link = serializers.URLField(
-        source="enzyme.link",
-        allow_blank=True
-    )
+    reversible = serializers.ReadOnlyField(source="enzyme.reversible")
+    link = serializers.ReadOnlyField(source="enzyme.link")
     author = serializers.ReadOnlyField(source="enzyme.author.id")
-    public = serializers.BooleanField(source="enzyme.public")
-
-    class Meta:
-        model = models.PathwayEnzyme
-        fields = [
-            "location_id",
-            "enzyme_id",
-            "name",
-            "x",
-            "y",
-            "abbreviation",
-            "image",
-            "reversible",
-            "substrates",
-            "products",
-            "cofactors",
-            "link",
-            "author",
-            "public"
-        ]
-
-    def get_substrates(self, obj):
-        enzyme = models.Enzyme.objects.get(id=obj.enzyme.id)
-        substrates = [molecule.id for molecule in enzyme.substrates.all()]
-        return substrates
-
-    def get_products(self, obj):
-        enzyme = models.Enzyme.objects.get(id=obj.enzyme.id)
-        products = [molecule.id for molecule in enzyme.products.all()]
-        return products
-
-    def get_cofactors(self, obj):
-        enzyme = models.Enzyme.objects.get(id=obj.enzyme.id)
-        cofactors = [molecule.id for molecule in enzyme.cofactors.all()]
-        return cofactors
-
+    public = serializers.ReadOnlyField(source="enzyme.public")
     
-class PathwayEnzymeBasicSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.PathwayEnzyme
-        fields = "__all__"
-
-
-class PathwayMoleculeDetailSerializer(serializers.ModelSerializer):
-    """
-    Detailed pathway molecule serializer. Used by PathwaySerializer.
-    location_id is the unique id for the pathway molecule
-    molecule_id is the id of the molecule
-    We need both because the same molecule can occur multiple times
-        within one pathway. They will have the same molecule_id, but
-        different location_id's and different x,y coords.
-    """
-    location_id = serializers.ReadOnlyField(source="id")
-    molecule_id = serializers.ReadOnlyField(source="molecule.id")
-    name = serializers.CharField(
-        source="molecule.name",
-        max_length=50
-    )
-    abbreviation = serializers.CharField(
-        source="molecule.abbreviation",
-        max_length=10
-    )
-    ball_and_stick_image = serializers.ImageField(
-        source="molecule.ball_and_stick_image",
-        allow_empty_file=True
-    )
-    space_filling_image = serializers.ImageField(
-        source="molecule.space_filling_image",
-        allow_empty_file=True
-    )
-    link = serializers.URLField(
-        source="molecule.link",
-        allow_blank=True
-    )
-    author = serializers.ReadOnlyField(source="molecule.author.id")
-    public = serializers.BooleanField(source="molecule.public")
-
-    class Meta:
-        model = models.PathwayMolecule
-        fields = [
-            "location_id",
-            "molecule_id",
-            "name",
-            "x",
-            "y",
-            "abbreviation",
-            "ball_and_stick_image",
-            "space_filling_image",
-            "link",
-            "author",
-            "public"
-        ]
-
-
-class PathwayMoleculeBasicSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.PathwayMolecule
+        model = models.EnzymeInstance
         fields = "__all__"
 
 
 class PathwaySerializer(serializers.ModelSerializer):
-    enzymes = PathwayEnzymeDetailSerializer(
-        source="pathwayenzyme_set",
+    class Meta:
+        model = models.Pathway
+        fields = "__all__"
+
+class PathwayDetailSerializer(serializers.ModelSerializer):
+    enzyme_instances = EnzymeInstanceSerializer(
+        # source="enzymes.id",
         many=True
     )
-    molecules = PathwayMoleculeDetailSerializer(
-        source="pathwaymolecule_set",
+    molecule_instances = MoleculeInstanceSerializer(
+        # source="molecules.id",
         many=True
     )
     

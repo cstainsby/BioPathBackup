@@ -20,11 +20,11 @@ const SliderSideBar = (props) => {
         // close all others when another slider has been set to open
         }
     }
-    const sliderItems = props.molecules.map((molecule) => 
-        <li key={molecule.title}>
+    const sliderItems = Object.entries(props.molecules).map(([id, data]) => 
+        <li key={id}>
             <Slider 
-                title={ molecule.title }
-                value={ molecule.value.toFixed(2) }
+                title={ data.title }
+                value={ data.value.toFixed(2) }
                 handleConcentrationChange={ props.handleConcentrationChange } 
             />
         </li>

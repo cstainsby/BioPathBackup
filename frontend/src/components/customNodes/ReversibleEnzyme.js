@@ -22,7 +22,7 @@ export default memo(({ data, isConnectable }) => {
         isConnectable={isConnectable}
       /> */}
       <div>
-        Reversible Enzyme <strong>{data.label}</strong>
+        <strong>{data.label}</strong>
         {/* <img src="../../images/skiPass.jpg" alt="skiPass"/> */}
       </div>
       {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}

@@ -111,21 +111,14 @@ const FlowModel = (props) => {
                 });
             }
             setEdges((edges) =>
-            edges.map((edge) => {
-                console.log("SETTING EDGES")
-                // for (const molecule in molecules) {
-                for (const item of mList) {
-                    if (edge.data.molecule_id === item["title"]) {
-                        edge.style = {strokeWidth: item["value"] * 10, stroke: 'red'};
+                edges.map((edge) => {
+                    for (const item of mList) {
+                        if (edge.data.molecule_id === item["title"]) {
+                            edge.style = {strokeWidth: item["value"] * 10, stroke: 'red'};
+                        }
                     }
-                }
-                // for (let i = 0; i < mList.length; i++) {
-                //     if (edge.data.molecule_id === mList[i]["title"]) {
-                //         edge.style = {strokeWidth: mList[i]["value"] * 10, stroke: 'red'};
-                //     }
-                //     return edge;
-                // }
-            })
+                    return edge;
+                })
             );
             setMolecules(mList);
         });
@@ -156,27 +149,12 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
-                console.log(props.concentrationManager.updateConcentrations(), molecules)
-                // setEdges((eds) =>
-                //     eds.map((edge) => {
-                //         console.log("SETTING EDGES")
-                //         // for (const molecule in molecules) {
-                //         for (let i = 0; i < molecules.length; i++) {
-                //             if (edge.data.molecule_id === molecules[i]["title"]) {
-                //                 console.log(molecules[i]["title"], molecules[i]["value"], molecules[i]["value"] * 10, "molecule info")
-                //                 edge.style = {strokeWidth: molecules[i]["value"] * 10, stroke: 'red'};
-                //             }
-                //         }
-                //         return edge;
-                //     })
-                // );
-                console.log(edges, "edges after useEffect")
             }
         }, speed);
         
         return () => {
             clearInterval(interval);
-            console.log("clearInterval");
+            // console.log("clearInterval");
         };
     }, [running, speed]);
 

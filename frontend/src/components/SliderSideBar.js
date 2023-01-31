@@ -15,14 +15,11 @@ import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
  * @prop handleConcentrationChange(string, int): void
  */
 const SliderSideBar = (props) => {
-    console.log("testing slidrs", props)
     const handleSliderOpen = (cofactorTitle, newOpenStatus) => {
         if(newOpenStatus === true) {
         // close all others when another slider has been set to open
         }
     }
-
-    console.log(props.molecules, "molecules")
     const sliderItems = props.molecules.map((molecule) => 
         <li key={molecule.title}>
             <Slider 

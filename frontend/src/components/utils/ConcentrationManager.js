@@ -76,7 +76,7 @@ class ConcentrationManager {
                 }
             }
         }
-        console.log("UpdateConcentrations()");
+        console.log("UpdateConcentrations()", cachedConcentrations);
         this.notifyListeners();
     }
 

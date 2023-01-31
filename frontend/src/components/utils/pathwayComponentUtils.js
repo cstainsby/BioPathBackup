@@ -176,7 +176,6 @@ export function generateEdges(pathway) {
             }
         }
     }
-    console.log("edges", edges)
     return edges;
 }
 
@@ -320,7 +319,7 @@ export function parseEnzymesForSliders(pathwayData) {
                 return o.id === parseInt(substrate);
             });
             if (m.length > 0) {
-                e["substrates"].push(m[0]["abbreviation"]);
+                e["substrates"].push(m[0]["id"]);
             }
         }
         for (const product of enzyme["products"]) {
@@ -328,7 +327,7 @@ export function parseEnzymesForSliders(pathwayData) {
                 return o.id === product;
             });
             if (m.length > 0) {
-                e["products"].push(m[0]["abbreviation"]);
+                e["products"].push(m[0]["id"]);
             }
         }
         for (const cofactor of enzyme["cofactors"]) {
@@ -336,7 +335,7 @@ export function parseEnzymesForSliders(pathwayData) {
                 return o.id === cofactor;
             });
             if (m.length > 0) {
-                e["cofactors"].push(m[0]["abbreviation"]);
+                e["cofactors"].push(m[0]["id"]);
             }
         }
         enzymes.push(e);

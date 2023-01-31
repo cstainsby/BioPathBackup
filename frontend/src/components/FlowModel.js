@@ -19,8 +19,6 @@ import './css/RightSideBarArea.css';
 
 import boogyImg from "../images/boogy.PNG"
 
-import getMoleculeConcentrations from "./utils/ConcentrationManager"
-
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 const initBgColor = '#1A192B';

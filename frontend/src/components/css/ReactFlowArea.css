@@ -39,3 +39,13 @@
     border-radius: 5px;
     text-align: center;
   }
+
+  /* Probably delete soon
+  */
+.react-flow__node.Molecule {
+    font-size: 12px;
+    background: #eee;
+    border: 1px solid rgb(11, 83, 251);
+    border-radius: 5px;
+    text-align: center;
+}

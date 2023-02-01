@@ -34,7 +34,8 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
-                    sourceHandle: "ts",
+                    sourceHandle: "bottom-source",
+                    targetHandle: "top-target",
                     target: String(enzyme.id) + "_enzyme"
                 });
                 edges.push({
@@ -44,8 +45,10 @@ export function generateEdges(pathway) {
                         "molecule_id": String(substrate_id)
                     },
                     animated: true,
+                    type: "straight",
                     source: String(enzyme.id) + "_enzyme",
-                    sourceHandle: "tt", // this sets which hanlder to connect to
+                    sourceHandle: "top-source",
+                    targetHandle: "bottom-target", // this sets which hanlder to connect to
                     target: String(substrate_id) + "_molecule"
                 });
             }
@@ -58,7 +61,8 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
-                    target: String(enzyme.id) + "_enzyme"
+                    sourceHandle: "bottom-source",
+                    target: String(enzyme.id) + "_enzyme",
                 });
             }
         }
@@ -73,7 +77,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
-                    sourceHandle: "bs",
+                    sourceHandle: "bottom-source",
                     target: String(product_id) + "_molecule"
                 });
                 edges.push({
@@ -83,8 +87,9 @@ export function generateEdges(pathway) {
                         "molecule_id": String(product_id)
                     },
                     animated: true,
+                    type: "straight",
                     source: String(product_id) + "_molecule",
-                    sourceHandle: "bt",
+                    targetHandle: "bottom-target",
                     target: String(enzyme.id) + "_enzyme"
                 });
             }
@@ -155,13 +160,14 @@ export function generateNodes(pathway) {
         // Reactflow node
         nodes.push({
             id: String(molecule.id) + "_molecule", 
-            className: 'substrate', 
+            className: 'Molecule', 
             data: {
                 label: molecule.name,
                 type: "molecule",
                 title: molecule.name,
                 concentration: 100
             },
+            type: "molecule",
             position: {x: molecule.x, y: molecule.y}
         });
     }

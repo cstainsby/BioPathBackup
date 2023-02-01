@@ -117,7 +117,14 @@ class ConcentrationManager {
      * @param {int} value
      */
     setConcentration(id, value) {
+        console.log(id, this.moleculeConcentrations, this.moleculeConcentrations[235], "setConcentration")
         if (this.moleculeConcentrations) {
+            for (const molecule of this.moleculeConcentrations) {
+                console.log(molecule, "molecule")
+                if (molecule["title"] === id) {
+                    console.log("yes")
+                }
+            }
             this.moleculeConcentrations[id].value = parseFloat(value);
             this.notifyListeners();
         } else {

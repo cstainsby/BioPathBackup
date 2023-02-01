@@ -490,7 +490,7 @@ class Command(BaseCommand):
 
         tpd = models.Enzyme.objects.create(
             name="Trios Phosphate Dehydrogenase",
-            abbreviation="",
+            abbreviation="TPD",
             # image=,
             link="triose phosphate isomerase",
             author=root,

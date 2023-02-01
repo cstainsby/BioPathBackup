@@ -11,14 +11,13 @@ import PathwayLoaderModal from './modal/PathwayLoaderModal';
 import HelpModal from './modal/HelpModal';
 import SignInModal from './modal/SignInModal';
 
-
-// ----------------------------------------------------------------------
-// Navbar
-//  this is the base component that holds every child component below
-//  This component when rendered will be the main navigation bar above 
-//    our main model area 
-// ----------------------------------------------------------------------
-const Navbar = (props) => {
+/**
+ * this is the base component that holds every child component below
+ * This component when rendered will be the main navigation bar above 
+ * our main model area 
+ * @returns website wide navbar component
+ */
+const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
@@ -80,15 +79,13 @@ const Navbar = (props) => {
   );
 }
 
-
-// ----------------------------------------------------------------------
-// UserSignInNavBarItem
-//  This component will be displayed on the far right of the navbar 
-//    if the user is signed in 
-
-// Note: upon opening the site, prompt the user using the SignInModal
-// ----------------------------------------------------------------------
-const UserSignInNavBarItem = (props) => {
+/**
+ * This component will be displayed on the far right of the navbar 
+ * if the user is signed in 
+ * Note: upon opening the site, prompt the user using the SignInModal
+ * @returns Sign in card component
+ */
+const UserSignInNavBarItem = () => {
   let [signedIn, setSignedIn] = useState(false)
 
   return (

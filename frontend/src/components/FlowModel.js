@@ -189,6 +189,14 @@ const FlowModel = (props) => {
     );
 };
 
+/**
+ * 
+ * @prop {string} pathwayTitle - the name of the pathway
+ * @prop {string} pathwayDescription - the description of the pathway
+ * @prop {string} pathwayAuthor - the author of the pathway
+ * @prop {img} additionalImage - an optional image 
+ * @returns An informational react component for the current pathway
+ */
 const PathwayTitleCard = (props) => {
     //  props that should be passed in:
     //  pathwayTitle: string 

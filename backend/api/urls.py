@@ -5,7 +5,6 @@ Description: Maps url endpoints to the viewsets in views.py. We are using DRF ro
     insure CRUD compliance and means there's less code for us to write. Note that these 
     the given routes here are actually all prefixed with api/ as this file is routed to
     from the projects base urls.py in backend/biopath.
-Modified: 11/17 - Josh Schmitz
 """
 
 from django.urls import include, path

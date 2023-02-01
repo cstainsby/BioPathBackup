@@ -4,8 +4,6 @@ Description: Defines the serializers for serializing various models in
     models.py into json. These serializers are used to create viewsets in
     views.py to simplify and standardize the data format that is returned by
     the API.
-Modified: 11/17 - Josh Schmitz
-TODO: If you explicitly specify a relational field pointing to a ManyToManyField with a through model, be sure to set read_only to True.
 TODO: Optimmize with prefetch_related or select_related https://www.django-rest-framework.org/api-guide/relations/
 """
 
@@ -99,12 +97,13 @@ class PathwaySerializer(serializers.ModelSerializer):
         model = models.Pathway
         fields = "__all__"
 
+
 class PathwayDetailSerializer(serializers.ModelSerializer):
-    enzyme_instances = EnzymeInstanceSerializer(
+    enzyme_instances = EnzymeInstanceDetailSerializer(
         # source="enzymes.id",
         many=True
     )
-    molecule_instances = MoleculeInstanceSerializer(
+    molecule_instances = MoleculeInstanceDetailSerializer(
         # source="molecules.id",
         many=True
     )

@@ -106,15 +106,15 @@ class EnzymeInstance(models.Model):
     y = models.PositiveSmallIntegerField(null=False, blank=False)
     limiting = models.BooleanField(default=False)
     # TODO what happens if a substrate, product, or cofactor is deleted?
-    substrates = models.ManyToManyField(
+    substrate_instances = models.ManyToManyField(
         MoleculeInstance,
         related_name="enzyme_instances_substrates"
     )
-    products = models.ManyToManyField(
+    product_instances = models.ManyToManyField(
         MoleculeInstance,
         related_name="enzyme_instances_products"
     )
-    cofactors = models.ManyToManyField(
+    cofactor_instances = models.ManyToManyField(
         MoleculeInstance,
         related_name="enzyme_instances_cofactors"
     )
@@ -144,7 +144,10 @@ class Pathway(models.Model):
         null=False,
         blank=False
     )
-    link = models.URLField(null=True, blank=True)
+    link = models.URLField(
+        null=True,
+        blank=True
+    )
     public = models.BooleanField(default=False)
 
     def __str__(self):

@@ -23,6 +23,7 @@ const SliderSideBar = (props) => {
     const sliderItems = Object.entries(props.molecules).map(([id, data]) => 
         <li key={id}>
             <Slider 
+                id={ id }
                 title={ data.title }
                 value={ data.value.toFixed(2) }
                 handleConcentrationChange={ props.handleConcentrationChange } 
@@ -46,6 +47,7 @@ const SliderSideBar = (props) => {
 
 /**
  * Named slider selector
+ * @prop id - id of substrate
  * @prop title - title of the substrate passed in
  * @prop value
  * @prop handleConcentrationChange 
@@ -54,7 +56,7 @@ const Slider = (props) => {
   let [isExpanded, setIsExpanded] = useState(false);
 
   const handleSliderValueChange = (newSliderValue) => {
-    props.handleConcentrationChange(props.title, newSliderValue);
+    props.handleConcentrationChange(props.id, newSliderValue);
   }
 
   const handleClick = (e) => {

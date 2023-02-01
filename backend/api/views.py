@@ -4,7 +4,6 @@ Description: Defines view functions that are mapped to in urls.py for generating
     responses. We are using viewsets instead of plain views as ensures CRUD compliance
     and prevents us from manually having to individually write out each function for
     POST, GET, PUT, and DELETE methods.
-Modified: 11/17 - Josh Schmitz
 TODO: only show enzyme/molecule/pathway if public or auther=user
 """
 
@@ -30,7 +29,7 @@ class MoleculeViewSet(viewsets.ModelViewSet):
 
 class MoleculeInstanceViewSet(viewsets.ModelViewSet):
     queryset = models.MoleculeInstance.objects.all()
-    serializer_class = serializers.MoleculeInstanceDetailSerializer
+    serializer_class = serializers.MoleculeInstanceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
@@ -49,7 +48,7 @@ class EnzymeViewSet(viewsets.ModelViewSet):
 
 class EnzymeInstanceViewSet(viewsets.ModelViewSet):
     queryset = models.EnzymeInstance.objects.all()
-    serializer_class = serializers.EnzymeInstanceDetailSerializer
+    serializer_class = serializers.EnzymeInstanceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 

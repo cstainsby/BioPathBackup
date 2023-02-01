@@ -113,7 +113,7 @@ const FlowModel = (props) => {
             setEdges((edges) =>
                 edges.map((edge) => {
                     if (mList[edge.data.molecule_id]) {
-                        edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 10, stroke: 'red'};
+                        edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 5, stroke: 'red'};
                     }
                     return edge;
                 })

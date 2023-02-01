@@ -33,6 +33,7 @@ export function generateEdges(pathway) {
                         "molecule_id": String(substrate_id)
                     },
                     animated: true,
+                    // type: "straight",
                     source: String(substrate_id) + "_molecule",
                     sourceHandle: "bottom-source",
                     targetHandle: "top-target",
@@ -45,7 +46,7 @@ export function generateEdges(pathway) {
                         "molecule_id": String(substrate_id)
                     },
                     animated: true,
-                    type: "straight",
+                    // type: "straight",
                     source: String(enzyme.id) + "_enzyme",
                     sourceHandle: "top-source",
                     targetHandle: "bottom-target", // this sets which hanlder to connect to
@@ -76,6 +77,7 @@ export function generateEdges(pathway) {
                         "molecule_id": String(product_id)
                     },
                     animated: true,
+                    // type: "straight",
                     source: String(enzyme.id) + "_enzyme",
                     sourceHandle: "bottom-source",
                     target: String(product_id) + "_molecule"
@@ -87,7 +89,7 @@ export function generateEdges(pathway) {
                         "molecule_id": String(product_id)
                     },
                     animated: true,
-                    type: "straight",
+                    // type: "straight",
                     source: String(product_id) + "_molecule",
                     targetHandle: "bottom-target",
                     target: String(enzyme.id) + "_enzyme"

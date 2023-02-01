@@ -43,9 +43,17 @@
   /* Probably delete soon
   */
 .react-flow__node.Molecule {
-    font-size: 12px;
+    border-radius: 50%;
+    width: 50px;
+    height: 25px;
+    background: rgb(6, 13, 241);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+    /* font-size: 12px;
     background: #eee;
     border: 1px solid rgb(11, 83, 251);
     border-radius: 5px;
-    text-align: center;
+    text-align: center; */
 }

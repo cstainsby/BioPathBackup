@@ -3,13 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import FlowModel from './FlowModel'
 import NavBar from './NavBar'
-//import RightSideBarArea from './RightSideBarArea';
-import Error from "./Error";
+import ErrorPage from './ErrorPage';
 
 //import Restore from './Restore';
 import './css/PathwayView.css'
 
-import userInputInteractionList from './PathwayInteractiveComponent';
 import ConcentrationManager from './utils/ConcentrationManager';
 
 export default class PathwayView extends Component {
@@ -48,7 +46,7 @@ export default class PathwayView extends Component {
           {/* for user authentication later on,  */}
           <Route path="auth" element={ pathwayView }>
           </Route>
-          <Route path="*" element={ <Error /> }/>
+          <Route path="*" element={ <ErrorPage /> }/>
         </Routes>
       </BrowserRouter>
     )

@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 
 
-const Error = (props) => {
+const ErrorPage = (props) => {
   let location = useLocation();
 
   return (
@@ -15,4 +15,4 @@ const Error = (props) => {
   )
 }
 
-export default Error;
+export default ErrorPage;

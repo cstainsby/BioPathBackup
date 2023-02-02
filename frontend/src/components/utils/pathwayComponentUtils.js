@@ -178,6 +178,7 @@ export function parseEnzymesForSliders(pathwayData) {
     let enzymes = [];
     for (const enzyme of pathwayData.enzymes) {
         let e = {
+            "reversible": enzyme.reversible,
             "substrates": [],
             "products": [],
             "cofactors": []

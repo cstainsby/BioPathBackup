@@ -69,6 +69,26 @@ class ConcentrationManager {
                     this.moleculeConcentrations[product.id].value += minSubstrateConc * 0.1;
                 }
             }
+            // if (enzyme.reversible) {
+            //     for (const product of enzyme.products) {
+            //         if (!minProductConc) {
+            //             minProductConc = cachedConcentrations[product.id].value;
+            //         }
+            //         if (cachedConcentrations[products] < minproductConc) {
+            //             minProductConc = cachedConcentrations[substrate.id].value;
+            //         }
+            //     }
+            //     for (const product of enzyme.products) {
+            //         if (minProductConc) {
+            //             this.moleculeConcentrations[substrate.id].value -= minProductConc * 0.1;
+            //         }
+            //     }
+            //     for (const substrate of enzyme.substrates) {
+            //         if (minProductConc) {
+            //             this.moleculeConcentrations[product.id].value += minProductConc * 0.1;
+            //         }
+            //     }
+            // }
         }
         console.log("UpdateConcentrations()");
         this.notifyListeners();

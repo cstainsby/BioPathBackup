@@ -27,6 +27,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url(../../images/glycolysis/aldolase.png);
     /* fontweight: 700;  */
 }
 
@@ -34,10 +35,13 @@
 */
 .react-flow__node.ReversibleEnzyme {
     font-size: 12px;
+    width: 150px;
+    height: 100px;
     background: #eee;
     border: 1px solid #555;
     border-radius: 5px;
     text-align: center;
+    /* background-image: url(../../images/glycolysis/aldolase.png); */
   }
 
   /* Probably delete soon

@@ -14,6 +14,8 @@ class ConcentrationManager {
     constructor() {
         this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
         this.moleculeDeltas = []; // [{ID: {"title": string, "forwardValue": float, "reverseValue": float}}]
+        this.startMolecules = []; // used for tracking start and end molecules
+        this.endMolecules = [];
         this.enzymes = [];
         this.listeners = [];
         this.interval = null;
@@ -28,8 +30,18 @@ class ConcentrationManager {
      * @param enzymes[].cofactors list of molecules effecting the enzyme's production
      */
     parseEnzymes(enzymes) {
-        console.log("enzymes", enzymes)
         this.moleculeConcentrations = [];
+        // when commented out, the flow will eventually run to empty
+        // for (const substrate of enzymes[0].substrates) {
+        //     if (!this.startMolecules.includes(substrate.id) ) {
+        //         this.startMolecules.push(substrate.id);
+        //     }
+        // }
+        for (const product of enzymes[enzymes.length - 1].products) {
+            if (!this.endMolecules.includes(product.id) ) {
+                this.endMolecules.push(product.id);
+            }
+        }
         for (const enzyme of enzymes) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
@@ -53,6 +65,12 @@ class ConcentrationManager {
      */
     updateConcentrations() {
         let cachedConcentrations = this.moleculeConcentrations;
+        for (const id of this.startMolecules) {
+            this.moleculeConcentrations[id].value += .1;
+        }
+        for (const id of this.endMolecules) {
+            this.moleculeConcentrations[id].value -= .1;
+        }
         for (const enzyme of this.enzymes) {
             let minSubstrateConc = null;
             let minProductConc = null;
@@ -132,9 +150,7 @@ class ConcentrationManager {
                     this.moleculeDeltas[product.id].forwardValue = forwardChange;
                 }
             }
-            console.log("outside reversible", enzyme)
             if (enzyme.reversible) {
-                console.log("inside reversible bool")
                 reverseChange = minProductConc / minSubstrateConc;
                 for (const substrate of enzyme.substrates) {
                     if (forwardChange) {
@@ -147,7 +163,6 @@ class ConcentrationManager {
                     }
                 }
             }
-            console.log("reverse and forward change", reverseChange, forwardChange)
         }
         this.notifyListeners();
     }

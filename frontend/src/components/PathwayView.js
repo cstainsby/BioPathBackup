@@ -9,6 +9,8 @@ import Error from "./Error";
 //import Restore from './Restore';
 import './css/PathwayView.css'
 
+import aldolase from'../images/glycolysis/aldolase.png';
+
 import userInputInteractionList from './PathwayInteractiveComponent';
 import ConcentrationManager from './utils/ConcentrationManager';
 

@@ -78,6 +78,16 @@ const SplashPage = () => {
         
         if the user isn't signed in this will be generic
       */}
+      <div id="FeedArea" className="row container informationalSection">
+        <div className="row informationalHeaderSection">
+          <h4>What's New</h4>
+          <hr/>
+        </div>
+
+        <div className="row informationalContentSection">
+          
+        </div>
+      </div>
     </div>
   )
 }
@@ -109,8 +119,39 @@ const StarterCard = (props) => {
   )
 }
 
-const PathwayInformationalCard = (props) => {
+/**
+ * This feed item should be able to accomodate multiple types of news items 
+ * types could include but are not limited to 
+ * 1) pathway interactions such as 
+ *    - pathway made 
+ *    - pathway changes 
+ * 2) post made 
+ *    - comment on a pathway
+ * @prop {string} creatorAssociated
+ * @prop {Date} when
+ * @prop {string} titleOfPost
+ * @prop {id} attachedPathwayId
+ * @returns 
+ */
+const NewsFeedItem = (props) => {
+  return (
+    <div id="NewsFeedItem">
 
+    </div>
+  )
+}
+
+/**
+ * 
+ * @param {*} props 
+ * @returns 
+ */
+const PathwayInformationalCard = (props) => {
+  return (
+    <div>
+
+    </div>
+  );
 }
 
 export default SplashPage;

@@ -33,6 +33,10 @@ const router = createBrowserRouter([
         element: <PathwayEditorPage />,
         children: [
           {
+            path: "",
+            element: <PathwayView />
+          },
+          {
             path: ":pathwayId",
             element: <PathwayView />
           }

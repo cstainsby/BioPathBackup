@@ -21,6 +21,7 @@ import boogyImg from "../../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
+import UserBuildTool from './UserBuildTool';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
 };
@@ -155,7 +156,6 @@ const FlowModel = (props) => {
 
     return (
         <div className='ModelArea'>
-            { !isPathwayCurrentlyLoaded && <h1>Click File&gt;Open to load a pathway!</h1>}
             <ReactFlow className='ModelAreaChild ReactFlow'
                 nodes={nodes}
                 edges={edges}
@@ -167,23 +167,27 @@ const FlowModel = (props) => {
                 fitView={true}
                 attributionPosition="top-right"
             >
-            <Controls position='bottom-right' />
-            { isPathwayCurrentlyLoaded &&
-                <PathwayTitleCard
-                    pathwayTitle={ pathwayTitle }
-                    pathwayDescription={ pathwayDescription }
-                    pathwayAuthor={ pathwayAuthor }
-                    additionalImage={ boogyImg }
-                /> }
-            { isPathwayCurrentlyLoaded &&
-                <SliderSideBar
-                    slidersTitle="Cofactors"
-                    slidersDescription="Adjust cofactor concentrations"
-                    molecules={molecules}
-                    handleConcentrationChange={ handleConcentrationChange }
-                    run = {() => {setRunning(true)}}
-                    stop = {() => {setRunning(false)}}
-                />}
+                <Controls position='bottom-right' />
+                { isPathwayCurrentlyLoaded &&
+                    <PathwayTitleCard
+                        pathwayTitle={ pathwayTitle }
+                        pathwayDescription={ pathwayDescription }
+                        pathwayAuthor={ pathwayAuthor }
+                        additionalImage={ boogyImg }
+                    /> }
+                { isPathwayCurrentlyLoaded &&
+                    <SliderSideBar
+                        slidersTitle="Cofactors"
+                        slidersDescription="Adjust cofactor concentrations"
+                        molecules={molecules}
+                        handleConcentrationChange={ handleConcentrationChange }
+                        run = {() => {setRunning(true)}}
+                        stop = {() => {setRunning(false)}}
+                    />}
+                { isPathwayCurrentlyLoaded && 
+                    <UserBuildTool />
+                }
+                
             </ReactFlow>            
         </div>
     );

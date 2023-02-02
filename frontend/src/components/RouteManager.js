@@ -6,9 +6,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 // react components
 // import PathwayPage from "./PathwayPage";
-import SplashPage from "./SplashPage";
-import ErrorPage from "./ErrorPage";
+import SplashPage from "./pages/SplashPage";
+import ErrorPage from "./pages/ErrorPage";
 import RootLayout from "./RootLayout";
+import PathwayView from "./PathwayView";
+import PathwayEditorPage from "./pages/PathwayEditorPage";
 
 /**
  * A declaritive definition of the routes within the website
@@ -23,6 +25,20 @@ const router = createBrowserRouter([
         path: "/",
         element: <SplashPage />
       },
+      {
+        path: "/explore",
+
+      },
+      {
+        path: "pathway",
+        element: <PathwayEditorPage />,
+        children: [
+          {
+            path: "/:pathwayId",
+            element: <PathwayView />
+          }
+        ]
+      }
     ]
   }
 ])
@@ -31,10 +47,9 @@ const router = createBrowserRouter([
  * This Route manager is based off the react router dom's create browser router
  * Here is an excellent tutorial to learn this 
  * https://reactrouter.com/en/main/start/tutorial 
- * @param {*} props 
  * @returns React Router Dom RouterProvider
  */
-const RouteManager = (props) => {
+const RouteManager = () => {
   return <RouterProvider router={router} />
 }
 

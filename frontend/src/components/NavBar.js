@@ -7,9 +7,9 @@ import "./css/stylesheet.css";
 import { Link } from 'react-router-dom';
 
 // import modals
-import PathwayLoaderModal from './modal/PathwayLoaderModal';
-import HelpModal from './modal/HelpModal';
-import SignInModal from './modal/SignInModal';
+import PathwayLoaderModal from './modals/PathwayLoaderModal';
+import HelpModal from './modals/HelpModal';
+import SignInModal from './modals/SignInModal';
 
 /**
  * this is the base component that holds every child component below

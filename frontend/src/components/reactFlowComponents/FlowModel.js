@@ -9,18 +9,18 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import { buildFlow, parseEnzymesForSliders } from './utils/pathwayComponentUtils';
-import { getPathwayById } from '../requestLib/requests';
+import { buildFlow, parseEnzymesForSliders } from '../utils/pathwayComponentUtils';
+import { getPathwayById } from '../../requestLib/requests';
 
 import 'reactflow/dist/style.css';
-import './css/ReactFlowArea.css';
-import './css/ModelArea.css'
-import './css/RightSideBarArea.css';
+import '../css/ReactFlowArea.css';
+import '../css/ModelArea.css'
+import '../css/RightSideBarArea.css';
 
-import boogyImg from "../images/boogy.PNG"
+import boogyImg from "../../images/boogy.PNG"
 
 
-import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
 };

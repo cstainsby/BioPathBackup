@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 
 
 /**
@@ -10,7 +11,9 @@ const SplashPage = () => {
     <div id="SplashPage">
       <h1>Biopath</h1>
       <p>A Biochemistry Interactive Learning Tool</p>
-      <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+      <Link to={"/pathway"} type="button" className="btn btn-primary btn-lg">
+        To Your Editor
+      </Link>
     </div>
   )
 }

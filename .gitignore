@@ -9,3 +9,5 @@ postgres.log
 AWS/aws_credentials.csv
 
 .DS_Store
+
+backend/media/*

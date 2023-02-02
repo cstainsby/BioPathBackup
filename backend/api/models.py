@@ -28,11 +28,13 @@ class Molecule(models.Model):
     )
     ball_and_stick_image = models.ImageField(
         null=True,
-        blank=True
+        blank=True,
+        upload_to="images/molecule/ball_and_stick/"
     )
     space_filling_image = models.ImageField(
         null=True,
-        blank=True
+        blank=True,
+        upload_to="images/molecule/space_filling/"
     )
     link = models.URLField(null=True, blank=True)
     author = models.ForeignKey(
@@ -86,7 +88,11 @@ class Enzyme(models.Model):
         Molecule,
         related_name="enzymes_cofactors"
     )
-    image = models.ImageField(null=True, blank=True) # space filling
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to="images/enzyme/"
+    ) # space filling
     link = models.URLField(null=True, blank=True) # link to protopedia
     author = models.ForeignKey(
         User,

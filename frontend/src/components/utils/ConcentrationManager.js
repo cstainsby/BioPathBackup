@@ -13,6 +13,7 @@ class ConcentrationManager {
      */
     constructor() {
         this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
+        this.moleculeDeltas = []; // [{ID: {"title": string, "forwardValue": float, "reverseValue": float}}]
         this.enzymes = [];
         this.listeners = [];
         this.interval = null;
@@ -27,13 +28,16 @@ class ConcentrationManager {
      * @param enzymes[].cofactors list of molecules effecting the enzyme's production
      */
     parseEnzymes(enzymes) {
+        console.log("enzymes", enzymes)
         this.moleculeConcentrations = [];
         for (const enzyme of enzymes) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
+                this.moleculeDeltas[substrate.id] = {"title": substrate.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const product of enzyme.products) {
                 this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
+                this.moleculeDeltas[product.id] = {"title": product.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const cofactor of enzyme.cofactors) {
                 this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
@@ -51,6 +55,7 @@ class ConcentrationManager {
         let cachedConcentrations = this.moleculeConcentrations;
         for (const enzyme of this.enzymes) {
             let minSubstrateConc = null;
+            let minProductConc = null;
             for (const substrate of enzyme.substrates) {
                 if (!minSubstrateConc) {
                     minSubstrateConc = cachedConcentrations[substrate.id].value;
@@ -59,18 +64,91 @@ class ConcentrationManager {
                     minSubstrateConc = cachedConcentrations[substrate.id].value;
                 }
             }
+            for (const product of enzyme.products) { // new
+                if (!minProductConc) {
+                    minProductConc = cachedConcentrations[product.id].value;
+                }
+                if (cachedConcentrations[product] < minSubstrateConc) {
+                    minProductConc = cachedConcentrations[product.id].value;
+                }
+            }
             for (const substrate of enzyme.substrates) {
                 if (minSubstrateConc) {
-                    this.moleculeConcentrations[substrate.id].value -= minSubstrateConc * 0.1;
+                    this.moleculeConcentrations[substrate.id].value -= minSubstrateConc * (0.1 * (minSubstrateConc/minProductConc));
                 }
             }
             for (const product of enzyme.products) {
                 if (minSubstrateConc) {
-                    this.moleculeConcentrations[product.id].value += minSubstrateConc * 0.1;
+                    this.moleculeConcentrations[product.id].value += minSubstrateConc * (0.1 * (minSubstrateConc/minProductConc));
                 }
+            }
+            if (enzyme.reversible) {
+                for (const substrate of enzyme.substrates) {
+                    if (minSubstrateConc) {
+                        this.moleculeConcentrations[substrate.id].value += minSubstrateConc * (0.1 * (minProductConc/minSubstrateConc));
+                    }
+                }
+                for (const product of enzyme.products) {
+                    if (minSubstrateConc) {
+                        this.moleculeConcentrations[product.id].value -= minSubstrateConc * (0.1 * (minProductConc/minSubstrateConc));
+                    }
+                } 
             }
         }
         console.log("UpdateConcentrations()");
+        this.notifyListeners();
+    }
+
+    calculateChangeDelta() {
+        let cachedConcentrations = this.moleculeConcentrations;
+        for (const enzyme of this.enzymes) {
+            let minSubstrateConc = null;
+            let minProductConc = null;
+            for (const substrate of enzyme.substrates) {
+                if (!minSubstrateConc) {
+                    minSubstrateConc = cachedConcentrations[substrate.id].value;
+                }
+                if (cachedConcentrations[substrate] < minSubstrateConc) {
+                    minSubstrateConc = cachedConcentrations[substrate.id].value;
+                }
+            }
+            for (const product of enzyme.products) {
+                if (!minProductConc) {
+                    minProductConc = cachedConcentrations[product.id].value;
+                }
+                if (cachedConcentrations[product] < minProductConc) {
+                    minProductConc = cachedConcentrations[product.id].value;
+                }
+            }
+            let forwardChange = minSubstrateConc / minProductConc;
+            let reverseChange = 0;
+            for (const substrate of enzyme.substrates) {
+                if (forwardChange) {
+                    this.moleculeDeltas[substrate.id].forwardValue = forwardChange;
+                }
+            }
+            for (const product of enzyme.products) {
+                if (minSubstrateConc) {
+                    this.moleculeDeltas[product.id].forwardValue = forwardChange;
+                }
+            }
+            console.log("outside reversible", enzyme)
+            if (enzyme.reversible) {
+                console.log("inside reversible bool")
+                reverseChange = minProductConc / minSubstrateConc;
+                for (const substrate of enzyme.substrates) {
+                    if (forwardChange) {
+                        this.moleculeDeltas[substrate.id].reverseValue = reverseChange;
+                    }
+                }
+                for (const product of enzyme.products) {
+                    if (minSubstrateConc) {
+                        this.moleculeDeltas[product.id].reverseValue = reverseChange;
+                    }
+                }
+            }
+            console.log("reverse and forward change", reverseChange, forwardChange)
+        }
         this.notifyListeners();
     }
 

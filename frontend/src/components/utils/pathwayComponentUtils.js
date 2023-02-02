@@ -30,7 +30,8 @@ export function generateEdges(pathway) {
                     id: String(substrate_id) + "_" + String(enzyme.id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "molecule_id": String(substrate_id),
+                        "direction": "forward"
                     },
                     animated: true,
                     // type: "straight",
@@ -43,7 +44,8 @@ export function generateEdges(pathway) {
                     id: "R_" + String(enzyme.id) + "_" + String(substrate_id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "molecule_id": String(substrate_id),
+                        "direction": "reverse"
                     },
                     animated: true,
                     // type: "straight",
@@ -58,7 +60,8 @@ export function generateEdges(pathway) {
                     id: String(substrate_id) + "_" + String(enzyme.id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "molecule_id": String(substrate_id),
+                        "direction": "forward"
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
@@ -74,7 +77,8 @@ export function generateEdges(pathway) {
                     id: String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "molecule_id": String(product_id),
+                        "direction": "forward"
                     },
                     animated: true,
                     // type: "straight",
@@ -86,7 +90,8 @@ export function generateEdges(pathway) {
                     id: "R_" + String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "molecule_id": String(product_id),
+                        "direction": "reverse"
                     },
                     animated: true,
                     // type: "straight",
@@ -100,7 +105,8 @@ export function generateEdges(pathway) {
                     id: String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "molecule_id": String(product_id),
+                        "direction": "forward"
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
@@ -166,8 +172,7 @@ export function generateNodes(pathway) {
             data: {
                 label: molecule.name,
                 type: "molecule",
-                title: molecule.name,
-                concentration: 100
+                title: molecule.name
             },
             type: "molecule",
             position: {x: molecule.x, y: molecule.y}
@@ -188,7 +193,8 @@ export function parseEnzymesForSliders(pathwayData) {
         let e = {
             "substrates": [],
             "products": [],
-            "cofactors": []
+            "cofactors": [],
+            "reversible": enzyme.reversible
         }
 
         // Get abbreviations for molecule IDs

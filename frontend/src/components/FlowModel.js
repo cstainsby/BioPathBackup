@@ -110,10 +110,31 @@ const FlowModel = (props) => {
                 };
             }
             setMolecules(mList);
+            // setEdges((edges) =>
+            //     edges.map((edge) => {
+            //         if (mList[edge.data.molecule_id]) {
+            //             edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 5, stroke: 'red'};
+            //         }
+            //         return edge;
+            //     })
+            // );
+            mList = [];
+            for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
+                mList[id] = {
+                    "title": data.title,
+                    "forwardValue": data.forwardValue,
+                    "reverseValue": data.reverseValue
+                };
+            }
             setEdges((edges) =>
                 edges.map((edge) => {
                     if (mList[edge.data.molecule_id]) {
-                        edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 5, stroke: 'red'};
+                        if (edge.data.direction === "forward") {
+                            edge.style = {strokeWidth: mList[edge.data.molecule_id].forwardValue * 10, stroke: 'red'};
+                        }
+                        else {
+                            edge.style = {strokeWidth: mList[edge.data.molecule_id].reverseValue * 10, stroke: 'red'};
+                        }
                     }
                     return edge;
                 })
@@ -123,7 +144,6 @@ const FlowModel = (props) => {
     }
 
     const handleConcentrationChange = (id, value) => {
-        console.log(id, value, "slider change")
         props.concentrationManager.setConcentration(id, value);
     }
 
@@ -147,6 +167,7 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
+                props.concentrationManager.calculateChangeDelta();
             }
         }, speed);
         

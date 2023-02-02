@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -7,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // react components
 // import PathwayPage from "./PathwayPage";
 import SplashPage from "./pages/SplashPage";
+import ExplorePage from "./pages/ExplorePage";
 import ErrorPage from "./pages/ErrorPage";
 import RootLayout from "./RootLayout";
 import PathwayView from "./PathwayView";
@@ -26,15 +25,15 @@ const router = createBrowserRouter([
         element: <SplashPage />
       },
       {
-        path: "/explore",
-
+        path: "explore",
+        element: <ExplorePage />
       },
       {
         path: "pathway",
         element: <PathwayEditorPage />,
         children: [
           {
-            path: "/:pathwayId",
+            path: ":pathwayId",
             element: <PathwayView />
           }
         ]

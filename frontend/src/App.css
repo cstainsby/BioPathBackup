@@ -8,5 +8,36 @@
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+
+.informationalSection {
+  margin-bottom: 32px;
+}
+
+.informationalHeaderSection {
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.informationalHeaderSection > h4 {
+  margin-left: 32px;
+  text-align: start;
+}
+
+.informationalContentSection {
+  margin-left: 64px;
+}
+
 /* Splash Page  */
 
+/* #StarterCardArea {
+  text-align: start;
+  margin: 8px;
+} */
+
+
+#StarterCard {
+  min-width: 200px;
+  max-width: 400px;
+  height: 200px;
+  margin: 8px;
+}

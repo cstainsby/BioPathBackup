@@ -37,8 +37,14 @@
   text-decoration: none;
 }
 
-.cardNavLink:hover {
-  color: inherit;
+/* for the sign in button when a user is signed in */
+#signedInCircleButton {
+  height: 40px;
+  width: 40px;
+  background-color: #bbb;
+  border-radius: 50%;
+  padding-top: 2px; /* to center the text inside div*/
+  font-size: x-large;
 }
 
 /* Root Layout */

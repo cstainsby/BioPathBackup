@@ -1,4 +1,6 @@
+import React, { useState, useMemo } from "react";
 import { Outlet } from "react-router-dom";
+import UserContext from "../UserContext";
 
 import Navbar from "./NavBar";
 
@@ -9,10 +11,19 @@ import Navbar from "./NavBar";
  * @returns Layout component
  */
 const RootLayout = () => {
+
+  const [user, setUser] = useState(null)
+  const userProvider= useMemo(() => ({ user, setUser }), [user, setUser])
+  console.log(userProvider);
   return (
     <div id="RootLayout">
-      <Navbar />
-      <Outlet />
+
+      {/* This provider gives context access to the user context to all 
+          components wrapped within it (which will be everything) */}
+      <UserContext.Provider value={ userProvider }>
+        <Navbar />
+        <Outlet />
+      </UserContext.Provider>
     </div>
   );
 }

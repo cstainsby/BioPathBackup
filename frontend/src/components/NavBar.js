@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
 
 import './css/NavBar.css';
 import "./css/stylesheet.css";
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import PathwayLoaderModal from './modals/PathwayLoaderModal';
 import HelpModal from './modals/HelpModal';
 import SignInModal from './modals/SignInModal';
+import UserContext from '../UserContext';
 
 /**
  * this is the base component that holds every child component below
@@ -18,6 +19,9 @@ import SignInModal from './modals/SignInModal';
  * @returns website wide navbar component
  */
 const Navbar = () => {
+
+  const { user, setUser } = useContext(UserContext);
+
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="container-fluid">
@@ -85,13 +89,28 @@ const Navbar = () => {
  * @returns Sign in card component
  */
 const UserSignInNavBarItem = () => {
-  let [signedIn, setSignedIn] = useState(false)
+  const { user, setUser } = useContext(UserContext);
+  console.log("user info " + JSON.stringify(user))
+
+  // const handleSignedIn
 
   return (
-    <div className='card'>
-      <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
-        Sign In
-      </button>
+    <div>
+      { !user ? <div className='card'>
+          <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
+            Sign In
+          </button>
+        </div>
+        : <div className='dropdown dropstart'>
+          <button id='signedInCircleButton' className='btn' data-bs-toggle="dropdown" onClick={null}>
+            <span>{user.username[0].toUpperCase()}</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#" onClick={() => setUser(null)}>Sign Out</a></li>
+          </ul>
+        </div>
+      }
     </div>
   );
 }

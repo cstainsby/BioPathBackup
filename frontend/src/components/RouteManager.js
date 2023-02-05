@@ -11,6 +11,10 @@ import RootLayout from "./RootLayout";
 import PathwayView from "./PathwayView";
 import PathwayEditorPage from "./pages/PathwayEditorPage";
 
+// Loaders 
+import { splashPageLoader } from "../requestLib/loaders/splashPageLoader";
+import { pathwayViewLoader } from "../requestLib/loaders/pathwayViewLoader";
+
 /**
  * A declaritive definition of the routes within the website
  */
@@ -22,6 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        loader: splashPageLoader,
         element: <SplashPage />
       },
       {
@@ -38,6 +43,7 @@ const router = createBrowserRouter([
           },
           {
             path: ":pathwayId",
+            // loader: pathwayViewLoader, // right now we are doing loading internally, this might need to be changed
             element: <PathwayView />
           }
         ]

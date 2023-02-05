@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 
 /**
@@ -7,6 +7,11 @@ import { Link } from "react-router-dom";
  * @returns A Splash page component
  */
 const SplashPage = () => {
+
+  const { pathways }  = useLoaderData(); // get data loaded from react router
+
+  console.log("in splash " + JSON.stringify(pathways))
+
   return (
     <div id="SplashPage" className="container">
       <h1>Biopath</h1>
@@ -21,19 +26,16 @@ const SplashPage = () => {
 
         <div className="row informationalContentSection">
           <StarterCard
-            className="col"
             title="Create A Pathway"
             description="Create Your Own Pathway"
             linkPath="pathway"/>
 
           <StarterCard
-            className="col"
             title="Find A Group"
             description="Join A Group to Collaborate With"
             linkPath="/explore/groups"/>
 
           <StarterCard 
-            className="col"
             title="Browse Community Creations" 
             description="Discover what the Biopath Community is up to"
             linkPath="/explore"/>
@@ -50,23 +52,7 @@ const SplashPage = () => {
         </div>
 
         <div className="row informationalContentSection">
-          <StarterCard
-            className="col"
-            title="Create A Pathway"
-            description="Create Your Own Pathway"
-            linkPath="pathway"/>
-
-          <StarterCard
-            className="col"
-            title="Find A Group"
-            description="Join A Group to Collaborate With"
-            linkPath="/explore/groups"/>
-
-          <StarterCard 
-            className="col"
-            title="Browse Community Creations" 
-            description="Discover what the Biopath Community is up to"
-            linkPath="/explore"/>
+          
         </div>
       </div>
 
@@ -82,6 +68,8 @@ const SplashPage = () => {
         <div className="row informationalHeaderSection">
           <h4>What's New</h4>
           <hr/>
+
+          
         </div>
 
         <div className="row informationalContentSection">
@@ -92,6 +80,7 @@ const SplashPage = () => {
   )
 }
 
+
 /**
  * A card component which is used to direct the user on the splash screen
  * @prop {string} title
@@ -101,23 +90,40 @@ const SplashPage = () => {
  */
 const StarterCard = (props) => {
   return (
-    <div id="StarterCard" class="card text-start">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src="..." class="img-fluid rounded-start" alt="..."/>
-        </div>
+    <div className="cardLinkContainer col">
+      <Link to={props.linkPath} className="cardNavLink">
+        <div id="StarterCard" className="card text-start">
+          <div className="row g-0">
+            <div className="col-md-4">
+              <img src="..." className="img-fluid rounded-start" alt="..."/>
+            </div>
 
-        <div class="col-md-8">
-          <div className="card-body">
-            <h4 class="card-title">{props.title}</h4>
-            <p class="card-text">{props.description}</p>
-            <Link to={props.linkPath} class="btn btn-primary">Get Started</Link>
+            <div className="col-md-8">
+              <div className="card-body">
+                <h4 className="card-title">{props.title}</h4>
+                <p className="card-text">{props.description}</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   )
 }
+
+/**
+ * 
+ * @param {*} props 
+ * @returns 
+ */
+const PathwayInformationalCard = (props) => {
+  return (
+    <div id="PathwayHeaderCard">
+
+    </div>
+  );
+}
+
 
 /**
  * This feed item should be able to accomodate multiple types of news items 
@@ -139,19 +145,6 @@ const NewsFeedItem = (props) => {
 
     </div>
   )
-}
-
-/**
- * 
- * @param {*} props 
- * @returns 
- */
-const PathwayInformationalCard = (props) => {
-  return (
-    <div>
-
-    </div>
-  );
 }
 
 export default SplashPage;

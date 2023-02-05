@@ -23,7 +23,7 @@ const Navbar = () => {
       <div className="container-fluid">
         {/* reset button 
         reset every selectable item, go to base page */}
-        <a className="navbar-brand" href="/">Biopath</a>
+        <a className="navbar-brand" href="/">BioPath</a>
         
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
@@ -74,7 +74,6 @@ const Navbar = () => {
       {/* Define Modals Accessable from navbar - this may not be best practice but I dont care :) */}
       <HelpModal/>
       <SignInModal/>
-      <PathwayLoaderModal />
     </nav>
   );
 }

@@ -5,7 +5,7 @@
         This file will hold all css pertaining to the main pathway view containing all other components
  */
 
-:root {
+ :root {
   --total-screen-size: 100vh;
   --total-screen-width: 100vw;
 
@@ -40,13 +40,6 @@
   margin: 0px;
 }
 
-/* Sidebar area */
-#RightSideBarAreaCol {
-  /* maybe in the future make fit-content */
-  width: var(--right-side-bar-width);
-  border-left: solid grey 2px;
-  padding: 4px;
-}
 
 /* column in pathwayViewRow which holds the main reaction view */
 #ModelAreaCol {

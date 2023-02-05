@@ -6,6 +6,7 @@ import FlowModel from './reactFlowComponents/FlowModel'
 import './css/PathwayView.css'
 
 import ConcentrationManager from './utils/ConcentrationManager';
+import { useLoaderData } from 'react-router-dom';
 
 
 /**
@@ -14,12 +15,15 @@ import ConcentrationManager from './utils/ConcentrationManager';
  * @returns A react component containing the 
  */
 const PathwayView = (props) => {
+  const pathway = useLoaderData();
+  console.log("pathway in pathwayView " +  JSON.stringify(pathway))
   let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 
   return (
     <div id="ModelAreaCol">
       <FlowModel 
         concentrationManager = {concentrationManager}
+        pathwayJson = {pathway}
       />
       
     </div>

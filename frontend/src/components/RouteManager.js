@@ -9,7 +9,6 @@ import ExplorePage from "./pages/ExplorePage";
 import ErrorPage from "./pages/ErrorPage";
 import RootLayout from "./RootLayout";
 import PathwayView from "./PathwayView";
-import PathwayEditorPage from "./pages/PathwayEditorPage";
 
 // Loaders 
 import { splashPageLoader } from "../requestLib/loaders/splashPageLoader";
@@ -34,19 +33,14 @@ const router = createBrowserRouter([
         element: <ExplorePage />
       },
       {
-        path: "pathway",
-        element: <PathwayEditorPage />,
-        children: [
-          {
-            path: "",
-            element: <PathwayView />
-          },
-          {
-            path: ":pathwayId",
-            // loader: pathwayViewLoader, // right now we are doing loading internally, this might need to be changed
-            element: <PathwayView />
-          }
-        ]
+        path: "pathway/:pathwayId",
+        element: <PathwayView />,
+        loader: pathwayViewLoader
+      }, 
+      {
+        path: "pathway/:pathwayId/edit",
+        element: <PathwayView />,
+        loader: pathwayViewLoader
       }
     ]
   }

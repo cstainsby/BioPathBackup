@@ -1,6 +1,3 @@
-import ReversibleEnzyme from "../customNodes/ReversibleEnzyme";
-
-
 
 
 /**
@@ -110,6 +107,7 @@ export function generateEdges(pathway) {
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
+                    sourceHandle: "bottom-source",
                     target: String(product_id) + "_molecule"
                 });
             }
@@ -160,6 +158,7 @@ export function generateNodes(pathway) {
                     substrates: enzyme.substrates, 
                     products: enzyme.products
                 },
+                type: "reversibleEnzyme",
                 position: {x: enzyme.x, y: enzyme.y}
             });
         }

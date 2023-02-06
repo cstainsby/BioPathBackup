@@ -61,3 +61,11 @@
     border-radius: 5px;
     text-align: center; */
 }
+
+.react-flow__node.Molecule .react-flow__handle {
+    opacity: 0;
+  }
+
+.react-flow__node.enzyme .react-flow__handle {
+    opacity: 0;
+  }

@@ -37,15 +37,6 @@ const Navbar = () => {
               <Link className="nav-link" to={"user/" + user.username} role="button">
                 My Work
               </Link>
-              {/* <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="#">Save</a></li>
-                <li><a className="dropdown-item" href="#">Save As</a></li>
-                <li><hr className="dropdown-divider"/></li>
-                <li><a className="dropdown-item" data-bs-toggle="modal" href="#PathwayLoaderModal">Open</a></li>
-                <li><a className="dropdown-item" href="#">New</a></li>
-                <li><hr className="dropdown-divider"/></li>
-                <li><Link className='dropdown-item' to="/">Close</Link></li>
-              </ul> */}
             </li> }
 
             {/* Explore button */}

@@ -16,7 +16,7 @@ import { useLoaderData } from 'react-router-dom';
  */
 const PathwayView = (props) => {
   const pathway = useLoaderData();
-  console.log("pathway in pathwayView " +  JSON.stringify(pathway))
+  
   let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 
   return (

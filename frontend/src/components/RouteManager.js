@@ -50,7 +50,18 @@ const router = createBrowserRouter([
       },
       {
         path: "user/:username",
-        element: <UserPage/>
+        element: <UserPage/>,
+        children: [
+          {
+            path: "work"
+          },
+          {
+            path: "groups"
+          },
+          {
+            path: "settings"
+          }
+        ]
       }
     ]
   }

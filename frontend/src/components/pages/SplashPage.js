@@ -78,6 +78,14 @@ const SplashPage = () => {
                 )
             })}   
           </div>
+
+          <div className="row">
+            <Link className="col-6 offset-8 btn" to={"user/" + user.username}>
+              <button type="button" className="btn btn-primary">
+                To Your Work
+              </button>
+            </Link>
+          </div> 
         </div>
       }
 

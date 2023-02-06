@@ -1,16 +1,31 @@
-
+import React, {useContext, useEffect, useState} from "react"
 import { Link, useLoaderData } from "react-router-dom";
 
+import UserContext from "../../UserContext";
 
 /**
  * This splash page should be the first page the user hits when opening the home page (the root route)
  * @returns A Splash page component
  */
 const SplashPage = () => {
+  const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
-  const { pathways }  = useLoaderData(); // get data loaded from react router
+  const { user, setUser } = useContext(UserContext);
 
-  console.log("in splash " + JSON.stringify(pathways))
+  // const [recentWork, setRecentWork] = useState(null);
+  // const [feed, setFeed] = useState(null); 
+  
+
+  // when the user is changed request new data from the backend 
+  useEffect(() => {
+    if(user) {
+
+    } 
+    else {
+
+    }
+  }, [user])
+
 
   return (
     <div id="SplashPage" className="container">
@@ -45,16 +60,26 @@ const SplashPage = () => {
 
       {/* Pick up where you left off section
         Note: this should only display if the user is signed in */}
-      <div id="LeftOffArea" className="row container informationalSection">
-        <div className="row informationalHeaderSection">
-          <h4>Where You Left Off</h4>
-          <hr/>
-        </div>
+      { user && 
+        <div id="LeftOffArea" className="row container informationalSection">
+          <div className="row informationalHeaderSection">
+            <h4>Where You Left Off</h4>
+            <hr/>
+          </div>
 
-        <div className="row informationalContentSection">
-          
+          <div className="row col informationalContentSection">
+            {splashPageLoaderData.recentWork.map((pathway) => {
+              return (
+                <div id="RecentWork" className="card">
+                  {pathway.name}
+                  By
+                  {pathway.author}
+                </div>
+                )
+            })}   
+          </div>
         </div>
-      </div>
+      }
 
 
       {/* Feed Section
@@ -73,7 +98,15 @@ const SplashPage = () => {
         </div>
 
         <div className="row informationalContentSection">
-          
+          {splashPageLoaderData.userFeed.map((pathway) => {
+                return (
+                  <div id="RecentWork" className="card">
+                    {pathway.name}
+                    By
+                    {pathway.author}
+                  </div>
+                  )
+            })}  
         </div>
       </div>
     </div>

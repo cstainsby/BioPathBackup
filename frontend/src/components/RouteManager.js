@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // import PathwayPage from "./PathwayPage";
 import SplashPage from "./pages/SplashPage";
 import ExplorePage from "./pages/ExplorePage";
+import HelpPage from "./pages/HelpPage";
+import UserPage from "./pages/UserPage";
 import ErrorPage from "./pages/ErrorPage";
 import RootLayout from "./RootLayout";
 import PathwayView from "./PathwayView";
@@ -41,6 +43,14 @@ const router = createBrowserRouter([
         path: "pathway/:pathwayId/edit",
         element: <PathwayView />,
         loader: pathwayViewLoader
+      },
+      {
+        path: "help",
+        element: <HelpPage/>
+      },
+      {
+        path: "user/:username",
+        element: <UserPage/>
       }
     ]
   }

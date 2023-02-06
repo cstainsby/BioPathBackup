@@ -37,17 +37,17 @@ const SignInModal = (props) => {
           </div>
           <div className="modal-body ">
             <form>
-              <div class="mb-3">
+              <div className="mb-3">
                 <input 
-                  class="form-control" 
+                  className="form-control" 
                   type="text" 
                   placeholder="Username" 
                   aria-label="username textbox"
                   onChange={e => setUsername(e.target.value)}/>
               </div>  
-              <div class="mb-3">
+              <div className="mb-3">
                 <input 
-                  class="form-control" 
+                  className="form-control" 
                   type="text" 
                   placeholder="Password" 
                   aria-label="password textbox"

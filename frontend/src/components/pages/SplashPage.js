@@ -10,6 +10,8 @@ import UserContext from "../../UserContext";
 const SplashPage = () => {
   const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
+  console.log(JSON.stringify(splashPageLoaderData.recentWork[0]));
+
   const { user, setUser } = useContext(UserContext);
 
   // const [recentWork, setRecentWork] = useState(null);
@@ -63,29 +65,31 @@ const SplashPage = () => {
       { user && 
         <div id="LeftOffArea" className="row container informationalSection">
           <div className="row informationalHeaderSection">
-            <h4>Where You Left Off</h4>
-            <hr/>
-          </div>
-
-          <div className="row col informationalContentSection">
-            {splashPageLoaderData.recentWork.map((pathway) => {
-              return (
-                <div id="RecentWork" className="card">
-                  {pathway.name}
-                  By
-                  {pathway.author}
-                </div>
-                )
-            })}   
-          </div>
-
-          <div className="row">
-            <Link className="col-6 offset-8 btn" to={"user/" + user.username}>
+            <h4 className="col">Jump Back In</h4>
+            <Link className="col offset-8 btn" to={"user/" + user.username}>
               <button type="button" className="btn btn-primary">
                 To Your Work
               </button>
             </Link>
-          </div> 
+            <hr/>
+          </div>
+
+          {/* note these elements will only render if they exist */}
+          <div className="row informationalContentSection container">
+            {/* first row */}
+            <div className="row">
+              {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
+                return (
+                  <Link to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
+                    <ul>
+                      <li><h5>{pathway.name}</h5></li>
+                      <li><small className="text-muted">Created By {pathway.author}</small></li>
+                    </ul>
+                  </Link>
+                  )
+              })}   
+            </div>
+          </div>
         </div>
       }
 
@@ -106,7 +110,7 @@ const SplashPage = () => {
         </div>
 
         <div className="row informationalContentSection">
-          {splashPageLoaderData.userFeed.map((pathway) => {
+          {/* {splashPageLoaderData.userFeed.map((pathway) => {
                 return (
                   <div id="RecentWork" className="card">
                     {pathway.name}
@@ -114,7 +118,7 @@ const SplashPage = () => {
                     {pathway.author}
                   </div>
                   )
-            })}  
+            })}   */}
         </div>
       </div>
     </div>
@@ -132,8 +136,8 @@ const SplashPage = () => {
 const StarterCard = (props) => {
   return (
     <div className="cardLinkContainer col">
-      <Link to={props.linkPath} className="cardNavLink">
-        <div id="StarterCard" className="card text-start">
+      <Link to={props.linkPath} className="card text-start cardNavLink">
+        <div id="StarterCard">
           <div className="row g-0">
             <div className="col-md-4">
               <img src="..." className="img-fluid rounded-start" alt="..."/>
@@ -150,19 +154,6 @@ const StarterCard = (props) => {
       </Link>
     </div>
   )
-}
-
-/**
- * 
- * @param {*} props 
- * @returns 
- */
-const PathwayInformationalCard = (props) => {
-  return (
-    <div id="PathwayHeaderCard">
-
-    </div>
-  );
 }
 
 

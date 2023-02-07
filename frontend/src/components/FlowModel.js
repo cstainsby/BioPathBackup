@@ -21,8 +21,10 @@ import boogyImg from "../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+import Molecule from './customNodes/Molecule';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
+    molecule: Molecule
 };
 
 /**
@@ -108,6 +110,22 @@ const FlowModel = (props) => {
                 };
             }
             setMolecules(mList);
+            // setEdges((edges) =>
+            //     edges.map((edge) => {
+            //         if (mList[edge.data.molecule_id]) {
+            //             edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 5, stroke: 'red'};
+            //         }
+            //         return edge;
+            //     })
+            // );
+            mList = [];
+            for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
+                mList[id] = {
+                    "title": data.title,
+                    "forwardValue": data.forwardValue,
+                    "reverseValue": data.reverseValue
+                };
+            }
             setEdges((edges) =>
                 edges.map((edge) => {
                     if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
@@ -148,6 +166,7 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
+                props.concentrationManager.calculateChangeDelta();
             }
         }, speed);
         

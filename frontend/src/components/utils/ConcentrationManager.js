@@ -13,6 +13,9 @@ class ConcentrationManager {
      */
     constructor() {
         this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
+        this.moleculeDeltas = []; // [{ID: {"title": string, "forwardValue": float, "reverseValue": float}}]
+        this.startMolecules = []; // used for tracking start and end molecules
+        this.endMolecules = [];
         this.enzymes = [];
         this.listeners = [];
         this.interval = null;
@@ -32,9 +35,11 @@ class ConcentrationManager {
         for (const [id, enzyme] of Object.entries(enzymes)) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
+                this.moleculeDeltas[substrate.id] = {"title": substrate.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const product of enzyme.products) {
                 this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
+                this.moleculeDeltas[product.id] = {"title": product.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const cofactor of enzyme.cofactors) {
                 this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};

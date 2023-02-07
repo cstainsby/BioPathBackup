@@ -21,14 +21,15 @@ class ConcentrationManager {
     /**
      * Initializes the molecule_concentrations list given some enzymes
      * @function
-     * @param {Object[]} enzymes list of enzymes
-     * @param enzymes[].substrates list of input moleules to the enzyme
-     * @param enzymes[].products list of output molecules to the enzyme
-     * @param enzymes[].cofactors list of molecules effecting the enzyme's production
+     * @param {Object[]} enzymes enzymes indexed by enzyme.id
+     * @param enzymes[].reversible 
+     * @param enzymes[].substrates input moleules to the enzyme
+     * @param enzymes[].products output molecules to the enzyme
+     * @param enzymes[].cofactors molecules effecting the enzyme's production
      */
     parseEnzymes(enzymes) {
         this.moleculeConcentrations = [];
-        for (const enzyme of enzymes) {
+        for (const [id, enzyme] of Object.entries(enzymes)) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
             }
@@ -38,6 +39,10 @@ class ConcentrationManager {
             for (const cofactor of enzyme.cofactors) {
                 this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
             }
+            // TODO: Get, store, and update enzyme speeds. Link to a slider on the frontend?
+            enzyme.speed = 0.05;
+            enzyme.subToProd = 0;
+            enzyme.prodToSub = 0;
         }
         this.enzymes = enzymes;
         this.notifyListeners();
@@ -49,49 +54,62 @@ class ConcentrationManager {
      */
     updateConcentrations() {
         let cachedConcentrations = this.moleculeConcentrations;
-        for (const enzyme of this.enzymes) {
-            let minSubstrateConc = null;
-            for (const substrate of enzyme.substrates) {
-                if (!minSubstrateConc) {
-                    minSubstrateConc = cachedConcentrations[substrate.id].value;
-                }
-                if (cachedConcentrations[substrate] < minSubstrateConc) {
-                    minSubstrateConc = cachedConcentrations[substrate.id].value;
-                }
+        for (const [id, enzyme] of Object.entries(this.enzymes)) {
+            // Amount of substrate turned into product
+            let subToProd = this.calculateEnzymeSubstrateToProduct(enzyme, cachedConcentrations);
+            // Amount of product turned into substrate
+            let prodToSub = 0;
+            if (enzyme.reversible) {
+                prodToSub = this.calculateEnzymeProductToSubstrate(enzyme, cachedConcentrations);
             }
+            this.enzymes[id].subToProd = subToProd;
+            this.enzymes[id].prodToSub = prodToSub;
             for (const substrate of enzyme.substrates) {
-                if (minSubstrateConc) {
-                    this.moleculeConcentrations[substrate.id].value -= minSubstrateConc * 0.1;
-                }
+                this.moleculeConcentrations[substrate.id].value += prodToSub - subToProd;
             }
             for (const product of enzyme.products) {
-                if (minSubstrateConc) {
-                    this.moleculeConcentrations[product.id].value += minSubstrateConc * 0.1;
-                }
-            }
-            // if (enzyme.reversible) {
-            //     for (const product of enzyme.products) {
-            //         if (!minProductConc) {
-            //             minProductConc = cachedConcentrations[product.id].value;
-            //         }
-            //         if (cachedConcentrations[products] < minproductConc) {
-            //             minProductConc = cachedConcentrations[substrate.id].value;
-            //         }
-            //     }
-            //     for (const product of enzyme.products) {
-            //         if (minProductConc) {
-            //             this.moleculeConcentrations[substrate.id].value -= minProductConc * 0.1;
-            //         }
-            //     }
-            //     for (const substrate of enzyme.substrates) {
-            //         if (minProductConc) {
-            //             this.moleculeConcentrations[product.id].value += minProductConc * 0.1;
-            //         }
-            //     }
-            // }
+                this.moleculeConcentrations[product.id].value += subToProd - prodToSub;
+            }            
         }
         console.log("UpdateConcentrations()");
         this.notifyListeners();
+    }
+
+    /**
+     * Calculate amount of substrate to convert to product
+     * @param {Object} enzyme 
+     */
+    calculateEnzymeSubstrateToProduct(enzyme, cachedConcentrations) {
+        return this.calculateMinConcentration(enzyme.substrates, cachedConcentrations) * this.getCofactorScalar(enzyme, cachedConcentrations) * enzyme.speed;
+    }
+
+    /**
+     * Calculate amount of product to convert to substrate
+     * @param {Object} enzyme 
+     */
+    calculateEnzymeProductToSubstrate(enzyme, cachedConcentrations) {
+        return this.calculateMinConcentration(enzyme.products, cachedConcentrations) * this.getCofactorScalar(enzyme, cachedConcentrations) * enzyme.speed;
+    }
+
+    calculateMinConcentration(molecules, cachedConcentrations) {
+        if (molecules.length === 0) {
+            return 0;
+        }
+        // Calculate the least of the substrates
+        let minConc = null;
+        for (const molecule of molecules) {
+            if (!minConc) {
+                minConc = cachedConcentrations[molecule.id].value;
+            }
+            if (cachedConcentrations[molecule.id] < minConc) {
+                minConc = cachedConcentrations[molecule.id].value;
+            }
+        }
+        return minConc;
+    }
+
+    getCofactorScalar(enzyme, cachedConcentrations) {
+        return 1;
     }
 
     /**

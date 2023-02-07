@@ -30,7 +30,7 @@ export function generateEdges(pathway) {
                     id: String(substrate_id) + "_" + String(enzyme.id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
@@ -41,7 +41,7 @@ export function generateEdges(pathway) {
                     id: "R_" + String(enzyme.id) + "_" + String(substrate_id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
@@ -54,7 +54,7 @@ export function generateEdges(pathway) {
                     id: String(substrate_id) + "_" + String(enzyme.id),
                     data: {
                         "title": String(substrate_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(substrate_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(substrate_id) + "_molecule",
@@ -69,7 +69,7 @@ export function generateEdges(pathway) {
                     id: String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
@@ -80,7 +80,7 @@ export function generateEdges(pathway) {
                     id: "R_" + String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(product_id) + "_molecule",
@@ -93,7 +93,7 @@ export function generateEdges(pathway) {
                     id: String(enzyme.id) + "_" + String(product_id),
                     data: {
                         "title": String(product_id) + " to " + String(enzyme.id),
-                        "molecule_id": String(product_id)
+                        "enzyme_id": String(enzyme.id)
                     },
                     animated: true,
                     source: String(enzyme.id) + "_enzyme",
@@ -174,7 +174,7 @@ export function generateNodes(pathway) {
  * @param pathwayData data from backend
  * @returns list of enzymes with substrates, products, and cofactors
  */
-export function parseEnzymesForSliders(pathwayData) {
+export function parseEnzymesForManager(pathwayData) {
     let enzymes = [];
     for (const enzyme of pathwayData.enzymes) {
         let e = {
@@ -218,7 +218,7 @@ export function parseEnzymesForSliders(pathwayData) {
                 });
             }
         }
-        enzymes.push(e);
+        enzymes[enzyme.id] = e;
     }
     return enzymes;
 }

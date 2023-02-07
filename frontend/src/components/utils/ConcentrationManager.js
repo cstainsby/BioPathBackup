@@ -32,6 +32,27 @@ class ConcentrationManager {
      */
     parseEnzymes(enzymes) {
         this.moleculeConcentrations = [];
+        // used to make a system coninuous or runout of concentration
+        let i = 0; // this is used to find the first and last enzymes in list
+        for (const [id, enzyme] of Object.entries(enzymes)) {
+            if (i === 0) {
+                for (const substrate of enzyme.substrates) {
+                    if (!this.startMolecules.includes(substrate.id) ) {
+                        this.startMolecules.push(substrate.id);
+                    }
+                }
+            }
+            else if (i === Object.entries(enzymes).length - 1) {
+                for (const product of enzyme.products) {
+                    if (!this.endMolecules.includes(product.id) ) {
+                        this.endMolecules.push(product.id);
+                    }
+                }
+            }
+            i += 1;
+        }
+        // end of start end molecule stuff
+
         for (const [id, enzyme] of Object.entries(enzymes)) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
@@ -59,6 +80,14 @@ class ConcentrationManager {
      */
     updateConcentrations() {
         let cachedConcentrations = this.moleculeConcentrations;
+        // new for continuous or finite pathway
+        for (const id of this.startMolecules) {
+            this.moleculeConcentrations[id].value += .01;
+        }
+        for (const id of this.endMolecules) {
+            this.moleculeConcentrations[id].value -= .01;
+        }
+        // end of continuous or finite pathway
         for (const [id, enzyme] of Object.entries(this.enzymes)) {
             // Amount of substrate turned into product
             let subToProd = this.calculateEnzymeSubstrateToProduct(enzyme, cachedConcentrations);

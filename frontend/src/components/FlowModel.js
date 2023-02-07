@@ -110,14 +110,6 @@ const FlowModel = (props) => {
                 };
             }
             setMolecules(mList);
-            // setEdges((edges) =>
-            //     edges.map((edge) => {
-            //         if (mList[edge.data.molecule_id]) {
-            //             edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 5, stroke: 'red'};
-            //         }
-            //         return edge;
-            //     })
-            // );
             mList = [];
             for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
                 mList[id] = {

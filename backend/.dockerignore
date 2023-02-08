@@ -10,3 +10,5 @@ Dockerfile
 **/*.log
 
 local_settings.py
+
+media/*

@@ -52,7 +52,7 @@ class EnzymeInstanceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-class PathwayViewSet(viewsets.ReadOnlyModelViewSet):
+class PathwayViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PathwayDetailSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -64,6 +64,11 @@ class PathwayViewSet(viewsets.ReadOnlyModelViewSet):
                 Q(public=True) | Q(author=self.request.user)
             )
 
+    def get_serializer_class(self):
+        if self.action == "create":
+            return serializers.PathwayWriteSerializer
+        else:
+            return serializers.PathwayDetailSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')

@@ -14,8 +14,6 @@ import { getPathwayById } from '../../requestLib/requests';
 
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
-import '../css/ModelArea.css'
-import '../css/RightSideBarArea.css';
 
 import boogyImg from "../../images/boogy.PNG"
 

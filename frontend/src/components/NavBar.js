@@ -1,13 +1,11 @@
 import React, {useContext, useEffect, useState } from 'react'
 
-import './css/NavBar.css';
 import "./css/stylesheet.css";
 
 // import requests lib 
 import { Link } from 'react-router-dom';
 
 // import modals
-import PathwayLoaderModal from './modals/PathwayLoaderModal';
 import SignInModal from './modals/SignInModal';
 import UserContext from '../UserContext';
 

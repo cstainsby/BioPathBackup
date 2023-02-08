@@ -34,6 +34,40 @@ const SplashPage = () => {
       <h1>Biopath</h1>
       <p>A Biochemistry Interactive Learning Tool</p>
 
+
+      {/* Pick up where you left off section
+        Note: this should only display if the user is signed in */}
+      { user && 
+        <div id="LeftOffArea" className="row container informationalSection">
+          <div className="row informationalHeaderSection">
+            <h4 className="col pushDown">Jump Back In</h4>
+            <Link className="col offset-8 btn" to={"user/" + user.username}>
+              <button type="button" className="btn btn-primary">
+                To Your Work
+              </button>
+            </Link>
+            <hr/>
+          </div>
+
+          {/* note these elements will only render if they exist */}
+          <div id="LeftOffAreaContent" className="row informationalContentSection container">
+            {/* first row */}
+            <div className="row">
+              {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
+                return (
+                  <Link to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
+                    <ul>
+                      <li><h5>{pathway.name}</h5></li>
+                      <li><small className="text-muted">Created By {pathway.author}</small></li>
+                    </ul>
+                  </Link>
+                  )
+              })}   
+            </div>
+          </div>
+        </div>
+      }
+
       {/* The Starter Section */}
       <div id="StarterCardArea" className="row container informationalSection">
         <div className="row informationalHeaderSection">
@@ -58,40 +92,6 @@ const SplashPage = () => {
             linkPath="/explore"/>
         </div>
       </div>
-
-
-      {/* Pick up where you left off section
-        Note: this should only display if the user is signed in */}
-      { user && 
-        <div id="LeftOffArea" className="row container informationalSection">
-          <div className="row informationalHeaderSection">
-            <h4 className="col">Jump Back In</h4>
-            <Link className="col offset-8 btn" to={"user/" + user.username}>
-              <button type="button" className="btn btn-primary">
-                To Your Work
-              </button>
-            </Link>
-            <hr/>
-          </div>
-
-          {/* note these elements will only render if they exist */}
-          <div className="row informationalContentSection container">
-            {/* first row */}
-            <div className="row">
-              {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
-                return (
-                  <Link to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
-                    <ul>
-                      <li><h5>{pathway.name}</h5></li>
-                      <li><small className="text-muted">Created By {pathway.author}</small></li>
-                    </ul>
-                  </Link>
-                  )
-              })}   
-            </div>
-          </div>
-        </div>
-      }
 
 
       {/* Feed Section

@@ -20,6 +20,10 @@ ul {
   display: inline-block;
 }
 
+.pushDown {
+  padding-top: 15px;
+}
+
 
 .informationalSection {
   margin-bottom: 32px;
@@ -47,10 +51,14 @@ ul {
   border-color: black;
 }
 
+#LeftOffAreaContent {
+  margin-left: 60px;
+}
+
 /* for the sign in button when a user is signed in */
 #signedInCircleButton {
-  height: 40px;
-  width: 40px;
+  height: 53px;
+  width: 53px;
   background-color: #bbb;
   border-radius: 50%;
   padding-top: 2px; /* to center the text inside div*/
@@ -89,3 +97,38 @@ ul {
   border-width: 4px;
   border-color: grey;
 } */
+
+
+/* CSS for model area */
+#ModelAreaCol {
+  height: inherit;
+  
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.ModelArea {
+  height: inherit;
+  width: inherit;
+  display: flex;
+  background-color: #e6ebf2;
+
+  position: relative;
+}
+
+#PathwayTitleCard {
+  right: 12px;
+  top: 12px;
+  z-index: 99;
+  width: fit-content;
+  height: 150px;
+}
+
+#PathwaySliderBox {
+  left: 12px;
+  top: 12px;
+  z-index: 98;
+  display: flex;
+  height: auto;
+  width: 250px;
+}

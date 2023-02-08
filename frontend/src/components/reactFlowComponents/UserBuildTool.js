@@ -8,8 +8,12 @@
  */
 const UserBuildTool = (props) => {
   return (
-    <div id="UserBuildTool" className="card">
-      Build Tool
+    <div id="UserBuildTool" className="card container">
+      <div className="row row-cols-auto">
+        <div className="col-sm-1">
+        Build Tool
+        </div>
+      </div>
     </div>
   );
 }

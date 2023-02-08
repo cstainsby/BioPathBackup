@@ -36,6 +36,13 @@ class Command(BaseCommand):
             )
         
         # ----- Fake Pathway -----
+        p1 = models.Pathway.objects.create(
+            name="path1",
+            public=True,
+            author=root
+        )
+
+        # molecules
         m1 = models.Molecule.objects.create(
             name="molecule1",
             abbreviation="m1",
@@ -45,7 +52,8 @@ class Command(BaseCommand):
         m1i = models.MoleculeInstance.objects.create(
             molecule=m1,
             x=45,
-            y=0
+            y=0,
+            pathway=p1
         )
 
         m2 = models.Molecule.objects.create(
@@ -57,7 +65,8 @@ class Command(BaseCommand):
         m2i = models.MoleculeInstance.objects.create(
             molecule=m2,
             x=45,
-            y=240
+            y=240,
+            pathway=p1
         )
 
         m3 = models.Molecule.objects.create(
@@ -69,7 +78,8 @@ class Command(BaseCommand):
         m3i = models.MoleculeInstance.objects.create(
             molecule=m3,
             x=195,
-            y=120
+            y=120,
+            pathway=p1
         )
 
         e1 = models.Enzyme.objects.create(
@@ -83,7 +93,8 @@ class Command(BaseCommand):
             enzyme=e1,
             x=0,
             y=100,
-            limiting=True
+            limiting=True,
+            pathway=p1
         )
 
         e1.substrates.add(m1)
@@ -95,17 +106,20 @@ class Command(BaseCommand):
         e1i.cofactor_instances.add(m3i)
 
 
-        p1 = models.Pathway.objects.create(
-            name="path1",
-            public=True,
-            author=root
-        )
+        
 
-        p1.molecule_instances.add(m1i, m2i, m3i)
-        p1.enzyme_instances.add(e1i)
+        # p1.molecule_instances.add(m1i, m2i, m3i)
+        # p1.enzyme_instances.add(e1i)
 
 
         # ----- Glycolysis -----
+        glycolysis = models.Pathway.objects.create(
+            name="Glycolysis",
+            author=root,
+            #link=
+            public=True
+        )
+
         # molecules
         glu = models.Molecule.objects.create(
             name="Glucose",
@@ -119,7 +133,8 @@ class Command(BaseCommand):
         glu_instance = models.MoleculeInstance.objects.create(
             molecule=glu,
             x=200,
-            y=150
+            y=150,
+            pathway=glycolysis
         )
 
         g6p = models.Molecule.objects.create(
@@ -134,7 +149,8 @@ class Command(BaseCommand):
         g6p_instance = models.MoleculeInstance.objects.create(
             molecule=g6p,
             x=195,
-            y=390
+            y=390,
+            pathway=glycolysis
         )
 
         f6p = models.Molecule.objects.create(
@@ -149,7 +165,8 @@ class Command(BaseCommand):
         f6p_instance = models.MoleculeInstance.objects.create(
             molecule=f6p,
             x=195,
-            y=615
+            y=615,
+            pathway=glycolysis
         )
         
         f16bp = models.Molecule.objects.create(
@@ -164,7 +181,8 @@ class Command(BaseCommand):
         f16bp_instance = models.MoleculeInstance.objects.create(
             molecule=f16bp,
             x=210,
-            y=855
+            y=855,
+            pathway=glycolysis
         )
         
         g3p = models.Molecule.objects.create(
@@ -179,7 +197,8 @@ class Command(BaseCommand):
         g3p_instance = models.MoleculeInstance.objects.create(
             molecule=g3p,
             x=195,
-            y=1335
+            y=1335,
+            pathway=glycolysis
         )
 
         dhap = models.Molecule.objects.create(
@@ -194,7 +213,8 @@ class Command(BaseCommand):
         dhap_instance = models.MoleculeInstance.objects.create(
             molecule=dhap,
             x=345,
-            y=1110
+            y=1110,
+            pathway=glycolysis
         )
 
         bpg = models.Molecule.objects.create(
@@ -209,7 +229,8 @@ class Command(BaseCommand):
         bpg_instance = models.MoleculeInstance.objects.create(
             molecule=bpg,
             x=225,
-            y=1560
+            y=1560,
+            pathway=glycolysis
         )
 
         pg3 = models.Molecule.objects.create(
@@ -224,7 +245,8 @@ class Command(BaseCommand):
         pg3_instance = models.MoleculeInstance.objects.create(
             molecule=pg3,
             x=225,
-            y=1875
+            y=1875,
+            pathway=glycolysis
         )
 
         pg2 = models.Molecule.objects.create(
@@ -239,7 +261,8 @@ class Command(BaseCommand):
         pg2_instance = models.MoleculeInstance.objects.create(
             molecule=pg2,
             x=270,
-            y=2130
+            y=2130,
+            pathway=glycolysis
         )
 
         pep = models.Molecule.objects.create(
@@ -254,7 +277,8 @@ class Command(BaseCommand):
         pep_instance = models.MoleculeInstance.objects.create(
             molecule=pep,
             x=210,
-            y=2385
+            y=2385,
+            pathway=glycolysis
         )
 
         pyr = models.Molecule.objects.create(
@@ -269,7 +293,8 @@ class Command(BaseCommand):
         pyr_instance = models.MoleculeInstance.objects.create(
             molecule=pyr,
             x=210,
-            y=2670
+            y=2670,
+            pathway=glycolysis
         )
 
         nad = models.Molecule.objects.create(
@@ -284,7 +309,8 @@ class Command(BaseCommand):
         nad_instance = models.MoleculeInstance.objects.create(
             molecule=nad,
             x=330,
-            y=1335
+            y=1335,
+            pathway=glycolysis
         )
 
         nadh = models.Molecule.objects.create(
@@ -299,7 +325,8 @@ class Command(BaseCommand):
         nadh_instance = models.MoleculeInstance.objects.create(
             molecule=nadh,
             x=315,
-            y=1560
+            y=1560,
+            pathway=glycolysis
         )
 
         h = models.Molecule.objects.create(
@@ -314,7 +341,8 @@ class Command(BaseCommand):
         h_instance = models.MoleculeInstance.objects.create(
             molecule=h,
             x=375,
-            y=1560
+            y=1560,
+            pathway=glycolysis
         )
 
         atp = models.Molecule.objects.create(
@@ -329,22 +357,26 @@ class Command(BaseCommand):
         atp_instance1 = models.MoleculeInstance.objects.create(
             molecule=atp,
             x=315,
-            y=150
+            y=150,
+            pathway=glycolysis
         )
         atp_instance2 = models.MoleculeInstance.objects.create(
             molecule=atp,
             x=315,
-            y=615
+            y=615,
+            pathway=glycolysis
         )
         atp_instance3 = models.MoleculeInstance.objects.create(
             molecule=atp,
             x=315,
-            y=1635
+            y=1635,
+            pathway=glycolysis
         )
         atp_instance4 = models.MoleculeInstance.objects.create(
             molecule=atp,
             x=330,
-            y=2385
+            y=2385,
+            pathway=glycolysis
         )
 
         adp = models.Molecule.objects.create(
@@ -359,22 +391,26 @@ class Command(BaseCommand):
         adp_instance1 = models.MoleculeInstance.objects.create(
             molecule=adp,
             x=315,
-            y=390
+            y=390,
+            pathway=glycolysis
         )
         adp_instance2 = models.MoleculeInstance.objects.create(
             molecule=adp,
             x=300,
-            y=855
+            y=855,
+            pathway=glycolysis
         )
         adp_instance3 = models.MoleculeInstance.objects.create(
             molecule=adp,
             x=315,
-            y=1875
+            y=1875,
+            pathway=glycolysis
         )
         adp_instance4 = models.MoleculeInstance.objects.create(
             molecule=adp,
             x=330,
-            y=2670
+            y=2670,
+            pathway=glycolysis
         )
 
         h2o = models.Molecule.objects.create(
@@ -389,7 +425,8 @@ class Command(BaseCommand):
         h2o_instance = models.MoleculeInstance.objects.create(
             molecule=h2o,
             x=275,
-            y=2235
+            y=2235,
+            pathway=glycolysis
         )
 
         # ----- enzymes -----
@@ -407,7 +444,8 @@ class Command(BaseCommand):
         hexokinase_instance = models.EnzymeInstance.objects.create(
             enzyme=hexokinase,
             x=210,
-            y=240
+            y=240,
+            pathway=glycolysis
         )
         hexokinase_instance.substrate_instances.add(glu_instance, atp_instance1)
         hexokinase_instance.product_instances.add(g6p_instance, adp_instance1)
@@ -426,7 +464,8 @@ class Command(BaseCommand):
         phosphoglucoisomerase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglucoisomerase,
             x=210,
-            y=480
+            y=480,
+            pathway=glycolysis
         )
         phosphoglucoisomerase_instance.substrate_instances.add(g6p_instance)
         phosphoglucoisomerase_instance.product_instances.add(f6p_instance)
@@ -445,7 +484,8 @@ class Command(BaseCommand):
         phosphofructokinase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphofructokinase,
             x=210,
-            y=720
+            y=720,
+            pathway=glycolysis
         )
         phosphofructokinase_instance.substrate_instances.add(f6p_instance, atp_instance2)
         phosphofructokinase_instance.product_instances.add(f16bp_instance, adp_instance2)
@@ -464,7 +504,8 @@ class Command(BaseCommand):
         aldolase_instance = models.EnzymeInstance.objects.create(
             enzyme=aldolase,
             x=210,
-            y=945
+            y=945,
+            pathway=glycolysis
         )
         aldolase_instance.substrate_instances.add(f16bp_instance)
         aldolase_instance.product_instances.add(g3p_instance, dhap_instance)
@@ -483,7 +524,8 @@ class Command(BaseCommand):
         triose_phosphate_isomerase_instance = models.EnzymeInstance.objects.create(
             enzyme=triose_phosphate_isomerase,
             x=300,
-            y=1200
+            y=1200,
+            pathway=glycolysis
         )
         triose_phosphate_isomerase_instance.substrate_instances.add(dhap_instance)
         triose_phosphate_isomerase_instance.product_instances.add(g3p_instance)
@@ -502,12 +544,12 @@ class Command(BaseCommand):
         tpd_instance = models.EnzymeInstance.objects.create(
             enzyme=tpd,
             x=225,
-            y=1425
+            y=1425,
+            pathway=glycolysis
         )
         tpd_instance.substrate_instances.add(g3p_instance, nad_instance)
         tpd_instance.product_instances.add(bpg_instance, nadh_instance, h_instance)
         
-
         phosphoglycerokinase = models.Enzyme.objects.create(
             name="Phosphoglycerokinase",
             abbreviation="PGK",
@@ -522,11 +564,11 @@ class Command(BaseCommand):
         phosphoglycerokinase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglycerokinase,
             x=225,
-            y=1725
+            y=1725,
+            pathway=glycolysis
         )
         phosphoglycerokinase_instance.substrate_instances.add(bpg_instance, atp_instance3)
         phosphoglycerokinase_instance.product_instances.add(pg3_instance, adp_instance3)
-        
 
         phosphoglyceromutase = models.Enzyme.objects.create(
             name="Phosphoglyceromutase",
@@ -542,11 +584,11 @@ class Command(BaseCommand):
         phosphoglyceromutase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglyceromutase,
             x=225,
-            y=1965
+            y=1965,
+            pathway=glycolysis
         )
         phosphoglyceromutase_instance.substrate_instances.add(pg3_instance)
         phosphoglyceromutase_instance.product_instances.add(pg2_instance)
-        
 
         enolase = models.Enzyme.objects.create(
             name="Enolase",
@@ -562,11 +604,11 @@ class Command(BaseCommand):
         enolase_instance = models.EnzymeInstance.objects.create(
             enzyme=enolase,
             x=225,
-            y=2235
+            y=2235,
+            pathway=glycolysis
         )
         enolase_instance.substrate_instances.add(pg2_instance)
         enolase_instance.product_instances.add(pep_instance, h2o_instance)
-        
 
         pyrk = models.Enzyme.objects.create(
             name="Pyruvate Kinase",
@@ -582,52 +624,48 @@ class Command(BaseCommand):
         pyrk_instance = models.EnzymeInstance.objects.create(
             enzyme=pyrk,
             x=225,
-            y=2520
+            y=2520,
+            pathway=glycolysis
         )
         pyrk_instance.substrate_instances.add(pep_instance, atp_instance4)
         pyrk_instance.product_instances.add(pyr_instance, adp_instance4)
         
         # ----- pathway -----
-        glycolysis = models.Pathway.objects.create(
-            name="Glycolysis",
-            author=root,
-            #link=
-            public=True
-        )
-        glycolysis.molecule_instances.add(
-            glu_instance,
-            g6p_instance,
-            f6p_instance,
-            f16bp_instance,
-            g3p_instance,
-            dhap_instance,
-            bpg_instance,
-            pg3_instance,
-            pg2_instance,
-            pep_instance,
-            pyr_instance,
-            nad_instance,
-            nadh_instance,
-            h_instance,
-            atp_instance1,
-            adp_instance1,
-            atp_instance2,
-            adp_instance2,
-            atp_instance3,
-            adp_instance3,
-            atp_instance4,
-            adp_instance4,
-            h2o_instance
-        )
-        glycolysis.enzyme_instances.add(
-            hexokinase_instance,
-            phosphoglucoisomerase_instance,
-            phosphofructokinase_instance,
-            aldolase_instance,
-            triose_phosphate_isomerase_instance,
-            tpd_instance,
-            phosphoglycerokinase_instance,
-            phosphoglyceromutase_instance,
-            enolase_instance,
-            pyrk_instance
-        )
+        
+        # glycolysis.molecule_instances.add(
+        #     glu_instance,
+        #     g6p_instance,
+        #     f6p_instance,
+        #     f16bp_instance,
+        #     g3p_instance,
+        #     dhap_instance,
+        #     bpg_instance,
+        #     pg3_instance,
+        #     pg2_instance,
+        #     pep_instance,
+        #     pyr_instance,
+        #     nad_instance,
+        #     nadh_instance,
+        #     h_instance,
+        #     atp_instance1,
+        #     adp_instance1,
+        #     atp_instance2,
+        #     adp_instance2,
+        #     atp_instance3,
+        #     adp_instance3,
+        #     atp_instance4,
+        #     adp_instance4,
+        #     h2o_instance
+        # )
+        # glycolysis.enzyme_instances.add(
+        #     hexokinase_instance,
+        #     phosphoglucoisomerase_instance,
+        #     phosphofructokinase_instance,
+        #     aldolase_instance,
+        #     triose_phosphate_isomerase_instance,
+        #     tpd_instance,
+        #     phosphoglycerokinase_instance,
+        #     phosphoglyceromutase_instance,
+        #     enolase_instance,
+        #     pyrk_instance
+        # )

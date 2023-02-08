@@ -10,4 +10,5 @@ AWS/aws_credentials.csv
 
 .DS_Store
 
+# ignore backend image/file storage
 backend/media/*

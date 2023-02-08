@@ -26,6 +26,9 @@ Within this directory we have
 1. **aws_credentials.csv** a file which should contain your personal aws login information.
 
 ## IAM Roles
+*Identity and Access Manegment*
+[Link](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) to IAM user guide. 
+
 
 
 ## Infrastructure Overview
@@ -40,8 +43,6 @@ Enviornments in copilot are areas where builds (services) can be running. For no
 ### Services
 As mentioned in the Enviornment section, we will have a frontend and backend service. Both of these will be induvidually linked to their respective dockerfiles within frontend/ and backend/
 
-## CI/CD Pipeline
-
 
 ## Setup 
 **Important**: When creating AWS accounts, keep track of your:
@@ -52,4 +53,20 @@ As mentioned in the Enviornment section, we will have a frontend and backend ser
 1. Password
 You should store this information in an *aws_credentials.csv* file within this directory.
 
+**You need to use you own sign in info when using github copilot**
+AWS has a strict policy which doesn't allow the root user to push its own infrastructure. You have to do it through a team managed role which you set up for yourself. I would recommend using the root sign in when using the online AWS console so you can ensure you have the ability to make edits. You should use your own account for everything else.
 
+
+# How to navigate AWS Console 
+
+In the Serach bar important pages you will visit frequently will be 
+1. ECS
+2. ECR
+3. IAM 
+4. Cloudformation 
+
+
+1. ECS contains all of our clusters, services, and task definitions that we have created. Go here to see what is currently running.
+2. ECR is the repository for our dockerfiles, any containers we push up should appear here 
+3. IAM, as mentioned above, this is where you manage your teams access to AWS resources.
+4. Cloudformation, because we are using copilot, by default our infrastructure schema is uploaded by default. **Here you can view the our infrastructure porgress and any errors that may occur**

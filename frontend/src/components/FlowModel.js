@@ -9,7 +9,7 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import { buildFlow, parseEnzymesForSliders } from './utils/pathwayComponentUtils';
+import { buildFlow, parseEnzymesForManager } from './utils/pathwayComponentUtils';
 import { getPathwayById } from '../requestLib/requests';
 
 import 'reactflow/dist/style.css';
@@ -21,8 +21,10 @@ import boogyImg from "../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+import Molecule from './customNodes/Molecule';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
+    molecule: Molecule
 };
 
 /**
@@ -98,7 +100,7 @@ const FlowModel = (props) => {
         setNodes(nodesAndEdgesDict["nodes"]);
         setEdges(nodesAndEdgesDict["edges"]);
 
-        const enzymesForSliders = parseEnzymesForSliders(newPathway);
+        const enzymesForSliders = parseEnzymesForManager(newPathway);
         props.concentrationManager.addListener((moleculeConcentrations) => {
             let mList = [];
             for (const [id, data] of Object.entries(moleculeConcentrations)) {
@@ -108,10 +110,22 @@ const FlowModel = (props) => {
                 };
             }
             setMolecules(mList);
+            mList = [];
+            for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
+                mList[id] = {
+                    "title": data.title,
+                    "forwardValue": data.forwardValue,
+                    "reverseValue": data.reverseValue
+                };
+            }
             setEdges((edges) =>
                 edges.map((edge) => {
-                    if (mList[edge.data.molecule_id]) {
-                        edge.style = {strokeWidth: mList[edge.data.molecule_id].value * 10, stroke: 'red'};
+                    if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
+                        if (edge.id.split("_")[0] === "R") {
+                            edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 500, stroke: 'red'};
+                        } else {
+                            edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 500, stroke: 'green'};
+                        }
                     }
                     return edge;
                 })
@@ -144,6 +158,7 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
+                props.concentrationManager.calculateChangeDelta();
             }
         }, speed);
         

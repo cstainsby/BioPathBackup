@@ -1,7 +1,7 @@
-import { parseEnzymesForSliders } from "./pathwayComponentUtils";
+import { parseEnzymesForManager } from "./pathwayComponentUtils";
 
 describe('pathwayComponentUtils', () => {
-    test('parseEnzymesForSliders', () => {
+    test('parseEnzymesForManager', () => {
         let data = {
             "enzymes":[{
                 "id":24,
@@ -23,12 +23,12 @@ describe('pathwayComponentUtils', () => {
                 "abbreviation":"m3",
             }]
         }
-        let enzymes = parseEnzymesForSliders(data);
-        expect(enzymes.length).toEqual(1);
-        for (const e of enzymes) {
-            expect(e["substrates"]).toContainEqual({"id": 56, "title": "m1"});
-            expect(e["products"]).toContainEqual({"id": 57, "title": "m2"});
-            expect(e["cofactors"]).toContainEqual({"id": 58, "title": "m3"});
+        let enzymes = parseEnzymesForManager(data);
+        expect(Object.entries(enzymes).length).toEqual(1);
+        for (const [id, enzyme] of Object.entries(enzymes)) {
+            expect(enzyme["substrates"]).toContainEqual({"id": 56, "title": "m1"});
+            expect(enzyme["products"]).toContainEqual({"id": 57, "title": "m2"});
+            expect(enzyme["cofactors"]).toContainEqual({"id": 58, "title": "m3"});
         }
     });
 });

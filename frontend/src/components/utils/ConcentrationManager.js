@@ -33,7 +33,7 @@ class ConcentrationManager {
     parseEnzymes(enzymes) {
         this.moleculeConcentrations = [];
         // used to make a system coninuous or runout of concentration
-        let i = 0; // this is used to find the first and last enzymes in list
+        let i = 0; // i is used to find the first and last enzymes in list
         for (const [id, enzyme] of Object.entries(enzymes)) {
             if (i === 0) {
                 for (const substrate of enzyme.substrates) {

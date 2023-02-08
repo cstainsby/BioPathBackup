@@ -18,9 +18,9 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'enzymes', views.EnzymeViewSet, basename="enzymes")
-router.register(r'enzyme_instances', views.EnzymeInstanceViewSet)
+# router.register(r'enzyme_instances', views.EnzymeInstanceViewSet)
 router.register(r'molecules', views.MoleculeViewSet, basename="molecules")
-router.register(r'molecule_instances', views.MoleculeInstanceViewSet)
+# router.register(r'molecule_instances', views.MoleculeInstanceViewSet)
 router.register(r'pathways', views.PathwayViewSet, basename="pathways")
 
 urlpatterns = [

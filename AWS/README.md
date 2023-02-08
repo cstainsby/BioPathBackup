@@ -3,7 +3,7 @@
 This README will give you a general idea of how our project is setup within AWS.
 
 ## Important Links
-Here is a link to [copilot installation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Copilot.html)instructions.
+Here is a link to [copilot installation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Copilot.html) instructions.
 
 Link to documentation on the [copilot tool and basic AWS concepts](https://aws.github.io/copilot-cli/docs/overview/)
 
@@ -29,6 +29,9 @@ Within this directory we have
 *Identity and Access Manegment*
 [Link](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) to IAM user guide. 
 
+In order to get copilot working we will need to play around with the permissions given to the group. If you can try to give everyone the permission through the user group section rather than directly. 
+
+Here is a [link](https://github.com/aws/copilot-cli/issues/1345) to a github post that I found which outlines all of the necessary IAM roles needed to work with copilot.
 
 
 ## Infrastructure Overview

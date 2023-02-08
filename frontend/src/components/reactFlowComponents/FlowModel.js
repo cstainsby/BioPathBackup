@@ -10,7 +10,6 @@ import ReactFlow, {
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
 import { buildFlow, parseEnzymesForSliders } from '../utils/pathwayComponentUtils';
-import { getPathwayById } from '../../requestLib/requests';
 
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
@@ -39,10 +38,8 @@ const FlowModel = (props) => {
     let [pathwayDescription, setPathwayDescription] = useState("about the pathway");
     let [pathwayAuthor, setPathwayAuthor] = useState("author");
 
-    let nodesAndEdgesDict = buildFlow(pathway);
-
-	let [nodes, setNodes, onNodesChange] = useNodesState(nodesAndEdgesDict["nodes"]);
-	let [edges, setEdges, onEdgesChange] = useEdgesState(nodesAndEdgesDict["edges"]);
+	let [nodes, setNodes, onNodesChange] = useNodesState([]);
+	let [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
@@ -63,30 +60,14 @@ const FlowModel = (props) => {
     //     }
     //     console.log(out);
     // }
-
-    // let { pathwayID } = useParams(); // import params from router
     
     /**
      * Gets updated pathway based on current FlowModel pathwayID.
      * If there is no pathway ID, close the current pathway.
      */
-    // useEffect(() => {
-    //     if(pathwayID) {
-    //         console.log("Got pathway:" + pathwayID);
-    //         // get JSON data for pathways
-    //         // including function here will force the modal to re-render
-    //         getPathwayById(pathwayID)
-    //             .then(data => {
-    //                 handlePathwayOpen(data);
-    //             })
-    //             .catch(error => {
-    //                 console.error("Error in FlowModel.getUpdatedPathways", error);
-    //             });
-    //     }
-    //     else {
-    //         handlePathwayClose();
-    //     }
-    // }, [pathwayID]); // monitor pathwayID for changes
+    useEffect(() => {
+        handlePathwayOpen(pathway)
+    }, [pathway]); // monitor pathwayID for changes
 
 
     /**
@@ -94,8 +75,6 @@ const FlowModel = (props) => {
      * @param newPathway
      */
     const handlePathwayOpen = (newPathway) => {
-        //console.log("handle pathway load: " + JSON.stringify(newPathway))
-
         setPathwayTitle(newPathway["name"]);
         setPathwayDescription("about the pathway");
         setPathwayAuthor(newPathway["author"]);
@@ -124,6 +103,7 @@ const FlowModel = (props) => {
                 })
             );
         });
+        console.log("enzymes: " + JSON.stringify(enzymesForSliders));
         props.concentrationManager.parseEnzymes(enzymesForSliders);
     }
 
@@ -187,7 +167,7 @@ const FlowModel = (props) => {
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
                 />
-                <UserBuildTool />
+                {/* <UserBuildTool /> */}
                 
             </ReactFlow>            
         </div>

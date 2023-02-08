@@ -15,6 +15,8 @@ import { useLoaderData } from 'react-router-dom';
  */
 const PathwayView = (props) => {
   const pathway = useLoaderData();
+
+  const [isMinimized, setIsMinimized] = useState(false);
   
   let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 

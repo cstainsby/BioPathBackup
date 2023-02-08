@@ -66,6 +66,7 @@ In the Serach bar important pages you will visit frequently will be
 4. Cloudformation 
 
 
+### Brief Description Of Each
 1. ECS contains all of our clusters, services, and task definitions that we have created. Go here to see what is currently running.
 2. ECR is the repository for our dockerfiles, any containers we push up should appear here 
 3. IAM, as mentioned above, this is where you manage your teams access to AWS resources.

@@ -3,16 +3,16 @@ import { parseEnzymesForManager } from "./pathwayComponentUtils";
 describe('pathwayComponentUtils', () => {
     test('parseEnzymesForManager', () => {
         let data = {
-            "enzymes":[{
+            "enzyme_instances":[{
                 "id":24,
                 "name":"enzyme1",
                 "abbreviation":"e1",
                 "reversible":true,
-                "substrates":[56],
-                "products":[57],
-                "cofactors":[58]
+                "substrate_instances":[56],
+                "product_instances":[57],
+                "cofactor_instances":[58]
             }], 
-            "molecules":[{
+            "molecule_instances":[{
                 "id":56,
                 "abbreviation":"m1"
             },{

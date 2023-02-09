@@ -48,9 +48,9 @@
   */
 .react-flow__node.Molecule {
     border-radius: 50%;
-    width: 50px;
-    height: 25px;
-    background: rgb(6, 13, 241);
+    width: 60px;
+    height: 40px;
+    background: rgb(152, 156, 255);
     display: flex;
     justify-content: center;
     align-items: center;

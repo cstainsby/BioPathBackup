@@ -1,7 +1,5 @@
 """
-File: test_views.py
-Description: Unit tests for Django views.
-Modified: 12/28 - Josh Schmitz
+Unit tests for Django views.
 """
 
 import json
@@ -36,6 +34,7 @@ ENZYME_FIELDS = {
     "author",
     "public"
 }
+
 
 class MoleculeListViewTest(TestCase):
     @classmethod
@@ -96,7 +95,8 @@ class MoleculeListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(json.loads(response.content)), NUMBER_OF_MOLECULES + 1)
         self.assertIn("public molecule", [mol["name"] for mol in json.loads(response.content)])
-        
+
+
 class EnzymeListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -107,7 +107,8 @@ class EnzymeListViewTest(TestCase):
             models.Enzyme.objects.create(
                 name=f"m{enzyme_id}",
                 abbreviation=f"m{enzyme_id}",
-                author=author
+                author=author,
+                reversible=True
             )
 
     def setUp(self):
@@ -160,7 +161,8 @@ class EnzymeListViewTest(TestCase):
         enzyme = models.Enzyme.objects.create(
             name="new enzyme",
             abbreviation="ne",
-            author=self.author
+            author=self.author,
+            reversible=True
         )
         enzyme.substrates.add(substrate)
         enzyme.products.add(product)
@@ -194,7 +196,8 @@ class EnzymeListViewTest(TestCase):
             name="public enzyme",
             abbreviation="pe",
             author=new_user,
-            public=True
+            public=True,
+            reversible=True
         )
         response = self.client.get(reverse("enzymes-list"))
         self.assertEqual(response.status_code, 200)

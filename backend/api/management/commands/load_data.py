@@ -85,7 +85,7 @@ class Command(BaseCommand):
         e1 = models.Enzyme.objects.create(
             name="enzyme1",
             abbreviation="e1",
-            reversible=False,
+            reversible=True,
             author=root,
             public=True
         )
@@ -445,6 +445,7 @@ class Command(BaseCommand):
             enzyme=hexokinase,
             x=210,
             y=240,
+            limiting=True,
             pathway=glycolysis
         )
         hexokinase_instance.substrate_instances.add(glu_instance, atp_instance1)
@@ -465,6 +466,7 @@ class Command(BaseCommand):
             enzyme=phosphoglucoisomerase,
             x=210,
             y=480,
+            limiting=True,
             pathway=glycolysis
         )
         phosphoglucoisomerase_instance.substrate_instances.add(g6p_instance)
@@ -485,6 +487,7 @@ class Command(BaseCommand):
             enzyme=phosphofructokinase,
             x=210,
             y=720,
+            limiting=True,
             pathway=glycolysis
         )
         phosphofructokinase_instance.substrate_instances.add(f6p_instance, atp_instance2)
@@ -505,6 +508,7 @@ class Command(BaseCommand):
             enzyme=aldolase,
             x=210,
             y=945,
+            limiting=True,
             pathway=glycolysis
         )
         aldolase_instance.substrate_instances.add(f16bp_instance)
@@ -525,6 +529,7 @@ class Command(BaseCommand):
             enzyme=triose_phosphate_isomerase,
             x=300,
             y=1200,
+            limiting=True,
             pathway=glycolysis
         )
         triose_phosphate_isomerase_instance.substrate_instances.add(dhap_instance)
@@ -545,6 +550,7 @@ class Command(BaseCommand):
             enzyme=tpd,
             x=225,
             y=1425,
+            limiting=True,
             pathway=glycolysis
         )
         tpd_instance.substrate_instances.add(g3p_instance, nad_instance)
@@ -565,6 +571,7 @@ class Command(BaseCommand):
             enzyme=phosphoglycerokinase,
             x=225,
             y=1725,
+            limiting=True,
             pathway=glycolysis
         )
         phosphoglycerokinase_instance.substrate_instances.add(bpg_instance, atp_instance3)
@@ -585,6 +592,7 @@ class Command(BaseCommand):
             enzyme=phosphoglyceromutase,
             x=225,
             y=1965,
+            limiting=True,
             pathway=glycolysis
         )
         phosphoglyceromutase_instance.substrate_instances.add(pg3_instance)
@@ -605,6 +613,7 @@ class Command(BaseCommand):
             enzyme=enolase,
             x=225,
             y=2235,
+            limiting=True,
             pathway=glycolysis
         )
         enolase_instance.substrate_instances.add(pg2_instance)
@@ -625,6 +634,7 @@ class Command(BaseCommand):
             enzyme=pyrk,
             x=225,
             y=2520,
+            limiting=True,
             pathway=glycolysis
         )
         pyrk_instance.substrate_instances.add(pep_instance, atp_instance4)
@@ -632,40 +642,40 @@ class Command(BaseCommand):
         
         # ----- pathway -----
         
-        # glycolysis.molecule_instances.add(
-        #     glu_instance,
-        #     g6p_instance,
-        #     f6p_instance,
-        #     f16bp_instance,
-        #     g3p_instance,
-        #     dhap_instance,
-        #     bpg_instance,
-        #     pg3_instance,
-        #     pg2_instance,
-        #     pep_instance,
-        #     pyr_instance,
-        #     nad_instance,
-        #     nadh_instance,
-        #     h_instance,
-        #     atp_instance1,
-        #     adp_instance1,
-        #     atp_instance2,
-        #     adp_instance2,
-        #     atp_instance3,
-        #     adp_instance3,
-        #     atp_instance4,
-        #     adp_instance4,
-        #     h2o_instance
-        # )
-        # glycolysis.enzyme_instances.add(
-        #     hexokinase_instance,
-        #     phosphoglucoisomerase_instance,
-        #     phosphofructokinase_instance,
-        #     aldolase_instance,
-        #     triose_phosphate_isomerase_instance,
-        #     tpd_instance,
-        #     phosphoglycerokinase_instance,
-        #     phosphoglyceromutase_instance,
-        #     enolase_instance,
-        #     pyrk_instance
-        # )
+        glycolysis.molecule_instances.add(
+            glu_instance,
+            g6p_instance,
+            f6p_instance,
+            f16bp_instance,
+            g3p_instance,
+            dhap_instance,
+            bpg_instance,
+            pg3_instance,
+            pg2_instance,
+            pep_instance,
+            pyr_instance,
+            nad_instance,
+            nadh_instance,
+            h_instance,
+            atp_instance1,
+            adp_instance1,
+            atp_instance2,
+            adp_instance2,
+            atp_instance3,
+            adp_instance3,
+            atp_instance4,
+            adp_instance4,
+            h2o_instance
+        )
+        glycolysis.enzyme_instances.add(
+            hexokinase_instance,
+            phosphoglucoisomerase_instance,
+            phosphofructokinase_instance,
+            aldolase_instance,
+            triose_phosphate_isomerase_instance,
+            tpd_instance,
+            phosphoglycerokinase_instance,
+            phosphoglyceromutase_instance,
+            enolase_instance,
+            pyrk_instance
+        )

@@ -7,7 +7,6 @@
  Build a flow model from pathway json
 */ 
 export function buildFlow(pathway) {
-    // these are mocked for testing fix later
     if(typeof pathway === "undefined" || typeof pathway.enzyme_instances === "undefined") { 
         console.log("buildFlow: Invalid pathway passed");
         return;
@@ -173,9 +172,9 @@ export function generateNodes(pathway) {
             id: String(molecule.id) + "_molecule", 
             className: 'Molecule', 
             data: {
-                label: molecule.name,
+                label: molecule.molecule_name,
                 type: "molecule",
-                title: molecule.name
+                title: molecule.molecule_name
             },
             type: "molecule",
             position: {x: molecule.x, y: molecule.y}

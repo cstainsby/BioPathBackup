@@ -158,13 +158,11 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
-                props.concentrationManager.calculateChangeDelta();
             }
         }, speed);
         
         return () => {
             clearInterval(interval);
-            // console.log("clearInterval");
         };
     }, [running, speed]);
 

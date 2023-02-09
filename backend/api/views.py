@@ -1,8 +1,7 @@
 """
-File: views.py
-Description: Defines view functions that are mapped to in urls.py for generating api
-    responses. We are using viewsets instead of plain views as ensures CRUD compliance
-    and prevents us from manually having to individually write out each function for
+Defines view functions that are mapped to in urls.py for generating api
+    responses. We are using viewsets instead of plain views to ensure CRUD compliance
+    and prevent us from manually having to write out each function for
     POST, GET, PUT, and DELETE methods.
 TODO: only show enzyme/molecule/pathway if public or auther=user
 """
@@ -69,6 +68,7 @@ class PathwayViewSet(viewsets.ModelViewSet):
             return serializers.PathwayWriteSerializer
         else:
             return serializers.PathwayDetailSerializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')

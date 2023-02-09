@@ -119,141 +119,145 @@ class PathwayDetailSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# class MoleculeInstanceWriteSerializer(serializers.Serializer):
-#     molecule = serializers.IntegerField()
-#     pathway = serializers.IntegerField()
-#     x = serializers.IntegerField(min_value=0)
-#     y = serializers.IntegerField(min_value=0)
+class MoleculeInstanceWriteSerializer(serializers.Serializer):
+    """
+    This serializer isn't used as of now. The pathway write serializer is handling
+        the deserialization and creation of enzyme/molecule instances
+    """
+    molecule = serializers.IntegerField()
+    pathway = serializers.IntegerField()
+    x = serializers.IntegerField(min_value=0)
+    y = serializers.IntegerField(min_value=0)
 
-#     def validate_molecule(self, value: int) -> models.Molecule:
-#         molecule = models.Molecule.objects.filter(id=value)
-#         if not molecule.exists():
-#             raise serializers.ValidationError(f"Molecule with id='{value}' does not exist")
-#         return molecule.first()
+    def validate_molecule(self, value: int) -> models.Molecule:
+        molecule = models.Molecule.objects.filter(id=value)
+        if not molecule.exists():
+            raise serializers.ValidationError(f"Molecule with id='{value}' does not exist")
+        return molecule.first()
 
-#     def validate_pathway(self, value: int) -> models.Pathway:
-#         pathway = models.Pathway.objects.filter(id=value)
-#         if not pathway.exists():
-#             raise serializers.ValidationError(f"Pathway with id='{value}' does not exist")
-#         return pathway.first()
+    def validate_pathway(self, value: int) -> models.Pathway:
+        pathway = models.Pathway.objects.filter(id=value)
+        if not pathway.exists():
+            raise serializers.ValidationError(f"Pathway with id='{value}' does not exist")
+        return pathway.first()
 
-#     def validate(self, data: OrderedDict) -> OrderedDict:
-#         molecule = models.Molecule.objects.get(id=data.get("molecule"))
-#         pathway = models.Pathway.objects.get(id=data.get("pathway"))
-#         if (not molecule.public) and pathway.public:
-#             raise serializers.ValidationError(f"Public pathways can't have private molecules")
-#         return data
+    def validate(self, data: OrderedDict) -> OrderedDict:
+        molecule = models.Molecule.objects.get(id=data.get("molecule"))
+        pathway = models.Pathway.objects.get(id=data.get("pathway"))
+        if (not molecule.public) and pathway.public:
+            raise serializers.ValidationError(f"Public pathways can't have private molecules")
+        return data
     
-#     def create(self, validated_data: OrderedDict) -> models.MoleculeInstance:
-#         return models.MoleculeInstance.objects.create(**validated_data)
+    def create(self, validated_data: OrderedDict) -> models.MoleculeInstance:
+        return models.MoleculeInstance.objects.create(**validated_data)
 
-#     def update(self, instance: models.MoleculeInstance, validated_data: OrderedDict) -> models.MoleculeInstance:
-#         if validated_data.get("pathway") != instance.pathway:
-#             raise serializers.ValidationError("Can't change MoleculeInstance to new pathway")
-#         instance.molecule = validated_data.get("molecule", instance.molecule)
-#         instance.x = validated_data.get("x", instance.x)
-#         instance.y = validated_data.get("y", instance.y)
-#         instance.save()
-#         return instance
-
-
-class MoleculeInstanceListField(serializers.ListField):
-    child = serializers.IntegerField() # validators=[validators.is_molecule_instance])
+    def update(self, instance: models.MoleculeInstance, validated_data: OrderedDict) -> models.MoleculeInstance:
+        if validated_data.get("pathway") != instance.pathway:
+            raise serializers.ValidationError("Can't change MoleculeInstance to new pathway")
+        instance.molecule = validated_data.get("molecule", instance.molecule)
+        instance.x = validated_data.get("x", instance.x)
+        instance.y = validated_data.get("y", instance.y)
+        instance.save()
+        return instance
 
 
-class EnzymeInstanceListField(serializers.ListField):
-    child = serializers.IntegerField(validators=[validators.is_enzyme_instance])
+class IntegerListField(serializers.ListField):
+    child = serializers.IntegerField()
 
 
-# class EnzymeInstanceWriteSerializer(serializers.Serializer):
-#     enzyme = serializers.IntegerField()
-#     pathway = serializers.IntegerField()
-#     x = serializers.IntegerField(min_value=0)
-#     y = serializers.IntegerField(min_value=0)
-#     limiting = serializers.BooleanField()
-#     substrate_instances = MoleculeInstanceListField()
-#     product_instances = MoleculeInstanceListField()
-#     cofactor_instances = MoleculeInstanceListField()
+class EnzymeInstanceWriteSerializer(serializers.Serializer):
+    """
+    This serializer isn't used as of now. The pathway write serializer is handling
+        the deserialization and creation of enzyme/molecule instances
+    """
+    enzyme = serializers.IntegerField()
+    pathway = serializers.IntegerField()
+    x = serializers.IntegerField(min_value=0)
+    y = serializers.IntegerField(min_value=0)
+    limiting = serializers.BooleanField()
+    substrate_instances = IntegerListField()
+    product_instances = IntegerListField()
+    cofactor_instances = IntegerListField()
 
-#     def validate_enzyme(self, value: int) -> models.Enzyme:
-#         enzyme = models.Enzyme.objects.filter(id=value)
-#         if not enzyme.exists():
-#             raise serializers.ValidationError(f"Enzyme with id='{value}' does not exist")
-#         return enzyme.first()
+    def validate_enzyme(self, value: int) -> models.Enzyme:
+        enzyme = models.Enzyme.objects.filter(id=value)
+        if not enzyme.exists():
+            raise serializers.ValidationError(f"Enzyme with id='{value}' does not exist")
+        return enzyme.first()
 
-#     def validate_pathway(self, value: int) -> models.Pathway:
-#         pathway = models.Pathway.objects.filter(id=value)
-#         if not pathway.exists():
-#             raise serializers.ValidationError(f"Pathway with id='{value}' does not exist")
-#         return pathway.first()
+    def validate_pathway(self, value: int) -> models.Pathway:
+        pathway = models.Pathway.objects.filter(id=value)
+        if not pathway.exists():
+            raise serializers.ValidationError(f"Pathway with id='{value}' does not exist")
+        return pathway.first()
     
-#     def validate(self, data: OrderedDict) -> OrderedDict:
-#         """
-#         First, ensure only public enzymes appear in public pathways
-#         Then, ensure the substrate_instances, product_instances, and cofactor_instances
-#             are instances of the enzymes actual substrates, products, and cofactors
-#         """
-#         enzyme = models.Enzyme.objects.get(id=data.get("id"))
-#         pathway = models.Pathway.objects.get(id=data.get("pathway"))
-#         if (not enzyme.public) and pathway.public:
-#             raise serializers.ValidationError(f"Public pathways can't have private enzymes")
+    def validate(self, data: OrderedDict) -> OrderedDict:
+        """
+        First, ensure only public enzymes appear in public pathways
+        Then, ensure the substrate_instances, product_instances, and cofactor_instances
+            are instances of the enzymes actual substrates, products, and cofactors
+        """
+        enzyme = models.Enzyme.objects.get(id=data.get("id"))
+        pathway = models.Pathway.objects.get(id=data.get("pathway"))
+        if (not enzyme.public) and pathway.public:
+            raise serializers.ValidationError(f"Public pathways can't have private enzymes")
         
-#         actual_substrates = enzyme.substrates.all()
-#         actual_products = enzyme.products.all()
-#         actual_cofactors = enzyme.cofactors.all()
+        actual_substrates = enzyme.substrates.all()
+        actual_products = enzyme.products.all()
+        actual_cofactors = enzyme.cofactors.all()
 
-#         for substrate_instance_id in data.get("substrate_instances"):
-#             substrate_instance = models.MoleculeInstance.objects.get(id=substrate_instance_id)
-#             if substrate_instance.molecule not in actual_substrates:
-#                 raise serializers.ValidationError(f"{substrate_instance} isn't an instance of any of the substrates of {enzyme}")
+        for substrate_instance_id in data.get("substrate_instances"):
+            substrate_instance = models.MoleculeInstance.objects.get(id=substrate_instance_id)
+            if substrate_instance.molecule not in actual_substrates:
+                raise serializers.ValidationError(f"{substrate_instance} isn't an instance of any of the substrates of {enzyme}")
         
-#         for product_instance_id in data.get("product_instances"):
-#             product_instance = models.MoleculeInstance.objects.get(id=product_instance_id)
-#             if product_instance.molecule not in actual_products:
-#                 raise serializers.ValidationError(f"{product_instance} isn't an instance of any of the products of {enzyme}")
+        for product_instance_id in data.get("product_instances"):
+            product_instance = models.MoleculeInstance.objects.get(id=product_instance_id)
+            if product_instance.molecule not in actual_products:
+                raise serializers.ValidationError(f"{product_instance} isn't an instance of any of the products of {enzyme}")
 
-#         for cofactor_instance_id in data.get("cofactor_instances"):
-#             cofactor_instance = models.MoleculeInstance.objects.get(id=cofactor_instance_id)
-#             if cofactor_instance.molecule not in actual_cofactors:
-#                 raise serializers.ValidationError(f"{cofactor_instance} isn't an instance of any of the cofactors of {enzyme}")
+        for cofactor_instance_id in data.get("cofactor_instances"):
+            cofactor_instance = models.MoleculeInstance.objects.get(id=cofactor_instance_id)
+            if cofactor_instance.molecule not in actual_cofactors:
+                raise serializers.ValidationError(f"{cofactor_instance} isn't an instance of any of the cofactors of {enzyme}")
 
-#         return data
+        return data
 
-#     def create(self, validated_data: OrderedDict) -> models.EnzymeInstance:
-#         substrate_instances = [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("substrate_instances")]
-#         product_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("product_instances")]
-#         cofactor_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("cofactor_instances")]
+    def create(self, validated_data: OrderedDict) -> models.EnzymeInstance:
+        substrate_instances = [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("substrate_instances")]
+        product_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("product_instances")]
+        cofactor_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.pop("cofactor_instances")]
 
-#         enzyme_instance = models.EnzymeInstance.objects.create(**validated_data)
-#         enzyme_instance.substrate_instances.add(*substrate_instances)
-#         enzyme_instance.product_instances.add(*product_instances)
-#         enzyme_instance.cofactor_instances.add(*cofactor_instances)
+        enzyme_instance = models.EnzymeInstance.objects.create(**validated_data)
+        enzyme_instance.substrate_instances.add(*substrate_instances)
+        enzyme_instance.product_instances.add(*product_instances)
+        enzyme_instance.cofactor_instances.add(*cofactor_instances)
         
-#         return enzyme_instance
+        return enzyme_instance
 
-#     def update(self, instance: models.EnzymeInstance, validated_data: OrderedDict) -> models.EnzymeInstance:
-#         if validated_data.get("pathway") != instance.pathway:
-#             raise serializers.ValidationError("Can't change EnzymeInstance to new pathway")
+    def update(self, instance: models.EnzymeInstance, validated_data: OrderedDict) -> models.EnzymeInstance:
+        if validated_data.get("pathway") != instance.pathway:
+            raise serializers.ValidationError("Can't change EnzymeInstance to new pathway")
         
-#         instance.enzyme = validated_data.get("enzyme", instance.enzyme)
-#         instance.x = validated_data.get("x", instance.x)
-#         instance.y = validated_data.get("y", instance.y)
-#         instance.limiting = validated_data.get("limiting", instance.limiting)
+        instance.enzyme = validated_data.get("enzyme", instance.enzyme)
+        instance.x = validated_data.get("x", instance.x)
+        instance.y = validated_data.get("y", instance.y)
+        instance.limiting = validated_data.get("limiting", instance.limiting)
 
-#         instance.substrate_instances.clear()
-#         instance.product_instances.clear()
-#         instance.cofactor_instances.clear()
+        instance.substrate_instances.clear()
+        instance.product_instances.clear()
+        instance.cofactor_instances.clear()
 
-#         substrate_instances = [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("substrate_instances")]
-#         product_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("product_instances")]
-#         cofactor_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("cofactor_instances")]
+        substrate_instances = [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("substrate_instances")]
+        product_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("product_instances")]
+        cofactor_instances =  [models.MoleculeInstance.objects.get(id=val) for val in validated_data.get("cofactor_instances")]
 
-#         instance.substrate_instances.add(*substrate_instances)
-#         instance.product_instances.add(*product_instances)
-#         instance.cofactor_instances.add(*cofactor_instances)
+        instance.substrate_instances.add(*substrate_instances)
+        instance.product_instances.add(*product_instances)
+        instance.cofactor_instances.add(*cofactor_instances)
 
-#         instance.save()
-#         return instance
+        instance.save()
+        return instance
 
 
 class MoleculeInstanceHelperSerializer(serializers.Serializer):
@@ -274,9 +278,9 @@ class EnzymeInstanceHelperSerializer(serializers.Serializer):
     x = serializers.IntegerField(min_value=0)
     y = serializers.IntegerField(min_value=0)
     limiting = serializers.BooleanField()
-    substrate_instances = MoleculeInstanceListField()
-    product_instances = MoleculeInstanceListField()
-    cofactor_instances = MoleculeInstanceListField()
+    substrate_instances = IntegerListField()
+    product_instances = IntegerListField()
+    cofactor_instances = IntegerListField()
 
     def validate_enzyme(self, value: int) -> models.Enzyme:
         enzyme = models.Enzyme.objects.filter(id=value)
@@ -382,6 +386,5 @@ class PathwayWriteSerializer(serializers.Serializer):
             enzyme_instance.substrate_instances.add(*substrate_instances)
             enzyme_instance.product_instances.add(*product_instances)
             enzyme_instance.cofactor_instances.add(*cofactor_instances)
-            
 
         return pathway

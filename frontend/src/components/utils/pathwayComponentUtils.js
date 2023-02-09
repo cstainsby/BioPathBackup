@@ -8,7 +8,7 @@
 */ 
 export function buildFlow(pathway) {
     // these are mocked for testing fix later
-    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") { 
+    if(typeof pathway === "undefined" || typeof pathway.enzyme_instances === "undefined") { 
         console.log("buildFlow: Invalid pathway passed");
         return;
     }
@@ -27,9 +27,9 @@ export function buildFlow(pathway) {
  */
 export function generateEdges(pathway) {
     let edges = [];
-    for (const enzyme of pathway.enzymes) {
+    for (const enzyme of pathway.enzyme_instances) {
         // Make edge from substrate to enzyme
-        for (const substrate_id of enzyme.substrates) {
+        for (const substrate_id of enzyme.substrate_instances) {
             if (enzyme.reversible) {
                 edges.push({
                     id: String(substrate_id) + "_" + String(enzyme.id),
@@ -71,7 +71,7 @@ export function generateEdges(pathway) {
             }
         }
         // Make edge from enzyme to product
-        for (const product_id of enzyme.products) {
+        for (const product_id of enzyme.product_instances) {
             if (enzyme.reversible) {
                 edges.push({
                     id: String(enzyme.id) + "_" + String(product_id),
@@ -127,13 +127,13 @@ export function generateEdges(pathway) {
     @return lists of nodes to be used by ReactFlow
 */
 export function generateNodes(pathway) {
-    if(typeof pathway === "undefined" || typeof pathway.enzymes === "undefined") { 
+    if(typeof pathway === "undefined" || typeof pathway.enzyme_instances === "undefined") { 
         console.log("generateNodes: Invalid pathway passed");
         return;
     }
     let nodes = []
 
-    for (const enzyme of pathway.enzymes) {
+    for (const enzyme of pathway.enzyme_instances) {
         // Reactflow node
         if (enzyme.reversible) { // new for multi handlers
             nodes.push({
@@ -143,9 +143,8 @@ export function generateNodes(pathway) {
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
-                    substrates: enzyme.substrates, 
-                    products: enzyme.products,
-                    image: enzyme.link
+                    substrates: enzyme.substrate_instances, 
+                    products: enzyme.product_instances
                 },
                 type: "reversibleEnzyme",
                 position: {x: enzyme.x, y: enzyme.y}
@@ -159,8 +158,8 @@ export function generateNodes(pathway) {
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
-                    substrates: enzyme.substrates, 
-                    products: enzyme.products
+                    substrates: enzyme.substrate_instances, 
+                    products: enzyme.product_instances
                 },
                 type: "reversibleEnzyme",
                 position: {x: enzyme.x, y: enzyme.y}
@@ -168,7 +167,7 @@ export function generateNodes(pathway) {
         }
     }
     
-    for (const molecule of pathway.molecules) {
+    for (const molecule of pathway.molecule_instances) {
         // Reactflow node
         nodes.push({
             id: String(molecule.id) + "_molecule", 
@@ -193,7 +192,7 @@ export function generateNodes(pathway) {
  */
 export function parseEnzymesForManager(pathwayData) {
     let enzymes = [];
-    for (const enzyme of pathwayData.enzymes) {
+    for (const enzyme of pathwayData.enzyme_instances) {
         let e = {
             "reversible": enzyme.reversible,
             "substrates": [],
@@ -203,8 +202,8 @@ export function parseEnzymesForManager(pathwayData) {
         }
 
         // Get abbreviations for molecule IDs
-        for (const substrate of enzyme["substrates"]) {
-            let m = pathwayData["molecules"].filter(o => {
+        for (const substrate of enzyme.substrate_instances) {
+            let m = pathwayData.molecule_instances.filter(o => {
                 return o.id === parseInt(substrate);
             });
             if (m.length > 0) {
@@ -214,8 +213,8 @@ export function parseEnzymesForManager(pathwayData) {
                 });
             }
         }
-        for (const product of enzyme["products"]) {
-            let m = pathwayData["molecules"].filter(o => {
+        for (const product of enzyme.product_instances) {
+            let m = pathwayData.molecule_instances.filter(o => {
                 return o.id === product;
             });
             if (m.length > 0) {
@@ -225,8 +224,8 @@ export function parseEnzymesForManager(pathwayData) {
                 });
             }
         }
-        for (const cofactor of enzyme["cofactors"]) {
-            let m = pathwayData["molecules"].filter(o => {
+        for (const cofactor of enzyme.cofactor_instances) {
+            let m = pathwayData.molecule_instances.filter(o => {
                 return o.id === cofactor;
             });
             if (m.length > 0) {

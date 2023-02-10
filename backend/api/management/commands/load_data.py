@@ -1,10 +1,11 @@
 """
-File: load_data.py
-
-Script for clearing and loading fresh data into the database.
-Ideally used for testing and to have a consistent database everytime.
-This script is called using "python manage.py load_data" from setup.sh
-and can be ommitted to retain old database data. 
+Script for clearing and glycolysis data into the database.
+This script is called in setup.sh, so you'll have to not use that script or remove
+    that line if you wish to persist database data.
+TODO Put ALL data in a dict and use serializers to insert into DB instead of manually
+    creating each model.
+TODO Add links, photos(?), etc
+    * Only necessary if this will be used to get glycolysis into prod
 """
 
 from api import models
@@ -639,43 +640,3 @@ class Command(BaseCommand):
         )
         pyrk_instance.substrate_instances.add(pep_instance, atp_instance4)
         pyrk_instance.product_instances.add(pyr_instance, adp_instance4)
-        
-        # ----- pathway -----
-        
-        glycolysis.molecule_instances.add(
-            glu_instance,
-            g6p_instance,
-            f6p_instance,
-            f16bp_instance,
-            g3p_instance,
-            dhap_instance,
-            bpg_instance,
-            pg3_instance,
-            pg2_instance,
-            pep_instance,
-            pyr_instance,
-            nad_instance,
-            nadh_instance,
-            h_instance,
-            atp_instance1,
-            adp_instance1,
-            atp_instance2,
-            adp_instance2,
-            atp_instance3,
-            adp_instance3,
-            atp_instance4,
-            adp_instance4,
-            h2o_instance
-        )
-        glycolysis.enzyme_instances.add(
-            hexokinase_instance,
-            phosphoglucoisomerase_instance,
-            phosphofructokinase_instance,
-            aldolase_instance,
-            triose_phosphate_isomerase_instance,
-            tpd_instance,
-            phosphoglycerokinase_instance,
-            phosphoglyceromutase_instance,
-            enolase_instance,
-            pyrk_instance
-        )

@@ -1,15 +1,16 @@
 """
-File: serialzers.py
-Description: Maps url endpoints to the viewsets in views.py. We are using DRF routers to
-    abstract this so we can just deal with viewsets and not individual views. This helps
-    insure CRUD compliance and means there's less code for us to write. Note that these 
-    the given routes here are actually all prefixed with api/ as this file is routed to
-    from the projects base urls.py in backend/biopath.
+Maps url endpoints to the viewsets in views.py. We are using DRF routers to abstract
+    this so we can just deal with viewsets and not individual views. This helps
+    ensure CRUD compliance and means there's less code for us to write. Note that
+    these the given routes here are actually all prefixed with api/ as this file is
+    routed to from the projects base urls.py in backend/biopath.
+Note: We purposefully haven't added endpoints to MoleculeInstance/EnzymeInstance.
+    These are abstracted away from the api user who interacts with them solely through
+    the Pathway endpoint since they are intrinsic to a pathway.
 """
 
 from django.urls import include, path
 from rest_framework import routers
-from rest_framework.urlpatterns import format_suffix_patterns
 
 from . import views
 
@@ -18,9 +19,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'enzymes', views.EnzymeViewSet, basename="enzymes")
-# router.register(r'enzyme_instances', views.EnzymeInstanceViewSet)
 router.register(r'molecules', views.MoleculeViewSet, basename="molecules")
-# router.register(r'molecule_instances', views.MoleculeInstanceViewSet)
 router.register(r'pathways', views.PathwayViewSet, basename="pathways")
 
 urlpatterns = [

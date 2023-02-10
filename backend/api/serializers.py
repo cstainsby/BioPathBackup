@@ -1,12 +1,23 @@
 """
-File: serialzers.py
-Description: Defines the serializers for serializing various models in
-    models.py into json. These serializers are used to create viewsets in
-    views.py to simplify and standardize the data format that is returned by
-    the API.
-TODO Optimmize with prefetch_related or select_related https://www.django-rest-framework.org/api-guide/relations/
-TODO can we get author from request instead of trusting the json?
+Defines the serializers for serializing models from models.py into json and
+    deserialzing json into model objects to store the molecules/enzymes/pathways
+    in the db. These serializers are used in views.py to create specify the api
+    functions.
+TODO Optimize with prefetch_related or select_related https://www.django-rest-framework.org/api-guide/relations/
+TODO Should we get author from request instead of trusting the json?
     * https://www.django-rest-framework.org/api-guide/serializers/#passing-additional-attributes-to-save
+TODO Remove unused serializers?
+TODO More comprehensive validation (write reused validation functions in validators.py)
+    * for example: in PathwayWriteSerializer, validate that each EnzymeInstance
+        all the SubstrateInstances, ProductInstances, and CofactorInstances of the
+        associated Enzyme.
+TODO Better comments
+TODO Overwrite PathwayWriteSerializer's update(). Also verify the desired output is
+    achieved for each endpoints list, detail, etc. For example, pathway list probably
+    shouldn't display all the data for each pathway; you should have to go to pathway
+    detail for that.
+TODO Ensure pathway deletion deletes related PathwayMolecules/PathwayEnzymes
+    * Maybe this is handled by 'on_delete=models.CASCADE' in models.py?
 """
 
 from collections import OrderedDict

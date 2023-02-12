@@ -29,9 +29,19 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "id",
-            "username",
-            "groups"
+            "username"
         ]
+        extra_kwargs = {"password": {"write_only": True}}
+    
+    def create(self, validated_data):
+        """Constructor function for user serializer"""
+        user = User(
+            username = validated_data["username"]
+        )
+
+        user.set_password(validated_data["password"])
+        user.save()
+        return user
 
 
 class MoleculeSerializer(serializers.ModelSerializer):

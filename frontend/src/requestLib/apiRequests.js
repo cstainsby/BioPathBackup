@@ -7,19 +7,11 @@
 //  each of the get functions will be returning JSON objects 
 // ----------------------------------------------------------------------
 
-// This will tell the functions where the data is coming from
-//  This can be in the form of an API url for prod or a local file name for testing
-//  Until we have the time to come up with a smarter, more automated solution where 
-//  the data is being sourced from will need to be manually changed in the code
+import getEndpointHeader from "./requestConfig";
 
-let BACKEND_BASE_API_URL = "http://localhost:8000/api/"; // API ACCESS
-let LOCAL_STORAGE_PATH = "./sample-api/";         // LOCAL ACCESS
-let MOCK_API_URL = "http://localhost:4000/api/";  // MOCK API ACCESS
-
-let dataSourceAddress = MOCK_API_URL;       // Choice Definition
-
-// NOTE: the test suite for sample JSON will have a file structure matching the 
-//   endpoints within the backend to keep calls consistent
+// for this file, /api/ is attached to get at the data behind that 
+// portion of the backend
+let dataSourceAddressHeader = getEndpointHeader() + "api/"
 
 
 /**
@@ -29,7 +21,7 @@ let dataSourceAddress = MOCK_API_URL;       // Choice Definition
  */
 async function getPathwayById(id) {
   let endpointExtension = "pathways/" + id;
-  let requestUrl = dataSourceAddress + endpointExtension;
+  let requestUrl = dataSourceAddressHeader + endpointExtension;
   
   try {
     const response = await fetch(requestUrl, {
@@ -58,7 +50,7 @@ async function getPathwayById(id) {
 
 async function getPathways() {
   const endpointExtension = "pathways/";
-  const requestUrl = dataSourceAddress + endpointExtension;
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
 
   try {
     const response = await fetch(requestUrl, {
@@ -92,7 +84,7 @@ async function getPathways() {
 async function postPathway(pathwayObj) {
   const methodType = "POST";
   const endpointExtension = "pathways/";
-  const requestUrl = dataSourceAddress + endpointExtension;
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
 
   try {
     const requestOptions = {

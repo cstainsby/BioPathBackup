@@ -8,8 +8,15 @@ Modified: 11/17 - Josh Schmitz
 from django.contrib import admin
 from django.urls import include, path
 
+from api.views import UserCreate, LoginView
+
 urlpatterns = [
     path(route='admin/', view=admin.site.urls),
     path(route='api/', view=include('api.urls')), # this essentially just includes the urls from api/urls.py
 
+    # routes that are used for authentication
+    # register/ - used for sending json containing new user's data to be stored 
+    # login/    - used for getting a sign in token from backend
+    path(route='register/', view=UserCreate.as_view(), name='register'),
+    path(route='login/', view=LoginView.as_view(), name='login'),
 ]

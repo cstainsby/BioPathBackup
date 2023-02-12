@@ -1,5 +1,4 @@
 
-
 import getEndpointHeader from "./requestConfig";
 
 // for this file, nothing attached like there is an attachment for the api/

@@ -1,4 +1,4 @@
-import { getPathways } from "../requests.js"
+import { getPathways } from "../apiRequests";
 
 /**
  * NOTE this function is stubbed out

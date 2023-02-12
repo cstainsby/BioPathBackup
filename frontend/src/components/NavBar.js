@@ -57,10 +57,6 @@ const Navbar = () => {
 
         </div>
       </div>
-
-
-      {/* Define Modals Accessable from navbar*/}
-      <SignInModal/>
     </nav>
   );
 }
@@ -74,24 +70,25 @@ const Navbar = () => {
 const UserSignInNavBarItem = () => {
   const { user, setUser } = useContext(UserContext);
 
-  // const handleSignedIn
-
   return (
     <div>
-      { !user ? <div className='card'>
-          <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
-            Sign In
-          </button>
-        </div>
+      { !user 
+        ? <div className='card'>
+            {/* Define Modals Accessable from navbar*/}
+            <SignInModal/>
+            <button className="btn" data-bs-toggle="modal" data-bs-target="#signInModal">
+              Sign In
+            </button>
+          </div>
         : <div className='dropdown dropstart'>
-          <button id='signedInCircleButton' className='btn' data-bs-toggle="dropdown" onClick={null}>
-            <span>{user.username[0].toUpperCase()}</span>
-          </button>
-          <ul className="dropdown-menu">
-            <li><Link className="dropdown-item" to="/">Settings</Link></li>
-            <li><Link className="dropdown-item" to="/" data-bs-toggle="dropdown" onClick={() => setUser(null)}>Sign Out</Link></li>
-          </ul>
-        </div>
+            <button id='signedInCircleButton' className='btn' data-bs-toggle="dropdown" onClick={null}>
+              <span>{user.username[0].toUpperCase()}</span>
+            </button>
+            <ul className="dropdown-menu">
+              <li><Link className="dropdown-item" to="/">Settings</Link></li>
+              <li><Link className="dropdown-item" to="/" data-bs-toggle="dropdown" onClick={() => setUser(null)}>Sign Out</Link></li>
+            </ul>
+          </div>
       }
     </div>
   );

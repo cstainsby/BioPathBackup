@@ -1,6 +1,6 @@
 
 
-import { getPathwayById } from "../requests.js"
+import { getPathwayById } from "../apiRequests";
 
 /**
  * 

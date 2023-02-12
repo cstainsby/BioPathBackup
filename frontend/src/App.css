@@ -65,6 +65,15 @@ ul {
   font-size: x-large;
 }
 
+/* the sign in modal */
+#signInModal {
+  align-content: start;
+}
+/* signInFormSwapButton for the sign in form */
+#signInFormSwapButton {
+  margin-left: 32px;
+}
+
 /* Root Layout */
 #RootLayout {
   display: flex;

@@ -20,6 +20,9 @@ const userDefinedURL = BACKEND_BASE_API_URL;
  * @returns string representation of URL 
  */
 function getEndpointHeader() {
+  console.log("defined header: ", userDefinedURL);
   return userDefinedURL;
 }
+
+export default getEndpointHeader;
 

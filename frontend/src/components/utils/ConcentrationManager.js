@@ -197,6 +197,13 @@ class ConcentrationManager {
         }
     }
 
+    reset() {
+        console.log("in conc")
+        for (const molecule in this.moleculeConcentrations) {
+            this.moleculeConcentrations[molecule].value = 1
+        }
+    }
+
     getMolculeConcentrations() {
         return this.moleculeConcentrations;
     }

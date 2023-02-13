@@ -158,7 +158,6 @@ const FlowModel = (props) => {
         const interval = setInterval(() => {
             if (running) {
                 props.concentrationManager.updateConcentrations();
-                props.concentrationManager.calculateChangeDelta();
             }
         }, speed);
         
@@ -167,6 +166,14 @@ const FlowModel = (props) => {
             // console.log("clearInterval");
         };
     }, [running, speed]);
+
+    /**
+     * Resets concentrations to starting values
+     * 
+     */
+    function resetConcentrations() {
+        props.concentrationManager.reset();
+    }
 
     return (
         <div className='ModelArea'>
@@ -198,6 +205,7 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
+                    reset = {() => resetConcentrations()}
                 />}
             </ReactFlow>            
         </div>

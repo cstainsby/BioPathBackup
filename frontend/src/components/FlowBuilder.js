@@ -7,65 +7,39 @@ import ReactFlow, {
     useReactFlow,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-
-// import {nodes as initialnodes} from './simpleJSON';
-import { runConcentrations, run, run2 } from './utils/pathwayComponentUtils';
-import {buildFlow, buildNodes, generateNodes} from './utils/pathwayComponentUtils';
+import './css/ReactFlowArea.css';
 
 import './css/Restore.css';
+
+import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+import Molecule from './customNodes/Molecule';
+const nodeTypes = {
+    reversibleEnzyme: ReversibleEnzyme,
+    molecule: Molecule
+};
 
 const flowKey = 'example-flow';
 
 const getNodeId = () => `randomnode_${+new Date()}`;
 
-// const initialNodes = [
-//     { id: '1', data: { label: 'Node 1' }, position: { x: 100, y: 100 } },
-//     { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
-// ];
+const initialNodes = [
+    { id: '1', data: { label: 'Node 1' }, position: { x: 100, y: 100 } },
+    { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 200 } },
+];
 
-// const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 
 const SaveRestore = (props) => {
-    // generateNodes();
-    var initial = buildFlow();
-    const initialNodes = initial[0];
-    const initialEdges = initial[1];
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
-    console.log(props.titles, "dog");
-
-    var [concentrations, setConcentrations] = useState(props.concentration); // new
-
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
     useEffect(() => {
-        // setConcentrations((conc) => 
-        //     concentrations = runConcentrations(props.concentration)
-        // );
         console.log(props.concentration, "hello");
-        // setEdges((eds) =>
-        //     eds.map((edge) => {
-        //     // for loop is needed for edges that have the same input, ex. GH3P
-        //     // O(N^2) so might need to change if its too slow for later pathways
-        //     for (let i = 0; i < props.concentration.length; i++) {
-        //         if (edge.data == props.title[i]) {
-        //         // edge.style = {strokeWidth: props.concentration[i], stroke: 'red'};
-        //             if (props.factorSteps.includes(i)) { // is a factor step
-        //                 edge.style = {strokeWidth: concentrations[i], stroke: 'yellow'};
-        //             }
-        //             else {
-        //                 edge.style = {strokeWidth: concentrations[i], stroke: 'red'};
-        //             }
-        //         }
-        //     }
-    
-        //     return edge;
-        //     })
-        // );
     }, [props.concentration, setEdges]);
 
     const onSave = useCallback(() => {
@@ -90,10 +64,26 @@ const SaveRestore = (props) => {
         restoreFlow();
     }, [setNodes, setViewport]);
 
-    const onAdd = useCallback(() => {
+    const onAddMolecule = useCallback(() => {
         const newNode = {
         id: getNodeId(),
-        data: { label: 'Added node' },
+        className: 'MoleculeBuild',
+        data: { label: 'Added node', type: "molecule" },
+        type: "molecule",
+        position: {
+            x: Math.random() * window.innerWidth - 100,
+            y: Math.random() * window.innerHeight,
+        },
+        };
+        setNodes((nds) => nds.concat(newNode));
+    }, [setNodes]);
+
+    const onAddEnzyme = useCallback(() => {
+        const newNode = {
+        id: getNodeId(),
+        className: 'enzymeBuild',
+        data: { label: 'Added node', type: "enzyme" },
+        type: "reversibleEnzyme",
         position: {
             x: Math.random() * window.innerWidth - 100,
             y: Math.random() * window.innerHeight,
@@ -116,11 +106,13 @@ const SaveRestore = (props) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onInit={setRfInstance}
+        nodeTypes={nodeTypes}
         >
         <div className="save__controls">
             <button onClick={onSave}>save</button>
             <button onClick={onRestore}>restore</button>
-            <button onClick={onAdd}>add node</button>
+            <button onClick={onAddMolecule}>add molecule</button>
+            <button onClick={onAddEnzyme}>add enzyme</button>
             <button onClick={onClear}>clear flow</button>
         </div>
         </ReactFlow>

@@ -9,6 +9,7 @@ import phosphoglycerate_kinase from '../../images/glycolysis/phosphoglycerate ki
 import phosphoglycerate_mutase from '../../images/glycolysis/phosphoglycerate mutase.png';
 import pyruvate_kinase from '../../images/glycolysis/pyruvate kinase.png';
 import triose_phosphate_isomerase from '../../images/glycolysis/triose phosphate isomerase.png';
+import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
 export default memo(({ data, isConnectable }) => {
   let image = null;
@@ -36,9 +37,13 @@ export default memo(({ data, isConnectable }) => {
   else if (data.image === "pyruvate kinase") {
     image = pyruvate_kinase;
   }
+  else if (data.image === "triose phosphate dehydrogenase") {
+    image = triose_phosphate_dehydrogenase;
+  }
   else {
     image = triose_phosphate_isomerase
   }
+  console.log(data.image, image, "image from enzyme")
   return (
     <>
       <Handle
@@ -58,8 +63,8 @@ export default memo(({ data, isConnectable }) => {
         isConnectable={isConnectable}
       />
       <div>
-        {/* <strong>{data.label}</strong> */}
-        <img src={image} width="150" height="100" alt="enzymeImage"/>
+        <strong>{data.label}</strong>
+        <img src={image} width="120" height="80" alt="enzymeImage"/>
       </div>
       {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}
       <Handle

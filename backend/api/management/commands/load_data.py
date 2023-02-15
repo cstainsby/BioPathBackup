@@ -7,9 +7,7 @@ This script is called using "python manage.py load_data" from setup.sh
 and can be ommitted to retain old database data. 
 """
 
-import api.models as models
-from django.contrib.auth.models import User
-
+from api import models
 from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
@@ -17,9 +15,9 @@ class Command(BaseCommand):
         
         # now do the things that you want with your models here
         
-        for e in models.PathwayEnzyme.objects.all():
+        for e in models.EnzymeInstance.objects.all():
           e.delete()
-        for e in models.PathwayMolecule.objects.all():
+        for e in models.MoleculeInstance.objects.all():
           e.delete()
         for m in models.Molecule.objects.all():
           m.delete()
@@ -27,88 +25,103 @@ class Command(BaseCommand):
           e.delete()
         for e in models.Pathway.objects.all():
           e.delete()
-        for e in User.objects.all():
-          e.delete()
 
-        root = User.objects.create_superuser('root', 'root@biopath.com', 'root')
-        m1 = models.Molecule(
-            name="molecule1",
-            link="",
-            abbreviation="m1",
-            author=root
-        )
-        m1.save()
-
-        m2 = models.Molecule(
-            name="molecule2",
-            link="",
-            abbreviation="m2",
-            author=root
-        )
-        m2.save()
-
-        m3 = models.Molecule(
-            name="molecule3",
-            link="",
-            abbreviation="m3",
-            author=root
-        )
-        m3.save()
-
-        e1 = models.Enzyme(
-            name="enzyme1",
-            link="",
-            abbreviation="e1",
-            reversible=True,
-            author=root
-        )
-        e1.save()
-
-        e1.cofactors.add(m3)
-        e1.substrates.add(m1)
-        e1.products.add(m2)
-
-        p1 = models.Pathway(
+        try:
+            root = models.User.objects.get(username="root")
+        except:
+            root = models.User.objects.create_superuser(
+                username='root',
+                email='',
+                password='root'
+            )
+        
+        # ----- Fake Pathway -----
+        p1 = models.Pathway.objects.create(
             name="path1",
-            link="",
             public=True,
             author=root
         )
-        p1.save()
 
-        pe1 = models.PathwayEnzyme(
-            enzyme=e1,
-            pathway=p1,
-            x=0,
-            y=100
+        # molecules
+        m1 = models.Molecule.objects.create(
+            name="molecule1",
+            abbreviation="m1",
+            author=root,
+            public=True
         )
-        pe1.save()
-        pm1 = models.PathwayMolecule(
+        m1i = models.MoleculeInstance.objects.create(
             molecule=m1,
-            pathway=p1,
             x=45,
-            y=0
+            y=0,
+            pathway=p1
         )
-        pm1.save()
-        pm2 = models.PathwayMolecule(
+
+        m2 = models.Molecule.objects.create(
+            name="molecule2",
+            abbreviation="m2",
+            author=root,
+            public=True
+        )
+        m2i = models.MoleculeInstance.objects.create(
             molecule=m2,
-            pathway=p1,
             x=45,
-            y=240
+            y=240,
+            pathway=p1
         )
-        pm2.save()
-        pm3 = models.PathwayMolecule(
+
+        m3 = models.Molecule.objects.create(
+            name="molecule3",
+            abbreviation="m3",
+            author=root,
+            public=True
+        )
+        m3i = models.MoleculeInstance.objects.create(
             molecule=m3,
-            pathway=p1,
             x=195,
-            y=120
+            y=120,
+            pathway=p1
         )
-        pm3.save()
+
+        e1 = models.Enzyme.objects.create(
+            name="enzyme1",
+            abbreviation="e1",
+            reversible=True,
+            author=root,
+            public=True
+        )
+        e1i = models.EnzymeInstance.objects.create(
+            enzyme=e1,
+            x=0,
+            y=100,
+            limiting=True,
+            pathway=p1
+        )
+
+        e1.substrates.add(m1)
+        e1.products.add(m2)
+        e1.cofactors.add(m3)
+
+        e1i.substrate_instances.add(m1i)
+        e1i.product_instances.add(m2i)
+        e1i.cofactor_instances.add(m3i)
 
 
+        
 
-        # Begin Glucose
-        glu = models.Molecule(
+        # p1.molecule_instances.add(m1i, m2i, m3i)
+        # p1.enzyme_instances.add(e1i)
+
+
+        # ----- Glycolysis -----
+        glycolysis = models.Pathway.objects.create(
+            name="Glycolysis",
+            author=root,
+            #link=
+            public=True
+        )
+
+        # molecules
+        glu = models.Molecule.objects.create(
             name="Glucose",
             abbreviation="GLU",
             #ball_and_stick_image=,
@@ -117,9 +130,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        glu.save()
+        glu_instance = models.MoleculeInstance.objects.create(
+            molecule=glu,
+            x=200,
+            y=150,
+            pathway=glycolysis
+        )
 
-        g6p = models.Molecule(
+        g6p = models.Molecule.objects.create(
             name="Glucose 6-Phosphate",
             abbreviation="G6P",
             #ball_and_stick_image=,
@@ -128,9 +146,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        g6p.save()
+        g6p_instance = models.MoleculeInstance.objects.create(
+            molecule=g6p,
+            x=195,
+            y=390,
+            pathway=glycolysis
+        )
 
-        f6p = models.Molecule(
+        f6p = models.Molecule.objects.create(
             name="Fructose 6-Phosphate",
             abbreviation="F6P",
             #ball_and_stick_image=,
@@ -139,9 +162,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        f6p.save()
-
-        f16bp = models.Molecule(
+        f6p_instance = models.MoleculeInstance.objects.create(
+            molecule=f6p,
+            x=195,
+            y=615,
+            pathway=glycolysis
+        )
+        
+        f16bp = models.Molecule.objects.create(
             name="Fructose 1,6-Biphosphate",
             abbreviation="F16BP",
             #ball_and_stick_image=,
@@ -150,9 +178,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        f16bp.save()
-
-        g3p = models.Molecule(
+        f16bp_instance = models.MoleculeInstance.objects.create(
+            molecule=f16bp,
+            x=210,
+            y=855,
+            pathway=glycolysis
+        )
+        
+        g3p = models.Molecule.objects.create(
             name="Glyceraldehyde 3-Phosphate",
             abbreviation="G3P",
             #ball_and_stick_image=,
@@ -161,9 +194,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        g3p.save()
+        g3p_instance = models.MoleculeInstance.objects.create(
+            molecule=g3p,
+            x=195,
+            y=1335,
+            pathway=glycolysis
+        )
 
-        dhap = models.Molecule(
+        dhap = models.Molecule.objects.create(
             name="Dehydrocycetone Phosphate",
             abbreviation="DHAP",
             #ball_and_stick_image=,
@@ -172,9 +210,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        dhap.save()
+        dhap_instance = models.MoleculeInstance.objects.create(
+            molecule=dhap,
+            x=345,
+            y=1110,
+            pathway=glycolysis
+        )
 
-        bpg = models.Molecule(
+        bpg = models.Molecule.objects.create(
             name="1,3-Bisphosphoglycerate",
             abbreviation="13BPG",
             #ball_and_stick_image=,
@@ -183,9 +226,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        bpg.save()
+        bpg_instance = models.MoleculeInstance.objects.create(
+            molecule=bpg,
+            x=225,
+            y=1560,
+            pathway=glycolysis
+        )
 
-        pg3 = models.Molecule(
+        pg3 = models.Molecule.objects.create(
             name="3-Phosphoglycerate",
             abbreviation="3PG",
             #ball_and_stick_image=,
@@ -194,9 +242,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        pg3.save()
+        pg3_instance = models.MoleculeInstance.objects.create(
+            molecule=pg3,
+            x=225,
+            y=1875,
+            pathway=glycolysis
+        )
 
-        pg2 = models.Molecule(
+        pg2 = models.Molecule.objects.create(
             name="2-Phosphoglycerate",
             abbreviation="2PG",
             #ball_and_stick_image=,
@@ -205,9 +258,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        pg2.save()
+        pg2_instance = models.MoleculeInstance.objects.create(
+            molecule=pg2,
+            x=270,
+            y=2130,
+            pathway=glycolysis
+        )
 
-        pep = models.Molecule(
+        pep = models.Molecule.objects.create(
             name="Phosphoenolpyruvate",
             abbreviation="PEP",
             #ball_and_stick_image=,
@@ -216,9 +274,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        pep.save()
+        pep_instance = models.MoleculeInstance.objects.create(
+            molecule=pep,
+            x=210,
+            y=2385,
+            pathway=glycolysis
+        )
 
-        pyr = models.Molecule(
+        pyr = models.Molecule.objects.create(
             name="Pyruvate",
             abbreviation="PYR",
             #ball_and_stick_image=,
@@ -227,9 +290,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        pyr.save()
+        pyr_instance = models.MoleculeInstance.objects.create(
+            molecule=pyr,
+            x=210,
+            y=2670,
+            pathway=glycolysis
+        )
 
-        nad = models.Molecule(
+        nad = models.Molecule.objects.create(
             name="NAD+",
             abbreviation="NAD+",
             #ball_and_stick_image=,
@@ -238,9 +306,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        nad.save()
+        nad_instance = models.MoleculeInstance.objects.create(
+            molecule=nad,
+            x=330,
+            y=1335,
+            pathway=glycolysis
+        )
 
-        nadh = models.Molecule(
+        nadh = models.Molecule.objects.create(
             name="NADH",
             abbreviation="NADH",
             #ball_and_stick_image=,
@@ -249,9 +322,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        nadh.save()
+        nadh_instance = models.MoleculeInstance.objects.create(
+            molecule=nadh,
+            x=315,
+            y=1560,
+            pathway=glycolysis
+        )
 
-        h = models.Molecule(
+        h = models.Molecule.objects.create(
             name="H+",
             abbreviation="H+",
             #ball_and_stick_image=,
@@ -260,9 +338,14 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        h.save()
+        h_instance = models.MoleculeInstance.objects.create(
+            molecule=h,
+            x=375,
+            y=1560,
+            pathway=glycolysis
+        )
 
-        atp = models.Molecule(
+        atp = models.Molecule.objects.create(
             name="ATP",
             abbreviation="ATP",
             #ball_and_stick_image=,
@@ -271,9 +354,32 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        atp.save()
+        atp_instance1 = models.MoleculeInstance.objects.create(
+            molecule=atp,
+            x=315,
+            y=150,
+            pathway=glycolysis
+        )
+        atp_instance2 = models.MoleculeInstance.objects.create(
+            molecule=atp,
+            x=315,
+            y=615,
+            pathway=glycolysis
+        )
+        atp_instance3 = models.MoleculeInstance.objects.create(
+            molecule=atp,
+            x=315,
+            y=1635,
+            pathway=glycolysis
+        )
+        atp_instance4 = models.MoleculeInstance.objects.create(
+            molecule=atp,
+            x=330,
+            y=2385,
+            pathway=glycolysis
+        )
 
-        adp = models.Molecule(
+        adp = models.Molecule.objects.create(
             name="ADP",
             abbreviation="ADP",
             #ball_and_stick_image=,
@@ -282,75 +388,32 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        adp.save()
-
-        atp1 = models.Molecule(
-            name="ATP",
-            abbreviation="ATP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
+        adp_instance1 = models.MoleculeInstance.objects.create(
+            molecule=adp,
+            x=315,
+            y=390,
+            pathway=glycolysis
         )
-        atp1.save()
-
-        adp1 = models.Molecule(
-            name="ADP",
-            abbreviation="ADP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
+        adp_instance2 = models.MoleculeInstance.objects.create(
+            molecule=adp,
+            x=300,
+            y=855,
+            pathway=glycolysis
         )
-        adp1.save()
-
-        atp2 = models.Molecule(
-            name="ATP",
-            abbreviation="ATP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
+        adp_instance3 = models.MoleculeInstance.objects.create(
+            molecule=adp,
+            x=315,
+            y=1875,
+            pathway=glycolysis
         )
-        atp2.save()
-
-        adp2 = models.Molecule(
-            name="ADP",
-            abbreviation="ADP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
+        adp_instance4 = models.MoleculeInstance.objects.create(
+            molecule=adp,
+            x=330,
+            y=2670,
+            pathway=glycolysis
         )
-        adp2.save()
 
-        atp3 = models.Molecule(
-            name="ATP",
-            abbreviation="ATP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
-        )
-        atp3.save()
-
-        adp3 = models.Molecule(
-            name="ADP",
-            abbreviation="ADP",
-            #ball_and_stick_image=,
-            #space_filling_image=,
-            # link=,
-            author=root,
-            public=True
-        )
-        adp3.save()
-
-        h2o = models.Molecule(
+        h2o = models.Molecule.objects.create(
             name="Hydrogen Dioxide",
             abbreviation="H2O",
             # ball_and_stick_image=,
@@ -359,462 +422,260 @@ class Command(BaseCommand):
             author=root,
             public=True
         )
-        h2o.save()
-
+        h2o_instance = models.MoleculeInstance.objects.create(
+            molecule=h2o,
+            x=275,
+            y=2235,
+            pathway=glycolysis
+        )
 
         # ----- enzymes -----
-        hexokinase = models.Enzyme(
+        hexokinase = models.Enzyme.objects.create(
             name="Hexokinase",
             abbreviation="HK",
             # image=,
-            # link="",
+            link="hexokinase",
             author=root,
             public=True,
-            reversible=False,
-            # substrates=[glu, atp],
-            # products=[g6p, adp],
-            # cofactors=[]
+            reversible=False
         )
-        hexokinase.save()
         hexokinase.substrates.add(glu, atp)
         hexokinase.products.add(g6p, adp)
+        hexokinase_instance = models.EnzymeInstance.objects.create(
+            enzyme=hexokinase,
+            x=210,
+            y=240,
+            limiting=True,
+            pathway=glycolysis
+        )
+        hexokinase_instance.substrate_instances.add(glu_instance, atp_instance1)
+        hexokinase_instance.product_instances.add(g6p_instance, adp_instance1)
 
-        phosphoglucoisomerase = models.Enzyme(
+        phosphoglucoisomerase = models.Enzyme.objects.create(
             name="Phosphoglucoisomerase",
             abbreviation="PGI",
             # image=,
-            # link="",
+            link="phosphoglucose isomerase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[g6p],
-            # products=[f6p],
-            # cofactors=[]
         )
-        phosphoglucoisomerase.save()
         phosphoglucoisomerase.substrates.add(g6p)
         phosphoglucoisomerase.products.add(f6p)
-
-        phosphofructokinase = models.Enzyme(
+        phosphoglucoisomerase_instance = models.EnzymeInstance.objects.create(
+            enzyme=phosphoglucoisomerase,
+            x=210,
+            y=480,
+            limiting=True,
+            pathway=glycolysis
+        )
+        phosphoglucoisomerase_instance.substrate_instances.add(g6p_instance)
+        phosphoglucoisomerase_instance.product_instances.add(f6p_instance)
+        
+        phosphofructokinase = models.Enzyme.objects.create(
             name="Phosphofructokinase",
             abbreviation="PFK",
             # image=,
-            # link="",
+            link="phosphofructokinase",
             author=root,
             public=True,
             reversible=False,
-            # substrates=[f6p, atp],
-            # products=[f16bp, adp],
-            # cofactors=[]
         )
-        phosphofructokinase.save()
-        phosphofructokinase.substrates.add(f6p, atp1)
-        phosphofructokinase.products.add(f16bp, adp1)
+        phosphofructokinase.substrates.add(f6p, atp)
+        phosphofructokinase.products.add(f16bp, adp)
+        phosphofructokinase_instance = models.EnzymeInstance.objects.create(
+            enzyme=phosphofructokinase,
+            x=210,
+            y=720,
+            limiting=True,
+            pathway=glycolysis
+        )
+        phosphofructokinase_instance.substrate_instances.add(f6p_instance, atp_instance2)
+        phosphofructokinase_instance.product_instances.add(f16bp_instance, adp_instance2)
 
-        aldolase = models.Enzyme(
+        aldolase = models.Enzyme.objects.create(
             name="Aldolase",
             abbreviation="ALD",
             # image=,
-            # link="",
+            link="aldolase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[f16bp],
-            # products=[g3p, dhap],
-            # cofactors=[]
         )
-        aldolase.save()
         aldolase.substrates.add(f16bp)
         aldolase.products.add(g3p, dhap)
-
-        triose_phosphate_isomerase = models.Enzyme(
+        aldolase_instance = models.EnzymeInstance.objects.create(
+            enzyme=aldolase,
+            x=210,
+            y=945,
+            limiting=True,
+            pathway=glycolysis
+        )
+        aldolase_instance.substrate_instances.add(f16bp_instance)
+        aldolase_instance.product_instances.add(g3p_instance, dhap_instance)
+        
+        triose_phosphate_isomerase = models.Enzyme.objects.create(
             name="Triose Phosphate Isomerase",
             abbreviation="ISO",
             # image=,
-            # link="",
+            link="triose phosphate isomerase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[dhap],
-            # products=[g3p],
-            # cofactors=[]
         )
-        triose_phosphate_isomerase.save()
         triose_phosphate_isomerase.substrates.add(dhap)
         triose_phosphate_isomerase.products.add(g3p)
+        triose_phosphate_isomerase_instance = models.EnzymeInstance.objects.create(
+            enzyme=triose_phosphate_isomerase,
+            x=300,
+            y=1200,
+            limiting=True,
+            pathway=glycolysis
+        )
+        triose_phosphate_isomerase_instance.substrate_instances.add(dhap_instance)
+        triose_phosphate_isomerase_instance.product_instances.add(g3p_instance)
 
-        tpd = models.Enzyme(
+        tpd = models.Enzyme.objects.create(
             name="Trios Phosphate Dehydrogenase",
-            abbreviation="",
+            abbreviation="TPD",
             # image=,
-            # link="",
+            link="triose phosphate isomerase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[g3p, nad],
-            # products=[bpg, nadh, h],
-            # cofactors=[]
         )
-        tpd.save()
         tpd.substrates.add(g3p, nad)
         tpd.products.add(bpg, nadh, h)
-
-        phosphoglycerokinase = models.Enzyme(
+        tpd_instance = models.EnzymeInstance.objects.create(
+            enzyme=tpd,
+            x=225,
+            y=1425,
+            limiting=True,
+            pathway=glycolysis
+        )
+        tpd_instance.substrate_instances.add(g3p_instance, nad_instance)
+        tpd_instance.product_instances.add(bpg_instance, nadh_instance, h_instance)
+        
+        phosphoglycerokinase = models.Enzyme.objects.create(
             name="Phosphoglycerokinase",
             abbreviation="PGK",
             # image=,
-            # link="",
+            link="phosphoglycerate kinase",
             author=root,
             public=True,
-            reversible=True,
-            # substrates=[bpg, atp],
-            # products=[pg3, adp],
-            # cofactors=[]
+            reversible=True
         )
-        phosphoglycerokinase.save()
-        phosphoglycerokinase.substrates.add(bpg, atp2)
-        phosphoglycerokinase.products.add(pg3, adp2)
+        phosphoglycerokinase.substrates.add(bpg, atp)
+        phosphoglycerokinase.products.add(pg3, adp)
+        phosphoglycerokinase_instance = models.EnzymeInstance.objects.create(
+            enzyme=phosphoglycerokinase,
+            x=225,
+            y=1725,
+            limiting=True,
+            pathway=glycolysis
+        )
+        phosphoglycerokinase_instance.substrate_instances.add(bpg_instance, atp_instance3)
+        phosphoglycerokinase_instance.product_instances.add(pg3_instance, adp_instance3)
 
-        phosphoglyceromutase = models.Enzyme(
+        phosphoglyceromutase = models.Enzyme.objects.create(
             name="Phosphoglyceromutase",
             abbreviation="PGM",
             # image=,
-            # link="",
+            link="phosphoglycerate mutase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[pg3],
-            # products=[pg2],
-            # cofactors=[]
         )
-        phosphoglyceromutase.save()
         phosphoglyceromutase.substrates.add(pg3)
         phosphoglyceromutase.products.add(pg2)
+        phosphoglyceromutase_instance = models.EnzymeInstance.objects.create(
+            enzyme=phosphoglyceromutase,
+            x=225,
+            y=1965,
+            limiting=True,
+            pathway=glycolysis
+        )
+        phosphoglyceromutase_instance.substrate_instances.add(pg3_instance)
+        phosphoglyceromutase_instance.product_instances.add(pg2_instance)
 
-        enolase = models.Enzyme(
+        enolase = models.Enzyme.objects.create(
             name="Enolase",
             abbreviation="ENO",
             # image=,
-            # link="",
+            link="enolase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[pg2],
-            # products=[pep],
-            # cofactors=[]
         )
-        enolase.save()
         enolase.substrates.add(pg2)
-        enolase.products.add(pep)
+        enolase.products.add(pep, h2o)
+        enolase_instance = models.EnzymeInstance.objects.create(
+            enzyme=enolase,
+            x=225,
+            y=2235,
+            limiting=True,
+            pathway=glycolysis
+        )
+        enolase_instance.substrate_instances.add(pg2_instance)
+        enolase_instance.product_instances.add(pep_instance, h2o_instance)
 
-        pyrk = models.Enzyme(
+        pyrk = models.Enzyme.objects.create(
             name="Pyruvate Kinase",
             abbreviation="PYRK",
             # image=,
-            # link="",
+            link="pyruvate kinase",
             author=root,
             public=True,
             reversible=True,
-            # substrates=[pep, atp],
-            # products=[pyr, adp],
-            # cofactors=[]
         )
-        pyrk.save()
-        pyrk.substrates.add(pep, atp3)
-        pyrk.products.add(pyr, adp3)
-
-
-        # ----- pathway -----
-        glycolysis = models.Pathway(
-            name="Glycolysis",
-            author=root,
-            #link=
-            public=True
-        )
-        glycolysis.save()
-        # glycolysis.molecules.add(
-        #     glu,
-        #     g6p,
-        #     f6p,
-        #     f16bp,
-        #     g3p,
-        #     dhap,
-        #     bpg,
-        #     pg3,
-        #     pg2,
-        #     pep,
-        #     pyr,
-        #     nad,
-        #     nadh,
-        #     h,
-        #     atp,
-        #     adp,
-        #     atp1,
-        #     adp1,
-        #     atp2,
-        #     adp2,
-        #     h2o
-        # )
-        # glycolysis.enzymes.add(
-        #     hexokinase,
-        #     phosphoglucoisomerase,
-        #     phosphofructokinase,
-        #     aldolase,
-        #     triose_phosphate_isomerase,
-        #     tpd,
-        #     phosphoglycerokinase,
-        #     phosphoglyceromutase,
-        #     enolase,
-        #     pyrk
-        # )
-
-
-        # ----- pathway enzymes -----
-        pe1 = models.PathwayEnzyme(
-            enzyme=hexokinase,
-            pathway=glycolysis,
-            x=210,
-            y=240
-        )
-        pe1.save()
-
-        pe2 = models.PathwayEnzyme(
-            enzyme=phosphoglucoisomerase,
-            pathway=glycolysis,
-            x=210,
-            y=480
-        )
-        pe2.save()
-
-        pe3 = models.PathwayEnzyme(
-            enzyme=phosphofructokinase,
-            pathway=glycolysis,
-            x=210,
-            y=720
-        )
-        pe3.save()
-
-        pe4 = models.PathwayEnzyme(
-            enzyme=aldolase,
-            pathway=glycolysis,
-            x=210,
-            y=945
-        )
-        pe4.save()
-
-        pe5 = models.PathwayEnzyme(
-            enzyme=triose_phosphate_isomerase,
-            pathway=glycolysis,
-            x=300,
-            y=1200
-        )
-        pe5.save()
-
-        pe6 = models.PathwayEnzyme(
-            enzyme=tpd,
-            pathway=glycolysis,
-            x=225,
-            y=1425
-        )
-        pe6.save()
-
-        pe7 = models.PathwayEnzyme(
-            enzyme=phosphoglycerokinase,
-            pathway=glycolysis,
-            x=225,
-            y=1725
-        )
-        pe7.save()
-
-        pe8 = models.PathwayEnzyme(
-            enzyme=phosphoglyceromutase,
-            pathway=glycolysis,
-            x=225,
-            y=1965
-        )
-        pe8.save()
-
-        pe9 = models.PathwayEnzyme(
-            enzyme=enolase,
-            pathway=glycolysis,
-            x=225,
-            y=2235
-        )
-        pe9.save()
-
-        pe10 = models.PathwayEnzyme(
+        pyrk.substrates.add(pep, atp)
+        pyrk.products.add(pyr, adp)
+        pyrk_instance = models.EnzymeInstance.objects.create(
             enzyme=pyrk,
-            pathway=glycolysis,
             x=225,
-            y=2520
+            y=2520,
+            limiting=True,
+            pathway=glycolysis
         )
-        pe10.save()
-
-        # ----- pathway molecule -----
-        pm1 = models.PathwayMolecule(
-            molecule=glu,
-            pathway=glycolysis,
-            x=200,
-            y=150
+        pyrk_instance.substrate_instances.add(pep_instance, atp_instance4)
+        pyrk_instance.product_instances.add(pyr_instance, adp_instance4)
+        
+        # ----- pathway -----
+        
+        glycolysis.molecule_instances.add(
+            glu_instance,
+            g6p_instance,
+            f6p_instance,
+            f16bp_instance,
+            g3p_instance,
+            dhap_instance,
+            bpg_instance,
+            pg3_instance,
+            pg2_instance,
+            pep_instance,
+            pyr_instance,
+            nad_instance,
+            nadh_instance,
+            h_instance,
+            atp_instance1,
+            adp_instance1,
+            atp_instance2,
+            adp_instance2,
+            atp_instance3,
+            adp_instance3,
+            atp_instance4,
+            adp_instance4,
+            h2o_instance
         )
-        pm1.save()
-
-        pm2 = models.PathwayMolecule(
-            molecule=atp,
-            pathway=glycolysis,
-            x=315,
-            y=150
+        glycolysis.enzyme_instances.add(
+            hexokinase_instance,
+            phosphoglucoisomerase_instance,
+            phosphofructokinase_instance,
+            aldolase_instance,
+            triose_phosphate_isomerase_instance,
+            tpd_instance,
+            phosphoglycerokinase_instance,
+            phosphoglyceromutase_instance,
+            enolase_instance,
+            pyrk_instance
         )
-        pm2.save()
-
-        pm3 = models.PathwayMolecule(
-            molecule=g6p,
-            pathway=glycolysis,
-            x=195,
-            y=390
-        )
-        pm3.save()
-
-        pm4 = models.PathwayMolecule(
-            molecule=adp,
-            pathway=glycolysis,
-            x=315,
-            y=390
-        )
-        pm4.save()
-
-        pm5 = models.PathwayMolecule(
-            molecule=f6p,
-            pathway=glycolysis,
-            x=195,
-            y=615
-        )
-        pm5.save()
-
-        pm6 = models.PathwayMolecule(
-            molecule=atp1,
-            pathway=glycolysis,
-            x=315,
-            y=615
-        )
-        pm6.save()
-
-        pm7 = models.PathwayMolecule(
-            molecule=f16bp,
-            pathway=glycolysis,
-            x=210,
-            y=855
-        )
-        pm7.save()
-
-        pm8 = models.PathwayMolecule(
-            molecule=adp1,
-            pathway=glycolysis,
-            x=300,
-            y=855
-        )
-        pm8.save()
-
-        pm9 = models.PathwayMolecule(
-            molecule=dhap,
-            pathway=glycolysis,
-            x=345,
-            y=1110
-        )
-        pm9.save()
-
-        pm10 = models.PathwayMolecule(
-            molecule=g3p,
-            pathway=glycolysis,
-            x=195,
-            y=1335
-        )
-        pm10.save()
-
-        pm11 = models.PathwayMolecule(
-            molecule=nad,
-            pathway=glycolysis,
-            x=330,
-            y=1335
-        )
-        pm11.save()
-
-        pm12 = models.PathwayMolecule(
-            molecule=bpg,
-            pathway=glycolysis,
-            x=225,
-            y=1560
-        )
-        pm12.save()
-
-        pm13 = models.PathwayMolecule(
-            molecule=nadh,
-            pathway=glycolysis,
-            x=315,
-            y=1560
-        )
-        pm13.save()
-
-        pm14 = models.PathwayMolecule(
-            molecule=adp2,
-            pathway=glycolysis,
-            x=315,
-            y=1875
-        )
-        pm14.save()
-
-        pm15 = models.PathwayMolecule(
-            molecule=pg3,
-            pathway=glycolysis,
-            x=225,
-            y=1875
-        )
-        pm15.save()
-
-        pm16 = models.PathwayMolecule(
-            molecule=atp2,
-            pathway=glycolysis,
-            x=315,
-            y=1635
-        )
-        pm16.save()
-
-        pm17 = models.PathwayMolecule(
-            molecule=pg2,
-            pathway=glycolysis,
-            x=270,
-            y=2130
-        )
-        pm17.save()
-
-        pm18 = models.PathwayMolecule(
-            molecule=pep,
-            pathway=glycolysis,
-            x=210,
-            y=2385
-        )
-        pm18.save()
-
-        pm19 = models.PathwayMolecule(
-            molecule=atp3,
-            pathway=glycolysis,
-            x=330,
-            y=2385
-        )
-        pm19.save()
-
-        pm20 = models.PathwayMolecule(
-            molecule=pyr,
-            pathway=glycolysis,
-            x=210,
-            y=2670
-        )
-        pm20.save()
-
-        pm21 = models.PathwayMolecule(
-            molecule=adp3,
-            pathway=glycolysis,
-            x=330,
-            y=2670
-        )
-        pm21.save()

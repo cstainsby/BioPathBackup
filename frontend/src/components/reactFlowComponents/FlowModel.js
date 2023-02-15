@@ -9,7 +9,7 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import { buildFlow, parseEnzymesForSliders } from '../utils/pathwayComponentUtils';
+import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
 
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
@@ -84,7 +84,7 @@ const FlowModel = (props) => {
         setNodes(nodesAndEdgesDict["nodes"]);
         setEdges(nodesAndEdgesDict["edges"]);
 
-        const enzymesForSliders = parseEnzymesForSliders(newPathway);
+        const enzymesForSliders = parseEnzymesForManager(newPathway);
         props.concentrationManager.addListener((moleculeConcentrations) => {
             let mList = [];
             for (const [id, data] of Object.entries(moleculeConcentrations)) {

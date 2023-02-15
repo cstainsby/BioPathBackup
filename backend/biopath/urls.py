@@ -10,6 +10,8 @@ from django.urls import include, path
 from rest_framework.authtoken import views
 
 from api.views import RegisterView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path(route='admin/', view=admin.site.urls),
@@ -21,4 +23,4 @@ urlpatterns = [
     path(route='register/', view=RegisterView.as_view(), name='register'),
     # path(route='login/', view=LoginView.as_view(), name='login'),
     path(route='api-token-auth/', view=views.obtain_auth_token)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

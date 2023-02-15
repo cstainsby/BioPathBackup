@@ -4,6 +4,8 @@ import FlowModel from './reactFlowComponents/FlowModel'
 
 //import Restore from './Restore';
 
+import aldolase from'../images/glycolysis/aldolase.png';
+
 import ConcentrationManager from './utils/ConcentrationManager';
 import { useLoaderData } from 'react-router-dom';
 

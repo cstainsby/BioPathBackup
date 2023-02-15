@@ -8,7 +8,7 @@ export default memo(({ data, isConnectable }) => {
         type="target"
         position="top"
         id="top-target"
-        style={{left: 35, top: 1, background: '#555' }}
+        style={{left: 45, top: 1, background: '#555' }}
         onConnect={(params) => console.log('handle onConnect', params)}
         isConnectable={isConnectable}
       />
@@ -29,7 +29,7 @@ export default memo(({ data, isConnectable }) => {
         type="source"
         position="bottom"
         id="bottom-source"
-        style={{left: 35, bottom: 1, background: '#555' }}
+        style={{left: 45, bottom: 1, background: '#555' }}
         isConnectable={isConnectable}
       />
       <Handle

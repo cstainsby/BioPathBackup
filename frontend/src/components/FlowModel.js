@@ -166,6 +166,14 @@ const FlowModel = (props) => {
         };
     }, [running, speed]);
 
+    /**
+     * Resets concentrations to starting values
+     * 
+     */
+    function resetConcentrations() {
+        props.concentrationManager.reset();
+    }
+
     return (
         <div className='ModelArea'>
             { !isPathwayCurrentlyLoaded && <h1>Click File&gt;Open to load a pathway!</h1>}
@@ -196,6 +204,7 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
+                    reset = {() => resetConcentrations()}
                 />}
             </ReactFlow>            
         </div>

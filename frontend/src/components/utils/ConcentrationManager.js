@@ -135,7 +135,7 @@ class ConcentrationManager {
             if (!minConc) {
                 minConc = cachedConcentrations[molecule.id].value;
             }
-            if (cachedConcentrations[molecule.id] < minConc) {
+            if (cachedConcentrations[molecule.id].value < minConc) { // bug here, wasnt getting value so never entering if stmt
                 minConc = cachedConcentrations[molecule.id].value;
             }
         }
@@ -195,6 +195,13 @@ class ConcentrationManager {
         } else {
             console.log("No Concentrations");
         }
+    }
+
+    reset() {
+        for (const molecule in this.moleculeConcentrations) {
+            this.moleculeConcentrations[molecule].value = 1
+        }
+        this.notifyListeners();
     }
 
     getMolculeConcentrations() {

@@ -540,7 +540,7 @@ class Command(BaseCommand):
             name="Trios Phosphate Dehydrogenase",
             abbreviation="TPD",
             # image=,
-            link="triose phosphate isomerase",
+            link="triose phosphate dehydrogenase",
             author=root,
             public=True,
             reversible=True,

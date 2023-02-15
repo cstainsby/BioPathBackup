@@ -143,7 +143,8 @@ export function generateNodes(pathway) {
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
-                    products: enzyme.product_instances
+                    products: enzyme.product_instances,
+                    image: enzyme.link
                 },
                 type: "reversibleEnzyme",
                 position: {x: enzyme.x, y: enzyme.y}
@@ -158,7 +159,8 @@ export function generateNodes(pathway) {
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
-                    products: enzyme.product_instances
+                    products: enzyme.product_instances,
+                    image: enzyme.link
                 },
                 type: "reversibleEnzyme",
                 position: {x: enzyme.x, y: enzyme.y}

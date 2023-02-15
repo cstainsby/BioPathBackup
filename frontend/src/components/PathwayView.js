@@ -3,16 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import FlowModel from './FlowModel'
 import NavBar from './NavBar'
-//import RightSideBarArea from './RightSideBarArea';
 import Error from "./Error";
 
-//import Restore from './Restore';
 import './css/PathwayView.css'
 
-import aldolase from'../images/glycolysis/aldolase.png';
 
 import userInputInteractionList from './PathwayInteractiveComponent';
 import ConcentrationManager from './utils/ConcentrationManager';
+import FlowBuilder from './FlowBuilder';
 
 export default class PathwayView extends Component {
   constructor(props) {
@@ -35,6 +33,7 @@ export default class PathwayView extends Component {
                               <FlowModel 
                                 concentrationManager= {this.concentrationManager}
                               />
+                              {/* <FlowBuilder></FlowBuilder> */}
                               
                             </div>
                           </div>

@@ -10,24 +10,12 @@ import UserContext from "../../UserContext";
 const SplashPage = () => {
   const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
-  console.log(JSON.stringify(splashPageLoaderData.recentWork[0]));
+  // console.log(JSON.stringify(splashPageLoaderData.recentWork[0]));
 
   const { user, setUser } = useContext(UserContext);
 
   // const [recentWork, setRecentWork] = useState(null);
   // const [feed, setFeed] = useState(null); 
-  
-
-  // when the user is changed request new data from the backend 
-  useEffect(() => {
-    if(user) {
-
-    } 
-    else {
-
-    }
-  }, [user])
-
 
   return (
     <div id="SplashPage" className="container">

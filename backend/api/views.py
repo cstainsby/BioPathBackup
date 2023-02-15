@@ -8,11 +8,11 @@ Modified: 11/17 - Josh Schmitz
 TODO: only show enzyme/molecule/pathway if public or auther=user
 """
 
+from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions, generics, status
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.db.models import Q
 
@@ -82,21 +82,26 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 
-class UserCreate(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
-    permission_classes = (AllowAny,)
+    permission_classes = [permissions.AllowAny]
 
 
-class LoginView(generics.GenericAPIView):
-    serializer_class = serializers.UserSerializer
+# class LoginView(generics.GenericAPIView):
+#     serializer_class = serializers.UserSerializer
 
-    def post(self, req):
-        username = req.data.get("username")
-        password = req.data.get("password")
+#     def post(self, req, format=None):
+#         username = req.data.get("username")
+#         password = req.data.get("password")
 
-        user = authenticate(username=username, password=password)
-        if user:
-            return Response({"token": user.auth_token.key})
-        else:
-            return Response({"error": "Incorrect Credentials Entered"}, status=status.HTTP_400_BAD_REQUEST)
+#         user = authenticate(username=username, password=password)
+#         if user:
+#             token, created = Token.objects.get_or_create(user=user)
+#             return Response({
+#                 "token": token.key
+#             }, status=status.HTTP_200_OK)
+#         else:
+#             return Response({
+#                 "error": "Incorrect Credentials Entered"
+#             }, status=status.HTTP_400_BAD_REQUEST)

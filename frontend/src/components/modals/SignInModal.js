@@ -15,7 +15,6 @@ const SignInModal = (props) => {
   // remains null until sign in attempt is made 
   // once attempt is made, true/false is set which influences modal rendering
   const [isUserValid, setIsUserValid] = useState(true);
-  // const [isLoading, 
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,14 +41,20 @@ const SignInModal = (props) => {
    */
   const handleSignInClick = async () => {
     if (signInMode === "signUp") {
-      const userObj = await login(username, password);
+      const res = await register(username, password)
 
-      // check if a valid userObj was returned
-      setUser(userObj)  
+      if (!res.ok) {
+        setIsUserValid(false);
+      }
+      else  {
+        await login(username, password)
+      }
     }
     else {
-
+      await login(username, password)
     }
+
+    console.log("token in local store: ", localStorage.getItem("token"))
   }
 
   return (

@@ -40,21 +40,19 @@ const SignInModal = (props) => {
    * used for sign in or sign up based on mode selection
    */
   const handleSignInClick = async () => {
+
     if (signInMode === "signUp") {
       const res = await register(username, password)
 
       if (!res.ok) {
         setIsUserValid(false);
       }
-      else  {
-        await login(username, password)
-      }
     }
-    else {
-      await login(username, password)
+    
+    
+    if (isUserValid) {
+      const res = await login(username, password)
     }
-
-    console.log("token in local store: ", localStorage.getItem("token"))
   }
 
   return (

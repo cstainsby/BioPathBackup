@@ -153,5 +153,11 @@ REST_FRAMEWORK = {
     ]
 }
 
+# Setup Session Engine Info
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'myapp_session_id'
+
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"

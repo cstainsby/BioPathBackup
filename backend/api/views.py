@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from django.db.models import Q
 
 from api import serializers, models
@@ -87,26 +88,20 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 
-class RegisterView(generics.CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = serializers.UserSerializer
-    permission_classes = [permissions.AllowAny]
 
 
-# class LoginView(generics.GenericAPIView):
+# class RegisterView(generics.CreateAPIView):
+#     queryset = User.objects.all()
 #     serializer_class = serializers.UserSerializer
+#     permission_classes = [permissions.AllowAny]
 
-#     def post(self, req, format=None):
-#         username = req.data.get("username")
-#         password = req.data.get("password")
+class UserRegistrationView(generics.CreateAPIView):
+    serializer_class = serializers.UserSerializer
+    permission_classes = [AllowAny]
 
-#         user = authenticate(username=username, password=password)
-#         if user:
-#             token, created = Token.objects.get_or_create(user=user)
-#             return Response({
-#                 "token": token.key
-#             }, status=status.HTTP_200_OK)
-#         else:
-#             return Response({
-#                 "error": "Incorrect Credentials Entered"
-#             }, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

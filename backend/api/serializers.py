@@ -28,6 +28,8 @@ class UserSerializer(serializers.ModelSerializer):
     molecules = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     enzymes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     pathways = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    password = serializers.CharField(write_only=True)
     
     class Meta:
         model = models.User
@@ -39,10 +41,9 @@ class UserSerializer(serializers.ModelSerializer):
             "pathways",
             "password"
         ]
-        extra_kwargs = {"password": {"write_only": True}}
     
     def create(self, validated_data):
-        user = User(
+        user = models.User(
             username=validated_data['username']
         )
         user.set_password(validated_data['password'])

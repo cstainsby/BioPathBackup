@@ -76,7 +76,7 @@ const SplashPage = () => {
 
           <StarterCard 
             title="Browse Community Creations" 
-            description="Discover what the Biopath Community is up to"
+            description="Look At Others Work"
             linkPath="/explore"/>
         </div>
       </div>

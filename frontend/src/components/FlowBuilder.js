@@ -80,7 +80,7 @@ const SaveRestore = (props) => {
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 
-    const onNewMolecule = useCallback(() => {    
+    const onNewMolecule = useCallback((nodeData) => {    
         const newNode = {
         id: getNodeId(),
         className: 'MoleculeBuild',
@@ -96,28 +96,45 @@ const SaveRestore = (props) => {
 
     const onAddEnzyme = useCallback(() => {
         const newNode = {
-        id: getNodeId(),
-        className: 'enzymeBuild',
-        data: { label: 'Added node', type: "enzyme" },
-        type: "reversibleEnzyme",
-        position: {
-            x: Math.random() * window.innerWidth - 100,
-            y: Math.random() * window.innerHeight,
-        },
+            id: getNodeId(),
+            className: 'enzymeBuild',
+            data: { label: 'Added node', type: "enzyme" },
+            type: "reversibleEnzyme",
+            position: {
+                x: Math.random() * window.innerWidth - 100,
+                y: Math.random() * window.innerHeight,
+            },
         };
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 
-    const onNewEnzyme = useCallback(() => {
+    const onNewEnzyme = useCallback((nodeData) => {
+        // const newNode = {
+        // id: getNodeId(),
+        // className: 'enzymeBuild',
+        // data: { label: 'Added node', type: "enzyme" },
+        // type: "reversibleEnzyme",
+        // position: {
+        //     x: Math.random() * window.innerWidth - 100,
+        //     y: Math.random() * window.innerHeight,
+        // },
+        // };
         const newNode = {
-        id: getNodeId(),
-        className: 'enzymeBuild',
-        data: { label: 'Added node', type: "enzyme" },
-        type: "reversibleEnzyme",
-        position: {
-            x: Math.random() * window.innerWidth - 100,
-            y: Math.random() * window.innerHeight,
-        },
+            id: nodeData.id,
+            className: 'enzymeBuild',
+            data: { 
+                label: nodeData.label,
+                substrate: [nodeData.substrates],
+                products: [nodeData.products],
+                cofactors: [nodeData.cofactors],
+                image: nodeData.imageName, 
+                type: "enzyme" 
+            },
+            type: "reversibleEnzyme",
+            position: {
+                x: Math.random() * window.innerWidth - 100,
+                y: Math.random() * window.innerHeight,
+            },
         };
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
@@ -144,7 +161,7 @@ const SaveRestore = (props) => {
             <NodeModal onAdd={onAddMolecule} onNew={onNewMolecule} type="node"/>
             <NodeModal onAdd={onAddEnzyme} onNew={onNewEnzyme} type="enzyme"/>
             {/* <button onClick={onAddMolecule}>add molecule</button> */}
-            <button onClick={onAddEnzyme}>add enzyme</button>
+            {/* <button onClick={onAddEnzyme}>add enzyme</button> */}
             <button onClick={onClear}>clear flow</button>
         </div>
         </ReactFlow>

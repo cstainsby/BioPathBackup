@@ -1,9 +1,11 @@
 """
-Defines view functions that are mapped to in urls.py for generating api
-    responses. We are using viewsets instead of plain views to ensure CRUD compliance
-    and prevent us from manually having to write out each function for
-    POST, GET, PUT, and DELETE methods.
-TODO: only show enzyme/molecule/pathway if public or auther=user
+Defines the api functionality by mapping http methods to the associated
+    serializers in serializers.py. We are using viewsets instead of plain
+    views to ensure CRUD compliance and prevent us from manually having to
+    write out each function for POST, GET, PUT, and DELETE methods. Url endpoints
+    are mapped to these viewsets in urls.py.
+TODO Ensure users can only see public molecules/enzymes/pathways or one's that
+    they authored.
 """
 
 from django.contrib.auth.models import User, Group

@@ -1,3 +1,5 @@
+# useful commands for running and testing the app
+
 docker_run:
 	docker-compose down
 	docker-compose build

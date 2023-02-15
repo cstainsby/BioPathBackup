@@ -201,6 +201,7 @@ class ConcentrationManager {
         for (const molecule in this.moleculeConcentrations) {
             this.moleculeConcentrations[molecule].value = 1
         }
+        this.notifyListeners();
     }
 
     getMolculeConcentrations() {

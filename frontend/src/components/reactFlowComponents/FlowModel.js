@@ -93,6 +93,7 @@ const FlowModel = (props) => {
                     "value": data.value
                 };
             }
+            console.log(mList)
             setMolecules(mList);
             setEdges((edges) =>
                 edges.map((edge) => {

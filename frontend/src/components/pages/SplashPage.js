@@ -43,7 +43,7 @@ const SplashPage = () => {
             <div className="row">
               {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
                 return (
-                  <Link to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
+                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
                     <ul>
                       <li><h5>{pathway.name}</h5></li>
                       <li><small className="text-muted">Created By {pathway.author}</small></li>
@@ -81,6 +81,29 @@ const SplashPage = () => {
         </div>
       </div>
 
+      <div id="ValidatedPathwayArea" className="row container informationalSection">
+          <div className="row informationalHeaderSection">
+            <h4 className="col pushDown">Validated Pathways</h4>
+            <hr/>
+          </div>
+
+          {/* note these elements will only render if they exist */}
+          <div id="LeftOffAreaContent" className="row informationalContentSection container">
+            {/* first row */}
+            <div className="row">
+              {splashPageLoaderData.recentWork.map((pathway) => {
+                return (
+                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-11 card">
+                    <ul>
+                      <li><h5>{pathway.name}</h5></li>
+                      <li><small className="text-muted">Created By {pathway.author}</small></li>
+                    </ul>
+                  </Link>
+                  )
+              })}   
+            </div>
+          </div>
+        </div>
 
       {/* Feed Section
         This will entail finding what is relevant to the user,

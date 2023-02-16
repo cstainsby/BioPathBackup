@@ -1,8 +1,6 @@
 """
-File: urls.py
-Description: Defines urls to views. This is the project urls.py which just map admin
-    and api to the urls.py at backend/api/urls.py.
-Modified: 11/17 - Josh Schmitz
+Used to map the api's URL endpoints to the views for those endpoints, however this
+    urls.py just maps the prefix api/ to the urls in backend/api/urls.py.
 """
 
 from django.contrib import admin
@@ -12,6 +10,7 @@ from rest_framework.authtoken import views
 from api.views import UserRegistrationView
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path(route='admin/', view=admin.site.urls),

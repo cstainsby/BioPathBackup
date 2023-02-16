@@ -1,5 +1,7 @@
 """
 Unit tests for Django views.
+TODO we need to test all views, both positive (request should work) and
+    negative (request shouldn't work) test cases
 """
 
 import json

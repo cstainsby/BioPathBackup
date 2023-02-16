@@ -35,6 +35,7 @@ const SliderSideBar = (props) => {
         <div className='card ModelAreaChild' id='PathwaySliderBox'>
             <button className="btn btn-primary" style={{margin: "10px"}} onClick={() => {props.run()}}>Run</button>
             <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.stop()}}>Stop</button>
+            <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.reset()}}>Reset</button>
             <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
             {( props.slidersDescription !== "") && <p><small className="text-muted">{ props.slidersDescription }</small></p> }
             <ul className='sliderBarList'>
@@ -81,7 +82,7 @@ const Slider = (props) => {
             <ul id='cardHeaderList'>
             <li><img id='cardHeaderCaret' src={dropdownLogo} style={{ transform: "rotate(-90deg)"}}  /></li>
             <li><h5>{props.title}</h5></li>
-            <li><small className="text-muted">{ props.value * 100 }%</small></li>
+            <li><small className="text-muted">{ parseFloat(props.value * 100).toFixed(0) }%</small></li>
             </ul>
         </button>
 

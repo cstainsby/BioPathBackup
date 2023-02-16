@@ -47,11 +47,8 @@ const login = async (username, password) => {
     "username": username,
     "password": password
   }
-  console.log(JSON.stringify(data));
 
-  console.log("data: ", data);
-
-  fetch(requestUrl, {
+  const res = fetch(requestUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -63,12 +60,11 @@ const login = async (username, password) => {
         if (!res.ok) {
           throw new Error("Login Failed");
         }
-        return res.json()
-      })
-      .then(data => {
-        localStorage.setItem("token", data.token)
+        return res
       })
       .catch(err => console.error(err));
+  
+  return res
 } 
 
 export {

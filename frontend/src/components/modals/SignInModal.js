@@ -14,11 +14,13 @@ const SignInModal = (props) => {
 
   // remains null until sign in attempt is made 
   // once attempt is made, true/false is set which influences modal rendering
-  const [isUserValid, setIsUserValid] = useState(true);
+  const [isUserValid, setIsUserValid] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null)
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [usernameText, setUsernameText] = useState("");
+  const [passwordText, setPasswordText] = useState("");
 
+  // state for determining what type of form to display
   const [signInMode, setSignInMode] = useState("signIn") 
 
 
@@ -42,16 +44,27 @@ const SignInModal = (props) => {
   const handleSignInClick = async () => {
 
     if (signInMode === "signUp") {
-      const res = await register(username, password)
+      const res = await register(usernameText, passwordText)
 
       if (!res.ok) {
         setIsUserValid(false);
+        return
       }
     }
     
+    const res = await login(usernameText, passwordText)
     
-    if (isUserValid) {
-      const res = await login(username, password)
+    if (res.ok) {
+      setIsUserValid(true)
+
+      // set user information and route back to home page 
+      const signedInUser = {
+        username: usernameText
+      }
+      setUser(signedInUser)
+    }
+    else {
+      setErrorMsg("Invalid Login")
     }
   }
 
@@ -91,7 +104,7 @@ const SignInModal = (props) => {
                   className="form-control" 
                   type="text" 
                   aria-label="username textbox"
-                  onChange={e => setUsername(e.target.value)}/>
+                  onChange={e => setUsernameText(e.target.value)}/>
               </div>  
               <div className="form-group mb-3">
                 <label className="control-label" htmlFor="passwordTextBox">Password</label>
@@ -100,16 +113,16 @@ const SignInModal = (props) => {
                   className="form-control" 
                   type="password" 
                   aria-label="password textbox"
-                  onChange={e => setPassword(e.target.value)}/>
+                  onChange={e => setPasswordText(e.target.value)}/>
               </div>
-              { !isUserValid &&
-                <small className="text-danger">The username or password you entered are invalid, try again.</small>
+              { errorMsg &&
+                <small className="text-danger">{errorMsg}</small>
               }
             </form>
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary" onClick={handleSignInClick} >
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handleSignInClick} >
              { signInMode === "signIn" 
                 ? <>Sign In</>
                 : <>Sign Up</>

@@ -1,10 +1,10 @@
 """
-File: models.py
-Description: Defines the models for enzymes, substrates, connections, etc. Django uses
-    these models to construct the database tables. They are used by serializers.py which
-    serializes the data into json for easy view building.
-Modified: 11/17 - Josh Schmitz
-TODO default images https://stackoverflow.com/questions/15322391/django-the-image-attribute-has-no-file-associated-with-it
+Defines the models for enzymes, substrates, pathways, etc. Django uses these models
+    to construct the database tables. These classes are used by serializers.py which
+    serializes the data into json for easy view building and deserializes json into
+    these objects for creating new objects in the DB.
+TODO do we want default images? https://stackoverflow.com/questions/15322391/django-the-image-attribute-has-no-file-associated-with-it
+TODO validation
 """
 
 from django.db import models

@@ -1,8 +1,10 @@
 """
-File: test_models.py
-Description: Unit tests for Django models.
-Modified: 12/28 - Josh Schmitz
+Unit tests for Django models.
+TODO barely anything is tested here. we need to test MoleculeInstance,
+    EnzymeInstance, Pathway, users, etc in addition to more comprehensize test
+    of molecule and enzyme
 TODO test images
+TODO test validation
 """
 
 from django.test import TestCase

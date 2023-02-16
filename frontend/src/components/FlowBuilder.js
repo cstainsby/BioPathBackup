@@ -14,6 +14,7 @@ import './css/Restore.css';
 import NodeModal from '../modals/NodeModal'
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 import Molecule from './customNodes/Molecule';
+import BuilderSideBar from './BuilderSideBar'
 
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
@@ -41,7 +42,6 @@ const SaveRestore = (props) => {
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
     useEffect(() => {
-        console.log(props.concentration, "hello");
     }, [props.concentration, setEdges]);
 
     const onSave = useCallback(() => {
@@ -84,7 +84,7 @@ const SaveRestore = (props) => {
         const newNode = {
         id: getNodeId(),
         className: 'MoleculeBuild',
-        data: { label: 'Added node', type: "molecule" },
+        data: { label: nodeData.label, type: "molecule" },
         type: "molecule",
         position: {
             x: Math.random() * window.innerWidth - 100,
@@ -120,14 +120,13 @@ const SaveRestore = (props) => {
         // },
         // };
         const newNode = {
-            id: nodeData.id,
+            id: getNodeId(),
             className: 'enzymeBuild',
             data: { 
                 label: nodeData.label,
                 substrate: [nodeData.substrates],
                 products: [nodeData.products],
-                cofactors: [nodeData.cofactors],
-                image: nodeData.imageName, 
+                reversible: nodeData.reversible,
                 type: "enzyme" 
             },
             type: "reversibleEnzyme",
@@ -164,6 +163,14 @@ const SaveRestore = (props) => {
             {/* <button onClick={onAddEnzyme}>add enzyme</button> */}
             <button onClick={onClear}>clear flow</button>
         </div>
+        <BuilderSideBar
+                    slidersTitle="Cofactors"
+                    slidersDescription="Adjust cofactor concentrations"
+                    onAddMolecule={onAddMolecule}
+                    onNewMolecule={onNewMolecule}
+                    onAddEnzyme={onAddEnzyme}
+                    onNewEnzyme={onNewEnzyme}
+                />
         </ReactFlow>
     );
 };

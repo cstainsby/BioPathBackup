@@ -30,10 +30,10 @@ export default class PathwayView extends Component {
                           */}
                           <div className="row" id="PathwayViewRow">
                             <div className="col" id="ModelAreaCol">
-                              <FlowModel 
+                              {/* <FlowModel 
                                 concentrationManager= {this.concentrationManager}
-                              />
-                              {/* <FlowBuilder></FlowBuilder> */}
+                              /> */}
+                              <FlowBuilder></FlowBuilder>
                               
                             </div>
                           </div>

@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
 import 'reactflow/dist/style.css';
-import '../css/Restore.css';
-// import '../components/css/NavBar.css';
-import "../css/stylesheet.css";
 
 function NodeModal(props) {
   const [show, setShow] = useState(false);

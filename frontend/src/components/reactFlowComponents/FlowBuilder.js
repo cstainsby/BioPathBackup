@@ -9,7 +9,6 @@ import ReactFlow, {
 
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
-import '../css/Restore.css';
 
 import NodeModal from '../modals/NodeModal.js'
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'

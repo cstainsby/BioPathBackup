@@ -9,6 +9,7 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
+import FlowBuilder from './FlowBuilder';
 import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
 
 import 'reactflow/dist/style.css';
@@ -18,7 +19,6 @@ import boogyImg from "../../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
-import UserBuildTool from './UserBuildTool';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
 };
@@ -168,7 +168,8 @@ const FlowModel = (props) => {
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
                 />
-                {/* <UserBuildTool /> */}
+            
+                {/* <FlowBuilder/> */}
                 
             </ReactFlow>            
         </div>

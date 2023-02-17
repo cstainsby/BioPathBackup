@@ -1,7 +1,5 @@
 import React, {useContext, useEffect, useState } from 'react'
 
-import "./css/stylesheet.css";
-
 // import requests lib 
 import { Link } from 'react-router-dom';
 

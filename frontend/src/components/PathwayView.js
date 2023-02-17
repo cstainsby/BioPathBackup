@@ -8,8 +8,6 @@ import FlowModel from './reactFlowComponents/FlowModel'
 import ConcentrationManager from './utils/ConcentrationManager';
 import { useLoaderData } from 'react-router-dom';
 
-import FlowBuilder from './reactFlowComponents/FlowBuilder';
-
 /**
  * 
  * @prop {int} pathwayId 
@@ -28,8 +26,6 @@ const PathwayView = (props) => {
         concentrationManager = {concentrationManager}
         pathwayJson = {pathway}
       />
-
-      <FlowBuilder/>
       
     </div>
   );

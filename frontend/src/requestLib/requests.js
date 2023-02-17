@@ -118,6 +118,84 @@ async function getPathways() {
   }
 }
 
+async function getEnzymes() {
+  const endpointExtension = "enzymes/";
+  const requestUrl = dataSourceAddress + endpointExtension;
+
+  try {
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    consoleLogRequestResults(
+      response.status,
+      response.statusText,
+      endpointExtension,
+      "GET",
+      responseJSON
+    );
+    return responseJSON;
+
+  } catch (error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
+async function getMolecules() {
+  const endpointExtension = "molecules/";
+  const requestUrl = dataSourceAddress + endpointExtension;
+
+  try {
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    consoleLogRequestResults(
+      response.status,
+      response.statusText,
+      endpointExtension,
+      "GET",
+      responseJSON
+    );
+    return responseJSON;
+
+  } catch (error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
 
 async function postPathway(pathwayObj) {
   const methodType = "POST";
@@ -158,4 +236,4 @@ async function postPathway(pathwayObj) {
   }
 }
 
-export { getPathways, getPathwayById, postPathway }
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules }

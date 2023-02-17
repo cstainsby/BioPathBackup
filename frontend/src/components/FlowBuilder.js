@@ -16,6 +16,8 @@ import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 import Molecule from './customNodes/Molecule';
 import BuilderSideBar from './BuilderSideBar'
 
+import { getEnzymes, getMolecules } from '../requestLib/requests';
+
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
     molecule: Molecule
@@ -31,6 +33,10 @@ const initialNodes = [
 ];
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+let enzymes = [];
+getEnzymes().then(res => {enzymes = res})
+console.log(enzymes, "from DB")
 
 
 const SaveRestore = (props) => {
@@ -66,11 +72,11 @@ const SaveRestore = (props) => {
         restoreFlow();
     }, [setNodes, setViewport]);
 
-    const onAddMolecule = useCallback(() => {    
+    const onAddMolecule = useCallback((nodeData) => {
         const newNode = {
         id: getNodeId(),
         className: 'MoleculeBuild',
-        data: { label: 'Added node', type: "molecule" },
+        data: { label: nodeData.abbreviation, type: "molecule" },
         type: "molecule",
         position: {
             x: Math.random() * window.innerWidth - 100,
@@ -109,16 +115,6 @@ const SaveRestore = (props) => {
     }, [setNodes]);
 
     const onNewEnzyme = useCallback((nodeData) => {
-        // const newNode = {
-        // id: getNodeId(),
-        // className: 'enzymeBuild',
-        // data: { label: 'Added node', type: "enzyme" },
-        // type: "reversibleEnzyme",
-        // position: {
-        //     x: Math.random() * window.innerWidth - 100,
-        //     y: Math.random() * window.innerHeight,
-        // },
-        // };
         const newNode = {
             id: getNodeId(),
             className: 'enzymeBuild',
@@ -170,6 +166,7 @@ const SaveRestore = (props) => {
                     onNewMolecule={onNewMolecule}
                     onAddEnzyme={onAddEnzyme}
                     onNewEnzyme={onNewEnzyme}
+                    enzymes={enzymes}
                 />
         </ReactFlow>
     );

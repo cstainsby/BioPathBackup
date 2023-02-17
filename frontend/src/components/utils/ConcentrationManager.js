@@ -13,12 +13,17 @@ class ConcentrationManager {
      */
     constructor() {
         this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
-        this.moleculeDeltas = []; // [{ID: {"title": string, "forwardValue": float, "reverseValue": float}}]
         this.startMolecules = []; // used for tracking start and end molecules
         this.endMolecules = [];
         this.enzymes = [];
         this.listeners = [];
-        this.interval = null;
+    }
+
+    clear() {
+        this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
+        this.startMolecules = []; // used for tracking start and end molecules
+        this.endMolecules = [];
+        this.enzymes = [];
     }
 
     /**
@@ -31,36 +36,26 @@ class ConcentrationManager {
      * @param enzymes[].cofactors molecules effecting the enzyme's production
      */
     parseEnzymes(enzymes) {
-        this.moleculeConcentrations = [];
+        this.clear();
         // used to make a system coninuous or runout of concentration
-        let i = 0; // i is used to find the first and last enzymes in list
-        for (const [id, enzyme] of Object.entries(enzymes)) {
-            if (i === 0) {
-                for (const substrate of enzyme.substrates) {
-                    if (!this.startMolecules.includes(substrate.id) ) {
-                        this.startMolecules.push(substrate.id);
-                    }
-                }
+        for (const substrate of Object.values(enzymes)[0].substrates) {
+            if (!this.startMolecules.includes(substrate.id) ) {
+                this.startMolecules.push(substrate.id);
             }
-            else if (i === Object.entries(enzymes).length - 1) {
-                for (const product of enzyme.products) {
-                    if (!this.endMolecules.includes(product.id) ) {
-                        this.endMolecules.push(product.id);
-                    }
-                }
+        }
+        for (const product of Object.values(enzymes)[Object.values(enzymes).length - 1].products) {
+            if (!this.endMolecules.includes(product.id) ) {
+                this.endMolecules.push(product.id);
             }
-            i += 1;
         }
         // end of start end molecule stuff
 
-        for (const [id, enzyme] of Object.entries(enzymes)) {
+        for (const enzyme of Object.values(enzymes)) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
-                this.moleculeDeltas[substrate.id] = {"title": substrate.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const product of enzyme.products) {
                 this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
-                this.moleculeDeltas[product.id] = {"title": product.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const cofactor of enzyme.cofactors) {
                 this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};

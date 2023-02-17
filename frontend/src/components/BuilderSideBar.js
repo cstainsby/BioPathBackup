@@ -3,48 +3,67 @@ import React, {useContext, useState, useEffect} from "react";
 import { getEnzymes, getMolecules } from '../requestLib/requests';
 
 function BuilderSideBar(props) {
-    const [resp, setResp] = useState(null);
+    const [moleculeResp, setMoleculeResp] = useState(null);
+    const [enzymeResp, setEnzymeResp] = useState(null);
     const [enzymes, setEnzymes] = useState();
     const [molecules, setMolecules] = useState();
 
-    // getEnzymes().then(
-    //     res => {
-    //         setEnzymes(res);
-    //     }
-    // )
-
     useEffect(() => { 
-        if (resp != null) {
-            console.log(resp, "resp")
-            const dropDownItems = resp.map((item, index) => 
+        if (moleculeResp != null) {
+            const dropDownItems = moleculeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>
-                // console.log(item["id"], item["name"], index, "map function")
             );
             setMolecules(dropDownItems);
         }
+        else {
+            callGetMolecules()
+        }
+        if (enzymeResp != null) {
+            const dropDownItems = enzymeResp.map((item, index) => 
+                <option value={index}>{item["name"]}</option>
+            );
+            setEnzymes(dropDownItems);
+        }
+        else {
+            callGetEnzymes()
+        }
 
-    }, [resp]);
+    }, [moleculeResp, enzymeResp]);
 
     function callGetMolecules() {
-        if (!resp) {
+        if (!moleculeResp) {
             getMolecules()
-            // .then(res => res.json())
-            .then(res => setResp(res));
+            .then(moleculeResp => setMoleculeResp(moleculeResp));
+        }
+    }
+
+    function callGetEnzymes() {
+        if (!enzymeResp) {
+            getEnzymes()
+            .then(enzymeResp => setEnzymeResp(enzymeResp));
         }
     }
 
     function onMoleculeSelect(selectedMolecule) {
-        props.onAddMolecule(resp[selectedMolecule])
+        props.onAddMolecule(moleculeResp[selectedMolecule])
+    }
+
+    function onEnzymeSelect(selectedEnzyme) {
+        props.onAddEnzyme(enzymeResp[selectedEnzyme])
     }
 
   return (
     <div className='card ModelAreaChild' id='PathwaySliderBox'>
             {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddMolecule}>Add Molecule</button> */}
-            <select onClick={() => callGetMolecules()} onChange={(e) => onMoleculeSelect(e.target.value)}>
+            <select onChange={(e) => onMoleculeSelect(e.target.value)}>
                 <option>Select Molecule</option>
                 {molecules}
             </select>
-            <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddEnzyme}>Add Enzyme</button>
+            <select onChange={(e) => onEnzymeSelect(e.target.value)}>
+                <option>Select Enzyme</option>
+                {enzymes}
+            </select>
+            {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddEnzyme}>Add Enzyme</button> */}
             <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme}></BuildEnzymeModal>
             <BuildMoleculeModal onNewMolecule={props.onNewMolecule}></BuildMoleculeModal>
             

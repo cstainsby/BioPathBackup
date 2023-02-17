@@ -34,10 +34,6 @@ const initialNodes = [
 
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
-let enzymes = [];
-getEnzymes().then(res => {enzymes = res})
-console.log(enzymes, "from DB")
-
 
 const SaveRestore = (props) => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -100,11 +96,19 @@ const SaveRestore = (props) => {
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 
-    const onAddEnzyme = useCallback(() => {
+    const onAddEnzyme = useCallback((nodeData) => {
         const newNode = {
             id: getNodeId(),
             className: 'enzymeBuild',
-            data: { label: 'Added node', type: "enzyme" },
+            // data: { label: nodeData.name, type: "enzyme" },
+            data: {
+                label: nodeData.name, 
+                type: "enzyme",
+                reversible: nodeData.reversible,
+                substrates: nodeData.substrate_instances, 
+                products: nodeData.product_instances,
+                image: nodeData.link
+            },
             type: "reversibleEnzyme",
             position: {
                 x: Math.random() * window.innerWidth - 100,
@@ -166,7 +170,6 @@ const SaveRestore = (props) => {
                     onNewMolecule={onNewMolecule}
                     onAddEnzyme={onAddEnzyme}
                     onNewEnzyme={onNewEnzyme}
-                    enzymes={enzymes}
                 />
         </ReactFlow>
     );

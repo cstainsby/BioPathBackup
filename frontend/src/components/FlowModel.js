@@ -88,6 +88,7 @@ const FlowModel = (props) => {
      * @param newPathway
      */
     const handlePathwayOpen = (newPathway) => {
+        setRunning(false);
         //console.log("handle pathway load: " + JSON.stringify(newPathway))
         setIsPathwayCurrentlyLoaded(true);
 
@@ -110,14 +111,6 @@ const FlowModel = (props) => {
                 };
             }
             setMolecules(mList);
-            mList = [];
-            for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
-                mList[id] = {
-                    "title": data.title,
-                    "forwardValue": data.forwardValue,
-                    "reverseValue": data.reverseValue
-                };
-            }
             setEdges((edges) =>
                 edges.map((edge) => {
                     if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
@@ -170,7 +163,7 @@ const FlowModel = (props) => {
      * Resets concentrations to starting values
      * 
      */
-    function resetConcentrations() {
+    const resetConcentrations = () => {
         props.concentrationManager.reset();
     }
 
@@ -204,7 +197,7 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
-                    reset = {() => resetConcentrations()}
+                    reset = {resetConcentrations}
                 />}
             </ReactFlow>            
         </div>

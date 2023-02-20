@@ -5,10 +5,10 @@ import { getPathways } from "../apiRequests";
  * user context probably will need to be imported here
  */
 export async function splashPageLoader() {
-  const recentWork = await getPathways();
+  let recentWork = await getPathways();
 
-  const userFeed = await getPathways();
-
+  let userFeed = await getPathways();
+  
   return {
     recentWork: recentWork,
     userFeed: userFeed

@@ -8,6 +8,7 @@
 // ----------------------------------------------------------------------
 
 import getEndpointHeader from "./requestConfig";
+import { getAccessToken } from "../localStoreAccess/jwtAccess";
 
 // for this file, /api/ is attached to get at the data behind that 
 // portion of the backend
@@ -52,32 +53,29 @@ async function getPathways() {
   const endpointExtension = "pathways/";
   const requestUrl = dataSourceAddressHeader + endpointExtension;
 
-  try {
-    const response = await fetch(requestUrl, {
-        headers: {
-            "Content-Type": "application/json",
-            // TODO: CHANGE HARD-CODED AUTH
-            'Authorization': 'Basic ' + btoa("root:root")
-        }
-    });
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-    
-    return responseJSON;
+  const accessToken = getAccessToken();
+  console.log("token ", accessToken);
 
-  } catch (error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+
+
+  const resData = await fetch(requestUrl, {
+      headers: {
+          "Content-Type": "application/json",
+          // TODO: CHANGE HARD-CODED AUTH
+          'Authorization': "Bearer " + accessToken
+      }
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log("NON-ERROR", data);
+      return data
+    })
+    .catch(err => {
+      console.log("ERROR ", err);
+      // gracefully fail, should still populate 
+    });
+  
+  return resData;
 }
 
 

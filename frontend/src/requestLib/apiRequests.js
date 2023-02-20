@@ -53,21 +53,18 @@ async function getPathways() {
   const endpointExtension = "pathways/";
   const requestUrl = dataSourceAddressHeader + endpointExtension;
 
-  const accessToken = getAccessToken();
-  console.log("token ", accessToken);
+  // const accessToken = getAccessToken();
+  // console.log("token ", accessToken);
 
 
-
+  // getting pathways shouldn't require auth
   const resData = await fetch(requestUrl, {
       headers: {
           "Content-Type": "application/json",
-          // TODO: CHANGE HARD-CODED AUTH
-          'Authorization': "Bearer " + accessToken
       }
   })
     .then(res => res.json())
     .then(data => {
-      console.log("NON-ERROR", data);
       return data
     })
     .catch(err => {

@@ -15,8 +15,8 @@ const SplashPage = () => {
   const { user, setUser } = useContext(UserContext);
 
   // const [recentWork, setRecentWork] = useState(null);
-  // const [feed, setFeed] = useState(null); 
-
+  // const [feed, setFeed] = useState(null);
+  
   return (
     <div id="SplashPage" className="container">
       <h1>Biopath</h1>

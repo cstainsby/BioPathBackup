@@ -16,7 +16,6 @@ from django.db.models import Q
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 
 from api import serializers, models
@@ -62,21 +61,26 @@ class EnzymeInstanceViewSet(viewsets.ModelViewSet):
 
 class PathwayViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PathwayDetailSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Pathway.objects.all()
-        else:            
-            return models.Pathway.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
+        return models.Pathway.objects.all()
+        # if self.request.user.is_superuser:
+        #     return models.Pathway.objects.all()
+        # else:            
+        #     return models.Pathway.objects.filter(
+        #         Q(public=True) | Q(author=self.request.user)
+        #     )
 
     def get_serializer_class(self):
         if self.action == "create":
             return serializers.PathwayWriteSerializer
         else:
             return serializers.PathwayDetailSerializer
+    
+    # TODO: stubbed out post method
+    def post_pathway(self, request):
+        data = request.data
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -94,7 +98,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = serializers.UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)

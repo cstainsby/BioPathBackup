@@ -12,7 +12,7 @@ let dataSourceAddressHeader = getEndpointHeader()
  * @returns res returned by post
  */
 const register = async (username, password) => {
-  let endpointExtension = "register/"
+  let endpointExtension = "api/register/"
   let requestUrl = dataSourceAddressHeader + endpointExtension;
 
   const data = {
@@ -40,7 +40,7 @@ const register = async (username, password) => {
  * @param {string} password
  */
 const login = async (username, password) => {
-  let endpointExtension = "api-token-auth/"
+  let endpointExtension = "api/api-token-auth/"
   let requestUrl = dataSourceAddressHeader + endpointExtension;
 
   const data = {
@@ -48,23 +48,20 @@ const login = async (username, password) => {
     "password": password
   }
 
-  const res = fetch(requestUrl, {
+  const resData = fetch(requestUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     })
-      .then(res => {
-        console.log("res: ", res);
-        if (!res.ok) {
-          throw new Error("Login Failed");
-        }
-        return res
+      .then(res => res.json())
+      .then(data => {
+        return data
       })
       .catch(err => console.error(err));
-  
-  return res
+      
+  return resData
 } 
 
 export {

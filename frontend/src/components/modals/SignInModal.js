@@ -2,6 +2,8 @@ import React, {useContext, useState} from "react";
 
 import UserContext from "../../UserContext";
 import { login, register } from "../../requestLib/loginRequests";
+import { saveTokens } from "../../localStoreAccess/jwtAccess";
+import { saveUser } from "../../localStoreAccess/userAccess";
 
 /**
  * 
@@ -52,15 +54,20 @@ const SignInModal = (props) => {
       }
     }
     
-    const res = await login(usernameText, passwordText)
+    const resData = await login(usernameText, passwordText)
     
-    if (res.ok) {
+    if (resData) {
       setIsUserValid(true)
+
+      const { access } = resData.access;
+      const { refresh } = resData.refresh;
+      saveTokens(access, refresh);
 
       // set user information and route back to home page 
       const signedInUser = {
         username: usernameText
       }
+      saveUser(signedInUser)
       setUser(signedInUser)
     }
     else {

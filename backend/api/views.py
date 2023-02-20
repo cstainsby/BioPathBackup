@@ -8,14 +8,16 @@ TODO Ensure users can only see public molecules/enzymes/pathways or one's that
     they authored.
 """
 
-from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
 from django.db.models import Q
+
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.views import APIView
 
 from api import serializers, models
 
@@ -90,13 +92,6 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 
-
-
-# class RegisterView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = serializers.UserSerializer
-#     permission_classes = [permissions.AllowAny]
-
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = serializers.UserSerializer
     permission_classes = [AllowAny]
@@ -107,3 +102,6 @@ class UserRegistrationView(generics.CreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class TokenObtainPairView(TokenObtainPairView):
+    serializer_class = serializers.TokenObtainPairSerializer

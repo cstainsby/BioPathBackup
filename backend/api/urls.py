@@ -12,6 +12,9 @@ Note: We purposefully haven't added endpoints to MoleculeInstance/EnzymeInstance
 from django.urls import include, path
 from rest_framework import routers
 
+# from rest_framework.authtoken import views
+from api.views import UserRegistrationView, TokenObtainPairView
+
 from . import views
 
 
@@ -25,4 +28,10 @@ router.register(r'pathways', views.PathwayViewSet, basename="pathways")
 urlpatterns = [
     path(route='', view=include(router.urls)),
     path(route='api-auth/', view=include('rest_framework.urls', namespace='rest_framework')),
+    
+    # routes that are used for authentication
+    # register/ - used for sending json containing new user's data to be stored 
+    # login/    - used for getting a sign in token from backend
+    path(route='register/', view=UserRegistrationView.as_view(), name='register user'),
+    path(route='api-token-auth/', view=TokenObtainPairView.as_view(), name="get token")
 ]

@@ -7,3 +7,4 @@ sqlparse==0.4.2
 psycopg2-binary>=2.8
 Pillow
 django-cors-headers
+djangorestframework-simplejwt

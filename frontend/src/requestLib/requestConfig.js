@@ -8,7 +8,7 @@
 //  NOTE:
 //     All of the endpoints should be the same across the Mock and
 //     actual build
-// ----------------------------------------------------------------------S
+// ----------------------------------------------------------------------
 
 const BACKEND_BASE_API_URL = "http://localhost:8000/"; 
 const MOCK_API_URL = "http://localhost:4000/";

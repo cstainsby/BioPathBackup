@@ -20,6 +20,9 @@ TODO Ensure pathway deletion deletes related PathwayMolecules/PathwayEnzymes
     * Maybe this is handled by 'on_delete=models.CASCADE' in models.py?
 """
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from collections import OrderedDict
 from rest_framework import serializers
 
@@ -410,3 +413,13 @@ class PathwayWriteSerializer(serializers.Serializer):
             enzyme_instance.cofactor_instances.add(*cofactor_instances)
 
         return pathway
+
+
+class TokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+
+        return data

@@ -20,6 +20,9 @@ TODO Ensure pathway deletion deletes related PathwayMolecules/PathwayEnzymes
     * Maybe this is handled by 'on_delete=models.CASCADE' in models.py?
 """
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from collections import OrderedDict
 from rest_framework import serializers
 
@@ -39,6 +42,8 @@ class UserSerializer(serializers.ModelSerializer):
     molecules = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     enzymes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     pathways = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    password = serializers.CharField(write_only=True)
     
     class Meta:
         model = models.User
@@ -47,8 +52,17 @@ class UserSerializer(serializers.ModelSerializer):
             "username",
             "molecules",
             "enzymes",
-            "pathways"
+            "pathways",
+            "password"
         ]
+    
+    def create(self, validated_data):
+        user = models.User(
+            username=validated_data['username']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class MoleculeSerializer(serializers.ModelSerializer):
@@ -399,3 +413,13 @@ class PathwayWriteSerializer(serializers.Serializer):
             enzyme_instance.cofactor_instances.add(*cofactor_instances)
 
         return pathway
+
+
+class TokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data["refresh"] = str(refresh)
+        data["access"] = str(refresh.access_token)
+
+        return data

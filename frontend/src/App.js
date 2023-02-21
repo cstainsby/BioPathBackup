@@ -1,14 +1,12 @@
 import './App.css';
-import React from 'react'; // added this for an error meesage
-import PathwayView from './components/PathwayView';
+import React from 'react'; 
+
+import RouteManager from './components/RouteManager';
 
 function App() {
   return (
-    <div className="App">
-      {/* Top navigation bar needed for all activities */}
-      
-      {/* The main View which should hold everything else */}
-      <PathwayView/>
+    <div className="App fontFamily">
+      <RouteManager />
     </div>
   );
 }

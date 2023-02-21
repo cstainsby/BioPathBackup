@@ -6,14 +6,13 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
 } from 'reactflow';
+
 import 'reactflow/dist/style.css';
-import './css/ReactFlowArea.css';
+import '../css/ReactFlowArea.css';
 
-import './css/Restore.css';
-
-import NodeModal from '../modals/NodeModal'
-import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
-import Molecule from './customNodes/Molecule';
+import NodeModal from '../modals/NodeModal.js'
+import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
+import Molecule from '../customNodes/Molecule';
 
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,

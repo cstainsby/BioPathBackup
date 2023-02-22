@@ -25,13 +25,26 @@ network:
 # storage:
   # readonly_fs: true       # Limit to read-only access to mounted root filesystems.
 
+
 # Optional fields for more advanced use-cases.
-#
-#variables:                    # Pass environment variables as key value pairs.
-#  LOG_LEVEL: info
+# FOR NOW:
+# the only the production version of the app will be pushed from copilot. There is a way to push
+# specific versions of enviornment variables based on the enviornment it is in. That will not be necessary for
+# our use case
+# https://aws.github.io/copilot-cli/docs/developing/environment-variables/ 
+variables:                    # Pass environment variables as key value pairs.
+ RDS_DB_NAME: "biopath-test-db"
+ RDS_HOSTNAME: "biopath-test-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
+ RDS_PORT: 5432
+ RDS_USERNAME: "postgres"
+ RDS_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/RDS_PASSWORD
+
+
 
 #secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
+# https://aws.github.io/copilot-cli/docs/developing/secrets/
 #  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
+
 
 # You can override any of the values defined above by environment.
 #environments:

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from "react";
 
-import { getEnzymes, getMolecules } from '../requestLib/requests';
+import { getEnzymes, getMolecules, postMolecule } from '../requestLib/requests';
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
@@ -71,44 +71,27 @@ function BuilderSideBar(props) {
   );
 }
 
-
 const BuildEnzymeModal = (props) => {
-    const [label, setLabel] = useState();
+    const [label, setLabel] = useState(null);
     const [substrates, setSubstrates] = useState([]);
     const [products, setProducts] = useState([]);
     const [reversible, setReversible] = useState("false");
-
 
     let data = {
         label: null,
         substrates: [],
         products: [],
-        reversible: "False"
+        reversible: "false"
+
     }
 
-    // function handleLabelChange(e) {
-    //     data.label = e.target.value
-    // }
-
-    // function handleSubstrateChange(e) {
-    //     data.substrate = e.target.value
-    // }
-
-    // function handleProductChange(e) {
-    //     data.product = e.target.value
-    // }
-
-    // function handleReversibleChange(e) {
-    //     data.reversible = e.target.value
-    // }
-
-    function handleSubmit(event) {
+    function handleClick() {
         data.label = label;
         data.substrates = [substrates]; 
         data.products = [products];
         data.reversible = [reversible];
 
-        props.onNewEnzyme(data)
+        props.onNewEnzyme(data);
     }
 
     return (
@@ -118,49 +101,117 @@ const BuildEnzymeModal = (props) => {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                    <form onSubmit={handleSubmit}>
-                        <label>
-                        Enzyme Name
-                        {/* <input type="text" onChange={handleLabelChange} /> */}
-                        <input type="text" onChange={e => setLabel(e.target.value)} />
-                        </label>
-                        <label>
-                        Substrate List
-                        {/* <input type="text" onChange={handleSubstrateChange} /> */}
-                        <input type="text" onChange={e => setSubstrates(e.target.value)} />
-                        </label>
-                        <label>
-                        Product List
-                        {/* <input type="text" onChange={handleProductChange} /> */}
-                        <input type="text" onChange={e => setProducts(e.target.value)} />
-                        </label>
-                        <label>
-                        Reversible
-                        {/* <input type="text" onChange={handleReversibleChange} /> */}
-                        <input type="text" onChange={e => setReversible(e.target.value)} />
-                        </label>
-                        <input type="submit" value="Submit" />
-                    </form>    
+                    <button onClick={handleClick}>Submit New Enzyme</button>
+                    <label>
+                    Enzyme Name
+                    <input type="text" onChange={e => setLabel(e.target.value)} />
+                    </label>
+                    <label>
+                    Substrate List
+                    <input type="text" onChange={e => setSubstrates(e.target.value)} />
+                    </label>
+                    <label>
+                    Product List
+                    <input type="text" onChange={e => setProducts(e.target.value)} />
+                    </label>
+                    <label>
+                    Reversible
+                    <input type="text" onChange={e => setReversible(e.target.value)} />
+                    </label>
                 </li>
               </ul>
         </li>
-    );
+    )
 }
 
 
+// const BuildEnzymeModal = (props) => {
+//     const [label, setLabel] = useState();
+//     const [substrates, setSubstrates] = useState([]);
+//     const [products, setProducts] = useState([]);
+//     const [reversible, setReversible] = useState("false");
+
+
+//     let data = {
+//         label: null,
+//         substrates: [],
+//         products: [],
+//         reversible: "False"
+//     }
+
+//     function handleSubmit(event) {
+//         data.label = label;
+//         data.substrates = [substrates]; 
+//         data.products = [products];
+//         data.reversible = [reversible];
+
+//         props.onNewEnzyme(data)
+//     }
+
+    
+
+//     return (
+//         <li className="nav-item dropdown">
+//               <a className="button-primary" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+//                 New Enzyme
+//               </a>
+//               <ul className="dropdown-menu">
+//                 <li>
+//                     <form onSubmit={handleSubmit}>
+//                         <label>
+//                         Enzyme Name
+//                         <input type="text" onChange={e => setLabel(e.target.value)} />
+//                         </label>
+//                         <label>
+//                         Substrate List
+//                         <input type="text" onChange={e => setSubstrates(e.target.value)} />
+//                         </label>
+//                         <label>
+//                         Product List
+//                         <input type="text" onChange={e => setProducts(e.target.value)} />
+//                         </label>
+//                         <label>
+//                         Reversible
+//                         <input type="text" onChange={e => setReversible(e.target.value)} />
+//                         </label>
+//                         <input type="submit" value="Submit" />
+//                     </form>    
+//                 </li>
+//               </ul>
+//         </li>
+//     );
+// }
+
+
 const BuildMoleculeModal = (props) => {
+    const [label, setLabel] = useState(null);
+    const [abbr, setAbbr] = useState(null);
+    const [id, setID] = useState(null);
+
     let data = {
         label: null,
-        substrates: [],
-        products: [],
-        reversible: "False"
-    }
-
-    function handleLabelChange(e) {
-        data.label = e.target.value
+        abbreviation: null,
+        id: null
     }
 
     function handleSubmit(event) {
+        data.label = label;
+        data.abbreviation = abbr;
+        data.id = id;
+
+        const moleculeObj = {
+            "id": data.id,
+            "name": data.label,
+            "abbreviation": data.abbreviation,
+            "ball_and_stick_image": null,
+            "space_filling_image": null,
+            "link": null,
+            "public": true,
+            "author": 1
+        }
+        postMolecule(moleculeObj);
+
+
         props.onNewMolecule(data);
     }
 
@@ -171,13 +222,19 @@ const BuildMoleculeModal = (props) => {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                    <form onSubmit={handleSubmit}>
-                        <label>
-                        Molecule Name
-                        <input type="text" onChange={handleLabelChange} />
-                        </label>
-                        <input type="submit" value="Submit" />
-                    </form>    
+                    <button onClick={handleSubmit}>Submit New Molecule</button>
+                    <label>
+                    Molecule Name
+                    <input type="text" onChange={e => setLabel(e.target.value)} />
+                    </label>
+                    <label>
+                    Molecule Abbreviation
+                    <input type="text" onChange={e => setAbbr(e.target.value)} />
+                    </label>
+                    <label>
+                    Molecule ID
+                    <input type="text" onChange={e => setID(e.target.value)} />
+                    </label>
                 </li>
               </ul>
         </li>

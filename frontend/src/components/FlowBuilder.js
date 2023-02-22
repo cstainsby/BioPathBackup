@@ -157,8 +157,8 @@ const SaveRestore = (props) => {
         <div className="save__controls">
             <button onClick={onSave}>save</button>
             <button onClick={onRestore}>restore</button>
-            <NodeModal onAdd={onAddMolecule} onNew={onNewMolecule} type="node"/>
-            <NodeModal onAdd={onAddEnzyme} onNew={onNewEnzyme} type="enzyme"/>
+            {/* <NodeModal onAdd={onAddMolecule} onNew={onNewMolecule} type="node"/>
+            <NodeModal onAdd={onAddEnzyme} onNew={onNewEnzyme} type="enzyme"/> */}
             {/* <button onClick={onAddMolecule}>add molecule</button> */}
             {/* <button onClick={onAddEnzyme}>add enzyme</button> */}
             <button onClick={onClear}>clear flow</button>

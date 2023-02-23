@@ -276,4 +276,44 @@ async function postMolecule(moleculeObj) {
   }
 }
 
-export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule }
+
+async function postEnzyme(enzymeObj) {
+  const methodType = "POST";
+  const endpointExtension = "enzymes/";
+  const requestUrl = dataSourceAddress + endpointExtension;
+
+  try {
+    const requestOptions = {
+      method: methodType,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(enzymeObj)
+    };
+
+    const response = await fetch(requestUrl, requestOptions);
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    consoleLogRequestResults(
+      response.status,
+      response.statusText,
+      endpointExtension,
+      methodType,
+      responseJSON
+    );
+    return responseJSON;
+  } catch(error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme }

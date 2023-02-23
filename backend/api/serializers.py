@@ -287,7 +287,7 @@ class EnzymeInstanceWriteSerializer(serializers.Serializer):
 
 class MoleculeInstanceHelperSerializer(serializers.Serializer):
     temp_id = serializers.IntegerField()
-    molecule = serializers.IntegerField()
+    molecule = serializers.IntegerField(min_value=0)
     x = serializers.IntegerField(min_value=0)
     y = serializers.IntegerField(min_value=0)
 
@@ -299,7 +299,7 @@ class MoleculeInstanceHelperSerializer(serializers.Serializer):
 
 
 class EnzymeInstanceHelperSerializer(serializers.Serializer):
-    enzyme = serializers.IntegerField()
+    enzyme = serializers.IntegerField(min_value=0)
     x = serializers.IntegerField(min_value=0)
     y = serializers.IntegerField(min_value=0)
     limiting = serializers.BooleanField()

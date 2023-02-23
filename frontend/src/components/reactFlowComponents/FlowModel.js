@@ -19,8 +19,10 @@ import boogyImg from "../../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
+import Molecule from '../customNodes/Molecule'
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
+    molecule: Molecule
 };
 
 /**
@@ -43,8 +45,6 @@ const FlowModel = (props) => {
 
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
-
-    
 
     /**
      * Console logs id and position of ReactFlow nodes 
@@ -77,8 +77,7 @@ const FlowModel = (props) => {
      */
     const handlePathwayOpen = (newPathway) => {
         setRunning(false);
-        //console.log("handle pathway load: " + JSON.stringify(newPathway))
-        setIsPathwayCurrentlyLoaded(true);
+        //console.log("handle pathway load: ", newPathway);
 
         setPathwayTitle(newPathway["name"]);
         setPathwayDescription("about the pathway");
@@ -89,11 +88,14 @@ const FlowModel = (props) => {
         setNodes(nodesAndEdgesDict["nodes"]);
         setEdges(nodesAndEdgesDict["edges"]);
 
-        const enzymesForSliders = parseEnzymesForManager(newPathway);
         props.concentrationManager.addListener(onConcentrationUpdate);
-        props.concentrationManager.parseEnzymes(enzymesForSliders);
+        props.concentrationManager.parsePathway(newPathway);
     }
 
+    /**
+     * Updates the molecule data in state and ReactFlow edges
+     * @param {Object[]} moleculeConcentrations
+     */
     const onConcentrationUpdate = (moleculeConcentrations) => {
         let mList = [];
         for (const [id, data] of Object.entries(moleculeConcentrations)) {
@@ -121,15 +123,6 @@ const FlowModel = (props) => {
     const handleConcentrationChange = (id, value) => {
         props.concentrationManager.setConcentration(id, value);
     }
-
-    /**
-     * Cleans up the model
-     * @function
-     */
-    // const handlePathwayClose = () => {
-    //     setNodes([]);
-    //     setEdges([]);
-    // }
   
     // Used by ReactFlow whenever an edge is connected between nodes
 	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), [setEdges]);

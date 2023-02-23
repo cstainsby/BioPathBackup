@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 
 import dropdownLogo from "../../icons/arrow-down-sign-to-navigate.png";
 
-
 /**
  * Display and control concentration of pathway cofactors
  * @param props
@@ -12,11 +11,6 @@ import dropdownLogo from "../../icons/arrow-down-sign-to-navigate.png";
  * @prop handleConcentrationChange(string, int): void
  */
 const SliderSideBar = (props) => {
-    const handleSliderOpen = (cofactorTitle, newOpenStatus) => {
-        if(newOpenStatus === true) {
-        // close all others when another slider has been set to open
-        }
-    }
     const sliderItems = Object.entries(props.molecules).map(([id, data]) => 
         <li key={id}>
             <Slider 

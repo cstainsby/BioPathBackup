@@ -19,8 +19,10 @@ import boogyImg from "../../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
+import Molecule from '../customNodes/Molecule';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
+    molecule: Molecule
 };
 
 /**
@@ -151,6 +153,15 @@ const FlowModel = (props) => {
         };
     }, [running, speed]);
 
+
+    /**
+     * Resets concentrations to starting values
+     * 
+     */
+    function resetConcentrations() {
+        props.concentrationManager.reset();
+    }
+
     return (
         <div className='ModelArea'>
             <ReactFlow className='ModelAreaChild ReactFlow'
@@ -178,6 +189,7 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
+                    reset = {() => resetConcentrations()}
                 />
             
                 {/* <FlowBuilder/> */}

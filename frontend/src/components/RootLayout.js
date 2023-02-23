@@ -14,7 +14,7 @@ const RootLayout = () => {
 
   const [user, setUser] = useState(null)
   const userProvider= useMemo(() => ({ user, setUser }), [user, setUser])
-  console.log(userProvider);
+  //console.log(userProvider);
   return (
     <div id="RootLayout">
 

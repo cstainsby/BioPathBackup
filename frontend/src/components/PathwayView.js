@@ -1,13 +1,7 @@
 import React, { Component, useState, useEffect } from 'react'
-
 import FlowModel from './reactFlowComponents/FlowModel'
-
-//import Restore from './Restore';
-
-
 import ConcentrationManager from './utils/ConcentrationManager';
 import { useLoaderData } from 'react-router-dom';
-
 
 /**
  * 
@@ -16,21 +10,18 @@ import { useLoaderData } from 'react-router-dom';
  */
 const PathwayView = (props) => {
   const pathway = useLoaderData();
-
   const [isMinimized, setIsMinimized] = useState(false);
-  
   let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 
   return (
     <div id="ModelAreaCol">
       <FlowModel 
         concentrationManager = {concentrationManager}
-        pathwayJson = {pathway}
+        pathway = {pathway}
       />
       
     </div>
   );
 }
-
 
 export default PathwayView;

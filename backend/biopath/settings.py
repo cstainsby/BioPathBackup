@@ -88,6 +88,9 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables
+    print("RDS enviornment read in")
+
+    
     DATABASES =  {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

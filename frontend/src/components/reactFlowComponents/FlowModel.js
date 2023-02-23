@@ -9,41 +9,42 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import { buildFlow, parseEnzymesForManager } from './utils/pathwayComponentUtils';
-import { getPathwayById } from '../requestLib/requests';
+import FlowBuilder from './FlowBuilder';
+import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
 
 import 'reactflow/dist/style.css';
-import './css/ReactFlowArea.css';
-import './css/ModelArea.css'
-import './css/RightSideBarArea.css';
+import '../css/ReactFlowArea.css';
 
-import boogyImg from "../images/boogy.PNG"
+import boogyImg from "../../images/boogy.PNG"
 
 
-import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
-import Molecule from './customNodes/Molecule';
+import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
-    molecule: Molecule
 };
 
 /**
  * Wrapper for ReactFlow and concentration sliders. Main 
  * interaction area for the app.
  * @param props 
+ * @prop {Object} concentrationManager
+ * @prop {JSON} pathwayJson
  */
 const FlowModel = (props) => {
 
-    let [isPathwayCurrentlyLoaded, setIsPathwayCurrentlyLoaded] = useState(false);
-    let [pathwayTitle, setPathwayTitle] = useState("");
-    let [pathwayDescription, setPathwayDescription] = useState("");
-    let [pathwayAuthor, setPathwayAuthor] = useState("");
+    let { pathway } = props.pathwayJson;
+
+    let [pathwayTitle, setPathwayTitle] = useState(pathway["name"]);
+    let [pathwayDescription, setPathwayDescription] = useState("about the pathway");
+    let [pathwayAuthor, setPathwayAuthor] = useState("author");
 
 	let [nodes, setNodes, onNodesChange] = useNodesState([]);
 	let [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
+
+    
 
     /**
      * This clgs id and position of ReactFlow nodes onNodeChange
@@ -59,38 +60,21 @@ const FlowModel = (props) => {
     //     }
     //     console.log(out);
     // }
-
-    let { pathwayID } = useParams(); // import params from router
+    
     /**
      * Gets updated pathway based on current FlowModel pathwayID.
      * If there is no pathway ID, close the current pathway.
      */
     useEffect(() => {
-        if(pathwayID) {
-            console.log("Got pathway:" + pathwayID);
-            // get JSON data for pathways
-            // including function here will force the modal to re-render
-            getPathwayById(pathwayID)
-                .then(data => {
-                    handlePathwayOpen(data);
-                })
-                .catch(error => {
-                    console.error("Error in FlowModel.getUpdatedPathways", error);
-                });
-        }
-        else {
-            handlePathwayClose();
-        }
-    }, [pathwayID]); // monitor pathwayID for changes
+        handlePathwayOpen(pathway)
+    }, [pathway]); // monitor pathwayID for changes
+
 
     /**
      * Initializes the model given a newPathway
      * @param newPathway
      */
     const handlePathwayOpen = (newPathway) => {
-        //console.log("handle pathway load: " + JSON.stringify(newPathway))
-        setIsPathwayCurrentlyLoaded(true);
-
         setPathwayTitle(newPathway["name"]);
         setPathwayDescription("about the pathway");
         setPathwayAuthor(newPathway["author"]);
@@ -109,6 +93,7 @@ const FlowModel = (props) => {
                     "value": data.value
                 };
             }
+            
             setMolecules(mList);
             mList = [];
             for (let [id, data] of Object.entries(props.concentrationManager.moleculeDeltas)) {
@@ -142,11 +127,10 @@ const FlowModel = (props) => {
      * Cleans up the model
      * @function
      */
-    const handlePathwayClose = () => {
-        setIsPathwayCurrentlyLoaded(false);
-        setNodes([]);
-        setEdges([]);
-    }
+    // const handlePathwayClose = () => {
+    //     setNodes([]);
+    //     setEdges([]);
+    // }
   
     // Used by ReactFlow whenever an edge is connected between nodes
 	const onConnect = useCallback((params) => setEdges((els) => addEdge(params, els)), [setEdges]);
@@ -163,20 +147,12 @@ const FlowModel = (props) => {
         
         return () => {
             clearInterval(interval);
+            // console.log("clearInterval");
         };
     }, [running, speed]);
 
-    /**
-     * Resets concentrations to starting values
-     * 
-     */
-    function resetConcentrations() {
-        props.concentrationManager.reset();
-    }
-
     return (
         <div className='ModelArea'>
-            { !isPathwayCurrentlyLoaded && <h1>Click File&gt;Open to load a pathway!</h1>}
             <ReactFlow className='ModelAreaChild ReactFlow'
                 nodes={nodes}
                 edges={edges}
@@ -188,15 +164,13 @@ const FlowModel = (props) => {
                 fitView={true}
                 attributionPosition="top-right"
             >
-            <Controls position='bottom-right' />
-            { isPathwayCurrentlyLoaded &&
+                <Controls position='bottom-right' />
                 <PathwayTitleCard
                     pathwayTitle={ pathwayTitle }
                     pathwayDescription={ pathwayDescription }
                     pathwayAuthor={ pathwayAuthor }
                     additionalImage={ boogyImg }
-                /> }
-            { isPathwayCurrentlyLoaded &&
+                /> 
                 <SliderSideBar
                     slidersTitle="Cofactors"
                     slidersDescription="Adjust cofactor concentrations"
@@ -204,13 +178,23 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
-                    reset = {() => resetConcentrations()}
-                />}
+                />
+            
+                {/* <FlowBuilder/> */}
+                
             </ReactFlow>            
         </div>
     );
 };
 
+/**
+ * 
+ * @prop {string} pathwayTitle - the name of the pathway
+ * @prop {string} pathwayDescription - the description of the pathway
+ * @prop {string} pathwayAuthor - the author of the pathway
+ * @prop {img} additionalImage - an optional image 
+ * @returns An informational react component for the current pathway
+ */
 const PathwayTitleCard = (props) => {
     //  props that should be passed in:
     //  pathwayTitle: string 

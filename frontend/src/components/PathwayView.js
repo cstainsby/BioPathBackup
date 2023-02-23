@@ -1,58 +1,36 @@
 import React, { Component, useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import FlowModel from './FlowModel'
-import NavBar from './NavBar'
-import Error from "./Error";
+import FlowModel from './reactFlowComponents/FlowModel'
 
-import './css/PathwayView.css'
+//import Restore from './Restore';
 
 
-import userInputInteractionList from './PathwayInteractiveComponent';
 import ConcentrationManager from './utils/ConcentrationManager';
-import FlowBuilder from './FlowBuilder';
+import { useLoaderData } from 'react-router-dom';
 
-export default class PathwayView extends Component {
-  constructor(props) {
-    super(props);
 
-    this.concentrationManager = new ConcentrationManager();
-  }
+/**
+ * 
+ * @prop {int} pathwayId 
+ * @returns A react component containing the 
+ */
+const PathwayView = (props) => {
+  const pathway = useLoaderData();
 
-  render() {
-    const pathwayView = <div className="container-fluid" id='MainView'>
-                          <div className="row" id="NavBarRow">
-                            <NavBar />
-                          </div>
+  const [isMinimized, setIsMinimized] = useState(false);
+  
+  let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 
-                          {/* the pathway view, left, and right sidebar divs are going to 
-                              be held in columns
-                          */}
-                          <div className="row" id="PathwayViewRow">
-                            <div className="col" id="ModelAreaCol">
-                              {/* <FlowModel 
-                                concentrationManager= {this.concentrationManager}
-                              /> */}
-                              <FlowBuilder></FlowBuilder>
-                              
-                            </div>
-                          </div>
-                        </div>
-
-    return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={ pathwayView }>
-            <Route path="pathway/:pathwayID" element={ pathwayView }/>
-          </Route>
-
-          {/* for user authentication later on,  */}
-          <Route path="auth" element={ pathwayView }>
-          </Route>
-          <Route path="*" element={ <Error /> }/>
-        </Routes>
-      </BrowserRouter>
-    )
-  }
+  return (
+    <div id="ModelAreaCol">
+      <FlowModel 
+        concentrationManager = {concentrationManager}
+        pathwayJson = {pathway}
+      />
+      
+    </div>
+  );
 }
 
+
+export default PathwayView;

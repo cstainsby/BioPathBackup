@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import "./css/SliderSideBar.css";
-import "./css/stylesheet.css";
-
-import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
+import dropdownLogo from "../../icons/arrow-down-sign-to-navigate.png";
 
 
 /**

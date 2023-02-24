@@ -80,9 +80,8 @@ class MoleculeInstanceSerializer(serializers.ModelSerializer):
 class MoleculeInstanceDetailSerializer(serializers.ModelSerializer):
     molecule_name = serializers.ReadOnlyField(source="molecule.name")
     abbreviation = serializers.ReadOnlyField(source="molecule.abbreviation")
-    # TODO change images to read only
-    ball_and_stick_image = serializers.ImageField(source="molecule.ball_and_stick_image")
-    space_filling_image = serializers.ImageField(source="molecule.space_filling_image")
+    ball_and_stick_image = serializers.CharField(source="molecule.ball_and_stick_image")
+    space_filling_image = serializers.CharField(source="molecule.space_filling_image")
     link = serializers.ReadOnlyField(source="molecule.link")
     author = serializers.ReadOnlyField(source="molecule.author.id")
     public = serializers.ReadOnlyField(source="molecule.public")
@@ -111,9 +110,8 @@ class EnzymeInstanceDetailSerializer(serializers.ModelSerializer):
     """
     name = serializers.ReadOnlyField(source="enzyme.name")
     abbreviation = serializers.ReadOnlyField(source="enzyme.abbreviation")
-    image = serializers.ImageField(
-        source="enzyme.image",
-        allow_empty_file=True
+    image = serializers.CharField(
+        source="enzyme.image"
     )
     reversible = serializers.ReadOnlyField(source="enzyme.reversible")
     link = serializers.ReadOnlyField(source="enzyme.link")

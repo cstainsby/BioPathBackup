@@ -79,13 +79,13 @@ class MoleculeTestCase(TestCase):
 
     def test_validators_max_length(self):
         m1 = models.Molecule(
-            name="012345678901234567890123456789012345678901234567890",
-            abbreviation="01234567890",
+            name="01234567890123456789012345678901234567890123456789012345678901234",
+            abbreviation="012345678",
             author=self.test_author
         )
         expected_errors = {
-            'name': ['Ensure this value has at most 50 characters (it has 51).'],
-            'abbreviation': ['Ensure this value has at most 10 characters (it has 11).']
+            'name': ['Ensure this value has at most 64 characters (it has 65).'],
+            'abbreviation': ['Ensure this value has at most 8 characters (it has 9).']
         }
         try:
             m1.full_clean()

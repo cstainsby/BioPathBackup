@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import dropdownLogo from "../../icons/arrow-down-sign-to-navigate.png";
+import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
 
 /**
  * Display and control concentration of pathway cofactors

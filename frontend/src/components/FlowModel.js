@@ -12,13 +12,11 @@ import SliderSideBar  from "./SliderSideBar";
 import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
 
 import 'reactflow/dist/style.css';
-import '../css/ReactFlowArea.css';
 
-import boogyImg from "../../images/boogy.PNG"
+import boogyImg from "../images/boogy.PNG"
 
-
-import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
-import Molecule from '../customNodes/Molecule';
+import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
+import Molecule from './customNodes/Molecule'
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
     molecule: Molecule
@@ -85,9 +83,8 @@ const FlowModel = (props) => {
         setPathwayAuthor(newPathway["author"]);
 
         // Create the nodes and edges for ReactFlow
-        let nodesAndEdgesDict = buildFlow(newPathway);
-        setNodes(nodesAndEdgesDict["nodes"]);
-        setEdges(nodesAndEdgesDict["edges"]);
+        setNodes(generateNodes(pathway));
+        setEdges(generateEdges(pathway));
 
         props.concentrationManager.addListener(onConcentrationUpdate);
         props.concentrationManager.parsePathway(newPathway);

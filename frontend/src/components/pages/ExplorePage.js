@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 const ExplorePage = (pages) => {
   const paginationButtonNames = ["Pathways", "Groups", "Users"]
 
@@ -14,7 +13,6 @@ const ExplorePage = (pages) => {
       setSelectedExploreType(buttonName)
     }
   }
-
 
   return (
     <div id="ExplorePage">

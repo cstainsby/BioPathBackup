@@ -11,75 +11,109 @@ import pyruvate_kinase from '../../images/glycolysis/pyruvate kinase.png';
 import triose_phosphate_isomerase from '../../images/glycolysis/triose phosphate isomerase.png';
 import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
+const ENZYME_WIDTH = 150;
+const MOLECULE_WIDTH = 60;
+
 export default memo(({ data, isConnectable }) => {
-  let image = null;
-  if (data.image === "aldolase") {
-    image = aldolase;
-  }
-  else if (data.image === "enolase") {
-    image = enolase;
-  }
-  else if (data.image === "hexokinase") {
-    image = hexokinase;
-  }
-  else if (data.image === "phosphofructokinase") {
-    image = phosphofructokinase;
-  }
-  else if (data.image === "phosphoglucose isomerase") {
-    image = phosphoglucose_isomerase;
-  }
-  else if (data.image === "phosphoglycerate kinase") {
-    image = phosphoglycerate_kinase;
-  }
-  else if (data.image === "phosphoglycerate mutase") {
-    image = phosphoglycerate_mutase;
-  }
-  else if (data.image === "pyruvate kinase") {
-    image = pyruvate_kinase;
-  }
-  else if (data.image === "triose phosphate dehydrogenase") {
-    image = triose_phosphate_dehydrogenase;
-  }
-  else {
-    image = triose_phosphate_isomerase
-  }
-  return (
-    <>
-      <Handle
-        type="target"
-        position="top"
-        id="top-target"
-        style={{left: 100, background: '#555' }}
-        onConnect={(params) => console.log('handle onConnect', params)}
-        isConnectable={isConnectable}
-      />
-      <Handle
-        type="source"
-        position="top"
-        id="top-source"
-        style={{ left: 50, background: '#555' }}
-        onConnect={(params) => console.log('handle onConnect', params)}
-        isConnectable={isConnectable}
-      />
-      <div>
-        <strong>{data.label}</strong>
-        <img src={image} width="120" height="80" alt="enzymeImage"/>
-      </div>
-      {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}
-      <Handle
-        type="source"
-        position="bottom"
-        id="bottom-source"
-        style={{left: 100, background: '#555' }}
-        isConnectable={isConnectable}
-      />
-      <Handle
-        id="bottom-target"
-        type="target"
-        position="bottom"
-        style={{ left: 50, background: '#555' }}
-        isConnectable={isConnectable}
-      />
-    </>
-  );
+    let image = null;
+    if (data.image === "aldolase") {
+        image = aldolase;
+    }
+    else if (data.image === "enolase") {
+        image = enolase;
+    }
+    else if (data.image === "hexokinase") {
+        image = hexokinase;
+    }
+    else if (data.image === "phosphofructokinase") {
+        image = phosphofructokinase;
+    }
+    else if (data.image === "phosphoglucose isomerase") {
+        image = phosphoglucose_isomerase;
+    }
+    else if (data.image === "phosphoglycerate kinase") {
+        image = phosphoglycerate_kinase;
+    }
+    else if (data.image === "phosphoglycerate mutase") {
+        image = phosphoglycerate_mutase;
+    }
+    else if (data.image === "pyruvate kinase") {
+        image = pyruvate_kinase;
+    }
+    else if (data.image === "triose phosphate dehydrogenase") {
+        image = triose_phosphate_dehydrogenase;
+    }
+    else {
+        image = triose_phosphate_isomerase
+    }
+
+    const getHandleLocation = (i, num, offset) => {
+        return ((i + 1) * ENZYME_WIDTH) / (1 + num) + offset
+    }
+
+    const generateTopHandles = (data) => {
+        let handles = [];
+        for (let i = 0; i < data.substrates.length; i++) {
+            handles.push(
+                <Handle
+                    type="target"
+                    position="top"
+                    id={"top-target-" + i.toString()}
+                    style={{left: getHandleLocation(i, data.substrates.length, -10), background: '#555' }}
+                    onConnect={(params) => console.log('handle onConnect', params)}
+                    isConnectable={isConnectable}
+                />
+            );
+            handles.push(
+                <Handle
+                    type="source"
+                    position="top"
+                    id={"top-source-" + i.toString()}
+                    style={{ left: getHandleLocation(i, data.substrates.length, 10), background: '#555' }}
+                    onConnect={(params) => console.log('handle onConnect', params)}
+                    isConnectable={isConnectable}
+                />
+            );
+        }
+        return handles;
+    }
+
+    const generateBottomHandles = (data) => {
+        let handles = [];
+        for (let i = 0; i < data.substrates.length; i++) {
+            handles.push(
+                <Handle
+                    type="source"
+                    position="bottom"
+                    id={"bottom-source-" + i.toString()}
+                    style={{ left: getHandleLocation(i, data.substrates.length, -10), background: '#555' }}
+                    onConnect={(params) => console.log('handle onConnect', params)}
+                    isConnectable={isConnectable}
+                />
+            );
+            handles.push(
+                <Handle
+                    type="target"
+                    position="bottom"
+                    id={"bottom-target-" + i.toString()}
+                    style={{left: getHandleLocation(i, data.substrates.length, 10), background: '#555' }}
+                    onConnect={(params) => console.log('handle onConnect', params)}
+                    isConnectable={isConnectable}
+                />
+            );
+        }
+        return handles;
+    }
+
+    return (
+        <>
+        {generateTopHandles(data)}
+        <div>
+            <strong>{data.label}</strong>
+            <img src={image} width="120" height="80" alt="enzymeImage"/>
+        </div>
+        {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}
+        {generateBottomHandles(data)}
+        </>
+    );
 });

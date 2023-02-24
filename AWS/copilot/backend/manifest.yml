@@ -11,7 +11,7 @@ type: Backend Service
 # Configuration for your containers and service.
 image:
   # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/backend-service/#image-build
-  build: ../backend/Dockerfile
+  build: ../backend/Dockerfile.prod
   # Port exposed through your container to route traffic to it.
   port: 8000
 
@@ -33,8 +33,8 @@ network:
 # our use case
 # https://aws.github.io/copilot-cli/docs/developing/environment-variables/ 
 variables:                    # Pass environment variables as key value pairs.
- RDS_DB_NAME: "biopath-test-db"
- RDS_HOSTNAME: "biopath-test-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
+ RDS_DB_NAME: "biopath-db"
+ RDS_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
  RDS_PORT: 5432
  RDS_USERNAME: "postgres"
  RDS_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/RDS_PASSWORD

@@ -75,8 +75,8 @@ const BuildEnzymeModal = (props) => {
     const [id, setID] = useState(null);
     const [name, setName] = useState(null);
     const [abbreviation, setAbbrevation] = useState(null);
-    const [substrates, setSubstrates] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [substrates, setSubstrates] = useState();
+    const [products, setProducts] = useState();
     const [reversible, setReversible] = useState("false");
 
     let data = {
@@ -96,18 +96,16 @@ const BuildEnzymeModal = (props) => {
         // data.reversible = [reversible];
 
         const enzymeObj = {
-            "id": id,
             "name": name,
             "abbreviation": abbreviation,
             "reversible": reversible,
-            "ball_and_stick_image": null,
-            "space_filling_image": null,
-            "link": null,
-            "public": true,
+            "image": null,
+            "link": "",
+            "public": false,
             "author": 1,
-            "substrates": [substrates],
-            "products": [products],
-            "cofactors": []
+            "substrates": [261],
+            "products": [263],
+            "cofactors": [264]
         }
         postEnzyme(enzymeObj);
 

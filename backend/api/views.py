@@ -23,7 +23,7 @@ from api import serializers, models
 
 class MoleculeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MoleculeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return models.Molecule.objects.all()
@@ -43,7 +43,7 @@ class MoleculeInstanceViewSet(viewsets.ModelViewSet):
 
 class EnzymeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EnzymeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return models.Enzyme.objects.all()

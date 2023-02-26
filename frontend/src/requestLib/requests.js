@@ -278,6 +278,7 @@ async function postMolecule(moleculeObj) {
 
 
 async function postEnzyme(enzymeObj) {
+  console.log("enzymeObj", enzymeObj);
   const methodType = "POST";
   const endpointExtension = "enzymes/";
   const requestUrl = dataSourceAddress + endpointExtension;

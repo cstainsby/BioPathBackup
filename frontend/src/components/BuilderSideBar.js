@@ -44,7 +44,6 @@ function BuilderSideBar(props) {
     }
 
     function onMoleculeSelect(selectedMolecule) {
-        console.log(reload, "checking reload")
         props.onAddMolecule(moleculeResp[selectedMolecule])
     }
 
@@ -201,8 +200,7 @@ const BuildMoleculeModal = (props) => {
     const [abbr, setAbbr] = useState(null);
 
     useEffect(() => {
-        console.log("hello");
-        // clear state for next new enzyme
+        // clear state for next new molecule
         setLabel(null);
         setAbbr(null);
 

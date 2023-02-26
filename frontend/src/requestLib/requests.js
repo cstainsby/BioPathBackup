@@ -238,6 +238,7 @@ async function postPathway(pathwayObj) {
 
 
 async function postMolecule(moleculeObj) {
+  console.log(moleculeObj);
   const methodType = "POST";
   const endpointExtension = "molecules/";
   const requestUrl = dataSourceAddress + endpointExtension;

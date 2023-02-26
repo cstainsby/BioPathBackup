@@ -7,6 +7,7 @@ function BuilderSideBar(props) {
     const [enzymeResp, setEnzymeResp] = useState(null);
     const [enzymes, setEnzymes] = useState();
     const [molecules, setMolecules] = useState();
+    const [reload, setReload] = useState(true); // used to call db when new stuff pushed
 
     useEffect(() => { 
         if (moleculeResp != null) {
@@ -15,36 +16,39 @@ function BuilderSideBar(props) {
             );
             setMolecules(dropDownItems);
         }
-        else {
-            callGetMolecules()
-        }
+        // else {
+        //     callGetMolecules()
+        // }
         if (enzymeResp != null) {
             const dropDownItems = enzymeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>
             );
             setEnzymes(dropDownItems);
         }
-        else {
-            callGetEnzymes()
+        // else {
+        //     callGetEnzymes()
+        // }
+        if (reload) {
+            callGetEnzymes();
+            callGetMolecules();
         }
 
-    }, [moleculeResp, enzymeResp]);
+    }, [moleculeResp, enzymeResp, reload]);
 
     function callGetMolecules() {
-        if (!moleculeResp) {
-            getMolecules()
-            .then(moleculeResp => setMoleculeResp(moleculeResp));
-        }
+        setReload(false)
+        getMolecules()
+        .then(moleculeResp => setMoleculeResp(moleculeResp));
     }
 
     function callGetEnzymes() {
-        if (!enzymeResp) {
-            getEnzymes()
-            .then(enzymeResp => setEnzymeResp(enzymeResp));
-        }
+        setReload(false)
+        getEnzymes()
+        .then(enzymeResp => setEnzymeResp(enzymeResp));
     }
 
     function onMoleculeSelect(selectedMolecule) {
+        console.log(reload, "checking reload")
         props.onAddMolecule(moleculeResp[selectedMolecule])
     }
 
@@ -64,8 +68,8 @@ function BuilderSideBar(props) {
                 {enzymes}
             </select>
             {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddEnzyme}>Add Enzyme</button> */}
-            <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme}></BuildEnzymeModal>
-            <BuildMoleculeModal onNewMolecule={props.onNewMolecule}></BuildMoleculeModal>
+            <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload}></BuildEnzymeModal>
+            <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
             
         </div>
   );
@@ -88,26 +92,24 @@ const BuildEnzymeModal = (props) => {
     }
 
     function handleClick() {
-        // data.label = label;
-        // data.name = name;
-        // data.abbreviation = abbreviation;
-        // data.substrates = [substrates]; 
-        // data.products = [products];
-        // data.reversible = [reversible];
+        var subs = JSON.parse("[" + substrates + "]"); // makes string into list of ids
+        var prods = JSON.parse("[" + products + "]"); // makes string into list of ids
 
         const enzymeObj = {
             "name": name,
             "abbreviation": abbreviation,
-            "reversible": reversible,
+            "reversible": reversible === 'true',
             "image": null,
-            "link": "",
-            "public": false,
+            "link": null,
+            "public": true,
             "author": 1,
-            "substrates": [261],
-            "products": [263],
-            "cofactors": [264]
+            "substrates": subs,
+            "products": prods,
+            "cofactors": [335]
         }
         postEnzyme(enzymeObj);
+
+        props.resetDropDowns(true);
 
         props.onNewEnzyme(enzymeObj);
     }
@@ -120,10 +122,10 @@ const BuildEnzymeModal = (props) => {
               <ul className="dropdown-menu">
                 <li>
                     <button onClick={handleClick}>Submit New Enzyme</button>
-                    <label>
+                    {/* <label>
                     Enzyme ID
                     <input type="text" onChange={e => setID(e.target.value)} />
-                    </label>
+                    </label> */}
                     <label>
                     Enzyme Name
                     <input type="text" onChange={e => setName(e.target.value)} />
@@ -168,7 +170,7 @@ const BuildMoleculeModal = (props) => {
         data.id = id;
 
         const moleculeObj = {
-            "id": data.id,
+            // "id": data.id,
             "name": data.label,
             "abbreviation": data.abbreviation,
             "ball_and_stick_image": null,
@@ -178,6 +180,8 @@ const BuildMoleculeModal = (props) => {
             "author": 1
         }
         postMolecule(moleculeObj);
+
+        props.resetDropDowns(true);
 
 
         props.onNewMolecule(data);
@@ -199,10 +203,10 @@ const BuildMoleculeModal = (props) => {
                     Molecule Abbreviation
                     <input type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
-                    <label>
+                    {/* <label>
                     Molecule ID
                     <input type="text" onChange={e => setID(e.target.value)} />
-                    </label>
+                    </label> */}
                 </li>
               </ul>
         </li>

@@ -78,10 +78,14 @@ class ConcentrationManager {
         let cachedConcentrations = this.moleculeConcentrations;
         // new for continuous or finite pathway
         for (const id of this.startMolecules) {
-            this.moleculeConcentrations[id].value += .01;
+            if (!this.moleculeConcentrations[id].locked) {
+                this.moleculeConcentrations[id].value += .01;
+            }
         }
         for (const id of this.endMolecules) {
-            this.moleculeConcentrations[id].value -= .01;
+            if (!this.moleculeConcentrations[id].locked) {
+                this.moleculeConcentrations[id].value -= .01;
+            }
         }
         // end of continuous or finite pathway
         for (const [id, enzyme] of Object.entries(this.enzymes)) {
@@ -95,10 +99,14 @@ class ConcentrationManager {
             this.enzymes[id].subToProd = subToProd;
             this.enzymes[id].prodToSub = prodToSub;
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate.id].value += prodToSub - subToProd;
+                if (!this.moleculeConcentrations[substrate.id].locked) {
+                    this.moleculeConcentrations[substrate.id].value += prodToSub - subToProd;
+                }
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product.id].value += subToProd - prodToSub;
+                if (!this.moleculeConcentrations[product.id].locked) {
+                    this.moleculeConcentrations[product.id].value += subToProd - prodToSub;
+                }
             }            
         }
         console.log("UpdateConcentrations()");

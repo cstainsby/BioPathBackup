@@ -13,8 +13,6 @@ import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtil
 
 import 'reactflow/dist/style.css';
 
-import boogyImg from "../images/boogy.PNG"
-
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 import Molecule from './customNodes/Molecule'
 const nodeTypes = {
@@ -100,11 +98,11 @@ const FlowModel = (props) => {
      * @param {import('reactflow').Node} node 
      */
     const onNodeClick = (e, node) => {
-        console.log(node);
         if (node.type === "molecule") {
+            let clicked_id = node.data.source_id;
             setNodes(nodes.map((n) => {
-                if (n.id === node.id) {
-                    if (node.data.locked) {
+                if (n.data.source_id === clicked_id) {
+                    if (n.data.locked) {
                         props.concentrationManager.unlock(n.data.source_id);
                         n.data.locked = false;
                         n.className = "Molecule"
@@ -194,7 +192,7 @@ const FlowModel = (props) => {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
-                attributionPosition="top-right"
+                attributionPosition="bottom-left"
                 onNodeClick={onNodeClick}
             >
                 <Controls position='bottom-right' />
@@ -224,7 +222,6 @@ const FlowModel = (props) => {
  * @prop {string} pathwayTitle - the name of the pathway
  * @prop {string} pathwayDescription - the description of the pathway
  * @prop {string} pathwayAuthor - the author of the pathway
- * @prop {img} additionalImage - an optional image 
  * @returns An informational react component for the current pathway
  */
 const PathwayTitleCard = (props) => {

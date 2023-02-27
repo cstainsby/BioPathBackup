@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from "react";
 
-import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
+import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../../requestLib/apiRequests';
 
-import './css/BuilderSideBar.css'
+import '../css/BuilderSideBar.css'
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
@@ -53,7 +53,8 @@ function BuilderSideBar(props) {
 
   return (
     <div className='card ModelAreaChild' id='PathwaySliderBox'>
-            {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddMolecule}>Add Molecule</button> */}
+            <h1>{props.slidersTitle}</h1>
+            <a>{props.slidersDescription}</a>
             <select onChange={(e) => onMoleculeSelect(e.target.value)}>
                 <option>Select Molecule</option>
                 {molecules}
@@ -62,7 +63,6 @@ function BuilderSideBar(props) {
                 <option>Select Enzyme</option>
                 {enzymes}
             </select>
-            {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddEnzyme}>Add Enzyme</button> */}
             <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
             <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
             

@@ -13,12 +13,17 @@ class ConcentrationManager {
      */
     constructor() {
         this.moleculeConcentrations = []; // [{ID: {"title": string, "value": float}}]
-        this.moleculeDeltas = []; // [{ID: {"title": string, "forwardValue": float, "reverseValue": float}}]
         this.startMolecules = []; // used for tracking start and end molecules
         this.endMolecules = [];
         this.enzymes = [];
         this.listeners = [];
-        this.interval = null;
+    }
+
+    clear() {
+        this.moleculeConcentrations = [];
+        this.startMolecules = [];
+        this.endMolecules = [];
+        this.enzymes = [];
     }
 
     /**
@@ -30,45 +35,36 @@ class ConcentrationManager {
      * @param enzymes[].products output molecules to the enzyme
      * @param enzymes[].cofactors molecules effecting the enzyme's production
      */
-    parseEnzymes(enzymes) {
-        this.moleculeConcentrations = [];
+    parsePathway(pathway) {
+        this.clear();
+        let enzymes = this.getEnzymesFromPathway(pathway);
         // used to make a system coninuous or runout of concentration
-        let i = 0; // i is used to find the first and last enzymes in list
-        for (const [id, enzyme] of Object.entries(enzymes)) {
-            if (i === 0) {
-                for (const substrate of enzyme.substrates) {
-                    if (!this.startMolecules.includes(substrate.id) ) {
-                        this.startMolecules.push(substrate.id);
-                    }
-                }
+        for (const substrate of Object.values(enzymes)[0].substrates) {
+            if (!this.startMolecules.includes(substrate.id) ) {
+                this.startMolecules.push(substrate.id);
             }
-            else if (i === Object.entries(enzymes).length - 1) {
-                for (const product of enzyme.products) {
-                    if (!this.endMolecules.includes(product.id) ) {
-                        this.endMolecules.push(product.id);
-                    }
-                }
+        }
+        for (const product of Object.values(enzymes)[Object.values(enzymes).length - 1].products) {
+            if (!this.endMolecules.includes(product.id) ) {
+                this.endMolecules.push(product.id);
             }
-            i += 1;
         }
         // end of start end molecule stuff
 
-        for (const [id, enzyme] of Object.entries(enzymes)) {
+        for (const enzyme of Object.values(enzymes)) {
             for (const substrate of enzyme.substrates) {
                 this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
-                this.moleculeDeltas[substrate.id] = {"title": substrate.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const product of enzyme.products) {
                 this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
-                this.moleculeDeltas[product.id] = {"title": product.title, "forwardValue": 1, "reverseValue": null};
             }
             for (const cofactor of enzyme.cofactors) {
                 this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
             }
             // TODO: Get, store, and update enzyme speeds. Link to a slider on the frontend?
             enzyme.speed = 0.05;
-            enzyme.subToProd = 0;
-            enzyme.prodToSub = 0;
+            enzyme.subToProd = 0.01;
+            enzyme.prodToSub = 0.01;
         }
         this.enzymes = enzymes;
         this.notifyListeners();
@@ -199,13 +195,75 @@ class ConcentrationManager {
 
     reset() {
         for (const molecule in this.moleculeConcentrations) {
-            this.moleculeConcentrations[molecule].value = 1
+            this.moleculeConcentrations[molecule].value = 1;
+        }
+        for (const [id, enzyme] of Object.entries(this.enzymes)) {
+            // Amount of substrate turned into product
+            this.enzymes[id].subToProd = this.calculateEnzymeSubstrateToProduct(enzyme, this.moleculeConcentrations);
+            // Amount of product turned into substrate
+            if (enzyme.reversible) {
+                this.enzymes[id].prodToSub = this.calculateEnzymeProductToSubstrate(enzyme, this.moleculeConcentrations);
+            }
         }
         this.notifyListeners();
     }
 
     getMolculeConcentrations() {
         return this.moleculeConcentrations;
+    }
+
+    /**
+     * Parses a list of enzyme data from pathway data
+     * @param pathwayData data from backend
+     * @returns list of enzymes with substrates, products, and cofactors
+     */
+    getEnzymesFromPathway(pathwayData) {
+        let enzymes = [];
+        for (const enzyme of pathwayData.enzyme_instances) {
+            let e = {
+                "reversible": enzyme.reversible,
+                "substrates": [],
+                "products": [],
+                "cofactors": []
+            }
+
+            // Get abbreviations for molecule IDs
+            for (const substrate of enzyme.substrate_instances) {
+                let m = pathwayData.molecule_instances.filter(o => {
+                    return o.id === parseInt(substrate);
+                });
+                if (m.length > 0) {
+                    e["substrates"].push({
+                        "id": m[0]["molecule"],
+                        "title": m[0]["abbreviation"]
+                    });
+                }
+            }
+            for (const product of enzyme.product_instances) {
+                let m = pathwayData.molecule_instances.filter(o => {
+                    return o.id === product;
+                });
+                if (m.length > 0) {
+                    e["products"].push({
+                        "id": m[0]["molecule"],
+                        "title": m[0]["abbreviation"]
+                    });
+                }
+            }
+            for (const cofactor of enzyme.cofactor_instances) {
+                let m = pathwayData.molecule_instances.filter(o => {
+                    return o.id === cofactor;
+                });
+                if (m.length > 0) {
+                    e["cofactors"].push({
+                        "id": m[0]["molecule"],
+                        "title": m[0]["abbreviation"]
+                    });
+                }
+            }
+            enzymes[enzyme.id] = e;
+        }
+        return enzymes;
     }
 }
 

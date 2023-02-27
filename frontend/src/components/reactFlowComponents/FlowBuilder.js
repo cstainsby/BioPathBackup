@@ -7,6 +7,8 @@ import ReactFlow, {
     useReactFlow,
 } from 'reactflow';
 import { generatePathwayJson } from '../utils/pathwayBuilderUtils';
+import { postPathway } from '../../requestLib/apiRequests';
+
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
 
@@ -22,7 +24,7 @@ const nodeTypes = {
 
 const flowKey = 'example-flow';
 
-const getNodeId = () => `randomnode_${+new Date()}`;
+const getNodeId = () => `${+new Date()}`;
 
 const initialNodes = [];
 const initialEdges = [];
@@ -62,17 +64,19 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-        generatePathwayJson(nodes, edges);
+        const pathwayObj = generatePathwayJson(nodes, edges);
+        console.log("request", pathwayObj);
+        postPathway(pathwayObj);
     });
 
     const onAddMolecule = useCallback((nodeData) => {
         const newNode = {
-        // id: getNodeId(),
-        id: nodeData.id.toString(),
+        id: getNodeId(),
         className: 'MoleculeBuild',
         data: { 
             label: nodeData.abbreviation,
             molecule_name: nodeData.name, 
+            molecule_id: nodeData.id,
             type: "molecule" },
         type: "molecule",
         position: {
@@ -85,16 +89,18 @@ const SaveRestore = (props) => {
 
     const onAddEnzyme = useCallback((nodeData) => {
         const newNode = {
-            // id: getNodeId(),
-            id: nodeData.id.toString(),
+            id: getNodeId(),
             className: 'enzymeBuild',
             // data: { label: nodeData.name, type: "enzyme" },
             data: {
                 label: nodeData.name, 
+                abbreviation: nodeData.abbreviation,
+                enzyme_id: nodeData.id,
                 type: "enzyme",
                 reversible: nodeData.reversible,
-                substrates: nodeData.substrate_instances, 
-                products: nodeData.product_instances,
+                substrates: nodeData.substrates, 
+                products: nodeData.products,
+                cofactors: nodeData.cofactors,
                 image: nodeData.link
             },
             type: "reversibleEnzyme",
@@ -103,6 +109,7 @@ const SaveRestore = (props) => {
                 y: Math.random() * window.innerHeight,
             },
         };
+        console.log("Newnode", newNode)
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 

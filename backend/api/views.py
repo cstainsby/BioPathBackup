@@ -63,7 +63,7 @@ class EnzymeInstanceViewSet(viewsets.ModelViewSet):
 
 class PathwayViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PathwayDetailSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return models.Pathway.objects.all()

@@ -6,13 +6,15 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
 } from 'reactflow';
-
 import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
 
-import NodeModal from '../modals/NodeModal.js'
-import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
+// import '../css/Restore.css';
+
+import NodeModal from '../modals/NodeModal';
+import ReversibleEnzyme from'../customNodes/ReversibleEnzyme';
 import Molecule from '../customNodes/Molecule';
+import BuilderSideBar from '../BuilderSideBar';
 
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
@@ -40,7 +42,6 @@ const SaveRestore = (props) => {
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
     useEffect(() => {
-        console.log(props.concentration, "hello");
     }, [props.concentration, setEdges]);
 
     const onSave = useCallback(() => {
@@ -65,11 +66,11 @@ const SaveRestore = (props) => {
         restoreFlow();
     }, [setNodes, setViewport]);
 
-    const onAddMolecule = useCallback(() => {    
+    const onAddMolecule = useCallback((nodeData) => {
         const newNode = {
         id: getNodeId(),
         className: 'MoleculeBuild',
-        data: { label: 'Added node', type: "molecule" },
+        data: { label: nodeData.abbreviation, type: "molecule" },
         type: "molecule",
         position: {
             x: Math.random() * window.innerWidth - 100,
@@ -83,7 +84,7 @@ const SaveRestore = (props) => {
         const newNode = {
         id: getNodeId(),
         className: 'MoleculeBuild',
-        data: { label: 'Added node', type: "molecule" },
+        data: { label: nodeData.label, type: "molecule" },
         type: "molecule",
         position: {
             x: Math.random() * window.innerWidth - 100,
@@ -93,11 +94,19 @@ const SaveRestore = (props) => {
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 
-    const onAddEnzyme = useCallback(() => {
+    const onAddEnzyme = useCallback((nodeData) => {
         const newNode = {
             id: getNodeId(),
             className: 'enzymeBuild',
-            data: { label: 'Added node', type: "enzyme" },
+            // data: { label: nodeData.name, type: "enzyme" },
+            data: {
+                label: nodeData.name, 
+                type: "enzyme",
+                reversible: nodeData.reversible,
+                substrates: nodeData.substrate_instances, 
+                products: nodeData.product_instances,
+                image: nodeData.link
+            },
             type: "reversibleEnzyme",
             position: {
                 x: Math.random() * window.innerWidth - 100,
@@ -108,25 +117,14 @@ const SaveRestore = (props) => {
     }, [setNodes]);
 
     const onNewEnzyme = useCallback((nodeData) => {
-        // const newNode = {
-        // id: getNodeId(),
-        // className: 'enzymeBuild',
-        // data: { label: 'Added node', type: "enzyme" },
-        // type: "reversibleEnzyme",
-        // position: {
-        //     x: Math.random() * window.innerWidth - 100,
-        //     y: Math.random() * window.innerHeight,
-        // },
-        // };
         const newNode = {
-            id: nodeData.id,
+            id: getNodeId(),
             className: 'enzymeBuild',
             data: { 
-                label: nodeData.label,
+                label: nodeData.name,
                 substrate: [nodeData.substrates],
                 products: [nodeData.products],
-                cofactors: [nodeData.cofactors],
-                image: nodeData.imageName, 
+                reversible: nodeData.reversible,
                 type: "enzyme" 
             },
             type: "reversibleEnzyme",
@@ -157,12 +155,20 @@ const SaveRestore = (props) => {
         <div className="save__controls">
             <button onClick={onSave}>save</button>
             <button onClick={onRestore}>restore</button>
-            <NodeModal onAdd={onAddMolecule} onNew={onNewMolecule} type="node"/>
-            <NodeModal onAdd={onAddEnzyme} onNew={onNewEnzyme} type="enzyme"/>
+            {/* <NodeModal onAdd={onAddMolecule} onNew={onNewMolecule} type="node"/>
+            <NodeModal onAdd={onAddEnzyme} onNew={onNewEnzyme} type="enzyme"/> */}
             {/* <button onClick={onAddMolecule}>add molecule</button> */}
             {/* <button onClick={onAddEnzyme}>add enzyme</button> */}
             <button onClick={onClear}>clear flow</button>
         </div>
+        <BuilderSideBar
+                    slidersTitle="Cofactors"
+                    slidersDescription="Adjust cofactor concentrations"
+                    onAddMolecule={onAddMolecule}
+                    onNewMolecule={onNewMolecule}
+                    onAddEnzyme={onAddEnzyme}
+                    onNewEnzyme={onNewEnzyme}
+                />
         </ReactFlow>
     );
 };

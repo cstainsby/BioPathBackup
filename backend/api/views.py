@@ -23,15 +23,16 @@ from api import serializers, models
 
 class MoleculeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MoleculeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Molecule.objects.all()
-        else:
-            return models.Molecule.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
+        return models.Molecule.objects.all()
+        # if self.request.user.is_superuser:
+        #     return models.Molecule.objects.all()
+        # else:
+        #     return models.Molecule.objects.filter(
+        #         Q(public=True) | Q(author=self.request.user)
+        #     )
 
 
 class MoleculeInstanceViewSet(viewsets.ModelViewSet):
@@ -42,15 +43,16 @@ class MoleculeInstanceViewSet(viewsets.ModelViewSet):
 
 class EnzymeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EnzymeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Enzyme.objects.all()
-        else:
-            return models.Enzyme.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
+        return models.Enzyme.objects.all()
+        # if self.request.user.is_superuser:
+        #     return models.Enzyme.objects.all()
+        # else:
+        #     return models.Enzyme.objects.filter(
+        #         Q(public=True) | Q(author=self.request.user)
+        #     )
 
 
 class EnzymeInstanceViewSet(viewsets.ModelViewSet):

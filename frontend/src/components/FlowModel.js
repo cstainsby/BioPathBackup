@@ -66,6 +66,7 @@ const FlowModel = (props) => {
      * If there is no pathway ID, close the current pathway.
      */
     useEffect(() => {
+        console.log(pathway)
         handlePathwayOpen(pathway)
     }, [pathway]); // monitor pathwayID for changes
 

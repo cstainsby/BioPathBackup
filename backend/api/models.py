@@ -3,7 +3,6 @@ Defines the models for enzymes, substrates, pathways, etc. Django uses these mod
     to construct the database tables. These classes are used by serializers.py which
     serializes the data into json for easy view building and deserializes json into
     these objects for creating new objects in the DB.
-TODO do we want default images? https://stackoverflow.com/questions/15322391/django-the-image-attribute-has-no-file-associated-with-it
 TODO validation
 """
 
@@ -15,26 +14,26 @@ from django.core.validators import MinLengthValidator
 
 class Molecule(models.Model):
     name = models.CharField(
-        max_length=50,
+        max_length=64,
         null=False,
         blank=False,
         validators=[MinLengthValidator(1)]
     )
     abbreviation = models.CharField(
-        max_length=10,
+        max_length=8,
         null=False,
         blank=False,
         validators=[MinLengthValidator(1)]
     )
-    ball_and_stick_image = models.ImageField(
+    ball_and_stick_image = models.CharField(
         null=True,
         blank=True,
-        upload_to="images/molecule/ball_and_stick/"
+        max_length=64
     )
-    space_filling_image = models.ImageField(
+    space_filling_image = models.CharField(
         null=True,
         blank=True,
-        upload_to="images/molecule/space_filling/"
+        max_length=64
     )
     link = models.URLField(null=True, blank=True)
     author = models.ForeignKey(
@@ -52,13 +51,13 @@ class Molecule(models.Model):
 
 class Enzyme(models.Model):
     name = models.CharField(
-        max_length=50,
+        max_length=64,
         null=False,
         blank=False,
         validators=[MinLengthValidator(1)]
     )
     abbreviation = models.CharField(
-        max_length=10,
+        max_length=8,
         null=False,
         blank=False,
         validators=[MinLengthValidator(1)]
@@ -79,10 +78,10 @@ class Enzyme(models.Model):
         Molecule,
         related_name="enzymes_cofactors"
     )
-    image = models.ImageField(
+    image = models.CharField(
+        max_length=64,
         null=True,
-        blank=True,
-        upload_to="images/enzyme/"
+        blank=True
     ) # space filling
     link = models.URLField(null=True, blank=True) # link to protopedia
     author = models.ForeignKey(

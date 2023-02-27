@@ -3,25 +3,32 @@
     --primary-color-dark: #b13e53;
     --secondary-color: #84778a;
     --secondary-color-dark: #585063;
+    --tertiary-color: #ffcd75;
     --enzyme-primary-color: #38b764;
     --enzyme-secondary-color: #a7f070;
-    --molecule-primary-color: #73eff7;
-    --molecule-secondary-color: #41a6f6;
+    --molecule-primary-color: #41a6f6;
+    --molecule-secondary-color: #73eff7;
     --forward-color: #257179;
     --backward-color: #ef7d57;
     --background-color: #f4f4f4;
     --element-background-color: #94b0c2;
-    --locked-color: #5d275d;
+    --locked-color: #b13e53;
+    --clicked-color: #1a1c2c;
 }
 
 .btn.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color-dark);
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
 }
 
 .btn.btn-primary:hover {
-    background-color: var(--primary-color-dark);
-    border-color: var(--primary-color-dark);
+    background-color: var(--tertiary-color-dark);
+    border-color: var(--tertiary-color);
+}
+
+.btn.btn-primary:hover:active {
+    background-color: var(--clicked-color);
+    border-color: var(--clicked-color);
 }
 
 .btn.btn-secondary {
@@ -32,6 +39,11 @@
 .btn.btn-secondary:hover {
     background-color: var(--secondary-color-dark);
     border-color: var(--secondary-color-dark);
+}
+
+.btn.btn-secondary:hover:active {
+    background-color: var(--clicked-color);
+    border-color: var(--clicked-color);
 }
 
 .App {
@@ -51,8 +63,9 @@ ul {
     list-style-type: none;
 }
 
-.card {
+a.card {
     margin: 8px;
+    background-color: var(--tertiary-color);
 }
 
 .horizontalUl {
@@ -139,6 +152,7 @@ ul {
     display: flex;
     flex-direction: column;
     height: 100%;
+    background-color: var(--background-color);
 }
 
 /* Pathway Editor Page */
@@ -219,7 +233,7 @@ ul {
     left: 10px;
 }
 .sliderBarList::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: var(--tertiary-color);
     border-radius: 20px;
     cursor: grabbing;
 }
@@ -234,7 +248,7 @@ ul {
 }
 
 #sliderCard {
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
 }
 
 /* ------------------------------------------------------- */
@@ -249,7 +263,7 @@ ul {
     display: flex;
     list-style-type: none;
     padding: 0px;
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
 }
 
 #cardHeaderList > li {
@@ -292,7 +306,7 @@ input[type=range]::-webkit-slider-thumb {
     width: 16px;
     border-radius: 10px;
     margin-top: -12px;
-    background: var(--primary-color-dark);
+    background: var(--tertiary-color-dark);
     cursor: pointer;
 }
 
@@ -313,7 +327,7 @@ input[type=range]::-moz-range-thumb {
     width: 16px;
     border-radius: 10px;
     margin-top: -12px;
-    background: var(--primary-color-dark);
+    background: var(--tertiary-color-dark);
     cursor: pointer;
 }
   
@@ -334,7 +348,7 @@ input[type=range]::-ms-thumb {
     width: 16px;
     border-radius: 10px;
     margin-top: -12px;
-    background: var(--primary-color-dark);
+    background: var(--tertiary-color-dark);
     cursor: pointer;
 }
   
@@ -378,7 +392,7 @@ input[type=range]::-ms-fill-upper {
     width: 150px;
     height: 100px;
     /* transform: skew(20deg); */
-    background: var(--enzyme-primary-color);
+    background: var(--primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -389,7 +403,7 @@ input[type=range]::-ms-fill-upper {
     font-size: 12px;
     width: 250px;
     height: 100px;
-    background: var(--enzyme-primary-color);
+    background: var(--primary-color);
     border: 1px solid #555;
     border-radius: 10px;
     text-align: center;

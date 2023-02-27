@@ -135,9 +135,9 @@ const FlowModel = (props) => {
             edges.map((edge) => {
                 if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
                     if (edge.id.split("_")[0] === "R") {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: 'red'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: 'var(--backward-color)'};
                     } else {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: 'green'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: 'var(--forward-color)'};
                     }
                 }
                 return edge;

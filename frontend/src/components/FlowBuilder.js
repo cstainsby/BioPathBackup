@@ -11,7 +11,6 @@ import { generatePathwayJson } from '../utils/pathwayBuilderUtils';
 import { postPathway } from '../../requestLib/apiRequests';
 
 import 'reactflow/dist/style.css';
-import '../css/ReactFlowArea.css';
 
 
 import BuilderEnzyme from '../customNodes/BuilderEnzyme';
@@ -31,7 +30,6 @@ const initialNodes = [];
 const initialEdges = [];
 
 let numEnzymes = 0;
-
 
 const SaveRestore = (props) => {
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push

@@ -65,7 +65,7 @@ const Slider = (props) => {
                     />
                 </button>
             </li>
-        <li><h5>{props.title}</h5></li>
+            <li><h5>{props.title}</h5></li>
         </ul>
 
     const closeHeader = 

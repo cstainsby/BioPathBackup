@@ -1,117 +1,160 @@
-.App {
-  text-align: center;
-  height: 100vh;
+:root {
+    --primary-color: #dda43e;
+    --secondary-color: #84778a;
+    --secondary-color-dark: #585063;
+    --primary-color-dark: #bf481d;
+    --enzyme-primary-color: #b6c157;
+    --enzyme-secondary-color: #749938;
+    --molecule-primary-color: #80dcdf;
+    --molecule-secondary-color: #395c8c;
+    --forward-color: #124f25;
+    --backward-color: #bf481d;
+    --background-color: #f0ecb5;
+    --element-background-color: #f2db6d;
+    --locked-color: #ac1512;
 }
 
+.btn.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color-dark);
+}
+
+.btn.btn-primary:hover {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color-dark);
+}
+
+.btn.btn-secondary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn.btn-secondary:hover {
+    background-color: var(--secondary-color-dark);
+    border-color: var(--secondary-color-dark);
+}
+
+.card-body {
+    background-color: var(--molecule-primary-color);
+}
+
+.card:hover {
+    background-color: var(--molecule-primary-color);
+}
+
+.App {
+    text-align: center;
+    height: 100vh;
+}
 
 /* ------------------------- */
 /* generalized css */
 /* ------------------------- */
 .fontFamily {
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* element classes */
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .card {
-  margin: 8px;
+    margin: 8px;
 }
 
 .horizontalUl {
-  display: inline-block;
+    display: inline-block;
 }
 
 .pushDown {
-  padding-top: 15px;
+    padding-top: 15px;
 }
 
 .growButton { 
-  transition: all .2s ease-in; 
+    transition: all .2s ease-in; 
 }
-  
+
 .growButton:hover { 
-  transform: scale(1.05); 
+    transform: scale(1.05); 
 }
 
 .growCard { 
-  transition: all .2s ease-in; 
+    transition: all .2s ease-in; 
+    background-color: var(--molecule-primary-color);
 }
-  
+
 .growCard:hover { 
-  transform: scale(1.03); 
+    transform: scale(1.03); 
 }
 
 .ModelAreaChild {
-  position: absolute;
+    position: absolute;
 }
 
 .ReactFlow {
-  z-index: 1;
+    z-index: 1;
+    cursor: grab
 }
 
 .informationalSection {
-  margin-bottom: 32px;
+    margin-bottom: 32px;
 }
 
 .informationalHeaderSection {
-  margin-left: 32px;
-  margin-right: 32px;
+    margin-left: 32px;
+    margin-right: 32px;
 }
 
 .informationalHeaderSection > h4 {
-  margin-left: 32px;
-  text-align: start;
+    margin-left: 32px;
+    text-align: start;
 }
-
-
 
 .cardNavLink {
-  height: fit-content;
-  color: inherit;
-  text-decoration: none;
+    height: fit-content;
+    color: inherit;
+    text-decoration: none;
 }
 .cardNavLink:hover {
-  color: black;
-  border-color: black;
+    color: black;
+    border-color: black;
 }
 
 #LeftOffAreaContent {
-  margin-left: 90px;
+    margin-left: 90px;
 }
 
 /* for the sign in button when a user is signed in */
 #signedInCircleButton {
-  height: 53px;
-  width: 53px;
-  background-color: #bbb;
-  border-radius: 50%;
-  padding-top: 2px; /* to center the text inside div*/
-  font-size: x-large;
+    height: 53px;
+    width: 53px;
+    background-color: #bbb;
+    border-radius: 50%;
+    padding-top: 2px; /* to center the text inside div*/
+    font-size: x-large;
 }
 
 /* the sign in modal */
 #signInModal {
-  align-content: start;
+    align-content: start;
 }
 /* signInFormSwapButton for the sign in form */
 #signInFormSwapButton {
-  margin-left: 32px;
+    margin-left: 32px;
 }
 
 /* Root Layout */
 #RootLayout {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* Pathway Editor Page */
 #PathwayEditorPage {
-  height: 100%;
-  flex-grow: 1;
+    height: 100%;
+    flex-grow: 1;
 }
 
 /* ------------------------- */
@@ -119,128 +162,132 @@ ul {
 /* ------------------------- */
 
 #StarterCard {
-  min-width: 200px;
-  max-width: 400px;
-  height: 200px;
-  margin: 8px;
+    min-width: 200px;
+    max-width: 400px;
+    height: 200px;
+    margin: 8px;
 }
 
 
 /* CSS for model area */
 #ModelAreaCol {
-  height: inherit;
-  
-  padding-left: 0px;
-  padding-right: 0px;
+    height: inherit;
+
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .ModelArea {
-  height: inherit;
-  width: inherit;
-  display: flex;
-  background-color: #e6ebf2;
-
-  position: relative;
+    height: inherit;
+    width: inherit;
+    display: flex;
+    background-color: var(--background-color);
+    position: relative;
 }
 
 #PathwayTitleCard {
-  right: 12px;
-  top: 12px;
-  z-index: 99;
-  width: fit-content;
-  height: 150px;
+    right: 12px;
+    top: 12px;
+    z-index: 99;
+    width: fit-content;
+    height: 150px;
 }
 
 #PathwaySliderBox {
-  left: 12px;
-  top: 12px;
-  z-index: 98;
-  display: flex;
-  height: auto;
-  width: 250px;
+    left: 12px;
+    top: 12px;
+    z-index: 98;
+    display: flex;
+    height: auto;
+    width: 250px;
+    background-color: var(--element-background-color);
 }
 
 /* ------------------------------------------------------- */
 /* Slider Siderbar Compnent css */
 /* ------------------------------------------------------- */
 .sliderBar {
-  margin: 8px;
-  margin-top: 4px;
-  padding: 8px;
-  height: fit-content;
+margin: 8px;
+margin-top: 4px;
+padding: 8px;
+height: fit-content;
 }
 
 .sliderBarList {
-  list-style-type: none;
-  height: 300px;
-  overflow-y: scroll;
-  margin: 0px;
-  padding: 0px;
+    list-style-type: none;
+    height: 400px;
+    overflow-y: scroll;
+    margin: 0px;
+    padding: 0px;
 }
+
 .sliderBarList > li {
-  margin: 8px;
+    margin: 8px;
 }
 
 #sliderComponentTitle {
-  padding: 8px;
-  margin: 0px;
+    padding: 8px;
+    margin: 0px;
 }
 
 /* ------------------------------------------------------- */
 /* Slider css */
 /* ------------------------------------------------------- */
 .Slider {
-  height: 150px;
-  border: 4px solid red;
+    height: 150px;
+    border: 4px solid red;
 }
 
 #cardHeaderList {
-  display: flex;
-  list-style-type: none;
-  padding: 0px;
+    display: flex;
+    list-style-type: none;
+    padding: 0px;
+    background-color: var(--molecule-primary-color);
 }
+
 #cardHeaderList > li {
-  margin: 4px;
-  display: inline-block;
+    margin: 4px;
+    display: inline-block;
 }
+
 #carHeaderList > li > h4 {
-  margin-left: 8px;
+    margin-left: 8px;
 }
 
 .cardHeaderDropdownButton {
-  background: transparent;
-  border: none;
+    background-color: var(--molecule-primary-color);
+    border: none;
 }
 
 #cardHeaderCaret {
-  max-width: 12px;
-  height: auto;
+    max-width: 12px;
+    height: auto;
 }
 
 #concentrationSlider {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* --------------------------- */
 /* Restore */
 /* --------------------------- */
 .save__controls {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  z-index: 4;
-  font-size: 12px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 4;
+    font-size: 12px;
 }
 
 .save__controls button {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 .react-flow__node.enzymeBuild {
     width: 150px;
     height: 100px;
     /* transform: skew(20deg); */
-    background: rgb(82, 188, 162);
+    background: var(--enzyme-primary-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -251,17 +298,21 @@ ul {
     font-size: 12px;
     width: 250px;
     height: 100px;
-    background: rgb(82, 188, 162);
+    background: var(--enzyme-primary-color);
     border: 1px solid #555;
     border-radius: 10px;
     text-align: center;
-  }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .react-flow__node.Molecule {
     border-radius: 40%;
     width: 60px;
     height: 40px;
-    background: rgb(152, 156, 255);
+    background: var(--molecule-primary-color);
+    border: 1px solid #000000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -269,17 +320,15 @@ ul {
 }
 
 .Molecule.locked {
-    border: 5px solid #ff0000;
+    border: 5px solid var(--locked-color);
 }
 
 .react-flow__node.MoleculeBuild {
     border-radius: 40%;
     width: 60px;
     height: 40px;
-    background: rgb(152, 156, 255);
+    background: var(--secondary-color);
     display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 9px;
 }
 
@@ -291,7 +340,7 @@ ul {
     opacity: 0;
 }
 
-  .react-flow__node.MoleculeBuild .react-flow__handle {
+.react-flow__node.MoleculeBuild .react-flow__handle {
     opacity: 50;
 }
 

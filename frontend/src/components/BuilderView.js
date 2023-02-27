@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect } from 'react'
 
-import FlowBuilder from './reactFlowComponents/FlowBuilder'
-
+import FlowBuilder from './FlowBuilder'
 
 /**
  * 

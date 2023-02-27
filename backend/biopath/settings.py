@@ -33,7 +33,9 @@ SECRET_KEY = 'django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "6umnppgwmc.us-west-2.awsapprunner.com",
+]
 
 
 # Application definition
@@ -163,6 +165,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Allow CORS from localhost for development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "6umnppgwmc.us-west-2.awsapprunner.com"
 ]
 
 

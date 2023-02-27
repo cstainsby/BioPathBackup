@@ -39,10 +39,10 @@ memory: 2048
 
 # Optional fields for more advanced use-cases.
 variables:                    # Pass environment variables as key value pairs.
- RDS_DB_NAME: "biopath-db"
+ RDS_DB_NAME: "postgres"
  RDS_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
  RDS_PORT: 5432
- RDS_USERNAME: "postgres"
+ RDS_USERNAME: "biopath_admin"
  RDS_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/RDS_PASSWORD
 #
 # tags:                         # Pass tags as key value pairs.

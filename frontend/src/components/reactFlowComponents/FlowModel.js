@@ -143,14 +143,6 @@ const FlowModel = (props) => {
         };
     }, [running, speed]);
 
-    /**
-     * Resets concentrations to starting values
-     * 
-     */
-    const resetConcentrations = () => {
-        props.concentrationManager.reset();
-    }
-
 
     /**
      * Resets concentrations to starting values
@@ -187,6 +179,7 @@ const FlowModel = (props) => {
                     handleConcentrationChange={ handleConcentrationChange }
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
+                    reset = {() => resetConcentrations()}
                 />
             </ReactFlow>            
         </div>

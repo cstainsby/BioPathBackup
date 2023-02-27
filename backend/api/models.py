@@ -76,7 +76,8 @@ class Enzyme(models.Model):
     )
     cofactors = models.ManyToManyField(
         Molecule,
-        related_name="enzymes_cofactors"
+        related_name="enzymes_cofactors",
+        blank=True
     )
     image = models.CharField(
         max_length=64,

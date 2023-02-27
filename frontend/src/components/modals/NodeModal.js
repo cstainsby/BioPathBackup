@@ -29,9 +29,9 @@ function NodeModal(props) {
         </a>
         <ul className="dropdown-menu">
           <li><button onClick={props.onAdd}>add default Enzyme</button></li>
-          {/* <li>
+          <li>
             <button onClick={props.onNew}>add new Enzyme</button>
-          </li> */}
+          </li>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Add Enzyme

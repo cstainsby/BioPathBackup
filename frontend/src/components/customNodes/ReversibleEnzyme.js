@@ -43,7 +43,6 @@ export default memo(({ data, isConnectable }) => {
   else {
     image = triose_phosphate_isomerase
   }
-  //console.log(data.image, image, "image from enzyme")
   return (
     <>
       <Handle

@@ -19,7 +19,7 @@ import boogyImg from "../../images/boogy.PNG"
 
 
 import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
-import Molecule from '../customNodes/Molecule'
+import Molecule from '../customNodes/Molecule';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
     molecule: Molecule
@@ -142,6 +142,7 @@ const FlowModel = (props) => {
             // console.log("clearInterval");
         };
     }, [running, speed]);
+
 
     /**
      * Resets concentrations to starting values

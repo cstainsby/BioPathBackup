@@ -1,11 +1,8 @@
 
-// ----------------------------------------------------------------------
-// requests.js
-//  This file will contain a library of functions used to make 
-//  requests to the backend
-// 
-//  each of the get functions will be returning JSON objects 
-// ----------------------------------------------------------------------
+/**
+ * This file will contain a library of functions used to make 
+ * requests to the backend
+ */
 
 import getEndpointHeader from "./requestConfig";
 import { getAccessToken } from "../localStoreAccess/jwtAccess";
@@ -14,6 +11,38 @@ import { getAccessToken } from "../localStoreAccess/jwtAccess";
 // portion of the backend
 let dataSourceAddressHeader = getEndpointHeader() + "api/"
 
+/**
+ * Gets data from the backend at a specified endpoint
+ * @param {string} endpoint where to get the data from
+ * @returns backend response object
+ */
+async function getBackendData(endpoint) {
+    const requestUrl = dataSourceAddressHeader + endpoint;
+
+    try {
+        const response = await fetch(requestUrl, {
+            headers: {
+                "Content-Type": "application/json",
+                // TODO: CHANGE HARD-CODED AUTH
+                'Authorization': 'Basic ' + btoa("root:root")
+            }
+        });
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+
+        return responseJSON;
+
+    } catch (error) {
+        console.log(requestUrl, error);
+        return error;
+    }
+}
 
 /**
  * Requests pathway data from backend 
@@ -21,223 +50,66 @@ let dataSourceAddressHeader = getEndpointHeader() + "api/"
  * @returns response object from backend
  */
 async function getPathwayById(id) {
-  let endpointExtension = "pathways/" + id;
-  let requestUrl = dataSourceAddressHeader + endpointExtension;
-  
-  try {
-    const response = await fetch(requestUrl, {
-        headers: {
-            "Content-Type": "application/json",
-            // TODO: CHANGE HARD-CODED AUTH
-            'Authorization': 'Basic ' + btoa("root:root")
-        }
-    });
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-
-    return responseJSON;
-
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
+    return getBackendData("pathways/" + id);
 }
 
 async function getPathways() {
-  const endpointExtension = "pathways/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  // const accessToken = getAccessToken();
-  // console.log("token ", accessToken);
-
-
-  // getting pathways shouldn't require auth
-  const resData = await fetch(requestUrl, {
-      headers: {
-          "Content-Type": "application/json",
-      }
-  })
-    .then(res => res.json())
-    .then(data => {
-      return data
-    })
-    .catch(err => {
-      console.log("ERROR ", err);
-      // gracefully fail, should still populate 
-    });
-  
-  return resData;
+    return getBackendData("pathways/");
 }
 
 async function getEnzymes() {
-  const endpointExtension = "enzymes/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  try {
-    const response = await fetch(requestUrl, {
-        headers: {
-            "Content-Type": "application/json",
-            // TODO: CHANGE HARD-CODED AUTH
-            'Authorization': 'Basic ' + btoa("root:root")
-        }
-    });
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-
-    return responseJSON;
-
-  } catch (error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+    return getBackendData("enzymes/");
 }
 
 async function getMolecules() {
-  const endpointExtension = "molecules/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  try {
-    const response = await fetch(requestUrl, {
-        headers: {
-            "Content-Type": "application/json",
-            // TODO: CHANGE HARD-CODED AUTH
-            'Authorization': 'Basic ' + btoa("root:root")
-        }
-    });
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-
-    return responseJSON;
-
-  } catch (error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+    return getBackendData("molecules/");
 }
 
+/**
+ * Submits a POST request to the backend at the
+ * specified endpoint, sending the given object
+ * @param {Object} obj data to post to the backend
+ * @param {string} endpoint where to send the data
+ * @returns backend response object
+ */
+async function postBackendData(obj, endpoint) {
+    const methodType = "POST";
+    const requestUrl = dataSourceAddressHeader + endpoint;
+
+    try {
+        const requestOptions = {
+            method: methodType,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj)
+        };
+
+        const response = await fetch(requestUrl, requestOptions);
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+        
+        return responseJSON;
+    } catch(error) {
+        console.log(requestUrl, error);
+        return error;
+    }
+}
 
 async function postPathway(pathwayObj) {
-  const methodType = "POST";
-  const endpointExtension = "pathways/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  try {
-    const requestOptions = {
-      method: methodType,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(pathwayObj)
-    };
-
-    const response = await fetch(requestUrl, requestOptions);
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-    
-    return responseJSON;
-  } catch(error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+    return postBackendData(pathwayObj, "pathways/");
 }
-
 
 async function postMolecule(moleculeObj) {
-  console.log(moleculeObj);
-  const methodType = "POST";
-  const endpointExtension = "molecules/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  try {
-    const requestOptions = {
-      method: methodType,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(moleculeObj)
-    };
-
-    const response = await fetch(requestUrl, requestOptions);
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-
-    return responseJSON;
-  } catch(error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+    return postBackendData(moleculeObj, "molecules/");
 }
 
-
 async function postEnzyme(enzymeObj) {
-  console.log("enzymeObj", enzymeObj);
-  const methodType = "POST";
-  const endpointExtension = "enzymes/";
-  const requestUrl = dataSourceAddressHeader + endpointExtension;
-
-  try {
-    const requestOptions = {
-      method: methodType,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(enzymeObj)
-    };
-
-    const response = await fetch(requestUrl, requestOptions);
-    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-    const responseJSON = isResponseJSON && await response.json();
-    
-    // if it is a bad request throw an error
-    if(!response.ok) {
-      const error = (responseJSON && responseJSON.message) || response.status;
-      throw error;
-    }
-
-    return responseJSON;
-  } catch(error) {
-    console.log(
-      requestUrl + "\n" + 
-      error
-    );
-    return error;
-  }
+    return postBackendData(enzymeObj, "enzymes/");
 }
 
 export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme }

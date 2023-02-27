@@ -23,7 +23,6 @@ import Molecule from '../customNodes/Molecule';
 const nodeTypes = {
     reversibleEnzyme: ReversibleEnzyme,
     molecule: Molecule
-    molecule: Molecule
 };
 
 /**

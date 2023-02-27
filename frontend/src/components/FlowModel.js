@@ -50,23 +50,26 @@ const FlowModel = (props) => {
      * when onNodeChange is called
      * @function
      */ 
-    // const printNodesOnChange = () => {
-    //     let out = []
-    //     for (const node of nodes) {
-    //         out.push({
-    //             id: node.data.label,
-    //             pos: node.position
-    //         })
-    //     }
-    //     console.log(out);
-    // }
+    const printNodesOnChange = () => {
+        let out = []
+        for (const node of nodes) {
+            out.push({
+                id: node.data.label,
+                pos: node.position
+            })
+        }
+        console.log(out);
+    }
+    // useEffect(() => {
+    //     printNodesOnChange();
+    // }, [nodes])
     
     /**
      * Gets updated pathway based on current FlowModel pathwayID.
      * If there is no pathway ID, close the current pathway.
      */
     useEffect(() => {
-        console.log(pathway)
+        //console.log(pathway)
         handlePathwayOpen(pathway)
     }, [pathway]); // monitor pathwayID for changes
 
@@ -92,6 +95,31 @@ const FlowModel = (props) => {
     }
 
     /**
+     * 
+     * @param {import('react').BaseSyntheticEvent} e event
+     * @param {import('reactflow').Node} node 
+     */
+    const onNodeClick = (e, node) => {
+        console.log(node);
+        if (node.type === "molecule") {
+            setNodes(nodes.map((n) => {
+                if (n.id === node.id) {
+                    if (node.data.locked) {
+                        props.concentrationManager.unlock(n.data.source_id);
+                        n.data.locked = false;
+                        n.className = "Molecule"
+                    } else {
+                        props.concentrationManager.lock(n.data.source_id);
+                        n.data.locked = true;
+                        n.className = "Molecule locked"
+                    }
+                }
+                return n;
+            }));
+        }
+    }
+
+    /**
      * Updates the molecule data in state and ReactFlow edges
      * @param {Object[]} moleculeConcentrations
      */
@@ -109,9 +137,9 @@ const FlowModel = (props) => {
             edges.map((edge) => {
                 if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
                     if (edge.id.split("_")[0] === "R") {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 500, stroke: 'red'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: 'red'};
                     } else {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 500, stroke: 'green'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: 'green'};
                     }
                 }
                 return edge;
@@ -167,6 +195,7 @@ const FlowModel = (props) => {
                 nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
                 attributionPosition="top-right"
+                onNodeClick={onNodeClick}
             >
                 <Controls position='bottom-right' />
                 <PathwayTitleCard

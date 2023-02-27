@@ -11,8 +11,7 @@ import pyruvate_kinase from '../../images/glycolysis/pyruvate kinase.png';
 import triose_phosphate_isomerase from '../../images/glycolysis/triose phosphate isomerase.png';
 import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
-const ENZYME_WIDTH = 150;
-const MOLECULE_WIDTH = 60;
+const ENZYME_WIDTH = 250;
 
 export default memo(({ data, isConnectable }) => {
     let image = null;
@@ -48,7 +47,7 @@ export default memo(({ data, isConnectable }) => {
     }
 
     const getHandleLocation = (i, num, offset) => {
-        return ((i + 1) * ENZYME_WIDTH) / (1 + num) + offset
+        return ((i + 1)/(num + 1)) * ENZYME_WIDTH + offset
     }
 
     const generateTopHandles = (data) => {
@@ -59,9 +58,10 @@ export default memo(({ data, isConnectable }) => {
                     type="target"
                     position="top"
                     id={"top-target-" + i.toString()}
-                    style={{left: getHandleLocation(i, data.substrates.length, -10), background: '#555' }}
+                    style={{left: getHandleLocation(i, data.substrates.length, -15), background: '#555' }}
                     onConnect={(params) => console.log('handle onConnect', params)}
                     isConnectable={isConnectable}
+                    key={"top-target-" + i.toString()}
                 />
             );
             handles.push(
@@ -69,9 +69,10 @@ export default memo(({ data, isConnectable }) => {
                     type="source"
                     position="top"
                     id={"top-source-" + i.toString()}
-                    style={{ left: getHandleLocation(i, data.substrates.length, 10), background: '#555' }}
+                    style={{ left: getHandleLocation(i, data.substrates.length, 15), background: '#555' }}
                     onConnect={(params) => console.log('handle onConnect', params)}
                     isConnectable={isConnectable}
+                    key={"top-source-" + i.toString()}
                 />
             );
         }
@@ -80,15 +81,16 @@ export default memo(({ data, isConnectable }) => {
 
     const generateBottomHandles = (data) => {
         let handles = [];
-        for (let i = 0; i < data.substrates.length; i++) {
+        for (let i = 0; i < data.products.length; i++) {
             handles.push(
                 <Handle
                     type="source"
                     position="bottom"
                     id={"bottom-source-" + i.toString()}
-                    style={{ left: getHandleLocation(i, data.substrates.length, -10), background: '#555' }}
+                    style={{ left: getHandleLocation(i, data.products.length, -15), background: '#555' }}
                     onConnect={(params) => console.log('handle onConnect', params)}
                     isConnectable={isConnectable}
+                    key={"bottom-source-" + i.toString()}
                 />
             );
             handles.push(
@@ -96,17 +98,17 @@ export default memo(({ data, isConnectable }) => {
                     type="target"
                     position="bottom"
                     id={"bottom-target-" + i.toString()}
-                    style={{left: getHandleLocation(i, data.substrates.length, 10), background: '#555' }}
+                    style={{left: getHandleLocation(i, data.products.length, 15), background: '#555' }}
                     onConnect={(params) => console.log('handle onConnect', params)}
                     isConnectable={isConnectable}
+                    key={"bottom-target-" + i.toString()}
                 />
             );
         }
         return handles;
     }
 
-    return (
-        <>
+    return (<>
         {generateTopHandles(data)}
         <div>
             <strong>{data.label}</strong>
@@ -114,6 +116,5 @@ export default memo(({ data, isConnectable }) => {
         </div>
         {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}
         {generateBottomHandles(data)}
-        </>
-    );
+    </>);
 });

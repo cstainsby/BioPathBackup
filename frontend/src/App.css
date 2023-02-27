@@ -236,30 +236,6 @@ ul {
   margin-left: 5px;
 }
 
- .react-flow__node.substrate {
-    border-radius: 50%;
-    background-size: cover; /* or contain depending on what you want */
-    background-position: center center;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* fontweight: 700;  */
-}
-
-
-.react-flow__node.enzyme {
-    width: 150px;
-    height: 100px;
-    /* transform: skew(20deg); */
-    background: rgb(82, 188, 162);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* fontweight: 700;  */
-}
-
 .react-flow__node.enzymeBuild {
     width: 150px;
     height: 100px;
@@ -271,22 +247,18 @@ ul {
     /* fontweight: 700;  */
 }
 
-/* new maybe delete soon
-*/
 .react-flow__node.ReversibleEnzyme {
     font-size: 12px;
-    width: 150px;
+    width: 250px;
     height: 100px;
-    background: #eee;
+    background: rgb(82, 188, 162);
     border: 1px solid #555;
-    border-radius: 5px;
+    border-radius: 10px;
     text-align: center;
   }
 
-  /* Probably delete soon
-  */
 .react-flow__node.Molecule {
-    border-radius: 50%;
+    border-radius: 40%;
     width: 60px;
     height: 40px;
     background: rgb(152, 156, 255);
@@ -296,8 +268,12 @@ ul {
     font-size: 9px;
 }
 
+.Molecule.locked {
+    border: 5px solid #ff0000;
+}
+
 .react-flow__node.MoleculeBuild {
-    border-radius: 50%;
+    border-radius: 40%;
     width: 60px;
     height: 40px;
     background: rgb(152, 156, 255);
@@ -309,16 +285,16 @@ ul {
 
 .react-flow__node.Molecule .react-flow__handle {
     opacity: 0;
-  }
+}
 
-.react-flow__node.enzyme .react-flow__handle {
+.react-flow__node.ReversibleEnzyme .react-flow__handle {
     opacity: 0;
-  }
+}
 
   .react-flow__node.MoleculeBuild .react-flow__handle {
     opacity: 50;
-  }
+}
 
 .react-flow__node.enzymeBuild .react-flow__handle {
     opacity: 50;
-  }
+}

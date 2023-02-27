@@ -106,7 +106,7 @@ export function generateNodes(pathway) {
         if (enzyme.reversible) { // new for multi handlers
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
-                className: 'enzyme', 
+                className: 'ReversibleEnzyme', 
                 data: {
                     abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 
@@ -125,7 +125,7 @@ export function generateNodes(pathway) {
         else {
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
-                className: 'enzyme', 
+                className: 'ReversibleEnzyme', 
                 data: {
                     abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 

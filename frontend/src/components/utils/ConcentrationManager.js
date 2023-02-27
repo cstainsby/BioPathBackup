@@ -53,13 +53,13 @@ class ConcentrationManager {
 
         for (const enzyme of Object.values(enzymes)) {
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
+                this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1, "locked": false};
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
+                this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1, "locked": false};
             }
             for (const cofactor of enzyme.cofactors) {
-                this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
+                this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1, "locked": false};
             }
             // TODO: Get, store, and update enzyme speeds. Link to a slider on the frontend?
             enzyme.speed = 0.05;
@@ -264,6 +264,14 @@ class ConcentrationManager {
             enzymes[enzyme.id] = e;
         }
         return enzymes;
+    }
+
+    lock(molecule) {
+        this.moleculeConcentrations[molecule].locked = true;
+    }
+
+    unlock(molecule) {
+        this.moleculeConcentrations[molecule].locked = false;
     }
 }
 

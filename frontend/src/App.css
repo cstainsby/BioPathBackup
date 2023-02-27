@@ -1,17 +1,17 @@
 :root {
-    --primary-color: #dda43e;
+    --primary-color: #ef7d57;
+    --primary-color-dark: #b13e53;
     --secondary-color: #84778a;
     --secondary-color-dark: #585063;
-    --primary-color-dark: #bf481d;
-    --enzyme-primary-color: #b6c157;
-    --enzyme-secondary-color: #749938;
-    --molecule-primary-color: #80dcdf;
-    --molecule-secondary-color: #395c8c;
-    --forward-color: #124f25;
-    --backward-color: #bf481d;
-    --background-color: #f0ecb5;
-    --element-background-color: #f2db6d;
-    --locked-color: #ac1512;
+    --enzyme-primary-color: #38b764;
+    --enzyme-secondary-color: #a7f070;
+    --molecule-primary-color: #73eff7;
+    --molecule-secondary-color: #41a6f6;
+    --forward-color: #257179;
+    --backward-color: #ef7d57;
+    --background-color: #f4f4f4;
+    --element-background-color: #94b0c2;
+    --locked-color: #5d275d;
 }
 
 .btn.btn-primary {
@@ -32,14 +32,6 @@
 .btn.btn-secondary:hover {
     background-color: var(--secondary-color-dark);
     border-color: var(--secondary-color-dark);
-}
-
-.card-body {
-    background-color: var(--molecule-primary-color);
-}
-
-.card:hover {
-    background-color: var(--molecule-primary-color);
 }
 
 .App {
@@ -81,7 +73,6 @@ ul {
 
 .growCard { 
     transition: all .2s ease-in; 
-    background-color: var(--molecule-primary-color);
 }
 
 .growCard:hover { 
@@ -94,7 +85,6 @@ ul {
 
 .ReactFlow {
     z-index: 1;
-    cursor: grab
 }
 
 .informationalSection {
@@ -168,11 +158,9 @@ ul {
     margin: 8px;
 }
 
-
 /* CSS for model area */
 #ModelAreaCol {
     height: inherit;
-
     padding-left: 0px;
     padding-right: 0px;
 }
@@ -207,10 +195,10 @@ ul {
 /* Slider Siderbar Compnent css */
 /* ------------------------------------------------------- */
 .sliderBar {
-margin: 8px;
-margin-top: 4px;
-padding: 8px;
-height: fit-content;
+    margin: 8px;
+    margin-top: 4px;
+    padding: 8px;
+    height: fit-content;
 }
 
 .sliderBarList {
@@ -221,6 +209,21 @@ height: fit-content;
     padding: 0px;
 }
 
+.sliderBarList::-webkit-scrollbar {
+    width: 20px;
+}
+.sliderBarList::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    left: 10px;
+}
+.sliderBarList::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 20px;
+    cursor: grabbing;
+}
+
 .sliderBarList > li {
     margin: 8px;
 }
@@ -228,6 +231,10 @@ height: fit-content;
 #sliderComponentTitle {
     padding: 8px;
     margin: 0px;
+}
+
+#sliderCard {
+    background-color: var(--primary-color);
 }
 
 /* ------------------------------------------------------- */
@@ -242,7 +249,7 @@ height: fit-content;
     display: flex;
     list-style-type: none;
     padding: 0px;
-    background-color: var(--molecule-primary-color);
+    background-color: var(--primary-color);
 }
 
 #cardHeaderList > li {
@@ -255,8 +262,8 @@ height: fit-content;
 }
 
 .cardHeaderDropdownButton {
-    background-color: var(--molecule-primary-color);
     border: none;
+    background-color: inherit;
 }
 
 #cardHeaderCaret {
@@ -266,6 +273,90 @@ height: fit-content;
 
 #concentrationSlider {
     box-sizing: border-box;
+}
+
+input[type=range] {
+    appearance: none;
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]:focus {
+    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    border: 1px solid #000000;
+    height: 32px;
+    width: 16px;
+    border-radius: 10px;
+    margin-top: -12px;
+    background: var(--primary-color-dark);
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    margin-top: -35px;
+    cursor: pointer;
+    background: var(--background-color);
+    border-radius: 4px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]::-moz-range-thumb {
+    appearance: none;
+    border: 1px solid #000000;
+    height: 32px;
+    width: 16px;
+    border-radius: 10px;
+    margin-top: -12px;
+    background: var(--primary-color-dark);
+    cursor: pointer;
+}
+  
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    margin-top: -35px;
+    cursor: pointer;
+    background: var(--background-color);
+    border-radius: 4px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]::-ms-thumb {
+    appearance: none;
+    border: 1px solid #000000;
+    height: 32px;
+    width: 16px;
+    border-radius: 10px;
+    margin-top: -12px;
+    background: var(--primary-color-dark);
+    cursor: pointer;
+}
+  
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 8px;
+    margin-top: -35px;
+    cursor: pointer;
+    background: var(--background-color);
+    border-radius: 4px;
+    border: 0.2px solid #010101;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #2a6495;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+}
+input[type=range]::-ms-fill-upper {
+    background: #3071a9;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
 }
 
 /* --------------------------- */

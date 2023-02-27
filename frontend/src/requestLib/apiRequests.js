@@ -75,6 +75,70 @@ async function getPathways() {
   return resData;
 }
 
+async function getEnzymes() {
+  const endpointExtension = "enzymes/";
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
+
+  try {
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    return responseJSON;
+
+  } catch (error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
+async function getMolecules() {
+  const endpointExtension = "molecules/";
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
+
+  try {
+    const response = await fetch(requestUrl, {
+        headers: {
+            "Content-Type": "application/json",
+            // TODO: CHANGE HARD-CODED AUTH
+            'Authorization': 'Basic ' + btoa("root:root")
+        }
+    });
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    return responseJSON;
+
+  } catch (error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
 
 async function postPathway(pathwayObj) {
   const methodType = "POST";
@@ -108,4 +172,72 @@ async function postPathway(pathwayObj) {
   }
 }
 
-export { getPathways, getPathwayById, postPathway }
+
+async function postMolecule(moleculeObj) {
+  console.log(moleculeObj);
+  const methodType = "POST";
+  const endpointExtension = "molecules/";
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
+
+  try {
+    const requestOptions = {
+      method: methodType,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(moleculeObj)
+    };
+
+    const response = await fetch(requestUrl, requestOptions);
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    return responseJSON;
+  } catch(error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
+
+async function postEnzyme(enzymeObj) {
+  console.log("enzymeObj", enzymeObj);
+  const methodType = "POST";
+  const endpointExtension = "enzymes/";
+  const requestUrl = dataSourceAddressHeader + endpointExtension;
+
+  try {
+    const requestOptions = {
+      method: methodType,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(enzymeObj)
+    };
+
+    const response = await fetch(requestUrl, requestOptions);
+    const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+    const responseJSON = isResponseJSON && await response.json();
+    
+    // if it is a bad request throw an error
+    if(!response.ok) {
+      const error = (responseJSON && responseJSON.message) || response.status;
+      throw error;
+    }
+
+    return responseJSON;
+  } catch(error) {
+    console.log(
+      requestUrl + "\n" + 
+      error
+    );
+    return error;
+  }
+}
+
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme }

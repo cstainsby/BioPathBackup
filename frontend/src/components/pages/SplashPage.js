@@ -67,7 +67,7 @@ const SplashPage = () => {
           <StarterCard
             title="Create A Pathway"
             description="Create Your Own Pathway"
-            linkPath="pathway"/>
+            linkPath="build"/>
 
           <StarterCard
             title="Find A Group"

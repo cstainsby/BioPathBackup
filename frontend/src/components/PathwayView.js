@@ -2,12 +2,10 @@ import React, { Component, useState, useEffect } from 'react'
 
 import FlowModel from './reactFlowComponents/FlowModel'
 
-//import Restore from './Restore';
 
 
 import ConcentrationManager from './utils/ConcentrationManager';
 import { useLoaderData } from 'react-router-dom';
-import FlowBuilder from './reactFlowComponents/FlowBuilder';
 
 
 /**
@@ -24,11 +22,10 @@ const PathwayView = (props) => {
 
   return (
     <div id="ModelAreaCol">
-      {/* <FlowModel 
+      <FlowModel 
         concentrationManager = {concentrationManager}
         pathwayJson = {pathway}
-      /> */}
-      <FlowBuilder></FlowBuilder>
+      />
       
     </div>
   );

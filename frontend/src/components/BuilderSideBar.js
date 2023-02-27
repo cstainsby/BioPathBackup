@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from "react";
 
-import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/requests';
+import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
 
-import './BuilderSideBar.css'
+import './css/BuilderSideBar.css'
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);

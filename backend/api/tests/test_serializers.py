@@ -179,7 +179,7 @@ class PathwaySerializerTestCase(TestCase):
 
     def test_create_invalid_author(self):
         pathway_data = deepcopy(PATHWAY_DATA)
-        pathway_data["author"] = -1
+        pathway_data["author"] = 999
         pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
         pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
         pathway_data["enzyme_instances"][0]["enzyme"] = self.e.id
@@ -187,14 +187,14 @@ class PathwaySerializerTestCase(TestCase):
         self.assertFalse(serializer.is_valid())
         self.assertDictEqual(
             serializer.errors,
-            {'author': [ErrorDetail(string="User with id='-1' does not exist", code='invalid')]}
+            {'author': [ErrorDetail(string='Invalid pk "999" - object does not exist.', code='does_not_exist')]}
         )
         
     def test_create_invalid_subprod(self):
         pathway_data = deepcopy(PATHWAY_DATA)
         pathway_data["author"] = self.author.id
-        pathway_data["molecule_instances"][0]["molecule"] = self.m2.id
-        pathway_data["molecule_instances"][1]["molecule"] = self.m1.id
+        pathway_data["molecule_instances"][0]["molecule"] = self.m2.id # <--| swapped these
+        pathway_data["molecule_instances"][1]["molecule"] = self.m1.id # <--|
         pathway_data["enzyme_instances"][0]["enzyme"] = self.e.id
         serializer = serializers.PathwayWriteSerializer(data=pathway_data)
         self.assertFalse(serializer.is_valid())
@@ -203,16 +203,26 @@ class PathwaySerializerTestCase(TestCase):
             {'non_field_errors': [ErrorDetail(string='substrate_instance must be a substrate of the enzyme', code='invalid')]}
         )
 
-    def test_create_invalid_enzyme(self):
+    def test_create_missing_cofactor(self):
+        wrong_enzyme = models.Enzyme.objects.create(
+            name="enzyme 1",
+            abbreviation="e1",
+            author=self.author,
+            reversible=True
+        )
+        wrong_enzyme.substrates.add(self.m1)
+        wrong_enzyme.products.add(self.m2)
+        wrong_enzyme.cofactors.add(self.m1) # <-- has cofactor
         pathway_data = deepcopy(PATHWAY_DATA)
         pathway_data["author"] = self.author.id
         pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
         pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
-        pathway_data["enzyme_instances"][0]["enzyme"] = 2
+        pathway_data["enzyme_instances"][0]["enzyme"] = wrong_enzyme.id # <--  
         serializer = serializers.PathwayWriteSerializer(data=pathway_data)
         self.assertFalse(serializer.is_valid())
+        print(f"*****{serializer.errors}*****")
         self.assertDictEqual(
             serializer.errors,
-            {'enzyme_instances': [{'enzyme': [ErrorDetail(string="Enzyme with id='2' does not exist", code='invalid')]}]}
+            {'non_field_errors': [ErrorDetail(string='substrate_instance must be a substrate of the enzyme', code='invalid')]}
         )
         

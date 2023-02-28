@@ -25,6 +25,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from collections import OrderedDict
 from rest_framework import serializers
+# from rest_framework.fields import CurrentUserDefault
 
 from api import models, validators
 
@@ -123,7 +124,7 @@ class EnzymeInstanceDetailSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class PathwaySerializer(serializers.ModelSerializer):
+class PathwayBasicSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Pathway
         fields = "__all__"
@@ -284,20 +285,20 @@ class EnzymeInstanceWriteSerializer(serializers.Serializer):
 
 
 class MoleculeInstanceHelperSerializer(serializers.Serializer):
-    temp_id = serializers.IntegerField()
-    molecule = serializers.IntegerField(min_value=0)
+    temp_id = serializers.IntegerField(write_only=True)
+    molecule = serializers.PrimaryKeyRelatedField(queryset=models.Molecule.objects.all())
     x = serializers.IntegerField(min_value=0)
     y = serializers.IntegerField(min_value=0)
 
-    def validate_molecule(self, value: int) -> models.Molecule:
-        molecule = models.Molecule.objects.filter(id=value)
-        if not molecule.exists():
-            raise serializers.ValidationError(f"Molecule with id='{value}' does not exist")
-        return value
+    # def validate_molecule(self, value: int) -> models.Molecule:
+    #     molecule = models.Molecule.objects.filter(id=value)
+    #     if not molecule.exists():
+    #         raise serializers.ValidationError(f"Molecule with id='{value}' does not exist")
+    #     return value
 
 
 class EnzymeInstanceHelperSerializer(serializers.Serializer):
-    enzyme = serializers.IntegerField(min_value=0)
+    enzyme = serializers.PrimaryKeyRelatedField(queryset=models.Enzyme.objects.all())
     x = serializers.IntegerField(min_value=0)
     y = serializers.IntegerField(min_value=0)
     limiting = serializers.BooleanField()
@@ -305,29 +306,28 @@ class EnzymeInstanceHelperSerializer(serializers.Serializer):
     product_instances = IntegerListField()
     cofactor_instances = IntegerListField()
 
-    def validate_enzyme(self, value: int) -> models.Enzyme:
-        enzyme = models.Enzyme.objects.filter(id=value)
-        if not enzyme.exists():
-            raise serializers.ValidationError(f"Enzyme with id='{value}' does not exist")
-        return value
+    # def validate_enzyme(self, value: int) -> models.Enzyme:
+    #     enzyme = models.Enzyme.objects.filter(id=value)
+    #     if not enzyme.exists():
+    #         raise serializers.ValidationError(f"Enzyme with id='{value}' does not exist")
+    #     return value
 
 
 class PathwayWriteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(
+        write_only=False, #True,
         min_length=1,
         max_length=50
     )
-    author = serializers.IntegerField()
-    link = serializers.URLField(required=False)
-    public = serializers.BooleanField()
-    molecule_instances = MoleculeInstanceHelperSerializer(many=True)
-    enzyme_instances = EnzymeInstanceHelperSerializer(many=True)
-
-    def validate_author(self, value):
-        author = models.User.objects.filter(id=value)
-        if not author.exists():
-            raise serializers.ValidationError(f"User with id='{value}' does not exist")
-        return author.first()
+    author = serializers.PrimaryKeyRelatedField(
+        queryset=models.User.objects.all(),
+        write_only=True
+    )
+    link = serializers.URLField(required=False, write_only=True)
+    public = serializers.BooleanField(write_only=True)
+    molecule_instances = MoleculeInstanceHelperSerializer(many=True, write_only=True)
+    enzyme_instances = EnzymeInstanceHelperSerializer(many=True, write_only=True)
 
     def validate(self, data: OrderedDict) -> OrderedDict:
         molecule_instances = data.get("molecule_instances")
@@ -354,24 +354,26 @@ class PathwayWriteSerializer(serializers.Serializer):
                 if cofactor_instance not in molecule_instance_temp_ids_set:
                     raise serializers.ValidationError("cofactor_instances must be a temp_id in molecule_instances")
 
-        # create map temp_id -> molecule_id
+        # map temp_id -> molecule
         molecule_map = {}
         for molecule_instance in molecule_instances:
             temp_id = molecule_instance["temp_id"]
-            molecule_id = molecule_instance["molecule"]
-            molecule_map[temp_id] = molecule_id
+            molecule_map[temp_id] = molecule_instance["molecule"]
 
         # validate enzymes have correct substrates, products, enzymes
         for enzyme_instance in enzyme_instances:
-            enzyme = models.Enzyme.objects.get(id=enzyme_instance["enzyme"])
-            for substrate_id in [molecule_map[temp_id] for temp_id in enzyme_instance["substrate_instances"]]:
-                if substrate_id not in {substrate.id for substrate in enzyme.substrates.all()}:
+            enzyme = enzyme_instance.get("enzyme")
+            substrates = [molecule_map[temp_id] for temp_id in enzyme_instance["substrate_instances"]]
+            products = [molecule_map[temp_id] for temp_id in enzyme_instance["product_instances"]]
+            cofactors = [molecule_map[temp_id] for temp_id in enzyme_instance["cofactor_instances"]]
+            for substrate in substrates:
+                if substrate.id not in {substrate.id for substrate in enzyme.substrates.all()}:
                     raise serializers.ValidationError("substrate_instance must be a substrate of the enzyme")
-            for product_id in [molecule_map[temp_id] for temp_id in enzyme_instance["product_instances"]]:
-                if product_id not in {product.id for product in enzyme.products.all()}:
+            for product in products:
+                if product.id not in {product.id for product in enzyme.products.all()}:
                     raise serializers.ValidationError("product_instance must be a product of the enzyme")
-            for cofactor_id in [molecule_map[temp_id] for temp_id in enzyme_instance["cofactor_instances"]]:
-                if cofactor_id not in {cofactor.id for cofactor in enzyme.cofactors.all()}:
+            for cofactor in cofactors:
+                if cofactor.id not in {cofactor.id for cofactor in enzyme.cofactors.all()}:
                     raise serializers.ValidationError("cofactor_instance must be a cofactor of the enzyme")
 
         return data
@@ -379,22 +381,24 @@ class PathwayWriteSerializer(serializers.Serializer):
     def create(self, validated_data: OrderedDict) -> models.Pathway:
         molecule_instances_data = validated_data.pop("molecule_instances")
         enzyme_instances_data = validated_data.pop("enzyme_instances")
+
+        # create pathway
         pathway = models.Pathway.objects.create(**validated_data)
 
+        # map temp_id -> instance
         molecule_instances = {}
+
+        # create molecule instances
         for molecule_instance_data in molecule_instances_data:
             temp_id = molecule_instance_data.pop("temp_id")
-            molecule_id = molecule_instance_data.pop("molecule")
-            molecule = models.Molecule.objects.get(id=molecule_id)
             molecule_instance = models.MoleculeInstance.objects.create(
                 pathway=pathway,
-                molecule=molecule,
                 **molecule_instance_data
             )
             molecule_instances[temp_id] = molecule_instance
+
+        # create enzyme instances
         for enzyme_instance_data in enzyme_instances_data:
-            enzyme_id = enzyme_instance_data.pop("enzyme")
-            enzyme = models.Enzyme.objects.get(id=enzyme_id)
             substrate_temp_ids = enzyme_instance_data.pop("substrate_instances")
             product_temp_ids = enzyme_instance_data.pop("product_instances")
             cofactor_temp_ids = enzyme_instance_data.pop("cofactor_instances")
@@ -403,7 +407,6 @@ class PathwayWriteSerializer(serializers.Serializer):
             cofactor_instances = [molecule_instances[temp_id] for temp_id in cofactor_temp_ids]
             enzyme_instance = models.EnzymeInstance.objects.create(
                 pathway=pathway,
-                enzyme=enzyme,
                 **enzyme_instance_data
             )
             enzyme_instance.substrate_instances.add(*substrate_instances)

@@ -3,18 +3,20 @@
  *  POST requests
  */
 
-export function generatePathwayJson(nodes, edges) {
+export function generatePathwayJson(nodes, title, author, isPublic) {
     const enzymes = nodes.filter(filterEnzymes);
     const molecules = nodes.filter(filterMolecules);
     const moleculeInstances = generateMoleculeInstances(molecules);
     const enzymeInstances = generateEnzymeInstances(enzymes, molecules);
+    const cofactorInstances = []
 
     const pathwayObj = {
-        "name": "testInsert",
+        "name": "BenWorkings",
         "author": 1,
-        "public": true,
+        "public": false,
         "enzyme_instances": enzymeInstances,
-        "moleculeInstances": moleculeInstances,
+        "molecule_instances": moleculeInstances,
+        "cofactor_instances": cofactorInstances
     }
     return pathwayObj;
 } 

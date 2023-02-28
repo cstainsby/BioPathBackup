@@ -9,85 +9,12 @@ export function generatePathwayJson(nodes, edges) {
     const moleculeInstances = generateMoleculeInstances(molecules);
     const enzymeInstances = generateEnzymeInstances(enzymes, molecules);
 
-    // const moleculeInstances = [
-    //     {
-    //         "id": 573,
-    //         "molecule_name": "molecule1",
-    //         "abbreviation": "m1",
-    //         "ball_and_stick_image": null,
-    //         "space_filling_image": null,
-    //         "link": null,
-    //         "author": 1,
-    //         "public": true,
-    //         "x": 45,
-    //         "y": 0,
-    //         "molecule": 467,
-    //         "pathway": 45
-    //     },
-    //     {
-    //         "id": 574,
-    //         "molecule_name": "molecule2",
-    //         "abbreviation": "m2",
-    //         "ball_and_stick_image": null,
-    //         "space_filling_image": null,
-    //         "link": null,
-    //         "author": 1,
-    //         "public": true,
-    //         "x": 45,
-    //         "y": 240,
-    //         "molecule": 468,
-    //         "pathway": 45
-    //     },
-    //     {
-    //         "id": 575,
-    //         "molecule_name": "molecule3",
-    //         "abbreviation": "m3",
-    //         "ball_and_stick_image": null,
-    //         "space_filling_image": null,
-    //         "link": null,
-    //         "author": 1,
-    //         "public": true,
-    //         "x": 195,
-    //         "y": 120,
-    //         "molecule": 469,
-    //         "pathway": 45
-    //     }
-    // ];
-    // const enzymeInstances = [
-    //     {
-    //         "id": 243,
-    //         "name": "enzyme1",
-    //         "abbreviation": "e1",
-    //         "image": null,
-    //         "reversible": true,
-    //         "link": null,
-    //         "author": 1,
-    //         "public": true,
-    //         "x": 0,
-    //         "y": 100,
-    //         "limiting": true,
-    //         "enzyme": 279,
-    //         "pathway": 45,
-    //         "substrate_instances": [
-    //             573
-    //         ],
-    //         "product_instances": [
-    //             574
-    //         ],
-    //         "cofactor_instances": [
-    //             575
-    //         ]
-    //     }
-    // ];
-
     const pathwayObj = {
-        "id": 40,
+        "name": "testInsert",
+        "author": 1,
+        "public": true,
         "enzyme_instances": enzymeInstances,
         "moleculeInstances": moleculeInstances,
-        "name": "testInsert",
-        "link": null,
-        "public": true,
-        "author": 1
     }
     return pathwayObj;
 } 
@@ -102,18 +29,23 @@ function generateMoleculeInstances(molecules) {
     let moleculeObj;
     for (const molecule of molecules) {
         moleculeObj = {
-            "id": parseInt(molecule.id),
-            "molecule_name": molecule.data.molecule_name,
-            "abbreviation": molecule.data.label, // abbreviation is the label for molecules
-            "ball_and_stick_image": null,
-            "space_filling_image": null,
-            "link": null,
-            "author": 1,
-            "public": true,
-            "x": parseInt(molecule.position.x),
-            "y": parseInt(molecule.position.y),
+            // "temp_id": parseInt(molecule.id),
+            // "molecule_name": molecule.data.molecule_name,
+            // "abbreviation": molecule.data.label, // abbreviation is the label for molecules
+            // "ball_and_stick_image": null,
+            // "space_filling_image": null,
+            // "link": null,
+            // "author": 1,
+            // "public": true,
+            // "x": parseInt(molecule.position.x),
+            // "y": parseInt(molecule.position.y),
+            // "molecule": molecule.data.molecule_id,
+
+            // trying new stuff
+            "temp_id": parseInt(molecule.id),
             "molecule": molecule.data.molecule_id,
-            "pathway": 40
+            "x": parseInt(molecule.position.x),
+            "y": parseInt(molecule.position.y)
         }
         moleculeInstances.push(moleculeObj);
         moleculeObj = {};
@@ -132,19 +64,27 @@ function generateEnzymeInstances(enzymes, molecules) {
     for (const enzyme of enzymes) {
         console.log(enzyme, "current enzyme")
         enzymeObj = {
-            "id": parseInt(enzyme.id),
-            "name": enzyme.data.label,
-            "abbreviation": enzyme.data.abbreviation, // abbreviation is the label for enzymes
-            "image": null,
-            "reversible": true,
-            "link": null,
-            "author": 1,
-            "public": true,
+            // "id": parseInt(enzyme.id),
+            // "name": enzyme.data.label,
+            // "abbreviation": enzyme.data.abbreviation, // abbreviation is the label for enzymes
+            // "image": null,
+            // "reversible": true,
+            // "link": null,
+            // "author": 1,
+            // "public": true,
+            // "x": parseInt(enzyme.position.x),
+            // "y": parseInt(enzyme.position.y),
+            // "limiting": true,
+            // "enzyme": enzyme.data.enzyme_id,
+            // "substrate_instances": [],
+            // "product_instances": [],
+            // "cofactor_instances": []
+
+            // trying new
+            "enzyme": enzyme.data.enzyme_id,
             "x": parseInt(enzyme.position.x),
             "y": parseInt(enzyme.position.y),
-            "limiting": true,
-            "enzyme": enzyme.data.enzyme_id,
-            "pathway": 40,
+            "limiting": false,
             "substrate_instances": [],
             "product_instances": [],
             "cofactor_instances": []

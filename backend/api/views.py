@@ -82,7 +82,11 @@ class PathwayViewSet(viewsets.ModelViewSet):
     
     # TODO: stubbed out post method
     def post_pathway(self, request):
-        data = request.data
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserViewSet(viewsets.ModelViewSet):

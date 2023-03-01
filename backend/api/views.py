@@ -62,8 +62,8 @@ class EnzymeInstanceViewSet(viewsets.ModelViewSet):
 
 
 class PathwayViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.PathwayDetailSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = serializers.PathwayBasicSerializer
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return models.Pathway.objects.all()
@@ -75,14 +75,16 @@ class PathwayViewSet(viewsets.ModelViewSet):
         #     )
 
     def get_serializer_class(self):
-        if self.action == "create":
+        if self.action in ["update", "create"]:
             return serializers.PathwayWriteSerializer
-        else:
+        elif self.action == "retrieve":
             return serializers.PathwayDetailSerializer
-    
+        else: # self.action in ["destroy", "list"] or other sometimes I guess
+            return serializers.PathwayBasicSerializer
+
     # TODO: stubbed out post method
-    def post_pathway(self, request):
-        data = request.data
+    # def post_pathway(self, request):
+    #     data = request.data
 
 
 class UserViewSet(viewsets.ModelViewSet):

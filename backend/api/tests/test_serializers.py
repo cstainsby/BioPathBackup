@@ -1,13 +1,45 @@
 """
 Unit tests for Django serializers.
 TODO test all serializers, validation, etc
-TODO test images
 TODO test creation/modification
 """
 
+from copy import deepcopy
 from django.test import TestCase
+from rest_framework.exceptions import ErrorDetail
 
 from api import models, serializers
+
+PATHWAY_DATA = {
+    "name": "pathway",
+    "author": -1,
+    "public": True,
+    "molecule_instances": [
+        {
+            "temp_id": 1,
+            "molecule": -1,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "temp_id": 2,
+            "molecule": -1,
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "enzyme_instances": [
+        {
+            "enzyme": -1,
+            "x": 0,
+            "y": 0,
+            "limiting": "False",
+            "substrate_instances": [1],
+            "product_instances": [2],
+            "cofactor_instances": []
+        }
+    ]
+}
 
 
 class GroupSerializerTestCase(TestCase):
@@ -98,7 +130,7 @@ class MoleculeSerializerTestCase(TestCase):
         self.assertEqual(data["public"], self.molecule_attributes["public"])
 
 
-class PathwayDetailSerializerTestCase(TestCase):
+class PathwaySerializerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         author = models.User.objects.create(username="PathwayDetailSerializerTestCase")
@@ -128,36 +160,69 @@ class PathwayDetailSerializerTestCase(TestCase):
         self.e = models.Enzyme.objects.get(name="enzyme 1")
     
     def test_create(self):
-        data = {
-            "name": "pathway",
-            "author": self.author.id,
-            "public": True,
-            "molecule_instances": [
-                {
-                    "temp_id": 1,
-                    "molecule": self.m1.id,
-                    "x": 0,
-                    "y": 0
-                },
-                {
-                    "temp_id": 2,
-                    "molecule": self.m2.id,
-                    "x": 0,
-                    "y": 0
-                }
-            ],
-            "enzyme_instances": [
-                {
-                    "enzyme": self.e.id,
-                    "x": 0,
-                    "y": 0,
-                    "limiting": "False",
-                    "substrate_instances": [1],
-                    "product_instances": [2],
-                    "cofactor_instances": []
-                }
-            ]
-        }
-        serializer = serializers.PathwayWriteSerializer(data=data)
+        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data["author"] = self.author.id
+        pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
+        pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
+        pathway_data["enzyme_instances"][0]["enzyme"] = self.e.id
+        serializer = serializers.PathwayWriteSerializer(data=pathway_data)
         self.assertTrue(serializer.is_valid())
         pathway = serializer.save()
+        self.assertEqual(
+            pathway.molecule_instances.first().id,
+            pathway.enzyme_instances.first().substrate_instances.first().id
+        )
+        self.assertEqual(
+            pathway.molecule_instances.all()[1].id,
+            pathway.enzyme_instances.first().product_instances.first().id
+        )
+
+    def test_create_invalid_author(self):
+        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data["author"] = 999
+        pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
+        pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
+        pathway_data["enzyme_instances"][0]["enzyme"] = self.e.id
+        serializer = serializers.PathwayWriteSerializer(data=pathway_data)
+        self.assertFalse(serializer.is_valid())
+        self.assertDictEqual(
+            serializer.errors,
+            {'author': [ErrorDetail(string='Invalid pk "999" - object does not exist.', code='does_not_exist')]}
+        )
+        
+    def test_create_invalid_subprod(self):
+        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data["author"] = self.author.id
+        pathway_data["molecule_instances"][0]["molecule"] = self.m2.id # <--| swapped these
+        pathway_data["molecule_instances"][1]["molecule"] = self.m1.id # <--|
+        pathway_data["enzyme_instances"][0]["enzyme"] = self.e.id
+        serializer = serializers.PathwayWriteSerializer(data=pathway_data)
+        self.assertFalse(serializer.is_valid())
+        self.assertDictEqual(
+            serializer.errors,
+            {'non_field_errors': [ErrorDetail(string='substrate_instance must be a substrate of the enzyme', code='invalid')]}
+        )
+
+    def test_create_missing_cofactor(self):
+        wrong_enzyme = models.Enzyme.objects.create(
+            name="enzyme 1",
+            abbreviation="e1",
+            author=self.author,
+            reversible=True
+        )
+        wrong_enzyme.substrates.add(self.m1)
+        wrong_enzyme.products.add(self.m2)
+        wrong_enzyme.cofactors.add(self.m1) # <-- has cofactor
+        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data["author"] = self.author.id
+        pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
+        pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
+        pathway_data["enzyme_instances"][0]["enzyme"] = wrong_enzyme.id # <--  
+        serializer = serializers.PathwayWriteSerializer(data=pathway_data)
+        self.assertFalse(serializer.is_valid())
+        print(f"*****{serializer.errors}*****")
+        self.assertDictEqual(
+            serializer.errors,
+            {'non_field_errors': [ErrorDetail(string='substrate_instance must be a substrate of the enzyme', code='invalid')]}
+        )
+        

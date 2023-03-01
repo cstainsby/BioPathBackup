@@ -13,7 +13,7 @@
  * @param {bool} isPublic 
  * @returns JSON Object
  */
-export function generatePathwayJson(nodes, title, author, isPublic) {
+export function generatePathwayJson(nodes, edges, title, author, isPublic) {
     const enzymes = nodes.filter(filterEnzymes);
     const molecules = nodes.filter(filterMolecules);
     const moleculeInstances = generateMoleculeInstances(molecules);

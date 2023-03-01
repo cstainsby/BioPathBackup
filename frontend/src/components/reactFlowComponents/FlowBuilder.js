@@ -66,6 +66,7 @@ const SaveRestore = (props) => {
     const onPush = useCallback(() => {
         const pathwayObj = generatePathwayJson(nodes, edges);
         console.log("request", pathwayObj);
+        postPathway(pathwayObj)
     });
 
     const onAddMolecule = useCallback((nodeData) => {

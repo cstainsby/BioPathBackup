@@ -211,6 +211,7 @@ const FlowModel = (props) => {
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
                     reset = {resetConcentrations}
+                    running = {running}
                 />
             </ReactFlow>            
         </div>

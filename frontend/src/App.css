@@ -2,7 +2,7 @@
     --primary: #ef7d57;
     --primary-dark: #b13e53;
     --secondary: #84778a;
-    --secondary-color-dark: #585063;
+    --secondary-dark: #585063;
     --tertiary: #ffcd75;
     --success: #38b764;
     --failure: #b13e53;
@@ -18,14 +18,14 @@
     --clicked-color: #1a1c2c;
 }
 
-/* .btn.btn-primary {
-    background-color: var(--tertiary-color);
-    border-color: var(--tertiary-color);
+.btn.btn-primary {
+    background-color: var(--tertiary);
+    border-color: var(--tertiary);
 }
 
 .btn.btn-primary:hover {
     background-color: var(--locked-color);
-    border-color: var(--tertiary-color);
+    border-color: var(--tertiary);
 }
 
 .btn.btn-primary:hover:active {
@@ -34,19 +34,19 @@
 }
 
 .btn.btn-secondary {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
 }
 
 .btn.btn-secondary:hover {
-    background-color: var(--secondary-color-dark);
-    border-color: var(--secondary-color-dark);
+    background-color: var(--secondary-dark);
+    border-color: var(--secondary-dark);
 }
 
 .btn.btn-secondary:hover:active {
     background-color: var(--clicked-color);
     border-color: var(--clicked-color);
-} */
+}
 
 .App {
     text-align: center;
@@ -220,7 +220,7 @@ a.card {
 .sliderBarList {
     list-style-type: none;
     height: 400px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
     margin: 0px;
     padding: 0px;
 }

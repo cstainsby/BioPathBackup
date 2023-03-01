@@ -24,12 +24,12 @@ const SliderSideBar = (props) => {
 
     return (
         <div className='card ModelAreaChild' id='PathwaySliderBox'>
-            <button className="btn btn-primary" style={{margin: "10px"}} onClick={() => {props.run()}}>Run</button>
-            <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.stop()}}>Stop</button>
+            <button className="btn btn-primary" style={{margin: "10px"}} onClick={() => {props.run()}} disabled={props.running}>Run</button>
+            <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.stop()}} disabled={!props.running}>Stop</button>
             <button className="btn btn-secondary" style={{margin: "10px"}} onClick={() => {props.reset()}}>Reset</button>
             <h3 id="sliderComponentTitle">{ props.slidersTitle }</h3>
             {( props.slidersDescription !== "") && <p><small className="text-muted">{ props.slidersDescription }</small></p> }
-            <ul className='sliderBarList'>
+            <ul className='sliderBarList overflow-auto'>
                 {sliderItems}
             </ul>
         </div>

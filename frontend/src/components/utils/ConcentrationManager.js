@@ -39,16 +39,16 @@ class ConcentrationManager {
         this.clear();
         let enzymes = this.getEnzymesFromPathway(pathway);
         // used to make a system coninuous or runout of concentration
-        for (const substrate of Object.values(enzymes)[0].substrates) {
-            if (!this.startMolecules.includes(substrate.id) ) {
-                this.startMolecules.push(substrate.id);
-            }
-        }
-        for (const product of Object.values(enzymes)[Object.values(enzymes).length - 1].products) {
-            if (!this.endMolecules.includes(product.id) ) {
-                this.endMolecules.push(product.id);
-            }
-        }
+        // for (const substrate of Object.values(enzymes)[0].substrates) {
+        //     if (!this.startMolecules.includes(substrate.id) ) {
+        //         this.startMolecules.push(substrate.id);
+        //     }
+        // }
+        // for (const product of Object.values(enzymes)[Object.values(enzymes).length - 1].products) {
+        //     if (!this.endMolecules.includes(product.id) ) {
+        //         this.endMolecules.push(product.id);
+        //     }
+        // }
         // end of start end molecule stuff
 
         for (const enzyme of Object.values(enzymes)) {

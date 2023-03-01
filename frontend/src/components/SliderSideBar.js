@@ -32,7 +32,6 @@ const SliderSideBar = (props) => {
             <ul className='sliderBarList'>
                 {sliderItems}
             </ul>
-            
         </div>
     )
 }

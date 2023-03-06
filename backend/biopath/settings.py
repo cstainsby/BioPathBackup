@@ -35,6 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "6umnppgwmc.us-west-2.awsapprunner.com",
+    "localhost"
 ]
 
 
@@ -91,7 +92,6 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 
 if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables
     print("RDS enviornment read in")
-
     
     DATABASES =  {
         'default': {
@@ -165,7 +165,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Allow CORS from localhost for development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "6umnppgwmc.us-west-2.awsapprunner.com"
+    "http://6umnppgwmc.us-west-2.awsapprunner.com",
+    "https://6umnppgwmc.us-west-2.awsapprunner.com"
 ]
 
 

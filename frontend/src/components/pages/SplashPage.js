@@ -10,12 +10,18 @@ import UserContext from "../../UserContext";
 const SplashPage = () => {
   const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
-  // console.log(JSON.stringify(splashPageLoaderData.recentWork[0]));
-
   const { user, setUser } = useContext(UserContext);
 
-  // const [recentWork, setRecentWork] = useState(null);
-  // const [feed, setFeed] = useState(null);
+  // for the displays initially set them to empty until we recieve data from the backend
+  const [recentWork, setRecentWork] = useState([]);
+  const [feed, setFeed] = useState([]);
+
+
+  useEffect(() => {
+    if(splashPageLoaderData.recentWork) setRecentWork(splashPageLoaderData.recentWork);
+    
+    if(splashPageLoaderData.feed) setFeed(splashPageLoaderData.feed);
+  }, [splashPageLoaderData])
   
   return (
     <div id="SplashPage" className="container">
@@ -41,7 +47,7 @@ const SplashPage = () => {
           <div id="LeftOffAreaContent" className="row informationalContentSection container">
             {/* first row */}
             <div className="row">
-              {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
+              {recentWork.slice(0, 4).map((pathway) => {
                 return (
                   <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
                     <ul>
@@ -91,7 +97,7 @@ const SplashPage = () => {
           <div id="LeftOffAreaContent" className="row informationalContentSection container">
             {/* first row */}
             <div className="row">
-              {splashPageLoaderData.recentWork.map((pathway) => {
+              {recentWork.map((pathway) => {
                 return (
                   <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-11 card">
                     <ul>

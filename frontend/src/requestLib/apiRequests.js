@@ -65,6 +65,7 @@ async function getPathways() {
   })
     .then(res => res.json())
     .then(data => {
+      console.log(data);
       return data
     })
     .catch(err => {

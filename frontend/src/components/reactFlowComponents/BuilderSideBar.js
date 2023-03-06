@@ -7,6 +7,8 @@ import '../css/BuilderSideBar.css'
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
     const [enzymeResp, setEnzymeResp] = useState(null);
+    const [moleculeSelection, setMolSelection] = useState(null);
+    const [enzymeSelection, setEnzSelection] = useState(null);
     const [enzymes, setEnzymes] = useState();
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
@@ -44,11 +46,21 @@ function BuilderSideBar(props) {
     }
 
     function onMoleculeSelect(selectedMolecule) {
-        props.onAddMolecule(moleculeResp[selectedMolecule])
+        // props.onAddMolecule(moleculeResp[selectedMolecule])
+        setMolSelection(moleculeResp[selectedMolecule])
+    }
+
+    function onMoleculeSubmit() {
+        props.onAddMolecule(moleculeSelection)
     }
 
     function onEnzymeSelect(selectedEnzyme) {
-        props.onAddEnzyme(enzymeResp[selectedEnzyme])
+        // props.onAddEnzyme(enzymeResp[selectedEnzyme])
+        setEnzSelection(enzymeResp[selectedEnzyme])
+    }
+
+    function onEnzymeSubmit() {
+        props.onAddEnzyme(enzymeSelection)
     }
 
   return (
@@ -56,13 +68,15 @@ function BuilderSideBar(props) {
             <h1>{props.slidersTitle}</h1>
             <a>{props.slidersDescription}</a>
             <select onChange={(e) => onMoleculeSelect(e.target.value)}>
-                <option>Select Molecule</option>
+                <option selected disabled hidden>Select Molecule</option>
                 {molecules}
             </select>
+            <button onClick={onMoleculeSubmit}>Add Molecule</button>
             <select onChange={(e) => onEnzymeSelect(e.target.value)}>
-                <option>Select Enzyme</option>
+                <option selected disabled hidden>Select Enzyme</option>
                 {enzymes}
             </select>
+            <button onClick={onEnzymeSubmit}>Add Enzyme</button>
             <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
             <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
             
@@ -181,7 +195,7 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select onChange={(e) => handleNewCofactor(e.target.value)}>
+                            <select class="form-selecton" Change={(e) => handleNewCofactor(e.target.value)}>
                                 <option>Select Cofactors</option>
                                 {props.dropDownItems}
                             </select>

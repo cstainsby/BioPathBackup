@@ -17,7 +17,7 @@ export function generatePathwayJson(nodes, edges, title, author, isPublic) {
     const enzymes = nodes.filter(filterEnzymes);
     const molecules = nodes.filter(filterMolecules);
     const moleculeInstances = generateMoleculeInstances(molecules);
-    const enzymeInstances = generateEnzymeInstances(enzymes, molecules);
+    const enzymeInstances = generateEnzymeInstances(enzymes, molecules, edges);
     const cofactorInstances = []
 
     const pathwayObj = {
@@ -61,7 +61,7 @@ function generateMoleculeInstances(molecules) {
  * @param {reactflow node} enzymes
  * @param {reactflow node} molecules
  */
-function generateEnzymeInstances(enzymes, molecules) {
+function generateEnzymeInstances(enzymes, molecules, edges) {
     let enzymeInstances = [];
     let enzymeObj;
     for (const enzyme of enzymes) {
@@ -75,19 +75,61 @@ function generateEnzymeInstances(enzymes, molecules) {
             "cofactor_instances": []
         }
         for (const substrate of enzyme.data.substrates) {
-            var molecule = molecules.find(obj => {
+            var molecule = null;
+            var filtered = molecules.filter(obj => {
                 return obj.data.molecule_id === substrate;
-              })
+            })
+            if (filtered.length > 1) {
+                var filteredEdge = edges.find(obj => {
+                    return obj.target === enzyme.id;
+                })
+                molecule = molecules.find(obj => {
+                    return obj.id === filteredEdge.source;
+                  })
+                console.log(molecule, "found edge")
+            }
+            else {
+                molecule = filtered.find(obj => {
+                    return obj.data.molecule_id === substrate;
+                })
+            }
             if (molecule) {
                 enzymeObj.substrate_instances.push(parseInt(molecule.id));
             }
+            else {
+                alert("Enzyme is missing or has an incorrect substrate");
+            }
         }
         for (const product of enzyme.data.products) {
-            molecule = molecules.find(obj => {
+            // molecule = molecules.find(obj => {
+            //     return obj.data.molecule_id === product;
+            //   })
+            // if (molecule) {
+            //     enzymeObj.product_instances.push(parseInt(molecule.id));
+            // }
+            var molecule = null;
+            var filtered = molecules.filter(obj => {
                 return obj.data.molecule_id === product;
-              })
+            })
+            if (filtered.length > 1) {
+                var filteredEdge = edges.find(obj => {
+                    return obj.source === enzyme.id;
+                })
+                molecule = molecules.find(obj => {
+                    return obj.id === filteredEdge.target;
+                  })
+                console.log(molecule, "found edge")
+            }
+            else {
+                molecule = filtered.find(obj => {
+                    return obj.data.molecule_id === product;
+                })
+            }
             if (molecule) {
                 enzymeObj.product_instances.push(parseInt(molecule.id));
+            }
+            else {
+                alert("Enzyme is missing or has an incorrect product");
             }
         }
         for (const cofactor of enzyme.data.cofactors) {

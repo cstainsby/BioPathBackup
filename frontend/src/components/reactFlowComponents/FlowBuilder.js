@@ -13,13 +13,17 @@ import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
 
 
-import ReversibleEnzyme from'../customNodes/ReversibleEnzyme';
+// import ReversibleEnzyme from'../customNodes/ReversibleEnzyme';
+import BuilderEnzyme from '../customNodes/BuilderEnzyme';
 import Molecule from '../customNodes/Molecule';
 import BuilderSideBar from './BuilderSideBar';
+import BuilderMolecule from '../customNodes/BuilderMolecule';
 
 const nodeTypes = {
-    reversibleEnzyme: ReversibleEnzyme,
-    molecule: Molecule
+    // reversibleEnzyme: ReversibleEnzyme,
+    enzyme: BuilderEnzyme,
+    // molecule: Molecule
+    molecule: BuilderMolecule
 };
 
 const flowKey = 'example-flow';
@@ -36,10 +40,30 @@ const SaveRestore = (props) => {
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
-    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+    // const pathwayObj = {
+    //     "name": "BenWorkings",
+    //     "author": 1,
+    //     "public": false,
+    //     "enzyme_instances": [],
+    //     "molecule_instances": [],
+    //     "cofactor_instances": []
+    // }
 
-    useEffect(() => {
-    }, [props.concentration, setEdges]);
+    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+    // const onConnect = useCallback((params) => {
+    //     console.log(params, "Params", params.source);
+    //     setEdges((eds) => addEdge(params, eds));
+    //     console.log(nodes,"nodes")
+    //     var currEnzyme = nodes.find(obj => {
+    //         console.log(obj)
+    //         return obj.id === params.source;
+    //     })
+    //     console.log(currEnzyme, "currenzyme")
+    // }, [setEdges]);
+
+    // useEffect((node) => {
+
+    // }, [nodes, setEdges]);
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -65,6 +89,7 @@ const SaveRestore = (props) => {
 
     const onPush = useCallback(() => {
         const pathwayObj = generatePathwayJson(nodes, edges);
+        console.log(nodes, "etestign")
         console.log("request", pathwayObj);
         postPathway(pathwayObj)
     });
@@ -80,8 +105,8 @@ const SaveRestore = (props) => {
             type: "molecule" },
         type: "molecule",
         position: {
-            x: Math.random() * window.innerWidth - 100,
-            y: Math.random() * window.innerHeight,
+            x: 500,
+            y: 450,
         },
         };
         setNodes((nds) => nds.concat(newNode));
@@ -103,14 +128,16 @@ const SaveRestore = (props) => {
                 cofactors: nodeData.cofactors,
                 image: nodeData.link
             },
-            type: "reversibleEnzyme",
+            type: "enzyme",
             position: {
-                x: Math.random() * window.innerWidth - 100,
-                y: Math.random() * window.innerHeight,
+                // x: Math.random() * window.innerWidth - 100,
+                // y: Math.random() * window.innerHeight,
+                x: 500,
+                y: 500,
             },
         };
-        console.log("Newnode", newNode)
         setNodes((nds) => nds.concat(newNode));
+        console.log("Newnode", nodes)
     }, [setNodes]);
 
     const onClear = useCallback(() => {

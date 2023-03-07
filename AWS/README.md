@@ -92,8 +92,8 @@ In the Search bar important pages you will visit frequently will be
 
 # Design Choices
 ## 2022-2023 Group 
-Given the amount of time we had to meet our sponsers requirements as well as get the infrastructure deployed we had to go with something simple. This is the main reason we went with running both the Frontend and Backend on separate app runner contexts. 
+Given the amount of time we had to meet our sponsers requirements as well as get the infrastructure deployed we had to go with something simple. This is the main reason we went with running both the Frontend and Backend on separate app runner contexts. This approach performs a lot of background magic though which may be problematic if you need to change how something is configured.
 
-There likley is a much better way to set this up. Something future teams can look into is [Deploying through Docker-compose](https://aws.amazon.com/blogs/containers/deploy-applications-on-amazon-ecs-using-docker-compose/). This makes a bit more sense to the larger application given 
+There likley is a much better way to set this up. Something future teams can look into is [Deploying through Docker-compose](https://aws.amazon.com/blogs/containers/deploy-applications-on-amazon-ecs-using-docker-compose/). This makes a bit more sense to the larger application given that we have already defined how it interacts with itself within the docker-compose file.
 
-Given that future groups will likely also be coming into this project with very little AWS expirience. 
+Given that future groups will likely also be coming into this project with very little AWS expirience Make sure to document any changes you make in this file. 

@@ -40,30 +40,8 @@ const SaveRestore = (props) => {
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
-    // const pathwayObj = {
-    //     "name": "BenWorkings",
-    //     "author": 1,
-    //     "public": false,
-    //     "enzyme_instances": [],
-    //     "molecule_instances": [],
-    //     "cofactor_instances": []
-    // }
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
-    // const onConnect = useCallback((params) => {
-    //     console.log(params, "Params", params.source);
-    //     setEdges((eds) => addEdge(params, eds));
-    //     console.log(nodes,"nodes")
-    //     var currEnzyme = nodes.find(obj => {
-    //         console.log(obj)
-    //         return obj.id === params.source;
-    //     })
-    //     console.log(currEnzyme, "currenzyme")
-    // }, [setEdges]);
-
-    // useEffect((node) => {
-
-    // }, [nodes, setEdges]);
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -146,6 +124,15 @@ const SaveRestore = (props) => {
         setEdges(initialEdges);
     }, [setNodes, setViewport])
 
+
+    const onNodeClick = (e, clickedNode) => {
+        // uncomment in production
+        //if (window.confirm("Do you really want to delete this node?")) {
+            setNodes((nds) => nds.filter(node => node.id !== clickedNode.id)); // deletes selected node
+            setEdges((eds) => eds.filter(edge => (edge.target != clickedNode.id && edge.source != clickedNode.id))) // deletes edges with selected node id
+        //}
+    }
+
     return (
         <ReactFlow
         nodes={nodes}
@@ -155,6 +142,7 @@ const SaveRestore = (props) => {
         onConnect={onConnect}
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
+        onNodeClick={onNodeClick}
         >
         <div className="save__controls">
             <button onClick={onSave}>save</button>

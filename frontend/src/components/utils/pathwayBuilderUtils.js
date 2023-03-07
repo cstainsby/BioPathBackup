@@ -28,6 +28,7 @@ export function generatePathwayJson(nodes, edges, title, author, isPublic) {
         "molecule_instances": moleculeInstances,
         "cofactor_instances": cofactorInstances
     }
+    console.log(pathwayObj, "objetc")
     return pathwayObj;
 } 
 
@@ -75,24 +76,48 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
             "cofactor_instances": []
         }
         for (const substrate of enzyme.data.substrates) {
+            // var molecule = null;
+            // molecule = molecules.find(obj => {
+            //     return (obj.data.molecule_id === substrate && edges.find((eobj => {return eobj.target === enzyme.id} &&)))
+            // })
+
+            
+
             var molecule = null;
             var filtered = molecules.filter(obj => {
                 return obj.data.molecule_id === substrate;
             })
-            if (filtered.length > 1) {
-                var filteredEdge = edges.find(obj => {
-                    return obj.target === enzyme.id;
-                })
-                molecule = molecules.find(obj => {
-                    return obj.id === filteredEdge.source;
-                  })
-                console.log(molecule, "found edge")
+
+            // testing
+            var filteredEdge = edges.filter(obj => {
+                return (obj.target === enzyme.id );
+            })
+
+            for (const edge of filteredEdge) {
+                for (const mol of filtered) {
+                    if (edge.target === enzyme.id && edge.source === mol.id) {
+                        molecule = mol;
+                    }
+                }
             }
-            else {
-                molecule = filtered.find(obj => {
-                    return obj.data.molecule_id === substrate;
-                })
-            }
+            //testing
+            // console.log("filtered", filtered)
+            // if (filtered.length > 1) {
+            //     var filteredEdge = edges.find(obj => {
+            //         return (obj.target === enzyme.id);
+            //     })
+            //     molecule = molecules.find(obj => {
+            //         console.log(obj.data.molecule_id, substrate, "molecule id")
+            //         return (obj.id === filteredEdge.source);
+            //       })
+            //     console.log(molecule, "found edge")
+            // }
+            // else {
+            //     molecule = filtered.find(obj => {
+            //         return obj.data.molecule_id === substrate;
+            //     })
+            // }
+
             if (molecule) {
                 enzymeObj.substrate_instances.push(parseInt(molecule.id));
             }
@@ -101,30 +126,46 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
             }
         }
         for (const product of enzyme.data.products) {
-            // molecule = molecules.find(obj => {
-            //     return obj.data.molecule_id === product;
-            //   })
-            // if (molecule) {
-            //     enzymeObj.product_instances.push(parseInt(molecule.id));
-            // }
             var molecule = null;
             var filtered = molecules.filter(obj => {
                 return obj.data.molecule_id === product;
             })
-            if (filtered.length > 1) {
-                var filteredEdge = edges.find(obj => {
-                    return obj.source === enzyme.id;
-                })
-                molecule = molecules.find(obj => {
-                    return obj.id === filteredEdge.target;
-                  })
-                console.log(molecule, "found edge")
+
+            // testing
+            var filteredEdge = edges.filter(obj => {
+                return (obj.source === enzyme.id );
+            })
+
+            for (const edge of filteredEdge) {
+                for (const mol of filtered) {
+                    if (edge.source === enzyme.id && edge.target === mol.id) {
+                        molecule = mol;
+                    }
+                }
             }
-            else {
-                molecule = filtered.find(obj => {
-                    return obj.data.molecule_id === product;
-                })
-            }
+            // var molecule = null;
+            // molecule = molecules.find(obj => {
+            //     return (obj.data.molecule_id === product && edges.find((obj => {return obj.target === enzyme.id})))
+            // })
+            // var molecule = null;
+            // var filtered = molecules.filter(obj => {
+            //     return obj.data.molecule_id === product;
+            // })
+            // if (filtered.length > 1) {
+            //     var filteredEdge = edges.find(obj => {
+            //         return obj.source === enzyme.id;
+            //     })
+            //     molecule = molecules.find(obj => {
+            //         return obj.id === filteredEdge.target;
+            //       })
+            //     console.log(molecule, "found edge")
+            // }
+            // else {
+            //     molecule = filtered.find(obj => {
+            //         return obj.data.molecule_id === product;
+            //     })
+            // }
+            
             if (molecule) {
                 enzymeObj.product_instances.push(parseInt(molecule.id));
             }

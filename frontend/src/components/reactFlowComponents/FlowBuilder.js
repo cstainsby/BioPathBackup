@@ -44,7 +44,7 @@ const SaveRestore = (props) => {
 
     const location = useLocation();
 
-    if(location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
+    if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
         for (let node of location.state.initialNodes) {
             if (node.className === "Molecule") {
@@ -78,6 +78,7 @@ const SaveRestore = (props) => {
                 enzyme.data.cofactors[i] = mol.data.molecule_id; // change the enzyme substrate[] to real molecule ids
             }
         }
+        // update initialNodes with updated enzyme nodes
         for (let enzyme of location.state.initialNodes) {
             let updatedEnzyme = enzymeNodes.find(obj => {
                 return obj.id === enzyme.id;

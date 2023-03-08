@@ -1,3 +1,4 @@
+import {useLocation} from 'react-router-dom'; // testing delete maybe
 import React, { useState, useCallback, useEffect } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
@@ -38,10 +39,15 @@ const SaveRestore = (props) => {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
+    const [editExisting, setEditExisting] = useState(false);
     const { setViewport } = useReactFlow();
 
-    if(props.initialNodes) { // used for transfering from flowmodel to flowbuilder
-        setNodes(props.initialNodes)
+    const location = useLocation();
+
+    if(location.state.initialNodes && !editExisting) { // used for transfering from flowmodel to flowbuilder
+        setNodes(location.state.initialNodes)
+        setEditExisting(true);
+        console.log(location.state.initialNodes, "location")
     }
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);

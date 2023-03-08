@@ -154,7 +154,7 @@ const FlowModel = (props) => {
     }
 
     const handleEdit = () => { // testing delte later maybe
-        navigate('/build', {state:{initialNodes:nodes}});
+        navigate('/build', {state:{initialNodes:nodes, initialEdges: edges}});
     }
 
     return (

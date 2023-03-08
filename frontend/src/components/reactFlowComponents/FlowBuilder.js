@@ -44,10 +44,28 @@ const SaveRestore = (props) => {
 
     const location = useLocation();
 
-    if(location.state.initialNodes && !editExisting) { // used for transfering from flowmodel to flowbuilder
-        setNodes(location.state.initialNodes)
+    if(location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
+        let oldNodes = location.state.initialNodes;
+        for (let node of location.state.initialNodes) {
+            if (node.className === "Molecule") {
+                node.className = "MoleculeBuild"
+            }
+            else if (node.className === "enzyme") {
+                // needs to be else if because will enter once changed to MoleculeBuild
+                node.className = "enzymeBuild"
+            }
+        }
+        setNodes(location.state.initialNodes);
+        setEdges(location.state.initialEdges);
+
+        // remove reversible edges for flowbuilder
+        for (const currentEdge of location.state.initialEdges) {
+            if (currentEdge.id[0] === 'R') {
+                console.log(currentEdge, "edge")
+                setEdges((eds) => eds.filter(edge => (edge.id != currentEdge.id)));
+            }
+        }
         setEditExisting(true);
-        console.log(location.state.initialNodes, "location")
     }
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);

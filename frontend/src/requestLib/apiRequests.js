@@ -90,7 +90,6 @@ async function postBackendData(obj, endpoint) {
         // if it is a bad request throw an error
         if(!response.ok) {
             const error = (responseJSON && responseJSON.message) || response.status;
-            // alert("Pathway had incorrect internals, try again");
             throw error;
         }
         alert("DB updated successfully");

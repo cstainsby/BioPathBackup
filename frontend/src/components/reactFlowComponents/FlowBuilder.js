@@ -45,7 +45,7 @@ const SaveRestore = (props) => {
     const location = useLocation();
 
     if(location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
-        let oldNodes = location.state.initialNodes;
+        let enzymeNodes = [];
         for (let node of location.state.initialNodes) {
             if (node.className === "Molecule") {
                 node.className = "MoleculeBuild"
@@ -53,15 +53,44 @@ const SaveRestore = (props) => {
             else if (node.className === "enzyme") {
                 // needs to be else if because will enter once changed to MoleculeBuild
                 node.className = "enzymeBuild"
+                enzymeNodes.push(node)
             }
         }
+        // change the subs / prods from instance ids to real ids
+        for (const enzyme of enzymeNodes) {
+            for (let i = 0; i < enzyme.data.substrates.length; i++) {
+                let mol = location.state.initialNodes.find(obj => {
+                    // take the temp_id and convert to int to compare to substrate values
+                    return parseInt(obj.id.replace(/\D/g,''), "replace") === enzyme.data.substrates[i];
+                })
+                enzyme.data.substrates[i] = mol.data.molecule_id; // change the enzyme substrate[] to real molecule ids
+            }
+            for (let i = 0; i < enzyme.data.products.length; i++) {
+                let mol = location.state.initialNodes.find(obj => {
+                    return parseInt(obj.id.replace(/\D/g,''), "replace") === enzyme.data.products[i];
+                })
+                enzyme.data.products[i] = mol.data.molecule_id; // change the enzyme substrate[] to real molecule ids
+            }
+            for (let i = 0; i < enzyme.data.cofactors.length; i++) {
+                let mol = location.state.initialNodes.find(obj => {
+                    return parseInt(obj.id.replace(/\D/g,''), "replace") === enzyme.data.cofactors[i];
+                })
+                enzyme.data.cofactors[i] = mol.data.molecule_id; // change the enzyme substrate[] to real molecule ids
+            }
+        }
+        for (let enzyme of location.state.initialNodes) {
+            let updatedEnzyme = enzymeNodes.find(obj => {
+                return obj.id === enzyme.id;
+            });
+            enzyme = updatedEnzyme;
+        }
+        console.log(location.state.initialNodes, "test")
         setNodes(location.state.initialNodes);
         setEdges(location.state.initialEdges);
 
         // remove reversible edges for flowbuilder
         for (const currentEdge of location.state.initialEdges) {
             if (currentEdge.id[0] === 'R') {
-                console.log(currentEdge, "edge")
                 setEdges((eds) => eds.filter(edge => (edge.id != currentEdge.id)));
             }
         }
@@ -71,9 +100,9 @@ const SaveRestore = (props) => {
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
 
-    // useEffect(() => {
-    //     console.log(numEnzymes, "ben")
-    // }, [numEnzymes]); // monitor pathwayID for changes
+    useEffect(() => {
+        console.log(nodes, "ben")
+    }, [nodes]); // monitor pathwayID for changes
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -102,9 +131,9 @@ const SaveRestore = (props) => {
 
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            if (pathwayObj) {
+            // if (pathwayObj) {
                 postPathway(pathwayObj)
-            }
+            // }
         }
     });
 
@@ -148,6 +177,7 @@ const SaveRestore = (props) => {
                 y: (200 * numEnzymes)
             },
         };
+        console.log(newNode.data.cofactors, "newNode")
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 

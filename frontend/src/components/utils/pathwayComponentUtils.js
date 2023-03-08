@@ -133,17 +133,21 @@ export function generateNodes(pathway) {
     let nodes = []
 
     for (const enzyme of pathway.enzyme_instances) {
+        console.log(enzyme, "emzyme")
         // Reactflow node
         if (enzyme.reversible) { // new for multi handlers
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
                 className: 'enzyme', 
                 data: {
+                    abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
                     products: enzyme.product_instances,
+                    cofactors: enzyme.cofactor_instances, // testing maybe delte later
+                    enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
                 type: "reversibleEnzyme",
@@ -155,11 +159,14 @@ export function generateNodes(pathway) {
                 id: String(enzyme.id) + "_enzyme", 
                 className: 'enzyme', 
                 data: {
+                    abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
                     products: enzyme.product_instances,
+                    cofactors: enzyme.cofactor_instances, // testing maybe delte later
+                    enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
                 type: "reversibleEnzyme",
@@ -170,13 +177,15 @@ export function generateNodes(pathway) {
     
     for (const molecule of pathway.molecule_instances) {
         // Reactflow node
+        console.log(molecule, "molecule")
         nodes.push({
             id: String(molecule.id) + "_molecule", 
             className: 'Molecule', 
             data: {
-                label: molecule.molecule_name,
+                label: molecule.abbreviation,
                 type: "molecule",
-                title: molecule.molecule_name
+                molecule_name: molecule.molecule_name,
+                molecule_id: molecule.molecule
             },
             type: "molecule",
             position: {x: molecule.x, y: molecule.y}

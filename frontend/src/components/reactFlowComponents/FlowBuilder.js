@@ -13,16 +13,12 @@ import 'reactflow/dist/style.css';
 import '../css/ReactFlowArea.css';
 
 
-// import ReversibleEnzyme from'../customNodes/ReversibleEnzyme';
 import BuilderEnzyme from '../customNodes/BuilderEnzyme';
-import Molecule from '../customNodes/Molecule';
 import BuilderSideBar from './BuilderSideBar';
 import BuilderMolecule from '../customNodes/BuilderMolecule';
 
 const nodeTypes = {
-    // reversibleEnzyme: ReversibleEnzyme,
     enzyme: BuilderEnzyme,
-    // molecule: Molecule
     molecule: BuilderMolecule
 };
 
@@ -33,15 +29,27 @@ const getNodeId = () => `${+new Date()}`;
 const initialNodes = [];
 const initialEdges = [];
 
+let numEnzymes = 0;
+
 
 const SaveRestore = (props) => {
+    const [isPostShown, setPostShown] = useState(false); // displays additional component on push
+    const [newTitle, setNewTitle] = useState(""); // maybe use
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
     const { setViewport } = useReactFlow();
 
+    if(props.initialNodes) { // used for transfering from flowmodel to flowbuilder
+        setNodes(props.initialNodes)
+    }
 
     const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+
+
+    // useEffect(() => {
+    //     console.log(numEnzymes, "ben")
+    // }, [numEnzymes]); // monitor pathwayID for changes
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -66,10 +74,14 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-        const pathwayObj = generatePathwayJson(nodes, edges);
-        console.log(nodes, "etestign")
-        console.log("request", pathwayObj);
-        postPathway(pathwayObj)
+        setPostShown(!isPostShown);
+
+        if (isPostShown) {
+            const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
+            if (pathwayObj) {
+                postPathway(pathwayObj)
+            }
+        }
     });
 
     const onAddMolecule = useCallback((nodeData) => {
@@ -83,18 +95,18 @@ const SaveRestore = (props) => {
             type: "molecule" },
         type: "molecule",
         position: {
-            x: 500,
-            y: 450,
+            x: 270 + (Math.random() * 300),
+            y: (200 * numEnzymes),
         },
         };
         setNodes((nds) => nds.concat(newNode));
     }, [setNodes]);
 
     const onAddEnzyme = useCallback((nodeData) => {
+        numEnzymes += 1; // used for moving node generation down y axis
         const newNode = {
             id: getNodeId(),
             className: 'enzymeBuild',
-            // data: { label: nodeData.name, type: "enzyme" },
             data: {
                 label: nodeData.name, 
                 abbreviation: nodeData.abbreviation,
@@ -108,14 +120,11 @@ const SaveRestore = (props) => {
             },
             type: "enzyme",
             position: {
-                // x: Math.random() * window.innerWidth - 100,
-                // y: Math.random() * window.innerHeight,
-                x: 500,
-                y: 500,
+                x: 800,
+                y: (200 * numEnzymes)
             },
         };
         setNodes((nds) => nds.concat(newNode));
-        console.log("Newnode", nodes)
     }, [setNodes]);
 
     const onClear = useCallback(() => {
@@ -131,6 +140,13 @@ const SaveRestore = (props) => {
             setNodes((nds) => nds.filter(node => node.id !== clickedNode.id)); // deletes selected node
             setEdges((eds) => eds.filter(edge => (edge.target != clickedNode.id && edge.source != clickedNode.id))) // deletes edges with selected node id
         //}
+        if (clickedNode.type === "enzyme") { // check if an enzyme was deleted
+            numEnzymes -= 1;
+        }
+    }
+
+    const handleTitleChange = (e) => {
+        setNewTitle(e.target.value);
     }
 
     return (
@@ -145,10 +161,16 @@ const SaveRestore = (props) => {
         onNodeClick={onNodeClick}
         >
         <div className="save__controls">
-            <button onClick={onSave}>save</button>
-            <button onClick={onRestore}>restore</button>
-            <button onClick={onPush}>push</button>
-            <button onClick={onClear}>clear flow</button>
+            <button class="btn btn-primary" onClick={onSave}>save</button>
+            <button class="btn btn-warning" onClick={onRestore}>restore</button>
+            {/* <button onClick={onPush}>push</button> */}
+
+            
+                <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
+            
+            {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+
+            <button class="btn btn-danger" onClick={onClear}>clear flow</button>
         </div>
         <BuilderSideBar
                     slidersTitle="Pathway Builder"
@@ -159,6 +181,17 @@ const SaveRestore = (props) => {
         </ReactFlow>
     );
 };
+
+const PathwayTitle = (props) => { // take user input to set pathway title
+
+    return(
+        <div>
+            <label>Enter Pathway title: </label>
+            <input type="text" onChange={(e) => props.title(e)}></input>
+            <button onClick={props.submit}>Submit</button>
+        </div>
+    )
+}
 
 export default () => (
     <ReactFlowProvider>

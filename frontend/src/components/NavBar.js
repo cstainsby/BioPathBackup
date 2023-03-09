@@ -18,7 +18,7 @@ const Navbar = () => {
   const { user, setUser } = useContext(UserContext);
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-lg">
       <div className="container-fluid">
         {/* reset button 
         reset every selectable item, go to base page */}

@@ -1,8 +1,5 @@
 import React, { Component, useState, useEffect } from 'react'
-import FlowModel from './reactFlowComponents/FlowModel'
-
-
-
+import FlowModel from './FlowModel'
 import ConcentrationManager from './utils/ConcentrationManager';
 import { useLoaderData } from 'react-router-dom';
 

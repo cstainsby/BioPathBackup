@@ -1,12 +1,14 @@
 import React, {useContext, useState, useEffect} from "react";
 
-import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
+import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../../requestLib/apiRequests';
 
-import './css/BuilderSideBar.css'
+import '../css/BuilderSideBar.css'
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
     const [enzymeResp, setEnzymeResp] = useState(null);
+    const [moleculeSelection, setMolSelection] = useState(null);
+    const [enzymeSelection, setEnzSelection] = useState(null);
     const [enzymes, setEnzymes] = useState();
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
@@ -44,25 +46,35 @@ function BuilderSideBar(props) {
     }
 
     function onMoleculeSelect(selectedMolecule) {
-        props.onAddMolecule(moleculeResp[selectedMolecule])
+        setMolSelection(moleculeResp[selectedMolecule])
+    }
+
+    function onMoleculeSubmit() {
+        props.onAddMolecule(moleculeSelection)
     }
 
     function onEnzymeSelect(selectedEnzyme) {
-        props.onAddEnzyme(enzymeResp[selectedEnzyme])
+        setEnzSelection(enzymeResp[selectedEnzyme])
+    }
+
+    function onEnzymeSubmit() {
+        props.onAddEnzyme(enzymeSelection)
     }
 
   return (
     <div className='card ModelAreaChild' id='PathwaySliderBox'>
-            {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddMolecule}>Add Molecule</button> */}
-            <select onChange={(e) => onMoleculeSelect(e.target.value)}>
-                <option>Select Molecule</option>
+            <h1>{props.slidersTitle}</h1>
+            <a>{props.slidersDescription}</a>
+            <select class="form-select" onChange={(e) => onMoleculeSelect(e.target.value)}>
+                <option selected disabled hidden>Select Molecule</option>
                 {molecules}
             </select>
-            <select onChange={(e) => onEnzymeSelect(e.target.value)}>
-                <option>Select Enzyme</option>
+            <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+            <select class="form-select" onChange={(e) => onEnzymeSelect(e.target.value)}>
+                <option selected disabled hidden>Select Enzyme</option>
                 {enzymes}
             </select>
-            {/* <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.onAddEnzyme}>Add Enzyme</button> */}
+            <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button>
             <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
             <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
             
@@ -133,19 +145,19 @@ const BuildEnzymeModal = (props) => {
                 New Enzyme
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li>
-                    <button onClick={handleClick}>Submit New Enzyme</button>
+                <li>
+                    <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
                     <label>
                     Enzyme Name
-                    <input id="text1" type="text" onChange={e => setName(e.target.value)} />
+                    <input id="text1" class="form-control" type="text" onChange={e => setName(e.target.value)} />
                     </label>
                     <label>
                     Enzyme Abbreviation
-                    <input id="text2" type="text" onChange={e => setAbbrevation(e.target.value)} />
+                    <input id="text2" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
                     </label>
                     <label>
                     Reversible
-                    <input id="text3" type="text" onChange={e => setReversible(e.target.value)} />
+                    <input id="text3" class="form-control" type="text" onChange={e => setReversible(e.target.value)} />
                     </label>
                 </li>
                 <li class="dropdown-submenu">
@@ -154,7 +166,7 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select onChange={(e) => handleNewSubstrate(e.target.value)}>
+                            <select class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)}>
                                 <option>Select Substrates</option>
                                 {props.dropDownItems}
                             </select>
@@ -168,7 +180,7 @@ const BuildEnzymeModal = (props) => {
                     <ul class="dropdown-menu dropdown-submenu">
                         
                         <li>
-                            <select onChange={(e) => handleNewProduct(e.target.value)}>
+                            <select class="form-select" onChange={(e) => handleNewProduct(e.target.value)}>
                                 <option>Select Products</option>
                                 {props.dropDownItems}
                             </select>
@@ -181,7 +193,7 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select onChange={(e) => handleNewCofactor(e.target.value)}>
+                            <select class="form-select" Change={(e) => handleNewCofactor(e.target.value)}>
                                 <option>Select Cofactors</option>
                                 {props.dropDownItems}
                             </select>
@@ -233,14 +245,14 @@ const BuildMoleculeModal = (props) => {
             </button>
               <ul className="dropdown-menu">
                 <li>
-                    <button onClick={handleSubmit}>Submit New Molecule</button>
+                    <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>
                     Molecule Name
-                    <input id="mtext1" type="text" onChange={e => setLabel(e.target.value)} />
+                    <input id="mtext1" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
                     </label>
                     <label>
                     Molecule Abbreviation
-                    <input id="mtext2" type="text" onChange={e => setAbbr(e.target.value)} />
+                    <input id="mtext2" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
                 </li>
               </ul>

@@ -92,16 +92,42 @@ async function postBackendData(obj, endpoint) {
             const error = (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        
+        alert("DB updated successfully");
         return responseJSON;
     } catch(error) {
-        console.log(requestUrl, error);
+        alert("Pathway had incorrect internals, try again");
+        console.log(requestUrl, error, "testststs");
         return error;
     }
 }
 
 async function postPathway(pathwayObj) {
-    return postBackendData(pathwayObj, "pathways/");
+    // return postBackendData(pathwayObj, "pathways/");
+    const methodType = "POST";
+    const requestUrl = dataSourceAddressHeader + "pathways/";
+
+    try {
+        const requestOptions = {
+            method: methodType,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pathwayObj)
+        };
+
+        const response = await fetch(requestUrl, requestOptions);
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+        alert("Pathway successfully added to database");
+        return responseJSON;
+    } catch(error) {
+        alert("Pathway had incorrect internals, try again");
+        return error;
+    }
 }
 
 async function postMolecule(moleculeObj) {

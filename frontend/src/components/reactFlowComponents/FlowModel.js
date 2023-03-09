@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
 	// MiniMap,
@@ -9,7 +9,6 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import FlowBuilder from './FlowBuilder';
 import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
 
 import 'reactflow/dist/style.css';
@@ -45,6 +44,8 @@ const FlowModel = (props) => {
 
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
+
+    const navigate = useNavigate(); // testing delte later maybe
 
     /**
      * Console logs id and position of ReactFlow nodes 
@@ -152,6 +153,10 @@ const FlowModel = (props) => {
         props.concentrationManager.reset();
     }
 
+    const handleEdit = () => { // testing delte later maybe
+        navigate('/build', {state:{initialNodes:nodes, initialEdges: edges}});
+    }
+
     return (
         <div className='ModelArea'>
             <ReactFlow className='ModelAreaChild ReactFlow'
@@ -171,6 +176,7 @@ const FlowModel = (props) => {
                     pathwayDescription={ pathwayDescription }
                     pathwayAuthor={ pathwayAuthor }
                     additionalImage={ boogyImg }
+                    editPathway={handleEdit}
                 /> 
                 <SliderSideBar
                     slidersTitle="Cofactors"
@@ -216,6 +222,7 @@ const PathwayTitleCard = (props) => {
                 <div className="card-footer">
                     <small className="text-muted">Last updated 3 mins ago by { props.pathwayAuthor }</small>
                 </div>
+                <button onClick={props.editPathway}>Edit pathway</button>
                 </div>
             )}
         </div>

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
 	// MiniMap,
@@ -9,8 +9,7 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
-
+import { generateNodes, generateEdges } from './utils/pathwayComponentUtils';
 import 'reactflow/dist/style.css';
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
@@ -200,7 +199,6 @@ const FlowModel = (props) => {
                     pathwayTitle={ pathwayTitle }
                     pathwayDescription={ pathwayDescription }
                     pathwayAuthor={ pathwayAuthor }
-                    additionalImage={ boogyImg }
                     editPathway={handleEdit}
                 /> 
                 <SliderSideBar
@@ -236,9 +234,6 @@ const PathwayTitleCard = (props) => {
         <div id="PathwayTitleCard" className='ModelAreaChild'>
             { (props.pathwayTitle !== "") && (
                 <div className="card" >
-                { props.additionalImage && 
-                    <img src={ props.additionalImage } alt="stuff here" width="10" height="150" className="card-img-top"/>
-                }
                 <div className="card-body" id='PathwayTitleTextBox'>
                     <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
                     <p className="card-text">{ props.pathwayDescription }</p>

@@ -7,15 +7,14 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
 } from 'reactflow';
-import { generatePathwayJson } from '../utils/pathwayBuilderUtils';
-import { postPathway } from '../../requestLib/apiRequests';
+import { generatePathwayJson } from './utils/pathwayBuilderUtils';
+import { postPathway } from '../requestLib/apiRequests';
 
 import 'reactflow/dist/style.css';
 
-
-import BuilderEnzyme from '../customNodes/BuilderEnzyme';
+import BuilderEnzyme from './customNodes/BuilderEnzyme';
 import BuilderSideBar from './BuilderSideBar';
-import BuilderMolecule from '../customNodes/BuilderMolecule';
+import BuilderMolecule from './customNodes/BuilderMolecule';
 
 const nodeTypes = {
     enzyme: BuilderEnzyme,

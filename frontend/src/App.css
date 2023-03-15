@@ -390,15 +390,13 @@ input[type=range]::-ms-fill-upper {
     margin-left: 5px;
 }
 
-.react-flow__node.enzymeBuild {
-    width: 150px;
+.react-flow__node.EnzymeBuild {
+    width: 250px;
     height: 100px;
-    /* transform: skew(20deg); */
-    background: var(--primary);
+    background-color: #8b98ef;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* fontweight: 700;  */
 }
 
 .react-flow__node.ReversibleEnzyme {
@@ -434,8 +432,10 @@ input[type=range]::-ms-fill-upper {
     border-radius: 40%;
     width: 60px;
     height: 40px;
-    background: var(--secondary);
+    background-color: #b8ef8b;
     display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 9px;
 }
 
@@ -451,6 +451,6 @@ input[type=range]::-ms-fill-upper {
     opacity: 50;
 }
 
-.react-flow__node.enzymeBuild .react-flow__handle {
+.react-flow__node.EnzymeBuild .react-flow__handle {
     opacity: 50;
 }

@@ -8,7 +8,7 @@ import ReactFlow, {
     useReactFlow,
 } from 'reactflow';
 import { generatePathwayJson } from './utils/pathwayBuilderUtils';
-import { postPathway } from '../requestLib/apiRequests';
+import { postPathway, deletePathway } from '../requestLib/apiRequests';
 
 import 'reactflow/dist/style.css';
 
@@ -33,6 +33,7 @@ let numEnzymes = 0;
 const SaveRestore = (props) => {
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
+    const [pathwayID, setPathwayID] = useState(null); // used if editing existing
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
@@ -43,13 +44,14 @@ const SaveRestore = (props) => {
 
     if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
+        setPathwayID(location.state.id);
         for (let node of location.state.initialNodes) {
             if (node.className === "Molecule") {
                 node.className = "MoleculeBuild"
             }
-            else if (node.className === "enzyme") {
+            else if (node.className === "ReversibleEnzyme") {
                 // needs to be else if because will enter once changed to MoleculeBuild
-                node.className = "enzymeBuild"
+                node.className = "EnzymeBuild"
                 enzymeNodes.push(node)
             }
         }
@@ -82,7 +84,6 @@ const SaveRestore = (props) => {
             });
             enzyme = updatedEnzyme;
         }
-        console.log(location.state.initialNodes, "test")
         setNodes(location.state.initialNodes);
         setEdges(location.state.initialEdges);
 
@@ -99,8 +100,8 @@ const SaveRestore = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, "ben")
-    }, [nodes]); // monitor pathwayID for changes
+        console.log(nodes, pathwayID, "ben")
+    }, [nodes, pathwayID]); // monitor pathwayID for changes
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -125,13 +126,23 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-        setPostShown(!isPostShown);
 
+        if (pathwayID) { // if editing existing dont need new title
+            console.log("updating pathway: ", pathwayID)
+            // const pathwayObj = generatePathwayJson(nodes, edges, "updated");
+            // if (pathwayObj) {
+            //     postPathway(pathwayObj)
+            // }
+            deletePathway(pathwayID)
+        }
+        else {
+            setPostShown(!isPostShown);
+        }
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            // if (pathwayObj) {
+            if (pathwayObj) {
                 postPathway(pathwayObj)
-            // }
+            }
         }
     });
 
@@ -157,7 +168,7 @@ const SaveRestore = (props) => {
         numEnzymes += 1; // used for moving node generation down y axis
         const newNode = {
             id: getNodeId(),
-            className: 'enzymeBuild',
+            className: 'EnzymeBuild',
             data: {
                 label: nodeData.name, 
                 abbreviation: nodeData.abbreviation,
@@ -183,6 +194,7 @@ const SaveRestore = (props) => {
         localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
+        setPathwayID(null); // no pathway id if current Build is cleared
     }, [setNodes, setViewport])
 
 

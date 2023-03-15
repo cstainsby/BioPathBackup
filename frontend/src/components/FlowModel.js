@@ -32,6 +32,7 @@ const FlowModel = (props) => {
     let [pathwayTitle, setPathwayTitle] = useState(pathway["name"]);
     let [pathwayDescription, setPathwayDescription] = useState("about the pathway");
     let [pathwayAuthor, setPathwayAuthor] = useState("author");
+    let [pathwayID, setPathwayID] = useState(pathway.id)
 
     // Data used for ReactFlow
 	let [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -177,7 +178,11 @@ const FlowModel = (props) => {
     }
 
     const handleEdit = () => { // testing delte later maybe
-        navigate('/build', {state:{initialNodes:nodes, initialEdges: edges}});
+        navigate('/build', {state:{
+                                initialNodes:nodes, 
+                                initialEdges: edges,
+                                id: pathwayID
+                            }});
     }
 
     return (

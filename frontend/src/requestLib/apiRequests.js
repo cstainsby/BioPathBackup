@@ -138,4 +138,32 @@ async function postEnzyme(enzymeObj) {
     return postBackendData(enzymeObj, "enzymes/");
 }
 
-export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme }
+async function deletePathway(pathwayID) {
+    const methodType = "DELETE";
+    const requestUrl = dataSourceAddressHeader + "pathways/";
+
+    try {
+        const requestOptions = {
+            method: methodType,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(pathwayID)
+        };
+
+        const response = await fetch(requestUrl, requestOptions);
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+        alert("Pathway successfully deleted to database");
+        return responseJSON;
+    } catch(error) {
+        alert("Pathway not deleted");
+        return error;
+    }
+}
+
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway }

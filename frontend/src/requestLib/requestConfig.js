@@ -15,29 +15,18 @@
  * @returns string representation of URL 
  */
 function getEndpointHeader() {
-  const BACKEND_BASE_API_URL = "http://localhost:8000/"; 
-  const MOCK_API_URL = "http://localhost:4000/";
-  const AWS_BACKEND_URL = "http://6umnppgwmc.us-west-2.awsapprunner.com/";
+  // const BACKEND_BASE_API_URL = "http://localhost:8000/"; 
+  // const MOCK_API_URL = "http://localhost:4000/";
+  // const AWS_BACKEND_URL = "http://6umnppgwmc.us-west-2.awsapprunner.com/";
 
-  let definedHeader = BACKEND_BASE_API_URL;
-
-  if (process.env.NODE_ENV === "production") {
-    // when container pushed to production 
-    definedHeader = AWS_BACKEND_URL;
-  }
-  // else if (process.env.buildType === "local mock test") {
-  //   // endpoint for using the frontendJsonTestServer
-  //   definedHeader = MOCK_API_URL;
-  // }
-  else if (process.env.NODE_ENV === "local") {
-    // this is the standard build type for when running the backend 
-    //    and local db with the frontend through docker-compose 
-    definedHeader = BACKEND_BASE_API_URL;
-  }
-
-  console.log("defined enviornment: " + definedHeader);
+  // the frontend's backend requests are directed towards BACKEND_ENDPOINT 
+  //  which is defined in the enviornment variables
+  //  note that this endpoint could be invalid or MISSING, there should be error handling 
+  //  in our requests
+  let definedBackendEndpoint = process.env.BACKEND_ENDPOINT;
+  console.log("defined backend endpoint: " + definedBackendEndpoint);
   
-  return definedHeader;
+  return definedBackendEndpoint;
 }
 
 export default getEndpointHeader;

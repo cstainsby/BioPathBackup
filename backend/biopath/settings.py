@@ -90,9 +90,7 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables
-    print("RDS enviornment read in")
-    
+if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
     DATABASES =  {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -104,6 +102,9 @@ if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available
         }
     }
 else:
+    print("-------------------------------------------------------------")
+    print("DEFAULT ENV VARS READ")
+    print("-------------------------------------------------------------")
     DATABASES = { # edited by Josh S
         # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
         'default': {

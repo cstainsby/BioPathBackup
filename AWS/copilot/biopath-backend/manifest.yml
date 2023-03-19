@@ -1,9 +1,9 @@
-# The manifest for the "backend" service.
+# The manifest for the "biopath-backend" service.
 # Read the full specification for the "Request-Driven Web Service" type at:
 # https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/
 
 # Your service name will be used in naming your resources like log groups, App Runner services, etc.
-name: backend
+name: biopath-backend
 # The "architecture" of the service you're running.
 type: Request-Driven Web Service
 
@@ -23,9 +23,9 @@ image:
 #     timeout: 5s
 
 # Number of CPU units for the task.
-cpu: 256
+cpu: 1024
 # Amount of memory in MiB used by the task.
-memory: 512
+memory: 2048
 
 # Connect your App Runner service to your environment's VPC.
 # network:
@@ -38,13 +38,13 @@ memory: 512
 #   tracing: awsxray
 
 # Optional fields for more advanced use-cases.
+#
 variables:                    # Pass environment variables as key value pairs.
  RDS_DB_NAME: "postgres"
  RDS_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
  RDS_PORT: 5432
  RDS_USERNAME: "biopath_admin"
  RDS_PASSWORD: "WsatnbBqr7get9A"
-#
 # tags:                         # Pass tags as key value pairs.
 #   project: project-name
 

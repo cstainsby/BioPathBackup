@@ -12,3 +12,7 @@ AWS/aws_credentials.csv
 
 # ignore backend image/file storage
 backend/media/*
+
+
+# ignore sensitive information stored inside config file
+local_build_config.json

@@ -34,8 +34,7 @@ SECRET_KEY = 'django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "6umnppgwmc.us-west-2.awsapprunner.com",
-    "localhost"
+    "wtfysc3awc.us-west-2.awsapprunner.com"
 ]
 
 
@@ -102,9 +101,6 @@ if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available
         }
     }
 else:
-    print("-------------------------------------------------------------")
-    print("DEFAULT ENV VARS READ")
-    print("-------------------------------------------------------------")
     DATABASES = { # edited by Josh S
         # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
         'default': {

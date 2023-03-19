@@ -3,18 +3,20 @@
 # DESC: The purpose of this file is to create a simple interface for running 
 #       any configuration of the file 
 # Motivation:
-#   While working on this project, we have found it a lot more convenient to 
-#   run the project in a multitude of ways.
+#       While working on this project, we have found it a lot more convenient to 
+#       run the project in a multitude of ways.
 #
 #   FRONTEND:
-#     The frontend will be mainly run through docker, npm tools, and on AWS.
-#     NPM is the preferable option for local development, you can see you changes 
-#     immediatly which speeds up your workflow considerably. Docker is slower but 
-#     it is the format we are pushing our changes on. It is always worth testing 
-#     the frontend on it before a push.
+#       The frontend will be mainly run through docker, npm tools, and on AWS.
+#       NPM is the preferable option for local development, you can see you changes 
+#       immediatly which speeds up your workflow considerably. Docker is slower but 
+#       it is the format we are pushing our changes on. It is always worth testing 
+#       the frontend on it before a push.
 #
 #   BACKEND:
-#     The 
+#       The backend for now can only be run through docker. When setting it up you 
+#       can point the backend's database connection to either a locally built database
+#       instance or the official AWS RDS instance. 
 # ------------------------------------------------------------------------------------
 
 import os
@@ -26,7 +28,7 @@ from run_frontend_local import run_frontend, ask_for_frontend_build_settings
 from run_backend_local import run_backend, ask_for_backend_build_settings
 
 
-PROJ_ROOT_PATH = os.path.dirname(__file__)
+PROJ_ROOT_PATH = os.path.dirname(os.path.abspath(__file__)) 
 
 def print_header(msg: str):
     print()
@@ -35,20 +37,20 @@ def print_header(msg: str):
     print("-------------------------------------------")
 
 
-
 if __name__ == "__main__":
     selected_parts = list(inquirer.checkbox(
         message="Choose What you want to run (space to select, enter to confirm)",
         choices=["frontend", "backend"]
     ).execute())
 
+    run_docker_compose = None
     if "frontend" in selected_parts and "backend" in selected_parts:
         run_docker_compose = inquirer.select(
             message="Would you like to run everything in tandem with docker-compose locally",
             choices=["Yes", "No"]
         ).execute()
 
-    if run_docker_compose == "Yes": 
+    if run_docker_compose and run_docker_compose == "Yes": 
         # check if BIOPATH_ROOT_PATH is defined 
         if "BIOPATH_ROOT_PATH" not in os.environ:
             os.environ["PROJ_ROOT_PATH"] = PROJ_ROOT_PATH

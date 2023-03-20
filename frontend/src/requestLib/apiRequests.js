@@ -140,7 +140,7 @@ async function postEnzyme(enzymeObj) {
 
 async function deletePathway(pathwayID) {
     const methodType = "DELETE";
-    const requestUrl = dataSourceAddressHeader + "pathways/";
+    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID;
 
     try {
         const requestOptions = {

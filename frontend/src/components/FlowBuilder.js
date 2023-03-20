@@ -127,6 +127,29 @@ const SaveRestore = (props) => {
 
     const onPush = useCallback(() => {
 
+        // if (pathwayID) { // if editing existing dont need new title
+        //     console.log("updating pathway: ", pathwayID)
+        //     // const pathwayObj = generatePathwayJson(nodes, edges, "updated");
+        //     // if (pathwayObj) {
+        //     //     postPathway(pathwayObj)
+        //     // }
+        //     deletePathway(pathwayID)
+        // }
+        // else {
+        //     setPostShown(!isPostShown);
+        // }
+        setPostShown(!isPostShown)
+        if (isPostShown) {
+            const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
+            console.log(pathwayObj, "pobj")
+            if (pathwayObj) {
+                postPathway(pathwayObj)
+            }
+        }
+    });
+
+    const onUpdate = useCallback(() => {
+
         if (pathwayID) { // if editing existing dont need new title
             console.log("updating pathway: ", pathwayID)
             // const pathwayObj = generatePathwayJson(nodes, edges, "updated");
@@ -134,16 +157,27 @@ const SaveRestore = (props) => {
             //     postPathway(pathwayObj)
             // }
             deletePathway(pathwayID)
+            try {
+                const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
+                console.log(pathwayObj, "pobj")
+                if (pathwayObj) {
+                    postPathway(pathwayObj)
+                }
+                deletePathway(pathwayID)
+              }
+              catch(err) {
+                alert(err)
+              }
         }
-        else {
-            setPostShown(!isPostShown);
-        }
-        if (isPostShown) {
-            const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            if (pathwayObj) {
-                postPathway(pathwayObj)
-            }
-        }
+        // else {
+        //     setPostShown(!isPostShown);
+        // }
+        // if (isPostShown) {
+        //     const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
+        //     if (pathwayObj) {
+        //         postPathway(pathwayObj)
+        //     }
+        // }
     });
 
     const onAddMolecule = useCallback((nodeData) => {
@@ -233,6 +267,7 @@ const SaveRestore = (props) => {
                 <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
             
             {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+            <button class="btn btn-success" onClick={onUpdate}>update</button>
 
             <button class="btn btn-danger" onClick={onClear}>clear flow</button>
         </div>

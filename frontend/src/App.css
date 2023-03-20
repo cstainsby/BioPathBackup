@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --primary: #ef7d57;
     --primary-dark: #b13e53;
     --secondary: #84778a;
@@ -46,7 +46,7 @@
 .btn.btn-secondary:hover:active {
     background-color: var(--clicked-color);
     border-color: var(--clicked-color);
-}
+} */
 
 .App {
     text-align: center;

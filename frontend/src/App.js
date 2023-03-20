@@ -1,3 +1,4 @@
+import './index.scss'
 import './App.css';
 import React from 'react'; 
 

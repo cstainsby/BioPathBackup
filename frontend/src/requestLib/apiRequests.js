@@ -72,7 +72,7 @@ async function getMolecules() {
  * @param {string} endpoint where to send the data
  * @returns backend response object
  */
-async function postBackendData(obj, endpoint) {
+async function postBackendData(obj, endpoint, successMessage, failMessage) {
     const methodType = "POST";
     const requestUrl = dataSourceAddressHeader + endpoint;
 
@@ -92,42 +92,19 @@ async function postBackendData(obj, endpoint) {
             const error = (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        alert("DB updated successfully");
+        alert(successMessage);
         return responseJSON;
     } catch(error) {
-        alert("Pathway had incorrect internals, try again");
+        alert(failMessage);
         console.log(requestUrl, error, "testststs");
         return error;
     }
 }
 
 async function postPathway(pathwayObj) {
-    // return postBackendData(pathwayObj, "pathways/");
-    const methodType = "POST";
-    const requestUrl = dataSourceAddressHeader + "pathways/";
-
-    try {
-        const requestOptions = {
-            method: methodType,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(pathwayObj)
-        };
-
-        const response = await fetch(requestUrl, requestOptions);
-        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
-        const responseJSON = isResponseJSON && await response.json();
-        
-        // if it is a bad request throw an error
-        if(!response.ok) {
-            const error = (responseJSON && responseJSON.message) || response.status;
-            throw error;
-        }
-        alert("Pathway successfully added to database");
-        return responseJSON;
-    } catch(error) {
-        alert("Pathway had incorrect internals, try again");
-        return error;
-    }
+    const successMessage = "DB updated successfully"
+    const failMessage = "Pathway had incorrect internals, try again"
+    return postBackendData(pathwayObj, "pathways/", successMessage, failMessage);
 }
 
 async function postMolecule(moleculeObj) {

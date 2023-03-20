@@ -118,7 +118,7 @@ export function generateNodes(pathway) {
                     enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
-                type: "reversibleEnzyme",
+                type: "enzyme",
                 position: {x: enzyme.x, y: enzyme.y}
             });   
         }
@@ -137,7 +137,7 @@ export function generateNodes(pathway) {
                     enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
-                type: "reversibleEnzyme",
+                type: "enzyme",
                 position: {x: enzyme.x, y: enzyme.y}
             });
         }

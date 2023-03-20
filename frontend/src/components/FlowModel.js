@@ -14,10 +14,10 @@ import { generateNodes, generateEdges } from './utils/pathwayComponentUtils';
 import 'reactflow/dist/style.css';
 import './../scss/CustomNodes.scss';
 
-import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
-import Molecule from './customNodes/Molecule'
+import Enzyme from'./customNodes/Enzyme.js'
+import Molecule from './customNodes/Molecule.js'
 const nodeTypes = {
-    reversibleEnzyme: ReversibleEnzyme,
+    enzyme: Enzyme,
     molecule: Molecule
 };
 
@@ -106,11 +106,11 @@ const FlowModel = (props) => {
                     if (n.data.locked) {
                         props.concentrationManager.unlock(n.data.source_id);
                         n.data.locked = false;
-                        n.className = "Molecule"
+                        n.className = "molecule"
                     } else {
                         props.concentrationManager.lock(n.data.source_id);
                         n.data.locked = true;
-                        n.className = "Molecule locked"
+                        n.className = "molecule locked"
                     }
                 }
                 return n;
@@ -136,9 +136,9 @@ const FlowModel = (props) => {
             edges.map((edge) => {
                 if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
                     if (edge.id.split("_")[0] === "R") {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: 'var(--backward-color)'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: '#FF0000'};
                     } else {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: 'var(--forward-color)'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: '#00FF00'};
                     }
                 }
                 return edge;

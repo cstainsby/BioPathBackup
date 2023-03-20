@@ -14,7 +14,7 @@
         justify-content: center;
         align-items: center;
 
-        &.react-flow__handle {
+        .react-flow__handle {
             opacity: 0;
         }
     }
@@ -30,17 +30,17 @@
         align-items: center;
         font-size: 9px;
 
-        &.react-flow__handle {
+        .react-flow__handle {
             opacity: 0;
         }
 
-        &.locked {
+        .locked {
             border: 5px solid $locked;
         }
     }
 
     &.build {
-        &.react-flow__handle {
+        .react-flow__handle {
             opacity: 50;
         }
     }

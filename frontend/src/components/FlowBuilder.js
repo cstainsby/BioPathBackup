@@ -7,21 +7,20 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
 } from 'reactflow';
-import { generatePathwayJson } from './utils/pathwayBuilderUtils';
-import { postPathway } from '../requestLib/apiRequests';
+import { generatePathwayJson } from './utils/pathwayBuilderUtils.js';
+import { postPathway } from '../requestLib/apiRequests.js';
 
 import 'reactflow/dist/style.css';
 import './../scss/CustomNodes.scss';
 
-import BuilderEnzyme from './customNodes/BuilderEnzyme';
-import BuilderSideBar from './BuilderSideBar';
-import BuilderMolecule from './customNodes/BuilderMolecule';
+import enzyme from './customNodes/BuilderEnzyme.js';
+import BuilderSideBar from './BuilderSideBar.js';
+import molecule from './customNodes/BuilderMolecule.js';
 
 const nodeTypes = {
-    enzyme: BuilderEnzyme,
-    molecule: BuilderMolecule
+    enzyme: enzyme,
+    molecule: molecule
 };
-
 const flowKey = 'example-flow';
 
 const getNodeId = () => `${+new Date()}`;

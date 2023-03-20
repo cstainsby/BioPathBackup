@@ -10,7 +10,9 @@ import ReactFlow, {
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
 import { generateNodes, generateEdges } from './utils/pathwayComponentUtils';
+
 import 'reactflow/dist/style.css';
+import './../scss/CustomNodes.scss';
 
 import ReversibleEnzyme from'./customNodes/ReversibleEnzyme'
 import Molecule from './customNodes/Molecule'

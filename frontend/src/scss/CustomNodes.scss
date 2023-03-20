@@ -1,0 +1,45 @@
+.react-flow__node {
+
+    .enzyme {
+        font-size: 12px;
+        width: 250px;
+        height: 100px;
+        background: var(--primary);
+        border: 1px solid #555;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .react-flow__handle {
+            opacity: 0;
+        }
+    }
+
+    .molecule {
+        border-radius: 40%;
+        width: 60px;
+        height: 40px;
+        background: var(--molecule-primary-color);
+        border: 1px solid #000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 9px;
+
+        .react-flow__handle {
+            opacity: 0;
+        }
+
+        .locked {
+            border: 5px solid $red;
+        }
+    }
+
+    .build {
+        .react-flow__handle {
+            opacity: 50;
+        }
+    }
+}

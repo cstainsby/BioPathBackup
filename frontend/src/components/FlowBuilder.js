@@ -11,6 +11,7 @@ import { generatePathwayJson } from './utils/pathwayBuilderUtils';
 import { postPathway } from '../requestLib/apiRequests';
 
 import 'reactflow/dist/style.css';
+import './../scss/CustomNodes.scss';
 
 import BuilderEnzyme from './customNodes/BuilderEnzyme';
 import BuilderSideBar from './BuilderSideBar';
@@ -44,12 +45,9 @@ const SaveRestore = (props) => {
     if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
         for (let node of location.state.initialNodes) {
-            if (node.className === "Molecule") {
-                node.className = "MoleculeBuild"
-            }
-            else if (node.className === "enzyme") {
+            node.className = node.className + " build"
+            if (node.className === "enzyme build") {
                 // needs to be else if because will enter once changed to MoleculeBuild
-                node.className = "enzymeBuild"
                 enzymeNodes.push(node)
             }
         }
@@ -138,7 +136,7 @@ const SaveRestore = (props) => {
     const onAddMolecule = useCallback((nodeData) => {
         const newNode = {
         id: getNodeId(),
-        className: 'MoleculeBuild',
+        className: 'molecule build',
         data: { 
             label: nodeData.abbreviation,
             molecule_name: nodeData.name, 
@@ -157,7 +155,7 @@ const SaveRestore = (props) => {
         numEnzymes += 1; // used for moving node generation down y axis
         const newNode = {
             id: getNodeId(),
-            className: 'enzymeBuild',
+            className: 'enzyme build',
             data: {
                 label: nodeData.name, 
                 abbreviation: nodeData.abbreviation,

@@ -15,9 +15,11 @@ ul {
     list-style-type: none;
 }
 
-a.card {
-    margin: 8px;
-    background-color: var(--tertiary);
+a {
+    .card {
+        margin: 8px;
+        background-color: var(--tertiary);
+    }
 }
 
 .horizontalUl {
@@ -30,18 +32,18 @@ a.card {
 
 .growButton { 
     transition: all .2s ease-in; 
-}
 
-.growButton:hover { 
-    transform: scale(1.05); 
+    :hover { 
+        transform: scale(1.05); 
+    }
 }
 
 .growCard { 
     transition: all .2s ease-in; 
-}
 
-.growCard:hover { 
-    transform: scale(1.03); 
+    :hover { 
+        transform: scale(1.03); 
+    }
 }
 
 .ModelAreaChild {
@@ -70,10 +72,11 @@ a.card {
     height: fit-content;
     color: inherit;
     text-decoration: none;
-}
-.cardNavLink:hover {
-    color: black;
-    border-color: black;
+
+    :hover {
+        color: black;
+        border-color: black;
+    }
 }
 
 #LeftOffAreaContent {
@@ -173,21 +176,23 @@ a.card {
     /* overflow-y: scroll; */
     margin: 0px;
     padding: 0px;
-}
 
-.sliderBarList::-webkit-scrollbar {
-    width: 20px;
-}
-.sliderBarList::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: var(--secondary);
-    border-radius: 20px;
-    left: 10px;
-}
-.sliderBarList::-webkit-scrollbar-thumb {
-    background: var(--tertiary);
-    border-radius: 20px;
-    cursor: grabbing;
+    ::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: var(--secondary);
+        border-radius: 20px;
+        left: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--tertiary);
+        border-radius: 20px;
+        cursor: grabbing;
+    }
 }
 
 .sliderBarList > li {
@@ -218,13 +223,16 @@ a.card {
     background-color: var(--tertiary);
 }
 
-#cardHeaderList > li {
-    margin: 4px;
-    display: inline-block;
-}
+#cardHeaderList {
+    > li {
+        margin: 4px;
+        display: inline-block;
 
-#carHeaderList > li > h4 {
-    margin-left: 8px;
+        > h4 {
+            margin-left: 8px;
+        }
+
+    }
 }
 
 .cardHeaderDropdownButton {
@@ -242,87 +250,89 @@ a.card {
 }
 
 input[type=range] {
+
     appearance: none;
     width: 100%; /* Specific width is required for Firefox. */
     background: transparent; /* Otherwise white in Chrome */
-}
 
-input[type=range]:focus {
-    outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-}
+    :focus {
+        outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+    }
 
-input[type=range]::-webkit-slider-thumb {
-    appearance: none;
-    border: 1px solid #000000;
-    height: 32px;
-    width: 16px;
-    border-radius: 10px;
-    margin-top: -12px;
-    background: var(--locked-color);
-    cursor: pointer;
-}
+    ::-webkit-slider-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
 
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 8px;
-    margin-top: -35px;
-    cursor: pointer;
-    background: var(--background-color);
-    border-radius: 4px;
-    border: 0.2px solid #010101;
-}
+    ::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
 
-input[type=range]::-moz-range-thumb {
-    appearance: none;
-    border: 1px solid #000000;
-    height: 32px;
-    width: 16px;
-    border-radius: 10px;
-    margin-top: -12px;
-    background: var(--locked-color);
-    cursor: pointer;
-}
-  
-input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 8px;
-    margin-top: -35px;
-    cursor: pointer;
-    background: var(--background-color);
-    border-radius: 4px;
-    border: 0.2px solid #010101;
-}
+    ::-moz-range-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
 
-input[type=range]::-ms-thumb {
-    appearance: none;
-    border: 1px solid #000000;
-    height: 32px;
-    width: 16px;
-    border-radius: 10px;
-    margin-top: -12px;
-    background: var(--locked-color);
-    cursor: pointer;
-}
-  
-input[type=range]::-ms-track {
-    width: 100%;
-    height: 8px;
-    margin-top: -35px;
-    cursor: pointer;
-    background: var(--background-color);
-    border-radius: 4px;
-    border: 0.2px solid #010101;
-}
+    ::-moz-range-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
 
-input[type=range]::-ms-fill-lower {
-    background: #2a6495;
-    border: 0.2px solid #010101;
-    border-radius: 2.6px;
-}
-input[type=range]::-ms-fill-upper {
-    background: #3071a9;
-    border: 0.2px solid #010101;
-    border-radius: 2.6px;
+    ::-ms-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
+
+    ::-ms-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
+
+    ::-ms-fill-lower {
+        background: #2a6495;
+        border: 0.2px solid #010101;
+        border-radius: 2.6px;
+    }
+
+    ::-ms-fill-upper {
+        background: #3071a9;
+        border: 0.2px solid #010101;
+        border-radius: 2.6px;
+    }
 }
 
 /* --------------------------- */
@@ -334,73 +344,8 @@ input[type=range]::-ms-fill-upper {
     top: 10px;
     z-index: 4;
     font-size: 12px;
-}
 
-.save__controls button {
-    margin-left: 5px;
-}
-
-.react-flow__node.enzymeBuild {
-    width: 150px;
-    height: 100px;
-    /* transform: skew(20deg); */
-    background: var(--primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* fontweight: 700;  */
-}
-
-.react-flow__node.ReversibleEnzyme {
-    font-size: 12px;
-    width: 250px;
-    height: 100px;
-    background: var(--primary);
-    border: 1px solid #555;
-    border-radius: 10px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.react-flow__node.Molecule {
-    border-radius: 40%;
-    width: 60px;
-    height: 40px;
-    background: var(--molecule-primary-color);
-    border: 1px solid #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 9px;
-}
-
-.Molecule.locked {
-    border: 5px solid var(--locked-color);
-}
-
-.react-flow__node.MoleculeBuild {
-    border-radius: 40%;
-    width: 60px;
-    height: 40px;
-    background: var(--secondary);
-    display: flex;
-    font-size: 9px;
-}
-
-.react-flow__node.Molecule .react-flow__handle {
-    opacity: 0;
-}
-
-.react-flow__node.ReversibleEnzyme .react-flow__handle {
-    opacity: 0;
-}
-
-.react-flow__node.MoleculeBuild .react-flow__handle {
-    opacity: 50;
-}
-
-.react-flow__node.enzymeBuild .react-flow__handle {
-    opacity: 50;
+    button {
+        margin-left: 5px;
+    }
 }

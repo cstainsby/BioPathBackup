@@ -126,22 +126,9 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-
-        // if (pathwayID) { // if editing existing dont need new title
-        //     console.log("updating pathway: ", pathwayID)
-        //     // const pathwayObj = generatePathwayJson(nodes, edges, "updated");
-        //     // if (pathwayObj) {
-        //     //     postPathway(pathwayObj)
-        //     // }
-        //     deletePathway(pathwayID)
-        // }
-        // else {
-        //     setPostShown(!isPostShown);
-        // }
         setPostShown(!isPostShown)
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            console.log(pathwayObj, "pobj")
             if (pathwayObj) {
                 postPathway(pathwayObj)
             }
@@ -150,34 +137,25 @@ const SaveRestore = (props) => {
 
     const onUpdate = useCallback(() => {
 
-        if (pathwayID) { // if editing existing dont need new title
+        if (pathwayID) { // checks an id exists before trying to delete a pathway
             console.log("updating pathway: ", pathwayID)
-            // const pathwayObj = generatePathwayJson(nodes, edges, "updated");
-            // if (pathwayObj) {
-            //     postPathway(pathwayObj)
-            // }
-            deletePathway(pathwayID)
             try {
-                const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-                console.log(pathwayObj, "pobj")
+                var pathwayObj = null;
+                if (nodes.length > 0) { // checking if deleting a pathway
+                    pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
+                }
                 if (pathwayObj) {
                     postPathway(pathwayObj)
                 }
+                else { // if no nodes they are deleting the pathway
+                    const alertMessage = "deleting Pathway: " + location.state.title;
+                    alert(alertMessage)
+                }
                 deletePathway(pathwayID)
-              }
-              catch(err) {
-                alert(err)
-              }
+            }
+            catch(err) {
+            }
         }
-        // else {
-        //     setPostShown(!isPostShown);
-        // }
-        // if (isPostShown) {
-        //     const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-        //     if (pathwayObj) {
-        //         postPathway(pathwayObj)
-        //     }
-        // }
     });
 
     const onAddMolecule = useCallback((nodeData) => {
@@ -228,7 +206,7 @@ const SaveRestore = (props) => {
         localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
-        setPathwayID(null); // no pathway id if current Build is cleared
+        // setPathwayID(null); // no pathway id if current Build is cleared
     }, [setNodes, setViewport])
 
 

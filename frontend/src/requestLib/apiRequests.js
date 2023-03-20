@@ -158,7 +158,6 @@ async function deletePathway(pathwayID) {
             const error = (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        alert("Pathway successfully deleted to database");
         return responseJSON;
     } catch(error) {
         alert("Pathway not deleted");

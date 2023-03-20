@@ -134,47 +134,51 @@ const SaveRestore = (props) => {
     });
 
     const onAddMolecule = useCallback((nodeData) => {
-        const newNode = {
-        id: getNodeId(),
-        className: 'molecule build',
-        data: { 
-            label: nodeData.abbreviation,
-            molecule_name: nodeData.name, 
-            molecule_id: nodeData.id,
-            type: "molecule" },
-        type: "molecule",
-        position: {
-            x: 270 + (Math.random() * 300),
-            y: (200 * numEnzymes),
-        },
-        };
-        setNodes((nds) => nds.concat(newNode));
+        if (nodeData) {
+            const newNode = {
+                id: getNodeId(),
+                className: 'molecule build',
+                data: {
+                    label: nodeData.abbreviation,
+                    molecule_name: nodeData.name, 
+                    molecule_id: nodeData.id,
+                    type: "molecule" },
+                type: "molecule",
+                position: {
+                    x: 270 + (Math.random() * 300),
+                    y: (200 * numEnzymes),
+                },
+            };
+            setNodes((nds) => nds.concat(newNode));
+        }
     }, [setNodes]);
 
     const onAddEnzyme = useCallback((nodeData) => {
-        numEnzymes += 1; // used for moving node generation down y axis
-        const newNode = {
-            id: getNodeId(),
-            className: 'enzyme build',
-            data: {
-                label: nodeData.name, 
-                abbreviation: nodeData.abbreviation,
-                enzyme_id: nodeData.id,
+        if (nodeData) {
+            numEnzymes += 1; // used for moving node generation down y axis
+            const newNode = {
+                id: getNodeId(),
+                className: 'enzyme build',
+                data: {
+                    label: nodeData.name, 
+                    abbreviation: nodeData.abbreviation,
+                    enzyme_id: nodeData.id,
+                    type: "enzyme",
+                    reversible: nodeData.reversible,
+                    substrates: nodeData.substrates, 
+                    products: nodeData.products,
+                    cofactors: nodeData.cofactors,
+                    image: nodeData.link
+                },
                 type: "enzyme",
-                reversible: nodeData.reversible,
-                substrates: nodeData.substrates, 
-                products: nodeData.products,
-                cofactors: nodeData.cofactors,
-                image: nodeData.link
-            },
-            type: "enzyme",
-            position: {
-                x: 800,
-                y: (200 * numEnzymes)
-            },
-        };
-        console.log(newNode.data.cofactors, "newNode")
-        setNodes((nds) => nds.concat(newNode));
+                position: {
+                    x: 800,
+                    y: (200 * numEnzymes)
+                },
+            };
+            console.log(newNode.data.cofactors, "newNode")
+            setNodes((nds) => nds.concat(newNode));
+        }
     }, [setNodes]);
 
     const onClear = useCallback(() => {

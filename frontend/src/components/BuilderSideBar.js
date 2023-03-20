@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 
 import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
 
-import './css/BuilderSideBar.css'
+import '../scss/BuilderSideBar.scss'
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);

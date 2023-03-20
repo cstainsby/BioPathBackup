@@ -1,6 +1,8 @@
+@import 'index.scss';
+
 .react-flow__node {
 
-    .enzyme {
+    &.enzyme {
         font-size: 12px;
         width: 250px;
         height: 100px;
@@ -12,12 +14,12 @@
         justify-content: center;
         align-items: center;
 
-        .react-flow__handle {
+        &.react-flow__handle {
             opacity: 0;
         }
     }
 
-    .molecule {
+    &.molecule {
         border-radius: 40%;
         width: 60px;
         height: 40px;
@@ -28,17 +30,17 @@
         align-items: center;
         font-size: 9px;
 
-        .react-flow__handle {
+        &.react-flow__handle {
             opacity: 0;
         }
 
-        .locked {
-            border: 5px solid $red;
+        &.locked {
+            border: 5px solid $locked;
         }
     }
 
-    .build {
-        .react-flow__handle {
+    &.build {
+        &.react-flow__handle {
             opacity: 50;
         }
     }

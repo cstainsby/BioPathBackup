@@ -10,16 +10,17 @@ import ReactFlow, {
 import { generatePathwayJson } from './utils/pathwayBuilderUtils.js';
 import { postPathway } from '../requestLib/apiRequests.js';
 
-import 'reactflow/dist/style.css';
-import './../scss/CustomNodes.scss';
 
-import enzyme from './customNodes/BuilderEnzyme.js';
+import './../scss/CustomNodes.scss';
+import 'reactflow/dist/style.css';
+
+import { BuilderEnzyme } from './customNodes/BuilderEnzyme.js';
+import { BuilderMolecule } from './customNodes/BuilderMolecule.js';
 import BuilderSideBar from './BuilderSideBar.js';
-import molecule from './customNodes/BuilderMolecule.js';
 
 const nodeTypes = {
-    enzyme: enzyme,
-    molecule: molecule
+    enzyme: BuilderEnzyme,
+    molecule: BuilderMolecule
 };
 const flowKey = 'example-flow';
 

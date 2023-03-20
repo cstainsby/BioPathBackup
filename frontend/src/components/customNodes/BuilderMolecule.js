@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { Handle } from 'reactflow';
 
-export default memo(({ data, isConnectable }) => {
+const BuilderMolecule = memo(({ data, isConnectable }) => {
   return (
     <>
       <Handle
@@ -25,3 +25,5 @@ export default memo(({ data, isConnectable }) => {
     </>
   );
 });
+
+export { BuilderMolecule }

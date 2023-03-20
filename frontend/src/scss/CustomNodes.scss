@@ -2,11 +2,11 @@
 
 .react-flow__node {
 
-    &.enzyme {
+    &-enzyme {
         font-size: 12px;
         width: 250px;
         height: 100px;
-        background: var(--primary);
+        background: $locked;
         border: 1px solid #555;
         border-radius: 10px;
         text-align: center;
@@ -19,11 +19,11 @@
         }
     }
 
-    &.molecule {
+    &-molecule {
         border-radius: 40%;
         width: 60px;
         height: 40px;
-        background: var(--molecule-primary-color);
+        background: #AAAA00;
         border: 1px solid #000000;
         display: flex;
         justify-content: center;
@@ -33,10 +33,6 @@
         .react-flow__handle {
             opacity: 0;
         }
-
-        .locked {
-            border: 5px solid $locked;
-        }
     }
 
     &.build {
@@ -44,4 +40,8 @@
             opacity: 50;
         }
     }
+}
+
+.locked {
+    border: 5px solid $locked;
 }

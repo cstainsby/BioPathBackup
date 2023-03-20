@@ -11,7 +11,7 @@ import pyruvate_kinase from '../../images/glycolysis/pyruvate kinase.png';
 import triose_phosphate_isomerase from '../../images/glycolysis/triose phosphate isomerase.png';
 import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
-export default memo(({ data, isConnectable }) => {
+const BuilderEnzyme = memo(({ data, isConnectable }) => {
   let image = null;
   if (data.image === "aldolase") {
     image = aldolase;
@@ -66,3 +66,5 @@ export default memo(({ data, isConnectable }) => {
     </>
   );
 });
+
+export { BuilderEnzyme }

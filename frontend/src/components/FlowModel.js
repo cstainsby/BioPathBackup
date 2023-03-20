@@ -11,11 +11,11 @@ import ReactFlow, {
 import SliderSideBar  from "./SliderSideBar";
 import { generateNodes, generateEdges } from './utils/pathwayComponentUtils';
 
-import 'reactflow/dist/style.css';
 import './../scss/CustomNodes.scss';
+import 'reactflow/dist/style.css';
 
-import Enzyme from'./customNodes/Enzyme.js'
-import Molecule from './customNodes/Molecule.js'
+import {Enzyme} from'./customNodes/Enzyme.js'
+import {Molecule} from './customNodes/Molecule.js'
 const nodeTypes = {
     enzyme: Enzyme,
     molecule: Molecule
@@ -100,15 +100,15 @@ const FlowModel = (props) => {
      */
     const onNodeClick = (e, node) => {
         if (node.type === "molecule") {
-            let clicked_id = node.data.source_id;
+            let clicked_id = node.data.molecule_id;
             setNodes(nodes.map((n) => {
-                if (n.data.source_id === clicked_id) {
+                if (n.data.molecule_id === clicked_id) {
                     if (n.data.locked) {
-                        props.concentrationManager.unlock(n.data.source_id);
+                        props.concentrationManager.unlock(n.data.molecule_id);
                         n.data.locked = false;
                         n.className = "molecule"
                     } else {
-                        props.concentrationManager.lock(n.data.source_id);
+                        props.concentrationManager.lock(n.data.molecule_id);
                         n.data.locked = true;
                         n.className = "molecule locked"
                     }

@@ -94,6 +94,7 @@ export function generateEdges(pathway) {
     @return lists of nodes to be used by ReactFlow
 */
 export function generateNodes(pathway) {
+    console.log(pathway);
     if(typeof pathway === "undefined" || typeof pathway.enzyme_instances === "undefined") { 
         console.log("generateNodes: Invalid pathway passed");
         return;
@@ -101,12 +102,12 @@ export function generateNodes(pathway) {
     let nodes = []
 
     for (const enzyme of pathway.enzyme_instances) {
-        console.log(enzyme, "emzyme")
+        // console.log(enzyme, "emzyme")
         // Reactflow node
         if (enzyme.reversible) { // new for multi handlers
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
-                className: 'ReversibleEnzyme', 
+                className: 'enzyme', 
                 data: {
                     abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 
@@ -118,14 +119,14 @@ export function generateNodes(pathway) {
                     enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
-                type: "reversibleEnzyme",
+                type: "enzyme",
                 position: {x: enzyme.x, y: enzyme.y}
             });   
         }
         else {
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
-                className: 'ReversibleEnzyme', 
+                className: 'enzyme', 
                 data: {
                     abbreviation: enzyme.abbreviation, // testing maybe later
                     label: enzyme.name, 
@@ -137,7 +138,7 @@ export function generateNodes(pathway) {
                     enzyme_id: enzyme.enzyme, // testing maybe delete later
                     image: enzyme.link
                 },
-                type: "reversibleEnzyme",
+                type: "enzyme",
                 position: {x: enzyme.x, y: enzyme.y}
             });
         }
@@ -145,10 +146,10 @@ export function generateNodes(pathway) {
     
     for (const molecule of pathway.molecule_instances) {
         // Reactflow node
-        console.log(molecule, "molecule")
+        // console.log(molecule, "molecule")
         nodes.push({
             id: String(molecule.id) + "_molecule", 
-            className: 'Molecule', 
+            className: 'molecule',
             data: {
                 label: molecule.abbreviation,
                 type: "molecule",

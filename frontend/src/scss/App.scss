@@ -1,0 +1,353 @@
+@import 'index.scss';
+
+.App {
+    text-align: center;
+    height: 100vh;
+}
+
+/* ------------------------- */
+/* generalized css */
+/* ------------------------- */
+.fontFamily {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+/* element classes */
+ul {
+    list-style-type: none;
+}
+
+a {
+    .card {
+        margin: 8px;
+        background-color: var(--tertiary);
+    }
+}
+
+.horizontalUl {
+    display: inline-block;
+}
+
+.pushDown {
+    padding-top: 15px;
+}
+
+.growButton { 
+    transition: all .2s ease-in; 
+
+    &:hover { 
+        transform: scale(1.05); 
+    }
+}
+
+.growCard { 
+    transition: all .2s ease-in; 
+
+    &:hover { 
+        transform: scale(1.03); 
+    }
+}
+
+.ModelAreaChild {
+    position: absolute;
+}
+
+.ReactFlow {
+    z-index: 1;
+}
+
+.informationalSection {
+    margin-bottom: 32px;
+}
+
+.informationalHeaderSection {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+.informationalHeaderSection > h4 {
+    margin-left: 32px;
+    text-align: start;
+}
+
+.cardNavLink {
+    height: fit-content;
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+        color: black;
+        border-color: black;
+    }
+}
+
+#LeftOffAreaContent {
+    margin-left: 90px;
+}
+
+/* for the sign in button when a user is signed in */
+#signedInCircleButton {
+    height: 53px;
+    width: 53px;
+    background-color: #bbb;
+    border-radius: 50%;
+    padding-top: 2px; /* to center the text inside div*/
+    font-size: x-large;
+}
+
+/* the sign in modal */
+#signInModal {
+    align-content: start;
+}
+/* signInFormSwapButton for the sign in form */
+#signInFormSwapButton {
+    margin-left: 32px;
+}
+
+/* Root Layout */
+#RootLayout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--background-color);
+}
+
+/* Pathway Editor Page */
+#PathwayEditorPage {
+    height: 100%;
+    flex-grow: 1;
+}
+
+/* ------------------------- */
+/* Splash Page Specific */
+/* ------------------------- */
+
+#StarterCard {
+    min-width: 200px;
+    max-width: 400px;
+    height: 200px;
+    margin: 8px;
+}
+
+/* CSS for model area */
+#ModelAreaCol {
+    height: inherit;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.ModelArea {
+    height: inherit;
+    width: inherit;
+    display: flex;
+    background-color: var(--background-color);
+    position: relative;
+}
+
+#PathwayTitleCard {
+    right: 12px;
+    top: 12px;
+    z-index: 99;
+    width: fit-content;
+    height: 150px;
+}
+
+#PathwaySliderBox {
+    left: 12px;
+    top: 12px;
+    z-index: 98;
+    display: flex;
+    height: auto;
+    width: 250px;
+    background-color: var(--element-background-color);
+}
+
+/* ------------------------------------------------------- */
+/* Slider Siderbar Compnent css */
+/* ------------------------------------------------------- */
+.sliderBar {
+    margin: 8px;
+    margin-top: 4px;
+    padding: 8px;
+    height: fit-content;
+}
+
+.sliderBarList {
+    list-style-type: none;
+    height: 400px;
+    /* overflow-y: scroll; */
+    margin: 0px;
+    padding: 0px;
+
+    &::-webkit-scrollbar {
+        width: 20px;
+    }
+
+    &::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: var(--secondary);
+        border-radius: 20px;
+        left: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--tertiary);
+        border-radius: 20px;
+        cursor: grabbing;
+    }
+}
+
+.sliderBarList > li {
+    margin: 8px;
+}
+
+#sliderComponentTitle {
+    padding: 8px;
+    margin: 0px;
+}
+
+#sliderCard {
+    background-color: var(--tertiary);
+}
+
+/* ------------------------------------------------------- */
+/* Slider css */
+/* ------------------------------------------------------- */
+.Slider {
+    height: 150px;
+    border: 4px solid red;
+}
+
+#cardHeaderList {
+    display: flex;
+    list-style-type: none;
+    padding: 0px;
+    background-color: var(--tertiary);
+}
+
+#cardHeaderList {
+    & > li {
+        margin: 4px;
+        display: inline-block;
+
+        & > h4 {
+            margin-left: 8px;
+        }
+
+    }
+}
+
+.cardHeaderDropdownButton {
+    border: none;
+    background-color: inherit;
+}
+
+#cardHeaderCaret {
+    max-width: 12px;
+    height: auto;
+}
+
+#concentrationSlider {
+    box-sizing: border-box;
+}
+
+input[type=range] {
+
+    appearance: none;
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+
+    &:focus {
+        outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+    }
+
+    &::-webkit-slider-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
+
+    &::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
+
+    &::-moz-range-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
+
+    &::-moz-range-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
+
+    &::-ms-thumb {
+        appearance: none;
+        border: 1px solid #000000;
+        height: 32px;
+        width: 16px;
+        border-radius: 10px;
+        margin-top: -12px;
+        background: var(--locked-color);
+        cursor: pointer;
+    }
+
+    &::-ms-track {
+        width: 100%;
+        height: 8px;
+        margin-top: -35px;
+        cursor: pointer;
+        background: var(--background-color);
+        border-radius: 4px;
+        border: 0.2px solid #010101;
+    }
+
+    &::-ms-fill-lower {
+        background: #2a6495;
+        border: 0.2px solid #010101;
+        border-radius: 2.6px;
+    }
+
+    &::-ms-fill-upper {
+        background: #3071a9;
+        border: 0.2px solid #010101;
+        border-radius: 2.6px;
+    }
+}
+
+/* --------------------------- */
+/* Restore */
+/* --------------------------- */
+.save__controls {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 4;
+    font-size: 12px;
+
+    button {
+        margin-left: 5px;
+    }
+}

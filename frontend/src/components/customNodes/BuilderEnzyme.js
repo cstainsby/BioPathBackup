@@ -25,3 +25,5 @@ export default memo(({ data, isConnectable }) => {
     </>
   );
 });
+
+export { BuilderEnzyme }

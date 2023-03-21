@@ -68,14 +68,14 @@ const SplashPage = () => {
             <div className="row">
               {splashPageLoaderData.recentWork.map((pathway) => {
                 return (
-                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-11 card">
+                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-10 card">
                     <ul>
                       <li><h5>{pathway.name}</h5></li>
                       <li><small className="text-muted">Created By {pathway.author}</small></li>
                     </ul>
                   </Link>
                   )
-              })}   
+              })}
             </div>
           </div>
         </div>

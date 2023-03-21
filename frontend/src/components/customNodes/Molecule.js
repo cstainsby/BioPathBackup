@@ -4,7 +4,7 @@ import { Handle } from 'reactflow';
 const MOLECULE_WIDTH = 60;
 const HANDLE_OFFSET = 15;
 
-export default memo(({ data, isConnectable }) => {
+const Molecule = memo(({ data, isConnectable }) => {
     let MOLECULE_CENTER = MOLECULE_WIDTH / 2;
     return (<>
         <Handle
@@ -43,3 +43,5 @@ export default memo(({ data, isConnectable }) => {
         />
     </>);
 });
+
+export { Molecule }

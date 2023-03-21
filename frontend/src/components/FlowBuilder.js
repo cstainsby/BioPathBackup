@@ -7,8 +7,8 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
 } from 'reactflow';
-import { generatePathwayJson } from './utils/pathwayBuilderUtils.js';
-import { postPathway } from '../requestLib/apiRequests.js';
+import { generatePathwayJson } from './utils/pathwayBuilderUtils';
+import { postPathway, deletePathway } from '../requestLib/apiRequests';
 
 
 import './../scss/CustomNodes.scss';
@@ -34,6 +34,7 @@ let numEnzymes = 0;
 const SaveRestore = (props) => {
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
+    const [pathwayID, setPathwayID] = useState(null); // used if editing existing
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
@@ -44,6 +45,7 @@ const SaveRestore = (props) => {
 
     if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
+        setPathwayID(location.state.id);
         for (let node of location.state.initialNodes) {
             node.className = node.className + " build"
             if (node.className === "enzyme build") {
@@ -80,7 +82,6 @@ const SaveRestore = (props) => {
             });
             enzyme = updatedEnzyme;
         }
-        console.log(location.state.initialNodes, "test")
         setNodes(location.state.initialNodes);
         setEdges(location.state.initialEdges);
 
@@ -97,8 +98,8 @@ const SaveRestore = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, "ben")
-    }, [nodes]); // monitor pathwayID for changes
+        console.log(nodes, pathwayID, "ben")
+    }, [nodes, pathwayID]); // monitor pathwayID for changes
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -123,13 +124,35 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-        setPostShown(!isPostShown);
-
+        setPostShown(!isPostShown)
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            // if (pathwayObj) {
+            if (pathwayObj) {
                 postPathway(pathwayObj)
-            // }
+            }
+        }
+    });
+
+    const onUpdate = useCallback(() => {
+
+        if (pathwayID) { // checks an id exists before trying to delete a pathway
+            console.log("updating pathway: ", pathwayID)
+            try {
+                var pathwayObj = null;
+                if (nodes.length > 0) { // checking if deleting a pathway
+                    pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
+                }
+                if (pathwayObj) {
+                    postPathway(pathwayObj)
+                }
+                else { // if no nodes they are deleting the pathway
+                    const alertMessage = "deleting Pathway: " + location.state.title;
+                    alert(alertMessage)
+                }
+                deletePathway(pathwayID)
+            }
+            catch(err) {
+            }
         }
     });
 
@@ -185,6 +208,7 @@ const SaveRestore = (props) => {
         localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
+        // setPathwayID(null); // no pathway id if current Build is cleared
     }, [setNodes, setViewport])
 
 
@@ -223,6 +247,7 @@ const SaveRestore = (props) => {
                 <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
             
             {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+            <button class="btn btn-success" onClick={onUpdate}>update</button>
 
             <button class="btn btn-danger" onClick={onClear}>clear flow</button>
         </div>

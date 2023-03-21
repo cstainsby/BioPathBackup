@@ -72,7 +72,7 @@ async function getMolecules() {
  * @param {string} endpoint where to send the data
  * @returns backend response object
  */
-async function postBackendData(obj, endpoint) {
+async function postBackendData(obj, endpoint, successMessage, failMessage) {
     const methodType = "POST";
     const requestUrl = dataSourceAddressHeader + endpoint;
 
@@ -92,25 +92,38 @@ async function postBackendData(obj, endpoint) {
             const error = (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        alert("DB updated successfully");
+        alert(successMessage);
         return responseJSON;
     } catch(error) {
-        alert("Pathway had incorrect internals, try again");
+        alert(failMessage);
         console.log(requestUrl, error, "testststs");
         return error;
     }
 }
 
 async function postPathway(pathwayObj) {
-    // return postBackendData(pathwayObj, "pathways/");
-    const methodType = "POST";
-    const requestUrl = dataSourceAddressHeader + "pathways/";
+    const successMessage = "DB updated successfully"
+    const failMessage = "Pathway had incorrect internals, try again"
+    return postBackendData(pathwayObj, "pathways/", successMessage, failMessage);
+}
+
+async function postMolecule(moleculeObj) {
+    return postBackendData(moleculeObj, "molecules/");
+}
+
+async function postEnzyme(enzymeObj) {
+    return postBackendData(enzymeObj, "enzymes/");
+}
+
+async function deletePathway(pathwayID) {
+    const methodType = "DELETE";
+    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID;
 
     try {
         const requestOptions = {
             method: methodType,
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(pathwayObj)
+            body: JSON.stringify(pathwayID)
         };
 
         const response = await fetch(requestUrl, requestOptions);
@@ -122,20 +135,11 @@ async function postPathway(pathwayObj) {
             const error = (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        alert("Pathway successfully added to database");
         return responseJSON;
     } catch(error) {
-        alert("Pathway had incorrect internals, try again");
+        alert("Pathway not deleted");
         return error;
     }
 }
 
-async function postMolecule(moleculeObj) {
-    return postBackendData(moleculeObj, "molecules/");
-}
-
-async function postEnzyme(enzymeObj) {
-    return postBackendData(enzymeObj, "enzymes/");
-}
-
-export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme }
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway }

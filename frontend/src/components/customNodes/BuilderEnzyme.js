@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import { Handle } from 'reactflow';
 
-export default memo(({ data, isConnectable }) => {
-  
+const BuilderEnzyme = memo(({ data, isConnectable }) => {
   return (
     <>
       <Handle

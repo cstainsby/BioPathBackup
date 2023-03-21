@@ -18,7 +18,6 @@ TODO get the whole backend production ready. Not sure what this entails but
 
 from pathlib import Path
 import os
-import sys
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -155,24 +154,17 @@ CORS_ALLOWED_ORIGINS = [
 # https://www.django-rest-framework.org/api-guide/authentication/#setting-the-authentication-scheme
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
 
 # configure the JWT's DEFAULT_AUTHENTICATION_CLASSES
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 # Setup Session Engine Info
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'myapp_session_id'
-
-
-
-# This is for image storage
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = "/media/"

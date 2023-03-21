@@ -7,6 +7,7 @@ import { getPathways } from "../apiRequests";
 export async function splashPageLoader() {
   let recentWork = await getPathways();
 
+  // TODO can we just copy this
   let userFeed = await getPathways();
   
   return {

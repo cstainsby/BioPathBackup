@@ -9,7 +9,7 @@ import { getAccessToken } from "../localStoreAccess/jwtAccess";
 
 // for this file, /api/ is attached to get at the data behind that 
 // portion of the backend
-let dataSourceAddressHeader = getEndpointHeader() + "api/"
+let dataSourceAddressHeader = getEndpointHeader() + "api/";
 
 /**
  * Gets data from the backend at a specified endpoint
@@ -19,14 +19,19 @@ let dataSourceAddressHeader = getEndpointHeader() + "api/"
 async function getBackendData(endpoint) {
     const requestUrl = dataSourceAddressHeader + endpoint;
 
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
     try {
-        const response = await fetch(requestUrl, {
-            headers: {
-                "Content-Type": "application/json",
-                // TODO: CHANGE HARD-CODED AUTH
-                'Authorization': 'Basic ' + btoa("root:root")
-            }
-        });
+        const response = await fetch(requestUrl, {headers: headers});
         const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
         const responseJSON = isResponseJSON && await response.json();
         
@@ -50,7 +55,7 @@ async function getBackendData(endpoint) {
  * @returns response object from backend
  */
 async function getPathwayById(id) {
-    return getBackendData("pathways/" + id);
+    return getBackendData("pathways/" + id + "/");
 }
 
 async function getPathways() {
@@ -76,10 +81,23 @@ async function postBackendData(obj, endpoint) {
     const methodType = "POST";
     const requestUrl = dataSourceAddressHeader + endpoint;
 
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        alert("You must be signed in to save anything you build.");
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+    console.log("***Headers:" + headers.Authorization);
+
     try {
         const requestOptions = {
             method: methodType,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(obj)
         };
 
@@ -106,10 +124,22 @@ async function postPathway(pathwayObj) {
     const methodType = "POST";
     const requestUrl = dataSourceAddressHeader + "pathways/";
 
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        alert("You must be signed in to save anything you build.");
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
     try {
         const requestOptions = {
             method: methodType,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(pathwayObj)
         };
 

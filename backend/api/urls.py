@@ -11,6 +11,7 @@ Note: We purposefully haven't added endpoints to MoleculeInstance/EnzymeInstance
 
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from . import views
 
@@ -21,15 +22,15 @@ router.register(r'groups', views.GroupViewSet)
 router.register(r'enzymes', views.EnzymeViewSet, basename="enzymes")
 router.register(r'molecules', views.MoleculeViewSet, basename="molecules")
 router.register(r'pathways', views.PathwayViewSet, basename="pathways")
-# router.register(r'register/', views.UserRegistrationView.as_view(), basename="register")
+
 
 urlpatterns = [
     path(route='', view=include(router.urls)),
+
+    # session auth (only used by browsable api)
     path(route='api-auth/', view=include('rest_framework.urls', namespace='rest_framework')),
     
-    # routes that are used for authentication
-    # register/ - used for sending json containing new user's data to be stored 
-    # login/    - used for getting a sign in token from backend
+    # jwt auth (used by frontend/end-users)
     path(route='register/', view=views.UserRegistrationView.as_view(), name='register user'),
     path(route='api-token-auth/', view=views.TokenObtainPairView.as_view(), name="get token")
 ]

@@ -9,37 +9,7 @@ from django.test import TestCase
 from rest_framework.exceptions import ErrorDetail
 
 from api import models, serializers
-
-PATHWAY_DATA = {
-    "name": "pathway",
-    "author": -1,
-    "public": True,
-    "molecule_instances": [
-        {
-            "temp_id": 1,
-            "molecule": -1,
-            "x": 0,
-            "y": 0
-        },
-        {
-            "temp_id": 2,
-            "molecule": -1,
-            "x": 0,
-            "y": 0
-        }
-    ],
-    "enzyme_instances": [
-        {
-            "enzyme": -1,
-            "x": 0,
-            "y": 0,
-            "limiting": "False",
-            "substrate_instances": [1],
-            "product_instances": [2],
-            "cofactor_instances": []
-        }
-    ]
-}
+from api.tests import example_data
 
 
 class GroupSerializerTestCase(TestCase):
@@ -160,7 +130,7 @@ class PathwaySerializerTestCase(TestCase):
         self.e = models.Enzyme.objects.get(name="enzyme 1")
     
     def test_create(self):
-        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data = deepcopy(example_data.PATHWAY_DATA)
         pathway_data["author"] = self.author.id
         pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
         pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
@@ -178,7 +148,7 @@ class PathwaySerializerTestCase(TestCase):
         )
 
     def test_create_invalid_author(self):
-        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data = deepcopy(example_data.PATHWAY_DATA)
         pathway_data["author"] = 999
         pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
         pathway_data["molecule_instances"][1]["molecule"] = self.m2.id
@@ -191,7 +161,7 @@ class PathwaySerializerTestCase(TestCase):
         )
         
     def test_create_invalid_subprod(self):
-        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data = deepcopy(example_data.PATHWAY_DATA)
         pathway_data["author"] = self.author.id
         pathway_data["molecule_instances"][0]["molecule"] = self.m2.id # <--| swapped these
         pathway_data["molecule_instances"][1]["molecule"] = self.m1.id # <--|
@@ -213,7 +183,7 @@ class PathwaySerializerTestCase(TestCase):
         wrong_enzyme.substrates.add(self.m1)
         wrong_enzyme.products.add(self.m2)
         wrong_enzyme.cofactors.add(self.m1) # <-- has cofactor
-        pathway_data = deepcopy(PATHWAY_DATA)
+        pathway_data = deepcopy(example_data.PATHWAY_DATA)
         pathway_data["author"] = self.author.id
         pathway_data["molecule_instances"][0]["molecule"] = self.m1.id
         pathway_data["molecule_instances"][1]["molecule"] = self.m2.id

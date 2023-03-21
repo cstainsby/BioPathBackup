@@ -40,7 +40,7 @@ const register = async (username, password) => {
  * @param {string} password
  */
 const login = async (username, password) => {
-  let endpointExtension = "api/api-token-auth/"
+  let endpointExtension = "api/api-token-auth/";
   let requestUrl = dataSourceAddressHeader + endpointExtension;
 
   const data = {
@@ -56,11 +56,20 @@ const login = async (username, password) => {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
+      // .then(data => console.log("accessToken1: " + data.access))
+      // .then(data => localStorage.setItem("access_token", data.access))
       .then(data => {
         return data
       })
       .catch(err => console.error(err));
-      
+  
+  
+  let response = await resData;
+  let accessToken = response.access;
+  console.log("accessToken: " + accessToken + "********");
+  localStorage.setItem("access_token", String(accessToken));
+  console.log("we got here");
+  
   return resData
 } 
 

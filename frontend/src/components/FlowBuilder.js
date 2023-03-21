@@ -180,6 +180,7 @@ const SaveRestore = (props) => {
     }, [setNodes]);
 
     const onClear = useCallback(() => {
+        console.log("why the fuck...");
         localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);

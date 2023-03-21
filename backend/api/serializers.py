@@ -79,7 +79,7 @@ class MoleculeInstanceSerializer(serializers.ModelSerializer):
 
 
 class MoleculeInstanceDetailSerializer(serializers.ModelSerializer):
-    molecule_name = serializers.ReadOnlyField(source="molecule.name")
+    name = serializers.ReadOnlyField(source="molecule.name")
     abbreviation = serializers.ReadOnlyField(source="molecule.abbreviation")
     ball_and_stick_image = serializers.CharField(source="molecule.ball_and_stick_image")
     space_filling_image = serializers.CharField(source="molecule.space_filling_image")
@@ -89,7 +89,19 @@ class MoleculeInstanceDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.MoleculeInstance
-        fields = "__all__"
+        fields = [
+            "id",
+            "name",
+            "abbreviation",
+            "ball_and_stick_image",
+            "space_filling_image",
+            "link",
+            "author",
+            "public",
+            "x",
+            "y",
+            "molecule"
+        ]
 
 
 class EnzymeSerializer(serializers.ModelSerializer):
@@ -121,7 +133,23 @@ class EnzymeInstanceDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = models.EnzymeInstance
-        fields = "__all__"
+        fields = [
+            "id",
+            "name",
+            "abbreviation",
+            "image",
+            "reversible",
+            "link",
+            "author",
+            "public",
+            "x",
+            "y",
+            "enzyme",
+            "limiting",
+            "substrate_instances",
+            "product_instances",
+            "cofactor_instances"
+        ]
 
 
 class PathwayBasicSerializer(serializers.ModelSerializer):

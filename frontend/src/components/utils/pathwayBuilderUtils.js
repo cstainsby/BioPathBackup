@@ -35,8 +35,6 @@ export function generatePathwayJson(nodes, edges, title, author, isPublic) {
         "molecule_instances": moleculeInstances
     }
 
-
-    console.log(pathwayObj, "pobjk")
     if (!(enzymeInstances.length > 0) || !(moleculeInstances.length > 0)) { // dont push an empty pathway
         alert("Pathway must have an enzyme");
         return null;
@@ -91,7 +89,6 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
         for (const substrate of enzyme.data.substrates) {
             var molecule = null;
             var filteredMolecules = molecules.filter(obj => { // filter to molecules of substrate type
-                console.log(obj.data.molecule_id, substrate, "testing subs")
                 return obj.data.molecule_id === substrate;
             });
             if (filteredMolecules.length > 1) { // multiple of the type
@@ -151,7 +148,6 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
                 return null; // stop looping
             }
         }
-        console.log(enzyme.data.cofactors, "testst")
         if (enzyme.data.cofactors.length > 0) { // was getting a not iterable error
             for (const cofactor of enzyme.data.cofactors) {
                 molecule = molecules.find(obj => {

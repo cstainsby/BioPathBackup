@@ -2,17 +2,21 @@ import os
 import subprocess
 from InquirerPy import inquirer
 
+from system_info import get_backend_endpoints, add_backend_endpoint
+
 FRONTEND_ROOT_PATH = os.path.dirname(os.path.abspath(__file__)) + "/frontend"
 
 def run_frontend(frontend_setup_pckg):
     run_type = frontend_setup_pckg["run_type"]
     backend_endpoint = frontend_setup_pckg["backend_run_loc"]
-    
+    print("fronend package:", frontend_setup_pckg)
+    print("backend endpoint", backend_endpoint)
     # for NPM run types
     if run_type == "NPM":
         # if there is a defined backend endpoint 
         #   add it to the envoirnment variables 
         if backend_endpoint:
+            print("environment set")
             os.environ["BACKEND_ENDPOINT"] = backend_endpoint
 
         subprocess.run(["npm", "--prefix", f"{FRONTEND_ROOT_PATH}", "run", "start"])
@@ -63,18 +67,19 @@ def ask_for_frontend_build_settings():
     # if the user is running the frontend with the backend, determine 
     #      where the backend can be accessed from 
     if is_run_alone == "No":
+        all_backend_endpoints = get_backend_endpoints()
         backend_run_loc = inquirer.select(
             message="Where is the backend you will accessing",
-            choices=[
-                "localhost:8000", 
-                "http://6umnppgwmc.us-west-2.awsapprunner.com/",
-                "other"]
+            choices=[endpoint for endpoint in all_backend_endpoints] + ["other"]
         ).execute()
 
         if backend_run_loc == "other":
             backend_run_loc = inquirer.text(
-                message="Enter you chosen endpoint",
+                message="Enter new endpoint:",
             ).execute()
+            # add the new endpoint into system_info.json
+            add_backend_endpoint(backend_run_loc)
+
         frontend_pckg["backend_run_loc"] = backend_run_loc
 
     return frontend_pckg 

@@ -23,8 +23,8 @@ function getEndpointHeader() {
   //  which is defined in the enviornment variables
   //  note that this endpoint could be invalid or MISSING, there should be error handling 
   //  in our requests
-  let definedBackendEndpoint = process.env.BACKEND_ENDPOINT;
-  console.log("defined backend endpoint: " + definedBackendEndpoint);
+  let definedBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
+  // console.log("defined backend endpoint: " + definedBackendEndpoint);
   
   return definedBackendEndpoint;
 }

@@ -43,22 +43,22 @@ config_template = {
     # for storing information related to the backend
     "BACKEND_INFO": {
         "SECRET_KEY": "", 
-        "LOCAL": {
-            "default port": 8000,
-            "defined local endpoint": "http://localhost:8000"
-        },
-        "REMOTE": {
-            "defined endpoint": None
-        }
+        "default port": 8000,
+        "PREF_LOCAL_ENDPOINT": "http://localhost:8000",
+        "PREF_REMOTE_ENDPOINT": None,
+        "ALL_ENDPOINTS": [
+            "http://localhost:8000"
+        ]
     },
+
+    # for storing info related to the frontend 
     "FRONTEND_INFO": {
-        "LOCAL": {
-            "default port": 3000,
-            "defined local endpoint": "http://localhost:3000"
-        },
-        "REMOTE": {
-            "defined endpoint": None
-        }
+        "default port": 3000,
+        "PREF_LOCAL_ENDPOINT": "http://localhost:3000",
+        "PREF_REMOTE_ENDPOINT": None,
+        "ALL_ENDPOINTS": [
+            "http://localhost:3000"
+        ]
     },
     "DATABASE": {
         "LOCAL": {
@@ -141,15 +141,33 @@ def setup_AWS():
     if will_add_creds == "Yes":
         pass
 
+
+def get_backend_endpoints():
+    backend_endpoints = []
+    with open("system_info.json", "r") as f:
+        data = json.load(f)
+        backend_endpoints = data["BACKEND_INFO"]["ALL_ENDPOINTS"]
+    return backend_endpoints
+
+def add_backend_endpoint(endpoint: str):
+    with open("system_info.json", "r") as f:
+        data = json.load(f)
+
+    data["BACKEND_INFO"]["ALL_ENDPOINTS"].append(endpoint)
+
+    with open("system_info.json", 'w') as f:
+        json.dump(data, f, indent=4)
+
+
 if __name__=="__main__":
     # setup_config_json()
 
     if len(sys.argv) == 1: # no additional commands entered, print the usage info
         print_base_usage_info()
+    
+    setup_config_json()
 
     if len(sys.argv) > 1:
-        setup_config_json()
-
         if sys.argv[1] == "AWS":
             setup_AWS()
         elif sys.argv[1] == "backend":

@@ -18,9 +18,9 @@ ul {
 }
 
 a {
-    .card {
+    &.card {
         margin: 8px;
-        background-color: var(--tertiary);
+        background-color: #00FF00;
     }
 }
 

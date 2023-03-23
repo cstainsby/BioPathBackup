@@ -26,6 +26,16 @@ function BuilderSideBar(props) {
             );
             setEnzymes(dropDownItems);
         }
+        if (moleculeResp != null) { // testing for converting to checkboxes
+            const dropDownItems = moleculeResp.map((item, index) => 
+                // <option value={index}>{item["name"]}</option>
+                <div class="column">
+                    <label for={item.Name}>{item.name}</label>
+                    <input type="checkbox" name={item.name} value={item.name}></input>
+                </div>
+            );
+            setMolecules(dropDownItems);
+        }
         if (reload) {
             callGetEnzymes();
             callGetMolecules();
@@ -166,10 +176,13 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)}>
+                            {/* <select class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)}>
                                 <option>Select Substrates</option>
                                 {props.dropDownItems}
-                            </select>
+                            </select> */}
+                            <div class="form-check">
+                                {props.dropDownItems}
+                            </div>
                         </li>
                     </ul>
                 </li>
@@ -178,13 +191,15 @@ const BuildEnzymeModal = (props) => {
                         Products
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
-                        
-                        <li>
+                            <div class="form-check">
+                                {props.dropDownItems}
+                            </div>
+                        {/* <li>
                             <select class="form-select" onChange={(e) => handleNewProduct(e.target.value)}>
                                 <option>Select Products</option>
                                 {props.dropDownItems}
                             </select>
-                        </li>
+                        </li> */}
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
@@ -193,10 +208,19 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select class="form-select" Change={(e) => handleNewCofactor(e.target.value)}>
+                            {/* <select class="form-select" Change={(e) => handleNewCofactor(e.target.value)}>
                                 <option>Select Cofactors</option>
                                 {props.dropDownItems}
-                            </select>
+                            </select> */}
+                            {/* <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></input>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Default checkbox
+                                    </label>
+                            </div> */}
+                            <div class="form-check">
+                                {props.dropDownItems}
+                            </div>
                         </li>
                     </ul>
                 </li>

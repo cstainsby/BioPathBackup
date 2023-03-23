@@ -199,7 +199,6 @@ const SaveRestore = (props) => {
                     y: (200 * numEnzymes)
                 },
             };
-            console.log(newNode.data.cofactors, "newNode")
             setNodes((nds) => nds.concat(newNode));
         }
     }, [setNodes]);

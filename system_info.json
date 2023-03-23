@@ -3,7 +3,7 @@
         "default cred id": null
     },
     "BACKEND_INFO": {
-        "SECRET_KEY": "",
+        "SECRET_KEY": "django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r",
         "default port": 8000,
         "PREF_LOCAL_ENDPOINT": "http://localhost:8000",
         "PREF_REMOTE_ENDPOINT": null,

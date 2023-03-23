@@ -45,6 +45,8 @@ variables:                    # Pass environment variables as key value pairs.
  RDS_PORT: 5432
  RDS_USERNAME: "biopath_admin"
  RDS_PASSWORD: "WsatnbBqr7get9A"
+
+ SECRET_KEY:
 # tags:                         # Pass tags as key value pairs.
 #   project: project-name
 

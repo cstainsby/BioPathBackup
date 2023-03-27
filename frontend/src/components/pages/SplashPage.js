@@ -68,14 +68,14 @@ const SplashPage = () => {
             <div className="row">
               {splashPageLoaderData.recentWork.map((pathway) => {
                 return (
-                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-11 card">
+                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-10 card">
                     <ul>
                       <li><h5>{pathway.name}</h5></li>
                       <li><small className="text-muted">Created By {pathway.author}</small></li>
                     </ul>
                   </Link>
                   )
-              })}   
+              })}
             </div>
           </div>
         </div>
@@ -151,7 +151,7 @@ const StarterCard = (props) => {
         <div id="StarterCard">
           <div className="row g-0">
             <div className="col-md-4">
-              <img src="..." className="img-fluid rounded-start" alt="..."/>
+              <img className="img-fluid rounded-start" alt="..."/>
             </div>
 
             <div className="col-md-8">

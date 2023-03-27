@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',           
     'rest_framework.authtoken', # for generating authentication tokens
-    'corsheaders'
+    'corsheaders',
+    'frontend'
 ]
 
 MIDDLEWARE = [

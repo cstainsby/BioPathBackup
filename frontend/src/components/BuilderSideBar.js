@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from "react";
 
 import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
 
-import './css/BuilderSideBar.css'
+import '../scss/BuilderSideBar.scss'
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
@@ -247,11 +247,11 @@ const BuildMoleculeModal = (props) => {
                 <li>
                     <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>
-                    Molecule Name
+                        Molecule Name
                     <input id="mtext1" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
                     </label>
                     <label>
-                    Molecule Abbreviation
+                        Molecule Abbreviation
                     <input id="mtext2" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
                 </li>

@@ -8,19 +8,20 @@ import ReactFlow, {
     useReactFlow,
 } from 'reactflow';
 import { generatePathwayJson } from './utils/pathwayBuilderUtils';
-import { postPathway } from '../requestLib/apiRequests';
+import { postPathway, deletePathway } from '../requestLib/apiRequests';
 
+
+import './../scss/CustomNodes.scss';
 import 'reactflow/dist/style.css';
 
-import BuilderEnzyme from './customNodes/BuilderEnzyme';
-import BuilderSideBar from './BuilderSideBar';
-import BuilderMolecule from './customNodes/BuilderMolecule';
+import { BuilderEnzyme } from './customNodes/BuilderEnzyme.js';
+import { BuilderMolecule } from './customNodes/BuilderMolecule.js';
+import BuilderSideBar from './BuilderSideBar.js';
 
 const nodeTypes = {
     enzyme: BuilderEnzyme,
     molecule: BuilderMolecule
 };
-
 const flowKey = 'example-flow';
 
 const getNodeId = () => `${+new Date()}`;
@@ -33,6 +34,7 @@ let numEnzymes = 0;
 const SaveRestore = (props) => {
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
+    const [pathwayID, setPathwayID] = useState(null); // used if editing existing
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
@@ -43,13 +45,11 @@ const SaveRestore = (props) => {
 
     if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
+        setPathwayID(location.state.id);
         for (let node of location.state.initialNodes) {
-            if (node.className === "Molecule") {
-                node.className = "MoleculeBuild"
-            }
-            else if (node.className === "enzyme") {
+            node.className = node.className + " build"
+            if (node.className === "enzyme build") {
                 // needs to be else if because will enter once changed to MoleculeBuild
-                node.className = "enzymeBuild"
                 enzymeNodes.push(node)
             }
         }
@@ -82,7 +82,6 @@ const SaveRestore = (props) => {
             });
             enzyme = updatedEnzyme;
         }
-        console.log(location.state.initialNodes, "test")
         setNodes(location.state.initialNodes);
         setEdges(location.state.initialEdges);
 
@@ -99,8 +98,8 @@ const SaveRestore = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, "ben")
-    }, [nodes]); // monitor pathwayID for changes
+        console.log(nodes, pathwayID, "ben")
+    }, [nodes, pathwayID]); // monitor pathwayID for changes
 
     const onSave = useCallback(() => {
         if (rfInstance) {
@@ -125,58 +124,84 @@ const SaveRestore = (props) => {
     }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
-        setPostShown(!isPostShown);
-
+        setPostShown(!isPostShown)
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
-            // if (pathwayObj) {
+            if (pathwayObj) {
                 postPathway(pathwayObj)
-            // }
+            }
+        }
+    });
+
+    const onUpdate = useCallback(() => {
+
+        if (pathwayID) { // checks an id exists before trying to delete a pathway
+            console.log("updating pathway: ", pathwayID)
+            try {
+                var pathwayObj = null;
+                if (nodes.length > 0) { // checking if deleting a pathway
+                    pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
+                }
+                if (pathwayObj) {
+                    postPathway(pathwayObj)
+                }
+                else { // if no nodes they are deleting the pathway
+                    const alertMessage = "deleting Pathway: " + location.state.title;
+                    alert(alertMessage)
+                }
+                deletePathway(pathwayID)
+            }
+            catch(err) {
+            }
         }
     });
 
     const onAddMolecule = useCallback((nodeData) => {
-        const newNode = {
-        id: getNodeId(),
-        className: 'MoleculeBuild',
-        data: { 
-            label: nodeData.abbreviation,
-            molecule_name: nodeData.name, 
-            molecule_id: nodeData.id,
-            type: "molecule" },
-        type: "molecule",
-        position: {
-            x: 270 + (Math.random() * 300),
-            y: (200 * numEnzymes),
-        },
-        };
-        setNodes((nds) => nds.concat(newNode));
+        if (nodeData) {
+            const newNode = {
+                id: getNodeId(),
+                className: 'molecule build',
+                data: {
+                    label: nodeData.abbreviation,
+                    molecule_name: nodeData.name, 
+                    molecule_id: nodeData.id,
+                    type: "molecule" },
+                type: "molecule",
+                position: {
+                    x: 270 + (Math.random() * 300),
+                    y: (200 * numEnzymes),
+                },
+            };
+            setNodes((nds) => nds.concat(newNode));
+        }
     }, [setNodes]);
 
     const onAddEnzyme = useCallback((nodeData) => {
-        numEnzymes += 1; // used for moving node generation down y axis
-        const newNode = {
-            id: getNodeId(),
-            className: 'enzymeBuild',
-            data: {
-                label: nodeData.name, 
-                abbreviation: nodeData.abbreviation,
-                enzyme_id: nodeData.id,
+        if (nodeData) {
+            numEnzymes += 1; // used for moving node generation down y axis
+            const newNode = {
+                id: getNodeId(),
+                className: 'enzyme build',
+                data: {
+                    label: nodeData.name, 
+                    abbreviation: nodeData.abbreviation,
+                    enzyme_id: nodeData.id,
+                    type: "enzyme",
+                    reversible: nodeData.reversible,
+                    substrates: nodeData.substrates, 
+                    products: nodeData.products,
+                    cofactors: nodeData.cofactors,
+                    image: nodeData.link
+                },
                 type: "enzyme",
-                reversible: nodeData.reversible,
-                substrates: nodeData.substrates, 
-                products: nodeData.products,
-                cofactors: nodeData.cofactors,
-                image: nodeData.link
-            },
-            type: "enzyme",
-            position: {
-                x: 800,
-                y: (200 * numEnzymes)
-            },
-        };
-        console.log(newNode.data.cofactors, "newNode")
-        setNodes((nds) => nds.concat(newNode));
+                position: {
+                    x: 800,
+                    y: (200 * numEnzymes)
+                },
+            };
+            console.log(newNode.data.cofactors, "newNode")
+            setNodes((nds) => nds.concat(newNode));
+        }
     }, [setNodes]);
 
     const onClear = useCallback(() => {
@@ -184,6 +209,7 @@ const SaveRestore = (props) => {
         localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
+        // setPathwayID(null); // no pathway id if current Build is cleared
     }, [setNodes, setViewport])
 
 
@@ -222,6 +248,7 @@ const SaveRestore = (props) => {
                 <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
             
             {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+            <button class="btn btn-success" onClick={onUpdate}>update</button>
 
             <button class="btn btn-danger" onClick={onClear}>clear flow</button>
         </div>

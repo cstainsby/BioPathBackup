@@ -13,7 +13,7 @@ import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
 const ENZYME_WIDTH = 250;
 
-export default memo(({ data, isConnectable }) => {
+const Enzyme = memo(({ data, isConnectable }) => {
     let image = null;
     if (data.image === "aldolase") {
         image = aldolase;
@@ -118,3 +118,5 @@ export default memo(({ data, isConnectable }) => {
         {generateBottomHandles(data)}
     </>);
 });
+
+export {Enzyme}

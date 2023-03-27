@@ -103,7 +103,9 @@ const BuildEnzymeModal = (props) => {
 
         document.getElementById("text1").value="";
         document.getElementById("text2").value="";
-        document.getElementById("text3").value="";
+        document.getElementById("substrates").selectedIndex=-1;
+        document.getElementById("products").selectedIndex=-1;
+        document.getElementById("cofactors").selectedIndex=-1;
     }, [reset])
 
     function handleClick() {
@@ -173,7 +175,10 @@ const BuildEnzymeModal = (props) => {
                     </label>
                     <label>
                     Reversible
-                    <input id="text3" class="form-control" type="text" onChange={e => setReversible(e.target.value)} />
+                    <select class="form-select" onChange={e => setReversible(e.target.value)}>
+                        <option>false</option>
+                        <option>true</option>
+                    </select>
                     </label>
                 </li>
                 <li class="dropdown-submenu">

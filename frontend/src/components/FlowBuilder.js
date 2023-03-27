@@ -39,7 +39,7 @@ const SaveRestore = (props) => {
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
     const [editExisting, setEditExisting] = useState(false);
-    const { setViewport } = useReactFlow();
+    const { setViewport, getViewport } = useReactFlow();
 
     const location = useLocation();
 
@@ -98,30 +98,30 @@ const SaveRestore = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, pathwayID, "ben")
+        console.log(nodes, pathwayID)
     }, [nodes, pathwayID]); // monitor pathwayID for changes
 
-    const onSave = useCallback(() => {
-        if (rfInstance) {
-            const flow = rfInstance.toObject();
-            localStorage.setItem(flowKey, JSON.stringify(flow));
-        }
-    }, [rfInstance]);
+    // const onSave = useCallback(() => {
+    //     if (rfInstance) {
+    //         const flow = rfInstance.toObject();
+    //         localStorage.setItem(flowKey, JSON.stringify(flow));
+    //     }
+    // }, [rfInstance]);
 
-    const onRestore = useCallback(() => {
-        const restoreFlow = async () => {
-        const flow = JSON.parse(localStorage.getItem(flowKey));
+    // const onRestore = useCallback(() => {
+    //     const restoreFlow = async () => {
+    //     const flow = JSON.parse(localStorage.getItem(flowKey));
 
-            if (flow) {
-                const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-                setNodes(flow.nodes || []);
-                setEdges(flow.edges || []);
-                setViewport({ x, y, zoom });
-            }
-        };
+    //         if (flow) {
+    //             const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+    //             setNodes(flow.nodes || []);
+    //             setEdges(flow.edges || []);
+    //             setViewport({ x, y, zoom });
+    //         }
+    //     };
 
-        restoreFlow();
-    }, [setNodes, setViewport]);
+    //     restoreFlow();
+    // }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
         setPostShown(!isPostShown)
@@ -226,6 +226,10 @@ const SaveRestore = (props) => {
         setNewTitle(e.target.value);
     }
 
+    const test = (e) => {
+        console.log(e, "test", getViewport())
+    }
+
     return (
         <ReactFlow
         nodes={nodes}
@@ -236,19 +240,15 @@ const SaveRestore = (props) => {
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
+        onPaneClick={test}
         >
         <div className="save__controls">
-            <button class="btn btn-primary" onClick={onSave}>save</button>
-            <button class="btn btn-warning" onClick={onRestore}>restore</button>
-            {/* <button onClick={onPush}>push</button> */}
-
-            
-                <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
+            <button class="btn btn-success" type="submit" onClick={onPush}>Save As</button>
             
             {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
-            <button class="btn btn-success" onClick={onUpdate}>update</button>
+            <button class="btn btn-primary" onClick={onUpdate}>Save</button>
 
-            <button class="btn btn-danger" onClick={onClear}>clear flow</button>
+            <button class="btn btn-secondary" onClick={onClear}>clear flow</button>
         </div>
         <BuilderSideBar
                     slidersTitle="Pathway Builder"
@@ -272,7 +272,7 @@ const PathwayTitle = (props) => { // take user input to set pathway title
 }
 
 export default () => (
-    <ReactFlowProvider>
+    <ReactFlowProvider >
         <SaveRestore />
     </ReactFlowProvider>
 );

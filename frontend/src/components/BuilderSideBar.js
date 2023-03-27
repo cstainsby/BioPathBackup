@@ -26,16 +26,6 @@ function BuilderSideBar(props) {
             );
             setEnzymes(dropDownItems);
         }
-        if (moleculeResp != null) { // testing for converting to checkboxes
-            const dropDownItems = moleculeResp.map((item, index) => 
-                // <option value={index}>{item["name"]}</option>
-                <div class="column">
-                    <label for={item.Name}>{item.name}</label>
-                    <input type="checkbox" name={item.name} value={item.name}></input>
-                </div>
-            );
-            setMolecules(dropDownItems);
-        }
         if (reload) {
             callGetEnzymes();
             callGetMolecules();
@@ -118,6 +108,7 @@ const BuildEnzymeModal = (props) => {
 
     function handleClick() {
 
+
         const enzymeObj = {
             "name": name,
             "abbreviation": abbreviation,
@@ -138,15 +129,30 @@ const BuildEnzymeModal = (props) => {
     }
 
     function handleNewSubstrate(selectedSubstrate) { // adds new selected molecule to substrate list
-        setSubstrates(substrates => [...substrates,props.moleculeResp[selectedSubstrate].id] )
+        // setSubstrates(substrates => [...substrates,props.moleculeResp[selectedSubstrate].id] )
+        let selectElement = document.getElementById("substrates");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setSubstrates(selectedValues);
     }
 
     function handleNewProduct(selectedProduct) { // adds new selected molecule to substrate list
-        setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
+        // setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
+        let selectElement = document.getElementById("products");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setProducts(selectedValues);
     }
 
     function handleNewCofactor(selectedCofactor) { // adds new selected molecule to substrate list
-        setCofactors(cofactors => [...cofactors,props.moleculeResp[selectedCofactor].id] )
+        // setCofactors(cofactors => [...cofactors,props.moleculeResp[selectedCofactor].id] )
+        let selectElement = document.getElementById("cofactors");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setCofactors(selectedValues);
     }
 
     return (
@@ -176,13 +182,10 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            {/* <select class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)}>
+                            <select id="substrates" class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)} multiple>
                                 <option>Select Substrates</option>
                                 {props.dropDownItems}
-                            </select> */}
-                            <div class="form-check">
-                                {props.dropDownItems}
-                            </div>
+                            </select>
                         </li>
                     </ul>
                 </li>
@@ -191,15 +194,12 @@ const BuildEnzymeModal = (props) => {
                         Products
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
-                            <div class="form-check">
-                                {props.dropDownItems}
-                            </div>
-                        {/* <li>
-                            <select class="form-select" onChange={(e) => handleNewProduct(e.target.value)}>
+                        <li>
+                            <select id="products" class="form-select" onChange={(e) => handleNewProduct(e.target.value)} multiple>
                                 <option>Select Products</option>
                                 {props.dropDownItems}
                             </select>
-                        </li> */}
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown-submenu">
@@ -208,19 +208,10 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            {/* <select class="form-select" Change={(e) => handleNewCofactor(e.target.value)}>
+                            <select id="cofactors" class="form-select" Change={(e) => handleNewCofactor(e.target.value)} multiple>
                                 <option>Select Cofactors</option>
                                 {props.dropDownItems}
-                            </select> */}
-                            {/* <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></input>
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Default checkbox
-                                    </label>
-                            </div> */}
-                            <div class="form-check">
-                                {props.dropDownItems}
-                            </div>
+                            </select>
                         </li>
                     </ul>
                 </li>

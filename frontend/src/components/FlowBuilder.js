@@ -101,28 +101,6 @@ const SaveRestore = (props) => {
         console.log(nodes, pathwayID)
     }, [nodes, pathwayID]); // monitor pathwayID for changes
 
-    // const onSave = useCallback(() => {
-    //     if (rfInstance) {
-    //         const flow = rfInstance.toObject();
-    //         localStorage.setItem(flowKey, JSON.stringify(flow));
-    //     }
-    // }, [rfInstance]);
-
-    // const onRestore = useCallback(() => {
-    //     const restoreFlow = async () => {
-    //     const flow = JSON.parse(localStorage.getItem(flowKey));
-
-    //         if (flow) {
-    //             const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-    //             setNodes(flow.nodes || []);
-    //             setEdges(flow.edges || []);
-    //             setViewport({ x, y, zoom });
-    //         }
-    //     };
-
-    //     restoreFlow();
-    // }, [setNodes, setViewport]);
-
     const onPush = useCallback(() => {
         setPostShown(!isPostShown)
         if (isPostShown) {

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
 	// MiniMap,
@@ -9,19 +9,15 @@ import ReactFlow, {
 	addEdge,
 } from 'reactflow'
 import SliderSideBar  from "./SliderSideBar";
-import FlowBuilder from './FlowBuilder';
-import { buildFlow, parseEnzymesForManager } from '../utils/pathwayComponentUtils';
+import { generateNodes, generateEdges } from './utils/pathwayComponentUtils';
 
+import './../scss/CustomNodes.scss';
 import 'reactflow/dist/style.css';
-import '../css/ReactFlowArea.css';
 
-import boogyImg from "../../images/boogy.PNG"
-
-
-import ReversibleEnzyme from'../customNodes/ReversibleEnzyme'
-import Molecule from '../customNodes/Molecule'
+import {Enzyme} from'./customNodes/Enzyme.js'
+import {Molecule} from './customNodes/Molecule.js'
 const nodeTypes = {
-    reversibleEnzyme: ReversibleEnzyme,
+    enzyme: Enzyme,
     molecule: Molecule
 };
 
@@ -38,6 +34,7 @@ const FlowModel = (props) => {
     let [pathwayTitle, setPathwayTitle] = useState(pathway["name"]);
     let [pathwayDescription, setPathwayDescription] = useState("about the pathway");
     let [pathwayAuthor, setPathwayAuthor] = useState("author");
+    let [pathwayID, setPathwayID] = useState(pathway.id)
 
     // Data used for ReactFlow
 	let [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -46,27 +43,33 @@ const FlowModel = (props) => {
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
 
+    const navigate = useNavigate(); // testing delte later maybe
+
     /**
      * Console logs id and position of ReactFlow nodes 
      * when onNodeChange is called
      * @function
      */ 
-    // const printNodesOnChange = () => {
-    //     let out = []
-    //     for (const node of nodes) {
-    //         out.push({
-    //             id: node.data.label,
-    //             pos: node.position
-    //         })
-    //     }
-    //     console.log(out);
-    // }
+    const printNodesOnChange = () => {
+        let out = []
+        for (const node of nodes) {
+            out.push({
+                id: node.data.label,
+                pos: node.position
+            })
+        }
+        console.log(out);
+    }
+    // useEffect(() => {
+    //     printNodesOnChange();
+    // }, [nodes])
     
     /**
      * Gets updated pathway based on current FlowModel pathwayID.
      * If there is no pathway ID, close the current pathway.
      */
     useEffect(() => {
+        //console.log(pathway)
         handlePathwayOpen(pathway)
     }, [pathway]); // monitor pathwayID for changes
 
@@ -84,12 +87,36 @@ const FlowModel = (props) => {
         setPathwayAuthor(newPathway["author"]);
 
         // Create the nodes and edges for ReactFlow
-        let nodesAndEdgesDict = buildFlow(newPathway);
-        setNodes(nodesAndEdgesDict["nodes"]);
-        setEdges(nodesAndEdgesDict["edges"]);
+        setNodes(generateNodes(pathway));
+        setEdges(generateEdges(pathway));
 
         props.concentrationManager.addListener(onConcentrationUpdate);
         props.concentrationManager.parsePathway(newPathway);
+    }
+
+    /**
+     * 
+     * @param {import('react').BaseSyntheticEvent} e event
+     * @param {import('reactflow').Node} node 
+     */
+    const onNodeClick = (e, node) => {
+        if (node.type === "molecule") {
+            let clicked_id = node.data.molecule_id;
+            setNodes(nodes.map((n) => {
+                if (n.data.molecule_id === clicked_id) {
+                    if (n.data.locked) {
+                        props.concentrationManager.unlock(n.data.molecule_id);
+                        n.data.locked = false;
+                        n.className = "molecule"
+                    } else {
+                        props.concentrationManager.lock(n.data.molecule_id);
+                        n.data.locked = true;
+                        n.className = "molecule locked"
+                    }
+                }
+                return n;
+            }));
+        }
     }
 
     /**
@@ -110,9 +137,9 @@ const FlowModel = (props) => {
             edges.map((edge) => {
                 if (props.concentrationManager.enzymes[edge.data.enzyme_id]) {
                     if (edge.id.split("_")[0] === "R") {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 500, stroke: 'red'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].prodToSub * 300, stroke: '#FF0000'};
                     } else {
-                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 500, stroke: 'green'};
+                        edge.style = {strokeWidth: props.concentrationManager.enzymes[edge.data.enzyme_id].subToProd * 300, stroke: '#00FF00'};
                     }
                 }
                 return edge;
@@ -143,12 +170,22 @@ const FlowModel = (props) => {
         };
     }, [running, speed]);
 
+
     /**
      * Resets concentrations to starting values
      * 
      */
     const resetConcentrations = () => {
         props.concentrationManager.reset();
+    }
+
+    const handleEdit = () => { // testing delte later maybe
+        navigate('/build', {state:{
+                                initialNodes: nodes, 
+                                initialEdges: edges,
+                                id: pathwayID,
+                                title: pathwayTitle
+                            }});
     }
 
     return (
@@ -162,14 +199,15 @@ const FlowModel = (props) => {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
-                attributionPosition="top-right"
+                attributionPosition="bottom-left"
+                onNodeClick={onNodeClick}
             >
                 <Controls position='bottom-right' />
                 <PathwayTitleCard
                     pathwayTitle={ pathwayTitle }
                     pathwayDescription={ pathwayDescription }
                     pathwayAuthor={ pathwayAuthor }
-                    additionalImage={ boogyImg }
+                    editPathway={handleEdit}
                 /> 
                 <SliderSideBar
                     slidersTitle="Cofactors"
@@ -179,6 +217,7 @@ const FlowModel = (props) => {
                     run = {() => {setRunning(true)}}
                     stop = {() => {setRunning(false)}}
                     reset = {resetConcentrations}
+                    running = {running}
                 />
             </ReactFlow>            
         </div>
@@ -190,7 +229,6 @@ const FlowModel = (props) => {
  * @prop {string} pathwayTitle - the name of the pathway
  * @prop {string} pathwayDescription - the description of the pathway
  * @prop {string} pathwayAuthor - the author of the pathway
- * @prop {img} additionalImage - an optional image 
  * @returns An informational react component for the current pathway
  */
 const PathwayTitleCard = (props) => {
@@ -204,9 +242,6 @@ const PathwayTitleCard = (props) => {
         <div id="PathwayTitleCard" className='ModelAreaChild'>
             { (props.pathwayTitle !== "") && (
                 <div className="card" >
-                { props.additionalImage && 
-                    <img src={ props.additionalImage } alt="stuff here" width="10" height="150" className="card-img-top"/>
-                }
                 <div className="card-body" id='PathwayTitleTextBox'>
                     <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
                     <p className="card-text">{ props.pathwayDescription }</p>
@@ -215,6 +250,7 @@ const PathwayTitleCard = (props) => {
                 <div className="card-footer">
                     <small className="text-muted">Last updated 3 mins ago by { props.pathwayAuthor }</small>
                 </div>
+                <button onClick={props.editPathway}>Edit pathway</button>
                 </div>
             )}
         </div>

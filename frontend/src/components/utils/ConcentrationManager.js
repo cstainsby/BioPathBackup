@@ -38,28 +38,16 @@ class ConcentrationManager {
     parsePathway(pathway) {
         this.clear();
         let enzymes = this.getEnzymesFromPathway(pathway);
-        // used to make a system coninuous or runout of concentration
-        for (const substrate of Object.values(enzymes)[0].substrates) {
-            if (!this.startMolecules.includes(substrate.id) ) {
-                this.startMolecules.push(substrate.id);
-            }
-        }
-        for (const product of Object.values(enzymes)[Object.values(enzymes).length - 1].products) {
-            if (!this.endMolecules.includes(product.id) ) {
-                this.endMolecules.push(product.id);
-            }
-        }
-        // end of start end molecule stuff
 
         for (const enzyme of Object.values(enzymes)) {
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1};
+                this.moleculeConcentrations[substrate.id] = {"title": substrate.title, "value": 1, "locked": false};
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1};
+                this.moleculeConcentrations[product.id] = {"title": product.title, "value": 1, "locked": false};
             }
             for (const cofactor of enzyme.cofactors) {
-                this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1};
+                this.moleculeConcentrations[cofactor.id] = {"title": cofactor.title, "value": 1, "locked": false};
             }
             // TODO: Get, store, and update enzyme speeds. Link to a slider on the frontend?
             enzyme.speed = 0.05;
@@ -78,10 +66,14 @@ class ConcentrationManager {
         let cachedConcentrations = this.moleculeConcentrations;
         // new for continuous or finite pathway
         for (const id of this.startMolecules) {
-            this.moleculeConcentrations[id].value += .01;
+            if (!this.moleculeConcentrations[id].locked) {
+                this.moleculeConcentrations[id].value += .01;
+            }
         }
         for (const id of this.endMolecules) {
-            this.moleculeConcentrations[id].value -= .01;
+            if (!this.moleculeConcentrations[id].locked) {
+                this.moleculeConcentrations[id].value -= .01;
+            }
         }
         // end of continuous or finite pathway
         for (const [id, enzyme] of Object.entries(this.enzymes)) {
@@ -95,10 +87,14 @@ class ConcentrationManager {
             this.enzymes[id].subToProd = subToProd;
             this.enzymes[id].prodToSub = prodToSub;
             for (const substrate of enzyme.substrates) {
-                this.moleculeConcentrations[substrate.id].value += prodToSub - subToProd;
+                if (!this.moleculeConcentrations[substrate.id].locked) {
+                    this.moleculeConcentrations[substrate.id].value += prodToSub - subToProd;
+                }
             }
             for (const product of enzyme.products) {
-                this.moleculeConcentrations[product.id].value += subToProd - prodToSub;
+                if (!this.moleculeConcentrations[product.id].locked) {
+                    this.moleculeConcentrations[product.id].value += subToProd - prodToSub;
+                }
             }            
         }
         console.log("UpdateConcentrations()");
@@ -264,6 +260,14 @@ class ConcentrationManager {
             enzymes[enzyme.id] = e;
         }
         return enzymes;
+    }
+
+    lock(molecule) {
+        this.moleculeConcentrations[molecule].locked = true;
+    }
+
+    unlock(molecule) {
+        this.moleculeConcentrations[molecule].locked = false;
     }
 }
 

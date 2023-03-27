@@ -133,7 +133,7 @@ class Command(BaseCommand):
         )
         glu_instance = models.MoleculeInstance.objects.create(
             molecule=glu,
-            x=200,
+            x=225,
             y=150,
             pathway=glycolysis
         )
@@ -149,7 +149,7 @@ class Command(BaseCommand):
         )
         g6p_instance = models.MoleculeInstance.objects.create(
             molecule=g6p,
-            x=195,
+            x=240,
             y=390,
             pathway=glycolysis
         )
@@ -165,8 +165,8 @@ class Command(BaseCommand):
         )
         f6p_instance = models.MoleculeInstance.objects.create(
             molecule=f6p,
-            x=195,
-            y=615,
+            x=225,
+            y=630,
             pathway=glycolysis
         )
         
@@ -181,7 +181,7 @@ class Command(BaseCommand):
         )
         f16bp_instance = models.MoleculeInstance.objects.create(
             molecule=f16bp,
-            x=210,
+            x=240,
             y=855,
             pathway=glycolysis
         )
@@ -197,8 +197,8 @@ class Command(BaseCommand):
         )
         g3p_instance = models.MoleculeInstance.objects.create(
             molecule=g3p,
-            x=195,
-            y=1335,
+            x=210,
+            y=1395,
             pathway=glycolysis
         )
 
@@ -214,7 +214,7 @@ class Command(BaseCommand):
         dhap_instance = models.MoleculeInstance.objects.create(
             molecule=dhap,
             x=345,
-            y=1110,
+            y=1095,
             pathway=glycolysis
         )
 
@@ -229,8 +229,8 @@ class Command(BaseCommand):
         )
         bpg_instance = models.MoleculeInstance.objects.create(
             molecule=bpg,
-            x=225,
-            y=1560,
+            x=195,
+            y=1710,
             pathway=glycolysis
         )
 
@@ -245,8 +245,8 @@ class Command(BaseCommand):
         )
         pg3_instance = models.MoleculeInstance.objects.create(
             molecule=pg3,
-            x=225,
-            y=1875,
+            x=210,
+            y=1980,
             pathway=glycolysis
         )
 
@@ -262,7 +262,7 @@ class Command(BaseCommand):
         pg2_instance = models.MoleculeInstance.objects.create(
             molecule=pg2,
             x=270,
-            y=2130,
+            y=2235,
             pathway=glycolysis
         )
 
@@ -277,8 +277,8 @@ class Command(BaseCommand):
         )
         pep_instance = models.MoleculeInstance.objects.create(
             molecule=pep,
-            x=210,
-            y=2385,
+            x=240,
+            y=2535,
             pathway=glycolysis
         )
 
@@ -293,8 +293,8 @@ class Command(BaseCommand):
         )
         pyr_instance = models.MoleculeInstance.objects.create(
             molecule=pyr,
-            x=210,
-            y=2670,
+            x=225,
+            y=2850,
             pathway=glycolysis
         )
 
@@ -309,8 +309,8 @@ class Command(BaseCommand):
         )
         nad_instance = models.MoleculeInstance.objects.create(
             molecule=nad,
-            x=330,
-            y=1335,
+            x=375,
+            y=1410,
             pathway=glycolysis
         )
 
@@ -325,8 +325,8 @@ class Command(BaseCommand):
         )
         nadh_instance = models.MoleculeInstance.objects.create(
             molecule=nadh,
-            x=315,
-            y=1560,
+            x=285,
+            y=1680,
             pathway=glycolysis
         )
 
@@ -342,7 +342,7 @@ class Command(BaseCommand):
         h_instance = models.MoleculeInstance.objects.create(
             molecule=h,
             x=375,
-            y=1560,
+            y=1680,
             pathway=glycolysis
         )
 
@@ -357,26 +357,26 @@ class Command(BaseCommand):
         )
         atp_instance1 = models.MoleculeInstance.objects.create(
             molecule=atp,
-            x=315,
+            x=375,
             y=150,
             pathway=glycolysis
         )
         atp_instance2 = models.MoleculeInstance.objects.create(
             molecule=atp,
-            x=315,
-            y=615,
+            x=375,
+            y=630,
             pathway=glycolysis
         )
         atp_instance3 = models.MoleculeInstance.objects.create(
             molecule=atp,
-            x=315,
-            y=1635,
+            x=360,
+            y=1740,
             pathway=glycolysis
         )
         atp_instance4 = models.MoleculeInstance.objects.create(
             molecule=atp,
-            x=330,
-            y=2385,
+            x=360,
+            y=2565,
             pathway=glycolysis
         )
 
@@ -391,26 +391,26 @@ class Command(BaseCommand):
         )
         adp_instance1 = models.MoleculeInstance.objects.create(
             molecule=adp,
-            x=315,
+            x=390,
             y=390,
             pathway=glycolysis
         )
         adp_instance2 = models.MoleculeInstance.objects.create(
             molecule=adp,
-            x=300,
+            x=375,
             y=855,
             pathway=glycolysis
         )
         adp_instance3 = models.MoleculeInstance.objects.create(
             molecule=adp,
-            x=315,
-            y=1875,
+            x=390,
+            y=1980,
             pathway=glycolysis
         )
         adp_instance4 = models.MoleculeInstance.objects.create(
             molecule=adp,
-            x=330,
-            y=2670,
+            x=360,
+            y=2850,
             pathway=glycolysis
         )
 
@@ -425,8 +425,8 @@ class Command(BaseCommand):
         )
         h2o_instance = models.MoleculeInstance.objects.create(
             molecule=h2o,
-            x=275,
-            y=2235,
+            x=360,
+            y=2490,
             pathway=glycolysis
         )
 
@@ -465,7 +465,7 @@ class Command(BaseCommand):
         phosphoglucoisomerase.products.add(f6p)
         phosphoglucoisomerase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglucoisomerase,
-            x=210,
+            x=135,
             y=480,
             limiting=True,
             pathway=glycolysis
@@ -507,7 +507,7 @@ class Command(BaseCommand):
         aldolase.products.add(g3p, dhap)
         aldolase_instance = models.EnzymeInstance.objects.create(
             enzyme=aldolase,
-            x=210,
+            x=165,
             y=945,
             limiting=True,
             pathway=glycolysis
@@ -528,8 +528,8 @@ class Command(BaseCommand):
         triose_phosphate_isomerase.products.add(g3p)
         triose_phosphate_isomerase_instance = models.EnzymeInstance.objects.create(
             enzyme=triose_phosphate_isomerase,
-            x=300,
-            y=1200,
+            x=285,
+            y=1185,
             limiting=True,
             pathway=glycolysis
         )
@@ -549,8 +549,8 @@ class Command(BaseCommand):
         tpd.products.add(bpg, nadh, h)
         tpd_instance = models.EnzymeInstance.objects.create(
             enzyme=tpd,
-            x=225,
-            y=1425,
+            x=195,
+            y=1515,
             limiting=True,
             pathway=glycolysis
         )
@@ -570,8 +570,8 @@ class Command(BaseCommand):
         phosphoglycerokinase.products.add(pg3, adp)
         phosphoglycerokinase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglycerokinase,
-            x=225,
-            y=1725,
+            x=195,
+            y=1830,
             limiting=True,
             pathway=glycolysis
         )
@@ -591,8 +591,8 @@ class Command(BaseCommand):
         phosphoglyceromutase.products.add(pg2)
         phosphoglyceromutase_instance = models.EnzymeInstance.objects.create(
             enzyme=phosphoglyceromutase,
-            x=225,
-            y=1965,
+            x=150,
+            y=2070,
             limiting=True,
             pathway=glycolysis
         )
@@ -612,8 +612,8 @@ class Command(BaseCommand):
         enolase.products.add(pep, h2o)
         enolase_instance = models.EnzymeInstance.objects.create(
             enzyme=enolase,
-            x=225,
-            y=2235,
+            x=210,
+            y=2340,
             limiting=True,
             pathway=glycolysis
         )
@@ -633,8 +633,8 @@ class Command(BaseCommand):
         pyrk.products.add(pyr, adp)
         pyrk_instance = models.EnzymeInstance.objects.create(
             enzyme=pyrk,
-            x=225,
-            y=2520,
+            x=195,
+            y=2670,
             limiting=True,
             pathway=glycolysis
         )

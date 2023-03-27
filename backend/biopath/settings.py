@@ -34,7 +34,8 @@ SECRET_KEY = 'django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "wtfysc3awc.us-west-2.awsapprunner.com"
+    "wtfysc3awc.us-west-2.awsapprunner.com",
+    "localhost"
 ]
 
 
@@ -50,7 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',           
     'rest_framework.authtoken', # for generating authentication tokens
-    'corsheaders'
+    'corsheaders',
+    'frontend'
 ]
 
 MIDDLEWARE = [

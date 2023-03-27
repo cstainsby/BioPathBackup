@@ -7,7 +7,7 @@ const pathway = {
             "id": 1,
             "name": "enzyme1",
             "abbreviation": "e1",
-            "reversible": true,
+            "reversible": false,
             "enzyme": 1,
             "substrate_instances": [
                 4
@@ -55,8 +55,8 @@ describe('concentrations', () => {
         let c = new ConcentrationManager();
         c.parsePathway(pathway);
         c.updateConcentrations();
-        expect(c.moleculeConcentrations[1].value).toBeGreaterThan(1);
-        expect(c.moleculeConcentrations[2].value).toBeLessThan(1);
+        expect(c.moleculeConcentrations[1].value).toBeLessThan(1);
+        expect(c.moleculeConcentrations[2].value).toBeGreaterThan(1);
     });
     
     test('addListener', () => {

@@ -62,6 +62,30 @@ const SplashPage = () => {
         </div>
       }
 
+        <div id="ValidatedPathwayArea" className="row container informationalSection">
+          <div className="row informationalHeaderSection">
+            <h4 className="col pushDown">Validated Pathways</h4>
+            <hr/>
+          </div>
+
+          {/* note these elements will only render if they exist */}
+          <div id="LeftOffAreaContent" className="row informationalContentSection container">
+            {/* first row */}
+            <div className="row">
+              {splashPageLoaderData.recentWork.map((pathway) => {
+                return (
+                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-10 card">
+                    <ul>
+                      <li><h5>{pathway.name}</h5></li>
+                      <li><small className="text-muted">Created By {pathway.author}</small></li>
+                    </ul>
+                  </Link>
+                  )
+              })}
+            </div>
+          </div>
+        </div>
+
       {/* The Starter Section */}
       <div id="StarterCardArea" className="row container informationalSection">
         <div className="row informationalHeaderSection">
@@ -73,7 +97,7 @@ const SplashPage = () => {
           <StarterCard
             title="Create A Pathway"
             description="Create Your Own Pathway"
-            linkPath="pathway"/>
+            linkPath="build"/>
 
           <StarterCard
             title="Find A Group"
@@ -157,7 +181,7 @@ const StarterCard = (props) => {
         <div id="StarterCard">
           <div className="row g-0">
             <div className="col-md-4">
-              <img src="..." className="img-fluid rounded-start" alt="..."/>
+              <img className="img-fluid rounded-start" alt="..."/>
             </div>
 
             <div className="col-md-8">

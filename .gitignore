@@ -16,3 +16,6 @@ backend/media/*
 
 # ignore sensitive information stored inside config file
 local_build_config.json
+
+
+system_info.json

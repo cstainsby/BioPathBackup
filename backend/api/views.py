@@ -23,15 +23,16 @@ from api import serializers, models
 
 class MoleculeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.MoleculeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Molecule.objects.all()
-        else:
-            return models.Molecule.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
+        return models.Molecule.objects.all()
+        # if self.request.user.is_superuser:
+        #     return models.Molecule.objects.all()
+        # else:
+        #     return models.Molecule.objects.filter(
+        #         Q(public=True) | Q(author=self.request.user)
+        #     )
 
 
 class MoleculeInstanceViewSet(viewsets.ModelViewSet):
@@ -42,15 +43,16 @@ class MoleculeInstanceViewSet(viewsets.ModelViewSet):
 
 class EnzymeViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.EnzymeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            return models.Enzyme.objects.all()
-        else:
-            return models.Enzyme.objects.filter(
-                Q(public=True) | Q(author=self.request.user)
-            )
+        return models.Enzyme.objects.all()
+        # if self.request.user.is_superuser:
+        #     return models.Enzyme.objects.all()
+        # else:
+        #     return models.Enzyme.objects.filter(
+        #         Q(public=True) | Q(author=self.request.user)
+        #     )
 
 
 class EnzymeInstanceViewSet(viewsets.ModelViewSet):
@@ -60,8 +62,8 @@ class EnzymeInstanceViewSet(viewsets.ModelViewSet):
 
 
 class PathwayViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.PathwayDetailSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = serializers.PathwayBasicSerializer
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return models.Pathway.objects.all()
@@ -73,14 +75,16 @@ class PathwayViewSet(viewsets.ModelViewSet):
         #     )
 
     def get_serializer_class(self):
-        if self.action == "create":
+        if self.action in ["update", "create"]:
             return serializers.PathwayWriteSerializer
-        else:
+        elif self.action == "retrieve":
             return serializers.PathwayDetailSerializer
-    
+        else: # self.action in ["destroy", "list"] or other sometimes I guess
+            return serializers.PathwayBasicSerializer
+
     # TODO: stubbed out post method
-    def post_pathway(self, request):
-        data = request.data
+    # def post_pathway(self, request):
+    #     data = request.data
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -1,0 +1,11 @@
+# File to ensure line endings are correct for all added files
+
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# All shell scripts should have "lf" line endings
+*.sh text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary

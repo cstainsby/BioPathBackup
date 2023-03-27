@@ -16,9 +16,6 @@ import UserContext from '../UserContext';
 const Navbar = () => {
 
     let { user, setUser } = useContext(UserContext);
-    user = {
-        username: "Zach"
-    }
 
     let userSignInIcon;
     if (user) {

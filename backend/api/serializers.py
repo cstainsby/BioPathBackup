@@ -442,6 +442,48 @@ class PathwayWriteSerializer(serializers.Serializer):
             enzyme_instance.cofactor_instances.add(*cofactor_instances)
 
         return pathway
+    
+    def update(self, instance: models.Pathway, validated_data: OrderedDict) -> models.Pathway:
+        instance.name = validated_data.get("name", instance.name)
+        instance.link = validated_data.get("link", instance.link)
+        instance.public = validated_data.get("public", instance.public)
+
+        molecule_instances_data = validated_data.pop("molecule_instances")
+        enzyme_instances_data = validated_data.pop("enzyme_instances")
+
+        models.MoleculeInstance.objects.filter(pathway=instance.id).delete()
+        models.EnzymeInstance.objects.filter(pathway=instance.id).delete()
+
+        # map temp_id -> instance
+        molecule_instances = {}
+
+        # create molecule instances
+        for molecule_instance_data in molecule_instances_data:
+            temp_id = molecule_instance_data.pop("temp_id")
+            molecule_instance = models.MoleculeInstance.objects.create(
+                pathway=instance,
+                **molecule_instance_data
+            )
+            molecule_instances[temp_id] = molecule_instance
+
+        # create enzyme instances
+        for enzyme_instance_data in enzyme_instances_data:
+            substrate_temp_ids = enzyme_instance_data.pop("substrate_instances")
+            product_temp_ids = enzyme_instance_data.pop("product_instances")
+            cofactor_temp_ids = enzyme_instance_data.pop("cofactor_instances")
+            substrate_instances = [molecule_instances[temp_id] for temp_id in substrate_temp_ids]
+            product_instances = [molecule_instances[temp_id] for temp_id in product_temp_ids]
+            cofactor_instances = [molecule_instances[temp_id] for temp_id in cofactor_temp_ids]
+            enzyme_instance = models.EnzymeInstance.objects.create(
+                pathway=instance,
+                **enzyme_instance_data
+            )
+            enzyme_instance.substrate_instances.add(*substrate_instances)
+            enzyme_instance.product_instances.add(*product_instances)
+            enzyme_instance.cofactor_instances.add(*cofactor_instances)
+
+        return instance
+
 
 
 class TokenObtainPairSerializer(TokenObtainPairSerializer):

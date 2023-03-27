@@ -189,7 +189,7 @@ const FlowModel = (props) => {
     }
 
     return (
-        <div className='h-100'>
+        <div className='h-100 bg-secondary'>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -202,13 +202,15 @@ const FlowModel = (props) => {
                 attributionPosition="bottom-left"
                 onNodeClick={onNodeClick}
             >
-            <Controls position='bottom-right' />
-                <div className='container-fluid'>
-                    <div className='row justify-content-between'>
-                        <div className='col-3'>
+                <Controls position='bottom-right'/>
+                {/* TODO: Make the Sidebars become dropdowns with Bootstrap Offcanvas 
+                    pop-outs when size < medium (md) */}
+                <div className='container-fluid h-100'>
+                    <div className='row justify-content-between h-100'>
+                        <div className='col-4 col-md-3 col-lg-2 py-3' style={{zIndex: '5'}}>
                             <SliderSideBar
-                                slidersTitle="Cofactors"
-                                slidersDescription="Adjust cofactor concentrations"
+                                slidersTitle="Concentrations"
+                                slidersDescription="Adjust molecule concentrations"
                                 molecules={molecules}
                                 handleConcentrationChange={ handleConcentrationChange }
                                 run = {() => {setRunning(true)}}
@@ -217,7 +219,7 @@ const FlowModel = (props) => {
                                 running = {running}
                             />
                         </div>
-                        <div className='col-3'>
+                        <div className='col-2 py-3' style={{zIndex: '5'}}>
                             <PathwayTitleCard
                                 pathwayTitle={ pathwayTitle }
                                 pathwayDescription={ pathwayDescription }

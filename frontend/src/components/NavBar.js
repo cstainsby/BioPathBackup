@@ -41,8 +41,8 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="navbar navbar-expand-md">
-            <div className="container-fluid border-bottom border-2 border-secondary py-2">
+        <nav className="navbar navbar-expand-md border-bottom border-2 border-secondary">
+            <div className="container-fluid">
             {/* reset button 
             reset every selectable item, go to base page */}
             <Link className="navbar-brand fw-bold px-3" to="/">BioPath</Link>

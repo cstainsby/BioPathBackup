@@ -10,13 +10,13 @@ import UserContext from "../../UserContext";
 const SplashPage = () => {
     const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
-    // const { user, setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     // const [recentWork, setRecentWork] = useState(null);
     // const [feed, setFeed] = useState(null);
-    const user = {
-        username: "Zach"
-    }
+    // const user = {
+    //     username: "Zach"
+    // }
     return (
         <div className="container">
             <div className="fs-1">Biopath</div>
@@ -59,26 +59,30 @@ const SplashPage = () => {
             </div>
 
             {/* The Starter Section */}
-            <div id="StarterCardArea" className="row container informationalSection">
+            <div id="StarterCardArea" className="container">
             <div className="row border-bottom border-2 border-secondary py-2">
                     <div className="col-auto fs-3">Where To Start</div>
                 </div>
 
-                <div className="row informationalContentSection">
-                <StarterCard
-                    title="Create A Pathway"
-                    description="Create Your Own Pathway"
-                    linkPath="build"/>
-
-                <StarterCard
-                    title="Find A Group"
-                    description="Join A Group to Collaborate With"
-                    linkPath="/explore/groups"/>
-
-                <StarterCard 
-                    title="Browse Community Creations" 
-                    description="Look At Others Work"
-                    linkPath="/explore"/>
+                <div className="row py-2 mx-sm-2">
+                    <div className="col py-1">
+                        <StarterCard
+                            title="Create A Pathway"
+                            description="Create Your Own Pathway"
+                            linkPath="build"/>
+                    </div>
+                    <div className="col py-1">
+                        <StarterCard
+                            title="Find A Group"
+                            description="Join A Group to Collaborate With"
+                            linkPath="/explore/groups"/>
+                    </div>
+                    <div className="col py-1">
+                        <StarterCard 
+                            title="Browse Community Creations" 
+                            description="Look At Others Work"
+                            linkPath="/explore"/>
+                    </div>
                 </div>
             </div>
 
@@ -121,24 +125,14 @@ const SplashPage = () => {
      */
     const StarterCard = (props) => {
         return (
-            <div className="cardLinkContainer col">
-                <Link to={props.linkPath} className="card text-start cardNavLink">
-                    <div id="StarterCard">
-                        <div className="row g-0">
-                            <div className="col-md-4">
-                                <img className="img-fluid rounded-start" alt="..."/>
-                            </div>
-
-                            <div className="col-md-8">
-                                <div className="card-body">
-                                    <h4 className="card-title">{props.title}</h4>
-                                    <p className="card-text">{props.description}</p>
-                                </div>
-                            </div>
-                        </div>
+            <Link to={props.linkPath} className="card h-100 text-start cardNavLink text-decoration-none">
+                <div className="row g-0">
+                    <div className="card-body">
+                        <div className="fs-3">{props.title}</div>
+                        <div className="card-text">{props.description}</div>
                     </div>
-                </Link>
-            </div>
+                </div>
+            </Link>
         )
     }
 

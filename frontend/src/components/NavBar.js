@@ -41,7 +41,7 @@ const Navbar = () => {
     }
 
     return (
-        <nav className="navbar navbar-expand-md border-bottom border-2 border-secondary">
+        <nav className="navbar navbar-expand-md border-bottom border-4 border-secondary">
             <div className="container-fluid">
             {/* reset button 
             reset every selectable item, go to base page */}

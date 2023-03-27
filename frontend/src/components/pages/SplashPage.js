@@ -51,7 +51,7 @@ const SplashPage = () => {
                 {splashPageLoaderData.recentWork.map((pathway) => {
                     return (
                     <Link key={pathway.id} to={"pathway/" + pathway.id} className="row card text-decoration-none m-1 p-1 m-sm-2 p-sm-2">
-                        <div className="fs-4">{pathway.name}</div>
+                        <div className="fs-4 fw-bold">{pathway.name}</div>
                         <small className="text-muted">Created By {pathway.author}</small>
                     </Link>
                     )
@@ -71,18 +71,20 @@ const SplashPage = () => {
                             description="Create Your Own Pathway"
                             linkPath="build"/>
                     </div>
-                    <div className="col py-1">
+                    {/* TODO: Add groups/classrooms */}
+                    {/* <div className="col py-1">
                         <StarterCard
                             title="Find A Group"
-                            description="Join A Group to Collaborate With"
+                            description="Not Implimented"
                             linkPath="/explore/groups"/>
-                    </div>
-                    <div className="col py-1">
+                    </div>*/}
+                    {/* TODO: Add Community Creations */}
+                    {/* <div className="col py-1">
                         <StarterCard 
                             title="Browse Community Creations" 
-                            description="Look At Others Work"
+                            description="Not Implimented"
                             linkPath="/explore"/>
-                    </div>
+                    </div>  */}
                 </div>
             </div>
         </div>

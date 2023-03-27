@@ -15,7 +15,7 @@ import PathwayView from "./PathwayView";
 // Loaders 
 import { splashPageLoader } from "../requestLib/loaders/splashPageLoader";
 import { pathwayViewLoader } from "../requestLib/loaders/pathwayViewLoader";
-import BuilderView from "./BuilderView";
+import FlowBuilder from "./FlowBuilder";
 
 /**
  * A declaritive definition of the routes within the website
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
             //   },
             {
                 path: "build",
-                element: <BuilderView/>
+                element: <FlowBuilder />
             },
             {
                 path: "pathway/:pathwayId",

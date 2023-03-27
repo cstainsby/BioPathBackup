@@ -6,6 +6,7 @@ import ReactFlow, {
     useEdgesState,
     addEdge,
     useReactFlow,
+    Controls
 } from 'reactflow';
 import { generatePathwayJson } from './utils/pathwayBuilderUtils';
 import { postPathway, deletePathway } from '../requestLib/apiRequests';
@@ -31,7 +32,7 @@ const initialEdges = [];
 
 let numEnzymes = 0;
 
-const SaveRestore = (props) => {
+const FlowBuilder = (props) => {
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
     const [pathwayID, setPathwayID] = useState(null); // used if editing existing
@@ -228,41 +229,44 @@ const SaveRestore = (props) => {
     }
 
     return (
-        <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onInit={setRfInstance}
-        nodeTypes={nodeTypes}
-        onNodeClick={onNodeClick}
-        >
-        <div className="save__controls">
-            <button class="btn btn-primary" onClick={onSave}>save</button>
-            <button class="btn btn-warning" onClick={onRestore}>restore</button>
-            {/* <button onClick={onPush}>push</button> */}
-
-            
-                <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
-            
-            {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
-            <button class="btn btn-success" onClick={onUpdate}>update</button>
-
-            <button class="btn btn-danger" onClick={onClear}>clear flow</button>
+        <div className='h-100' style={{background: "#adb5bd"}}>
+            <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                onInit={setRfInstance}
+                nodeTypes={nodeTypes}
+                fitView={true}
+                onNodeClick={onNodeClick}
+                attributionPosition="bottom-left"
+            >
+                <Controls position='bottom-right'/>
+                    <div className='container-fluid d-flex flex-row justify-content-between h-100'>
+                        <div className='py-3'>
+                            <BuilderSideBar
+                                onAddMolecule={onAddMolecule}
+                                onAddEnzyme={onAddEnzyme}
+                            />
+                        </div>
+                        <div className="py-3">
+                            <div className="btn-group" role='group' style={{zIndex: "6"}}>
+                                <button class="btn btn-primary mx-1" onClick={onSave}>save</button>
+                                <button class="btn btn-warning mx-1" onClick={onRestore}>restore</button>
+                                <button class="btn btn-success mx-1" type="submit" onClick={onPush}>push</button>
+                                {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+                                <button class="btn btn-success mx-1" onClick={onUpdate}>update</button>
+                                <button class="btn btn-danger mx-1" onClick={onClear}>clear flow</button>
+                            </div>
+                        </div>
+                    </div>
+            </ReactFlow>
         </div>
-        <BuilderSideBar
-                    slidersTitle="Pathway Builder"
-                    slidersDescription="Create a new Pathway"
-                    onAddMolecule={onAddMolecule}
-                    onAddEnzyme={onAddEnzyme}
-                />
-        </ReactFlow>
     );
 };
 
 const PathwayTitle = (props) => { // take user input to set pathway title
-
     return(
         <div>
             <label>Enter Pathway title: </label>
@@ -274,6 +278,6 @@ const PathwayTitle = (props) => { // take user input to set pathway title
 
 export default () => (
     <ReactFlowProvider>
-        <SaveRestore />
+        <FlowBuilder />
     </ReactFlowProvider>
 );

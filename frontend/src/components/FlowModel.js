@@ -189,13 +189,12 @@ const FlowModel = (props) => {
     }
 
     return (
-        <div className='h-100 bg-secondary'>
+        <div className='h-100' style={{background: "#adb5bd"}}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
-                snapToGrid
                 onConnect={onConnect}
                 nodeTypes={nodeTypes} // new needed for multiple handlers
                 fitView={true}
@@ -205,28 +204,24 @@ const FlowModel = (props) => {
                 <Controls position='bottom-right'/>
                 {/* TODO: Make the Sidebars become dropdowns with Bootstrap Offcanvas 
                     pop-outs when size < medium (md) */}
-                <div className='container-fluid h-100'>
-                    <div className='row justify-content-between h-100'>
-                        <div className='col-4 col-md-3 col-lg-2 py-3' style={{zIndex: '5'}}>
-                            <SliderSideBar
-                                slidersTitle="Concentrations"
-                                slidersDescription="Adjust molecule concentrations"
-                                molecules={molecules}
-                                handleConcentrationChange={ handleConcentrationChange }
-                                run = {() => {setRunning(true)}}
-                                stop = {() => {setRunning(false)}}
-                                reset = {resetConcentrations}
-                                running = {running}
-                            />
-                        </div>
-                        <div className='col-2 py-3' style={{zIndex: '5'}}>
-                            <PathwayTitleCard
-                                pathwayTitle={ pathwayTitle }
-                                pathwayDescription={ pathwayDescription }
-                                pathwayAuthor={ pathwayAuthor }
-                                editPathway={handleEdit}
-                            /> 
-                        </div>
+                <div className='container-fluid d-flex flex-row justify-content-between h-100'>
+                    <div className='py-3'>
+                        <SliderSideBar
+                            molecules={molecules}
+                            handleConcentrationChange={ handleConcentrationChange }
+                            run = {() => {setRunning(true)}}
+                            stop = {() => {setRunning(false)}}
+                            reset = {resetConcentrations}
+                            running = {running}
+                        />
+                    </div>
+                    <div className='py-3'>
+                        <PathwayTitleCard
+                            pathwayTitle={ pathwayTitle }
+                            pathwayDescription={ pathwayDescription }
+                            pathwayAuthor={ pathwayAuthor }
+                            editPathway={handleEdit}
+                        /> 
                     </div>
                 </div>
             </ReactFlow>            
@@ -244,7 +239,7 @@ const FlowModel = (props) => {
 const PathwayTitleCard = (props) => {
     if (props.pathwayTitle !== "") {
         return (
-            <div className='card'>
+            <div className='card' style={{zIndex: '5'}}>
                 <div className='card-body'>
                     <div className='fs-2 card-title' id='PathwayTitle'>{ props.pathwayTitle }</div>
                     <div className='fs-5 card-text'>{ props.pathwayDescription }</div>

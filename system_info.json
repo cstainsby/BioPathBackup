@@ -1,6 +1,11 @@
 {
-    "REGISTERED_AWS_CREDS": {
-        "default cred id": null
+    "CREDENTIAL_INFO": {
+        "default aws cred id": null,
+        "CREDENTIALS_DEF": [
+            {
+                "Type": "AWS"
+            }
+        ]
     },
     "BACKEND_INFO": {
         "SECRET_KEY": "django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r",

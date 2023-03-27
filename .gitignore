@@ -1,3 +1,6 @@
+# ignore sensitive information stored inside config file
+system_info.json
+
 # ignore postgres because we don't need our whole DB in the repo
 postgres
 *.code-workspace
@@ -12,7 +15,3 @@ AWS/aws_credentials.csv
 
 # ignore backend image/file storage
 backend/media/*
-
-
-# ignore sensitive information stored inside config file
-system_info.json

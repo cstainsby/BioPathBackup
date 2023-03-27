@@ -1,8 +1,19 @@
 import os
+import json
 import subprocess
 from InquirerPy import inquirer
 
+
+PROJECT_ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 BACKEND_ROOT_PATH = os.path.dirname(os.path.abspath(__file__)) + "/backend"
+
+
+def get_rds_vars():
+    rds_env_vars = {}
+    with open(PROJECT_ROOT_PATH + "/system_info.json", 'r') as f:
+        data = json.load(f)
+        rds_env_vars = data["DATABASE"]["REMOTE"]
+    return rds_env_vars
 
 def run_backend(backend_setup_pckg):
     database_location = backend_setup_pckg["db_loc"]
@@ -16,13 +27,20 @@ def run_backend(backend_setup_pckg):
         image_name = "local_rds_backend"
         dockerfile_filename = BACKEND_ROOT_PATH + "/Dockerfile.prod"
         dockerfile_path = BACKEND_ROOT_PATH + "/."
-        env_vars = {
-            "RDS_DB_NAME": "postgres",
-            "RDS_HOSTNAME": "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com",
-            "RDS_PORT": 5432,
-            "RDS_USERNAME": "biopath_admin",
-            "RDS_PASSWORD": "WsatnbBqr7get9A",
-        }
+
+        rds_env_vars = get_rds_vars()
+        if not rds_env_vars:
+            print("Error: import error when trying to get rds info")
+            return
+        else:
+            env_vars = rds_env_vars
+        # {
+        #     "RDS_DB_NAME": "postgres",
+        #     "RDS_HOSTNAME": "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com",
+        #     "RDS_PORT": 5432,
+        #     "RDS_USERNAME": "biopath_admin",
+        #     "RDS_PASSWORD": "WsatnbBqr7get9A",
+        # }
 
         # Build the Docker image with environment variables
         env_flags = " ".join([f"--build-arg {key}={value}" for key, value in env_vars.items()])

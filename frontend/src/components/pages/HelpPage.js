@@ -2,7 +2,7 @@
 const HelpPage = () => {
     return (
         <div>
-            <h1>Help will go here</h1>
+            <div className="fs-1">Help will go here</div>
         </div>
     )
 }

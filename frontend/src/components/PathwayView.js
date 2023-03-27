@@ -9,19 +9,18 @@ import { useLoaderData } from 'react-router-dom';
  * @returns A react component containing the 
  */
 const PathwayView = (props) => {
-  const pathway = useLoaderData();
-  const [isMinimized, setIsMinimized] = useState(false);
-  let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
+    const pathway = useLoaderData();
+    const [isMinimized, setIsMinimized] = useState(false);
+    let [concentrationManager, setConcentrationManager] = useState(new ConcentrationManager());
 
-  return (
-    <div id="ModelAreaCol">
-      <FlowModel 
-        concentrationManager = {concentrationManager}
-        pathway = {pathway}
-      />
-      
-    </div>
-  );
+    return (
+        <div className='h-100'>
+            <FlowModel 
+                concentrationManager={concentrationManager}
+                pathway={pathway}
+            />
+        </div>
+    );
 }
 
 export default PathwayView;

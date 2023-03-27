@@ -189,8 +189,8 @@ const FlowModel = (props) => {
     }
 
     return (
-        <div className='ModelArea'>
-            <ReactFlow className='ModelAreaChild ReactFlow'
+        <div className='h-100'>
+            <ReactFlow
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
@@ -202,23 +202,31 @@ const FlowModel = (props) => {
                 attributionPosition="bottom-left"
                 onNodeClick={onNodeClick}
             >
-                <Controls position='bottom-right' />
-                <PathwayTitleCard
-                    pathwayTitle={ pathwayTitle }
-                    pathwayDescription={ pathwayDescription }
-                    pathwayAuthor={ pathwayAuthor }
-                    editPathway={handleEdit}
-                /> 
-                <SliderSideBar
-                    slidersTitle="Cofactors"
-                    slidersDescription="Adjust cofactor concentrations"
-                    molecules={molecules}
-                    handleConcentrationChange={ handleConcentrationChange }
-                    run = {() => {setRunning(true)}}
-                    stop = {() => {setRunning(false)}}
-                    reset = {resetConcentrations}
-                    running = {running}
-                />
+            <Controls position='bottom-right' />
+                <div className='container-fluid'>
+                    <div className='row justify-content-between'>
+                        <div className='col-3'>
+                            <SliderSideBar
+                                slidersTitle="Cofactors"
+                                slidersDescription="Adjust cofactor concentrations"
+                                molecules={molecules}
+                                handleConcentrationChange={ handleConcentrationChange }
+                                run = {() => {setRunning(true)}}
+                                stop = {() => {setRunning(false)}}
+                                reset = {resetConcentrations}
+                                running = {running}
+                            />
+                        </div>
+                        <div className='col-3'>
+                            <PathwayTitleCard
+                                pathwayTitle={ pathwayTitle }
+                                pathwayDescription={ pathwayDescription }
+                                pathwayAuthor={ pathwayAuthor }
+                                editPathway={handleEdit}
+                            /> 
+                        </div>
+                    </div>
+                </div>
             </ReactFlow>            
         </div>
     );
@@ -232,29 +240,22 @@ const FlowModel = (props) => {
  * @returns An informational react component for the current pathway
  */
 const PathwayTitleCard = (props) => {
-    //  props that should be passed in:
-    //  pathwayTitle: string 
-    //  pathwayDescription: string
-    //  pathwayAuthor: string
-    //  additionalImage: png img to display (optional)
-
-    return (
-        <div id="PathwayTitleCard" className='ModelAreaChild'>
-            { (props.pathwayTitle !== "") && (
-                <div className="card" >
-                <div className="card-body" id='PathwayTitleTextBox'>
-                    <h4 className='card-title' id='PathwayTitle'>{ props.pathwayTitle }</h4>
-                    <p className="card-text">{ props.pathwayDescription }</p>
-                    <p className="card-text"><small className="text-muted">Created By { props.pathwayAuthor }</small></p>
+    if (props.pathwayTitle !== "") {
+        return (
+            <div className='card'>
+                <div className='card-body'>
+                    <div className='fs-2 card-title' id='PathwayTitle'>{ props.pathwayTitle }</div>
+                    <div className='fs-5 card-text'>{ props.pathwayDescription }</div>
+                    <div className='fs-5 card-text'><small className="text-muted">Created By { props.pathwayAuthor }</small></div>
                 </div>
-                <div className="card-footer">
-                    <small className="text-muted">Last updated 3 mins ago by { props.pathwayAuthor }</small>
-                </div>
-                <button onClick={props.editPathway}>Edit pathway</button>
-                </div>
-            )}
-        </div>
-    );
+                <button className='btn btn-primary' onClick={props.editPathway}>Edit pathway</button>
+            </div>
+        );
+    } else {
+        return (
+            <></>
+        )
+    }
 }
 
 export default FlowModel;

@@ -85,77 +85,28 @@ const SplashPage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Feed Section
-                This will entail finding what is relevant to the user,
-                Any Group posts which the user is a part of
-                etc 
-                
-                if the user isn't signed in this will be generic
-            */}
-            {/* <div id="FeedArea" className="row container informationalSection">
-                <div className="row informationalHeaderSection">
-                    <h4>What's New</h4>
-                    <hr/>
-                </div>
-
-                <div className="row informationalContentSection">
-                    // {splashPageLoaderData.userFeed.map((pathway) => {
-                    //     return (
-                    //     <div id="RecentWork" className="card">
-                    //         {pathway.name}
-                    //         By
-                    //         {pathway.author}
-                    //     </div>
-                    //     )
-                    // })}  
-                </div>
-            </div> */}
         </div>
     )
 }
 
 
-    /**
-     * A card component which is used to direct the user on the splash screen
-     * @prop {string} title
-     * @prop {string} description
-     * @prop {string} linkPath 
-     * @returns 
-     */
-    const StarterCard = (props) => {
-        return (
-            <Link to={props.linkPath} className="card h-100 text-start cardNavLink text-decoration-none">
-                <div className="row g-0">
-                    <div className="card-body">
-                        <div className="fs-3">{props.title}</div>
-                        <div className="card-text">{props.description}</div>
-                    </div>
-                </div>
-            </Link>
-        )
-    }
-
-
 /**
- * This feed item should be able to accomodate multiple types of news items 
- * types could include but are not limited to 
- * 1) pathway interactions such as 
- *    - pathway made 
- *    - pathway changes 
- * 2) post made 
- *    - comment on a pathway
- * @prop {string} creatorAssociated
- * @prop {Date} when
- * @prop {string} titleOfPost
- * @prop {id} attachedPathwayId
+ * A card component which is used to direct the user on the splash screen
+ * @prop {string} title
+ * @prop {string} description
+ * @prop {string} linkPath 
  * @returns 
  */
-const NewsFeedItem = (props) => {
+const StarterCard = (props) => {
     return (
-        <div id="NewsFeedItem">
-
-        </div>
+        <Link to={props.linkPath} className="card h-100 text-start text-decoration-none">
+            <div className="row g-0">
+                <div className="card-body">
+                    <div className="fs-3">{props.title}</div>
+                    <div className="card-text">{props.description}</div>
+                </div>
+            </div>
+        </Link>
     )
 }
 

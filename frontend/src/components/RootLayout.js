@@ -16,7 +16,7 @@ const RootLayout = () => {
   const userProvider= useMemo(() => ({ user, setUser }), [user, setUser])
   //console.log(userProvider);
   return (
-    <div className="d-flex w-100 flex-column">
+    <div className="d-flex w-100 h-100 flex-column">
       {/* This provider gives context access to the user context to all 
           components wrapped within it (which will be everything) */}
       <UserContext.Provider value={ userProvider }>

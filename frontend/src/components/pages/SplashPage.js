@@ -3,169 +3,164 @@ import { Link, useLoaderData } from "react-router-dom";
 
 import UserContext from "../../UserContext";
 
+import "../../scss/SplashPage.scss"
+
 /**
  * This splash page should be the first page the user hits when opening the home page (the root route)
  * @returns A Splash page component
  */
 const SplashPage = () => {
-  const splashPageLoaderData = useLoaderData() // get data loaded from react router
+    const splashPageLoaderData = useLoaderData() // get data loaded from react router
 
-  // console.log(JSON.stringify(splashPageLoaderData.recentWork[0]));
+    // const { user, setUser } = useContext(UserContext);
 
-  const { user, setUser } = useContext(UserContext);
+    // const [recentWork, setRecentWork] = useState(null);
+    // const [feed, setFeed] = useState(null);
+    const user = {
+        username: "Zach"
+    }
+    return (
+        <div className="container w-80">
+            <h1>Biopath</h1>
+            <p>A Biochemistry Interactive Learning Tool</p>
 
-  // const [recentWork, setRecentWork] = useState(null);
-  // const [feed, setFeed] = useState(null);
-  
-  return (
-    <div id="SplashPage" className="container">
-      <h1>Biopath</h1>
-      <p>A Biochemistry Interactive Learning Tool</p>
 
+            {/* Pick up where you left off section
+                Note: this should only display if the user is signed in */}
+            { user && 
+                <div className="row container">
+                    <div className="row">
+                        <h4 className="col">Jump Back In</h4>
+                        <Link className="col offset-8 btn btn-primary" to={"user/" + user.username}>To Your Work</Link>
+                        <hr/>
+                    </div>
 
-      {/* Pick up where you left off section
-        Note: this should only display if the user is signed in */}
-      { user && 
-        <div id="LeftOffArea" className="row container informationalSection">
-          <div className="row informationalHeaderSection">
-            <h4 className="col pushDown">Jump Back In</h4>
-            <Link className="col offset-8 btn" to={"user/" + user.username}>
-              <button type="button" className="btn btn-primary">
-                To Your Work
-              </button>
-            </Link>
-            <hr/>
-          </div>
+                    {/* note these elements will only render if they exist */}
+                    <div className="row informationalContentSection container ms-90">
+                        {/* first row */}
+                        <div className="row">
+                        {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
+                            return (
+                            <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
+                                <ul>
+                                    <li><h5>{pathway.name}</h5></li>
+                                    <li><small className="text-muted">Created By {pathway.author}</small></li>
+                                </ul>
+                            </Link>
+                            )
+                        })}   
+                        </div>
+                    </div>
+                </div>
+            }
 
-          {/* note these elements will only render if they exist */}
-          <div id="LeftOffAreaContent" className="row informationalContentSection container">
-            {/* first row */}
-            <div className="row">
-              {splashPageLoaderData.recentWork.slice(0, 4).map((pathway) => {
-                return (
-                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-5 card">
-                    <ul>
-                      <li><h5>{pathway.name}</h5></li>
-                      <li><small className="text-muted">Created By {pathway.author}</small></li>
-                    </ul>
-                  </Link>
-                  )
-              })}   
+            <div id="ValidatedPathwayArea" className="row container informationalSection">
+            <div className="row informationalHeaderSection">
+                <h4 className="col pushDown">Validated Pathways</h4>
+                <hr/>
             </div>
-          </div>
-        </div>
-      }
 
-        <div id="ValidatedPathwayArea" className="row container informationalSection">
-          <div className="row informationalHeaderSection">
-            <h4 className="col pushDown">Validated Pathways</h4>
-            <hr/>
-          </div>
-
-          {/* note these elements will only render if they exist */}
-          <div id="LeftOffAreaContent" className="row informationalContentSection container">
-            {/* first row */}
-            <div className="row">
-              {splashPageLoaderData.recentWork.map((pathway) => {
-                return (
-                  <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-10 card">
-                    <ul>
-                      <li><h5>{pathway.name}</h5></li>
-                      <li><small className="text-muted">Created By {pathway.author}</small></li>
-                    </ul>
-                  </Link>
-                  )
-              })}
+            {/* note these elements will only render if they exist */}
+            <div id="LeftOffAreaContent" className="row informationalContentSection container">
+                {/* first row */}
+                <div className="row">
+                {splashPageLoaderData.recentWork.map((pathway) => {
+                    return (
+                    <Link key={pathway.id} to={"pathway/" + pathway.id} className="cardNavLink col-10 m-8 card">
+                        <ul>
+                        <li><h5>{pathway.name}</h5></li>
+                        <li><small className="text-muted">Created By {pathway.author}</small></li>
+                        </ul>
+                    </Link>
+                    )
+                })}
+                </div>
             </div>
-          </div>
         </div>
 
-      {/* The Starter Section */}
-      <div id="StarterCardArea" className="row container informationalSection">
-        <div className="row informationalHeaderSection">
-          <h4>Where To Start</h4>
-          <hr/>
+        {/* The Starter Section */}
+        <div id="StarterCardArea" className="row container informationalSection">
+            <div className="row informationalHeaderSection">
+            <h4>Where To Start</h4>
+            <hr/>
+            </div>
+
+            <div className="row informationalContentSection">
+            <StarterCard
+                title="Create A Pathway"
+                description="Create Your Own Pathway"
+                linkPath="build"/>
+
+            <StarterCard
+                title="Find A Group"
+                description="Join A Group to Collaborate With"
+                linkPath="/explore/groups"/>
+
+            <StarterCard 
+                title="Browse Community Creations" 
+                description="Look At Others Work"
+                linkPath="/explore"/>
+            </div>
         </div>
 
-        <div className="row informationalContentSection">
-          <StarterCard
-            title="Create A Pathway"
-            description="Create Your Own Pathway"
-            linkPath="build"/>
+        {/* Feed Section
+            This will entail finding what is relevant to the user,
+            Any Group posts which the user is a part of
+            etc 
+            
+            if the user isn't signed in this will be generic
+        */}
+        <div id="FeedArea" className="row container informationalSection">
+            <div className="row informationalHeaderSection">
+                <h4>What's New</h4>
+                <hr/>
+            </div>
 
-          <StarterCard
-            title="Find A Group"
-            description="Join A Group to Collaborate With"
-            linkPath="/explore/groups"/>
-
-          <StarterCard 
-            title="Browse Community Creations" 
-            description="Look At Others Work"
-            linkPath="/explore"/>
+            <div className="row informationalContentSection">
+                {/* {splashPageLoaderData.userFeed.map((pathway) => {
+                    return (
+                    <div id="RecentWork" className="card">
+                        {pathway.name}
+                        By
+                        {pathway.author}
+                    </div>
+                    )
+                })}   */}
+            </div>
         </div>
-      </div>
-
-      {/* Feed Section
-        This will entail finding what is relevant to the user,
-          Any Group posts which the user is a part of
-          etc 
-        
-        if the user isn't signed in this will be generic
-      */}
-      <div id="FeedArea" className="row container informationalSection">
-        <div className="row informationalHeaderSection">
-          <h4>What's New</h4>
-          <hr/>
-
-          
-        </div>
-
-        <div className="row informationalContentSection">
-          {/* {splashPageLoaderData.userFeed.map((pathway) => {
-                return (
-                  <div id="RecentWork" className="card">
-                    {pathway.name}
-                    By
-                    {pathway.author}
-                  </div>
-                  )
-            })}   */}
-        </div>
-      </div>
-    </div>
-  )
+    </div>)
 }
 
 
-/**
- * A card component which is used to direct the user on the splash screen
- * @prop {string} title
- * @prop {string} description
- * @prop {string} linkPath 
- * @returns 
- */
-const StarterCard = (props) => {
-  return (
-    <div className="cardLinkContainer col">
-      <Link to={props.linkPath} className="card text-start cardNavLink">
-        <div id="StarterCard">
-          <div className="row g-0">
-            <div className="col-md-4">
-              <img className="img-fluid rounded-start" alt="..."/>
-            </div>
+    /**
+     * A card component which is used to direct the user on the splash screen
+     * @prop {string} title
+     * @prop {string} description
+     * @prop {string} linkPath 
+     * @returns 
+     */
+    const StarterCard = (props) => {
+        return (
+            <div className="cardLinkContainer col">
+                <Link to={props.linkPath} className="card text-start cardNavLink">
+                    <div id="StarterCard">
+                        <div className="row g-0">
+                            <div className="col-md-4">
+                                <img className="img-fluid rounded-start" alt="..."/>
+                            </div>
 
-            <div className="col-md-8">
-              <div className="card-body">
-                <h4 className="card-title">{props.title}</h4>
-                <p className="card-text">{props.description}</p>
-              </div>
+                            <div className="col-md-8">
+                                <div className="card-body">
+                                    <h4 className="card-title">{props.title}</h4>
+                                    <p className="card-text">{props.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Link>
             </div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  )
-}
+        )
+    }
 
 
 /**
@@ -183,11 +178,11 @@ const StarterCard = (props) => {
  * @returns 
  */
 const NewsFeedItem = (props) => {
-  return (
-    <div id="NewsFeedItem">
+    return (
+        <div id="NewsFeedItem">
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default SplashPage;

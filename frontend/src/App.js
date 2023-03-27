@@ -4,11 +4,11 @@ import React from 'react';
 import RouteManager from './components/RouteManager';
 
 function App() {
-  return (
-    <div className="App fontFamily">
-      <RouteManager />
-    </div>
-  );
+    return (
+        <div className="d-flex w-100 text-center justify-content-center">
+            <RouteManager />
+        </div>
+    );
 }
 
 export default App;

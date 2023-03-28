@@ -32,7 +32,6 @@ const initialEdges = [];
 let numEnzymes = 0;
 
 const FlowBuilder = (props) => {
-    //const reactFlowWrapper = useRef(null); // testing
     // const [reactFlowInstance, setReactFlowInstance] = useState(null); // testing
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
@@ -56,8 +55,9 @@ const FlowBuilder = (props) => {
         (event) => {
           event.preventDefault();
     
-        //   const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
           const type = event.dataTransfer.getData('application/reactflow');
+          console.log(type, event.dataTransfer, "testing")
+          let newNode = JSON.parse(type);
     
           // check if the dropped element is valid
           if (typeof type === 'undefined' || !type) {
@@ -68,12 +68,7 @@ const FlowBuilder = (props) => {
             x: event.clientX,// - reactFlowBounds.left,
             y: event.clientY// - reactFlowBounds.top,
           });
-          const newNode = {
-            id: getNodeId(),
-            type,
-            position,
-            data: { label: `${type} node` },
-          };
+          newNode.position = position;
     
           setNodes((nds) => nds.concat(newNode));
         },
@@ -188,7 +183,8 @@ const FlowBuilder = (props) => {
                     y: (200 * numEnzymes),
                 },
             };
-            setNodes((nds) => nds.concat(newNode));
+            // setNodes((nds) => nds.concat(newNode));
+            return newNode;
         }
     }, [setNodes]);
 

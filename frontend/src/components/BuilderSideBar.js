@@ -14,12 +14,17 @@ function BuilderSideBar(props) {
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
     const onDragStart = (event, nodeType) => { // testing
-        event.dataTransfer.setData('application/reactflow', nodeType);
+
+        var obj = JSON.stringify(props.onAddMolecule(moleculeSelection));
+        console.log(obj, "tesing stringify")
+
+        event.dataTransfer.setData('application/reactflow', obj);
         event.dataTransfer.effectAllowed = 'move';
     };
     // testing
     
     useEffect(() => { 
+        // anytime moleculeResp, enzymeResp, or reload state changes, rerender the lists
         if (moleculeResp != null) {
             const dropDownItems = moleculeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>

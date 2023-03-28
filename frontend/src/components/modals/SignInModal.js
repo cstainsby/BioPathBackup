@@ -11,7 +11,7 @@ import { saveUser } from "../../localStoreAccess/userAccess";
  * @returns 
  */
 const SignInModal = (props) => {
-
+  console.log("Hi from SignInModal");
   const { user, setUser } = useContext(UserContext);
 
   // remains null until sign in attempt is made 
@@ -44,7 +44,6 @@ const SignInModal = (props) => {
    * used for sign in or sign up based on mode selection
    */
   const handleSignInClick = async () => {
-    console.log("aaaaa"); // delete me
     if (signInMode === "signUp") {
       const res = await register(usernameText, passwordText)
 
@@ -54,17 +53,11 @@ const SignInModal = (props) => {
       }
     }
     
-    const resData = await login(usernameText, passwordText)
-    
-    console.log("bbbb"); // delete me
+    const resData = await login(usernameText, passwordText);
 
     if (resData) {
       setIsUserValid(true)
-
-      const { access } = resData.access;
-      const { refresh } = resData.refresh;
-      saveTokens(access, refresh);
-      console.log("ccccc"); // delete me
+      saveTokens(resData.access, resData.refresh);
 
       // set user information and route back to home page 
       const signedInUser = {

@@ -4,11 +4,11 @@
 // ----------------------------------------------------------------------
 
 /**
- * getter for access token from localStorage
+ * getter for access token from sessionStorage
  * @returns token or empty string 
  */
 const getAccessToken = () => {
-  let accessToken = localStorage.getItem("access_token");
+  let accessToken = sessionStorage.getItem("access_token");
   
   if (!accessToken || accessToken === "undefined") {
     accessToken = "";
@@ -18,11 +18,11 @@ const getAccessToken = () => {
 }
 
 /**
- * getter for refresh token from localStorage
+ * getter for refresh token from sessionStorage
  * @returns token string or empty string
  */
 const getRefreshToken = () => {
-  let refreshToken = localStorage.getItem("refresh_token");
+  let refreshToken = sessionStorage.getItem("refresh_token");
 
   if (!refreshToken || refreshToken === "undefined") {
     refreshToken = "";
@@ -36,18 +36,17 @@ const getRefreshToken = () => {
  * @param {string} refresh_token 
  */
 const saveTokens = (access_token, refresh_token) => {
-  console.log("11111"); // delete me
-  localStorage.setItem("access_token", access_token);
-  localStorage.setItem("refresh_token", refresh_token);
-  console.log("22222"); // delete me
+  console.log("jwtAccess saveTokens: " + access_token); // delete me
+  sessionStorage.setItem("access_token", access_token);
+  sessionStorage.setItem("refresh_token", refresh_token);
 }
 
 /**
  * used to clear tokens after sign out
  */
 const clearTokens = () => {
-  localStorage.removeItem("access_token");
-  localStorage.removeItem("refresh_token");
+  sessionStorage.removeItem("access_token");
+  sessionStorage.removeItem("refresh_token");
 }
 
 export {

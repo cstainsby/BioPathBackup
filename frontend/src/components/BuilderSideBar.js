@@ -13,6 +13,12 @@ function BuilderSideBar(props) {
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
+    const onDragStart = (event, nodeType) => { // testing
+        event.dataTransfer.setData('application/reactflow', nodeType);
+        event.dataTransfer.effectAllowed = 'move';
+    };
+    // testing
+    
     useEffect(() => { 
         if (moleculeResp != null) {
             const dropDownItems = moleculeResp.map((item, index) => 
@@ -69,7 +75,10 @@ function BuilderSideBar(props) {
                 <option selected disabled hidden>Select Molecule</option>
                 {molecules}
             </select>
-            <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+            {/* <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button> */}
+            <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
+                <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+            </div>
             <select class="form-select" onChange={(e) => onEnzymeSelect(e.target.value)}>
                 <option selected disabled hidden>Select Enzyme</option>
                 {enzymes}

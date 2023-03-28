@@ -56,13 +56,13 @@ const FlowBuilder = (props) => {
           event.preventDefault();
     
           const type = event.dataTransfer.getData('application/reactflow');
-          console.log(type, event.dataTransfer, "testing")
-          let newNode = JSON.parse(type);
     
           // check if the dropped element is valid
-          if (typeof type === 'undefined' || !type) {
+          console.log(typeof type, 'undefined', type)
+          if (type === "undefined") { // if nothing was selected return
             return;
           }
+          let newNode = JSON.parse(type);
     
           const position = rfInstance.project({
             x: event.clientX,// - reactFlowBounds.left,
@@ -211,7 +211,8 @@ const FlowBuilder = (props) => {
                     y: (200 * numEnzymes)
                 },
             };
-            setNodes((nds) => nds.concat(newNode));
+            // setNodes((nds) => nds.concat(newNode));
+            return newNode;
         }
     }, [setNodes]);
 
@@ -238,10 +239,10 @@ const FlowBuilder = (props) => {
         setNewTitle(e.target.value);
     }
 
-    const test = (e) => {
-        let view = getViewport();
-        console.log(e, "test", view)
-    }
+    // const test = (e) => {
+    //     let view = getViewport();
+    //     console.log(e, "test", view)
+    // }
 
     return (
         <ReactFlow
@@ -253,7 +254,6 @@ const FlowBuilder = (props) => {
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
-        onPaneClick={test} // testing
         onDrop={onDrop} // testing
         onDragOver={onDragOver} // testing
         >

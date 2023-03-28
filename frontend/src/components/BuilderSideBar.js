@@ -13,12 +13,18 @@ function BuilderSideBar(props) {
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
-    const onDragStart = (event, nodeType) => { // testing
+    const onDragStartMolecule = (event, nodeType) => { // testing
 
-        var obj = JSON.stringify(props.onAddMolecule(moleculeSelection));
-        console.log(obj, "tesing stringify")
+        var nodeJSON = JSON.stringify(props.onAddMolecule(moleculeSelection));
 
-        event.dataTransfer.setData('application/reactflow', obj);
+        event.dataTransfer.setData('application/reactflow', nodeJSON);
+        event.dataTransfer.effectAllowed = 'move';
+    };
+    const onDragStartEnzyme = (event, nodeType) => { // testing
+
+        var nodeJSON = JSON.stringify(props.onAddEnzyme(enzymeSelection));
+
+        event.dataTransfer.setData('application/reactflow', nodeJSON);
         event.dataTransfer.effectAllowed = 'move';
     };
     // testing
@@ -81,14 +87,17 @@ function BuilderSideBar(props) {
                 {molecules}
             </select>
             {/* <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button> */}
-            <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
+            <div className="dndnode input" onDragStart={(event) => onDragStartMolecule(event, 'molecule build')} draggable>
                 <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
             </div>
             <select class="form-select" onChange={(e) => onEnzymeSelect(e.target.value)}>
                 <option selected disabled hidden>Select Enzyme</option>
                 {enzymes}
             </select>
-            <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button>
+            {/* <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button> */}
+            <div className="dndnode input" onDragStart={(event) => onDragStartEnzyme(event, 'enzyme build')} draggable>
+                <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Enzyme</button>
+            </div>
             <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
             <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
             

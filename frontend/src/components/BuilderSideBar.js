@@ -124,8 +124,8 @@ const BuildEnzymeModal = (props) => {
         setCofactors([]);
         setReversible("false");
 
-        document.getElementById("text1").value="";
-        document.getElementById("text2").value="";
+        document.getElementById("enzymeName").value="";
+        document.getElementById("enzymeAbbr").value="";
         document.getElementById("substrates").selectedIndex=-1;
         document.getElementById("products").selectedIndex=-1;
         document.getElementById("cofactors").selectedIndex=-1;
@@ -190,11 +190,11 @@ const BuildEnzymeModal = (props) => {
                     <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
                     <label>
                     Enzyme Name
-                    <input id="text1" class="form-control" type="text" onChange={e => setName(e.target.value)} />
+                    <input id="enzymeName" class="form-control" type="text" onChange={e => setName(e.target.value)} />
                     </label>
                     <label>
                     Enzyme Abbreviation
-                    <input id="text2" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
+                    <input id="enzymeAbbr" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
                     </label>
                     <label>
                     Reversible
@@ -259,8 +259,8 @@ const BuildMoleculeModal = (props) => {
         setLabel(null);
         setAbbr(null);
 
-        document.getElementById("mtext1").value="";
-        document.getElementById("mtext2").value="";
+        document.getElementById("mName").value="";
+        document.getElementById("mAbbr").value="";
     }, [reset])
 
     function handleSubmit(event) {
@@ -291,11 +291,11 @@ const BuildMoleculeModal = (props) => {
                     <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>
                         Molecule Name
-                    <input id="mtext1" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
+                    <input id="mName" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
                     </label>
                     <label>
                         Molecule Abbreviation
-                    <input id="mtext2" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
+                    <input id="mAbbr" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
                 </li>
               </ul>

@@ -217,7 +217,6 @@ const FlowBuilder = (props) => {
     }, [setNodes]);
 
     const onClear = useCallback(() => {
-        //localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
         // setPathwayID(null); // no pathway id if current Build is cleared
@@ -238,11 +237,6 @@ const FlowBuilder = (props) => {
     const handleTitleChange = (e) => {
         setNewTitle(e.target.value);
     }
-
-    // const test = (e) => {
-    //     let view = getViewport();
-    //     console.log(e, "test", view)
-    // }
 
     return (
         <ReactFlow

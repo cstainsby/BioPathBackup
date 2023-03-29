@@ -12,11 +12,15 @@ const SplashPage = () => {
 
     const { user, setUser } = useContext(UserContext);
 
-    // const [recentWork, setRecentWork] = useState(null);
-    // const [feed, setFeed] = useState(null);
-    // const user = {
-    //     username: "Zach"
-    // }
+    const [recentWork, setRecentWork] = useState(null);
+    const [feed, setFeed] = useState(null);
+
+    useEffect(() => {
+        if(splashPageLoaderData.recentWork) setRecentWork(splashPageLoaderData.recentWork);
+        
+        if(splashPageLoaderData.feed) setFeed(splashPageLoaderData.feed);
+    }, [splashPageLoaderData])
+
     return (
         <div className="container">
             <div className="fs-1">Biopath</div>

@@ -1,5 +1,5 @@
 import {useLocation} from 'react-router-dom'; // testing delete maybe
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
     useNodesState,
@@ -31,7 +31,8 @@ const initialEdges = [];
 
 let numEnzymes = 0;
 
-const SaveRestore = (props) => {
+const FlowBuilder = (props) => {
+    // const [reactFlowInstance, setReactFlowInstance] = useState(null); // testing
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
     const [pathwayID, setPathwayID] = useState(null); // used if editing existing
@@ -39,9 +40,41 @@ const SaveRestore = (props) => {
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [rfInstance, setRfInstance] = useState(null);
     const [editExisting, setEditExisting] = useState(false);
-    const { setViewport } = useReactFlow();
+    const { setViewport, getViewport } = useReactFlow();
 
     const location = useLocation();
+
+
+    // testing
+    const onDragOver = useCallback((event) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+      }, []);
+    
+      const onDrop = useCallback(
+        (event) => {
+          event.preventDefault();
+    
+          const type = event.dataTransfer.getData('application/reactflow');
+    
+          // check if the dropped element is valid
+          console.log(typeof type, 'undefined', type)
+          if (type === "undefined") { // if nothing was selected return
+            return;
+          }
+          let newNode = JSON.parse(type);
+    
+          const position = rfInstance.project({
+            x: event.clientX,// - reactFlowBounds.left,
+            y: event.clientY// - reactFlowBounds.top,
+          });
+          newNode.position = position;
+    
+          setNodes((nds) => nds.concat(newNode));
+        },
+        [rfInstance]
+      );
+      // testing
 
     if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
         let enzymeNodes = [];
@@ -98,30 +131,8 @@ const SaveRestore = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, pathwayID, "ben")
+        console.log(nodes, pathwayID)
     }, [nodes, pathwayID]); // monitor pathwayID for changes
-
-    const onSave = useCallback(() => {
-        if (rfInstance) {
-            const flow = rfInstance.toObject();
-            localStorage.setItem(flowKey, JSON.stringify(flow));
-        }
-    }, [rfInstance]);
-
-    const onRestore = useCallback(() => {
-        const restoreFlow = async () => {
-        const flow = JSON.parse(localStorage.getItem(flowKey));
-
-            if (flow) {
-                const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-                setNodes(flow.nodes || []);
-                setEdges(flow.edges || []);
-                setViewport({ x, y, zoom });
-            }
-        };
-
-        restoreFlow();
-    }, [setNodes, setViewport]);
 
     const onPush = useCallback(() => {
         setPostShown(!isPostShown)
@@ -172,7 +183,8 @@ const SaveRestore = (props) => {
                     y: (200 * numEnzymes),
                 },
             };
-            setNodes((nds) => nds.concat(newNode));
+            // setNodes((nds) => nds.concat(newNode));
+            return newNode;
         }
     }, [setNodes]);
 
@@ -199,13 +211,12 @@ const SaveRestore = (props) => {
                     y: (200 * numEnzymes)
                 },
             };
-            console.log(newNode.data.cofactors, "newNode")
-            setNodes((nds) => nds.concat(newNode));
+            // setNodes((nds) => nds.concat(newNode));
+            return newNode;
         }
     }, [setNodes]);
 
     const onClear = useCallback(() => {
-        localStorage.clear();
         setNodes(initialNodes);
         setEdges(initialEdges);
         // setPathwayID(null); // no pathway id if current Build is cleared
@@ -214,10 +225,10 @@ const SaveRestore = (props) => {
 
     const onNodeClick = (e, clickedNode) => {
         // uncomment in production
-        //if (window.confirm("Do you really want to delete this node?")) {
+        if (window.confirm("Do you really want to delete this node?")) {
             setNodes((nds) => nds.filter(node => node.id !== clickedNode.id)); // deletes selected node
             setEdges((eds) => eds.filter(edge => (edge.target != clickedNode.id && edge.source != clickedNode.id))) // deletes edges with selected node id
-        //}
+        }
         if (clickedNode.type === "enzyme") { // check if an enzyme was deleted
             numEnzymes -= 1;
         }
@@ -237,19 +248,16 @@ const SaveRestore = (props) => {
         onInit={setRfInstance}
         nodeTypes={nodeTypes}
         onNodeClick={onNodeClick}
+        onDrop={onDrop} // testing
+        onDragOver={onDragOver} // testing
         >
         <div className="save__controls">
-            <button class="btn btn-primary" onClick={onSave}>save</button>
-            <button class="btn btn-warning" onClick={onRestore}>restore</button>
-            {/* <button onClick={onPush}>push</button> */}
-
-            
-                <button class="btn btn-success" type="submit" onClick={onPush}>push</button>
+            <button class="btn btn-success" type="submit" onClick={onPush}>Save As</button>
             
             {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
-            <button class="btn btn-success" onClick={onUpdate}>update</button>
+            <button class="btn btn-primary" onClick={onUpdate}>Save</button>
 
-            <button class="btn btn-danger" onClick={onClear}>clear flow</button>
+            <button class="btn btn-secondary" onClick={onClear}>clear flow</button>
         </div>
         <BuilderSideBar
                     slidersTitle="Pathway Builder"
@@ -273,7 +281,7 @@ const PathwayTitle = (props) => { // take user input to set pathway title
 }
 
 export default () => (
-    <ReactFlowProvider>
-        <SaveRestore />
+    <ReactFlowProvider >
+        <FlowBuilder />
     </ReactFlowProvider>
 );

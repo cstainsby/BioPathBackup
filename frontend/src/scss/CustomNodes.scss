@@ -38,7 +38,10 @@
 
     &.build {
         .react-flow__handle {
+            height: 10px;
+            width: 100px;
             opacity: 50;
+            border-radius: 100%;
         }
     }
 }

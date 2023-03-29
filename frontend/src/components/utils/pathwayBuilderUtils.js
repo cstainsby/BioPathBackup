@@ -35,11 +35,6 @@ export function generatePathwayJson(nodes, edges, title, author, isPublic) {
         "molecule_instances": moleculeInstances
     }
 
-    if (!(enzymeInstances.length > 0) || !(moleculeInstances.length > 0)) { // dont push an empty pathway
-        alert("Pathway must have an enzyme");
-        return null;
-    }
-
     return pathwayObj;
 } 
 

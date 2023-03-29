@@ -74,31 +74,36 @@ function BuilderSideBar(props) {
         props.onAddEnzyme(enzymeSelection)
     }
 
-  return (
-    <div className='card ModelAreaChild' id='PathwaySliderBox'>
-            <h1>{props.slidersTitle}</h1>
-            <a>{props.slidersDescription}</a>
-            <select class="form-select" onChange={(e) => onMoleculeSelect(e.target.value)}>
-                <option selected disabled hidden>Select Molecule</option>
-                {molecules}
-            </select>
-            {/* <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button> */}
-            <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule')} draggable>
-                <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+    return (
+        <div className='card ModelAreaChild' id='PathwaySliderBox' style={{zIndex: "6"}}>
+            <div className="fs-1">Pathway Builder</div>
+            <div className="fs-5">Create a new Pathway</div>
+            <div className="container">
+                <select class="form-select m-1" onChange={(e) => onMoleculeSelect(e.target.value)}>
+                    <option selected disabled hidden>Select Molecule</option>
+                    {molecules}
+                </select>
+                <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
+                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+                </div>
+                <select class="form-select m-1" onChange={(e) => onEnzymeSelect(e.target.value)}>
+                    <option selected disabled hidden>Select Enzyme</option>
+                    {enzymes}
+                </select>
+                <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme build')} draggable>
+                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Enzyme</button>
+                </div>
+                <BuildEnzymeModal 
+                    onNewEnzyme={props.onNewEnzyme} 
+                    resetDropDowns={setReload} 
+                    dropDownItems={molecules} 
+                    moleculeResp={moleculeResp} />
+                <BuildMoleculeModal 
+                    onNewMolecule={props.onNewMolecule} 
+                    resetDropDowns={setReload} />
             </div>
-            <select class="form-select" onChange={(e) => onEnzymeSelect(e.target.value)}>
-                <option selected disabled hidden>Select Enzyme</option>
-                {enzymes}
-            </select>
-            {/* <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button> */}
-            <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme')} draggable>
-                <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Enzyme</button>
-            </div>
-            <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
-            <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
-            
         </div>
-  );
+    );
 }
 
 const BuildEnzymeModal = (props) => {
@@ -177,29 +182,26 @@ const BuildEnzymeModal = (props) => {
     }
 
     return (
-        <div class="dropdown">
+        <div class="dropdown m-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 New Enzyme
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
-                    <label>
+            <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
+                <label>
                     Enzyme Name
                     <input id="enzymeName" class="form-control" type="text" onChange={e => setName(e.target.value)} />
-                    </label>
-                    <label>
+                </label>
+                <label>
                     Enzyme Abbreviation
                     <input id="enzymeAbbr" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
-                    </label>
-                    <label>
+                </label>
+                <label>
                     Reversible
                     <select class="form-select" onChange={e => setReversible(e.target.value)}>
                         <option>false</option>
                         <option>true</option>
                     </select>
-                    </label>
-                </li>
+                </label>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item" href="#">
                         Substrates
@@ -239,6 +241,7 @@ const BuildEnzymeModal = (props) => {
                         </li>
                     </ul>
                 </li>
+                <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
             </ul>
             </div>
     )
@@ -278,11 +281,11 @@ const BuildMoleculeModal = (props) => {
     }
 
     return (
-        <div class="dropdown">
+        <div class="dropdown m-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 New Molecule
             </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu p-2">
                 <li>
                     <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>

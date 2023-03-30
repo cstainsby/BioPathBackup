@@ -9,8 +9,11 @@ FRONTEND_ROOT_PATH = os.path.dirname(os.path.abspath(__file__)) + "/frontend"
 def run_frontend(frontend_setup_pckg):
     run_type = frontend_setup_pckg["run_type"]
     backend_endpoint = frontend_setup_pckg["backend_run_loc"]
-    print("fronend package:", frontend_setup_pckg)
-    print("backend endpoint", backend_endpoint)
+
+    print("\n--- Configured Settings ---")
+    print(frontend_setup_pckg)
+    print("---------------------------\n")
+
     # for NPM run types
     if run_type == "NPM":
         # if there is a defined backend endpoint 
@@ -23,21 +26,27 @@ def run_frontend(frontend_setup_pckg):
 
     # for containerized run types
     elif run_type == "docker container":
-        image_name = "local_rds_backend"
-        dockerfile_filename = FRONTEND_ROOT_PATH + "/Dockerfile.prod"
+        image_name = "local_frontend_container"
+        dockerfile_filename = FRONTEND_ROOT_PATH 
         dockerfile_path = FRONTEND_ROOT_PATH + "/."
-        env_vars = {
-            "BACKEND_ENDPOINT": backend_endpoint
-        }
 
+        # Based on input backend endpoint, find its coresponding dockerfile
+        #  TODO: this implementation is BAD in the sense that it works but there is a better way
+        if backend_endpoint == "http://localhost:8000":
+            dockerfile_filename += "/Dockerfile.local"
+        elif backend_endpoint == "http://wtfysc3awc.us-west-2.awsapprunner.com":
+            dockerfile_filename += "/Dockerfile.remote"
+        else:
+            dockerfile_filename += "/Dockerfile.local"
+    
         # Build the Docker image with environment variables
-        env_flags = " ".join([f"--build-arg {key}={value}" for key, value in env_vars.items()])
-        build_cmd = f"docker build -t {image_name} {env_flags} -f {dockerfile_filename} {dockerfile_path}"
+        # env_flags = " ".join([f"--build-arg {key}={value}" for key, value in env_vars.items()])
+        build_cmd = f"docker build -t {image_name} -f {dockerfile_filename} {dockerfile_path}"
         subprocess.run(build_cmd, shell=True, check=True)
 
         # Run the docker Container
-        env_flags = " ".join([f"-e {key}={value}" for key, value in env_vars.items()])
-        run_cmd = f"docker run -p 3000:3000 {env_flags}  {image_name}"
+        # env_flags = " ".join([f"-e {key}={value}" for key, value in env_vars.items()])
+        run_cmd = f"docker run -p 3000:3000   {image_name}"
         subprocess.run(run_cmd, shell=True, check=True)
 
 
@@ -46,7 +55,7 @@ def ask_for_frontend_build_settings():
     """Asks the user for details on how to run the frontend"""
     frontend_pckg = {
         "run_type": None,
-        "run_alone": None,
+        "run_with_backend": None,
         "backend_run_loc": None
     }
 
@@ -58,15 +67,15 @@ def ask_for_frontend_build_settings():
     frontend_pckg["run_type"] = local_run_type
 
     # ask if the user will be running the frontend without the backend
-    is_run_alone = inquirer.select(
-        message="Will you be running the frontend without the backend?",
+    run_with_backend = inquirer.select(
+        message="Will you be running the frontend with a backend?",
         choices=["Yes", "No"]
     ).execute()
-    frontend_pckg["run_alone"] = is_run_alone
+    frontend_pckg["run_with_backend"] = run_with_backend
 
     # if the user is running the frontend with the backend, determine 
     #      where the backend can be accessed from 
-    if is_run_alone == "No":
+    if run_with_backend == "Yes":
         all_backend_endpoints = get_backend_endpoints()
         backend_run_loc = inquirer.select(
             message="Where is the backend you will accessing",

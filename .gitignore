@@ -15,3 +15,5 @@ AWS/aws_credentials.csv
 
 # ignore backend image/file storage
 backend/media/*
+
+__pycache__

@@ -165,7 +165,7 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
  * @param {reactFlow Node} node 
  * @returns bool
  */
-function filterEnzymes(node) {
+export function filterEnzymes(node) {
     if ( node.data.type === "enzyme") {
         return true;
       }
@@ -184,3 +184,10 @@ function filterMolecules(node) {
       }
     return false;
 }
+
+export const exportedForTesting = {
+    generateEnzymeInstances,
+    generateMoleculeInstances,
+    filterMolecules,
+    filterEnzymes
+  }

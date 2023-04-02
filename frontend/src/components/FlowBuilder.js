@@ -33,6 +33,7 @@ const initialEdges = [];
 let numEnzymes = 0;
 
 const FlowBuilder = (props) => {
+    const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(""); // maybe use
     const [pathwayID, setPathwayID] = useState(null); // used if editing existing
@@ -55,6 +56,7 @@ const FlowBuilder = (props) => {
         (event) => {
           event.preventDefault();
     
+          const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
           const type = event.dataTransfer.getData('application/reactflow');
     
           // check if the dropped element is valid
@@ -65,8 +67,8 @@ const FlowBuilder = (props) => {
           let newNode = JSON.parse(type);
     
           const position = rfInstance.project({
-            x: event.clientX,// - reactFlowBounds.left,
-            y: event.clientY// - reactFlowBounds.top,
+            x: event.clientX - reactFlowBounds.left,
+            y: event.clientY - reactFlowBounds.top
           });
           newNode.position = position;
     
@@ -239,7 +241,7 @@ const FlowBuilder = (props) => {
     }
 
     return (
-        <div className='h-100' style={{background: "#adb5bd"}}>
+        <div className='h-100' ref={reactFlowWrapper} style={{background: "#adb5bd"}}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}

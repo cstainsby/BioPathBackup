@@ -14,7 +14,7 @@ function BuilderSideBar(props) {
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
     const onDragStart = (event, nodeType) => { // testing
-        if (nodeType === 'molecule') {
+        if (nodeType === 'molecule build') {
             var nodeJSON = JSON.stringify(props.onAddMolecule(moleculeSelection));
         }
         else { // enzyme

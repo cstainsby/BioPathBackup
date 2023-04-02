@@ -250,6 +250,8 @@ const FlowBuilder = (props) => {
                 nodeTypes={nodeTypes}
                 fitView={true}
                 onNodeClick={onNodeClick}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
                 attributionPosition="bottom-left"
             >
                 <Controls position='bottom-right'/>

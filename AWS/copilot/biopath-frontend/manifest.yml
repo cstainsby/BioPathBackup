@@ -1,9 +1,9 @@
-# The manifest for the "frontend" service.
+# The manifest for the "biopath-frontend" service.
 # Read the full specification for the "Request-Driven Web Service" type at:
 # https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/
 
 # Your service name will be used in naming your resources like log groups, App Runner services, etc.
-name: frontend
+name: biopath-frontend
 # The "architecture" of the service you're running.
 type: Request-Driven Web Service
 
@@ -23,15 +23,14 @@ image:
 #     timeout: 5s
 
 # Number of CPU units for the task.
-cpu: 256
+cpu: 1024
 # Amount of memory in MiB used by the task.
-memory: 512
+memory: 2048
 
 # Connect your App Runner service to your environment's VPC.
-network:
-  vpc:
-    id: vpc-00a0f519d60db10dd
-    
+# network:
+#   vpc:
+#     placement: private
 
 
 # Enable tracing for the service.

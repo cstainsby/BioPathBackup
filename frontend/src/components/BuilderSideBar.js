@@ -13,7 +13,20 @@ function BuilderSideBar(props) {
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
+    const onDragStart = (event, nodeType) => { // testing
+        if (nodeType === 'molecule') {
+            var nodeJSON = JSON.stringify(props.onAddMolecule(moleculeSelection));
+        }
+        else { // enzyme
+            var nodeJSON = JSON.stringify(props.onAddEnzyme(enzymeSelection));
+        }
+
+        event.dataTransfer.setData('application/reactflow', nodeJSON);
+        event.dataTransfer.effectAllowed = 'move';
+    };
+    
     useEffect(() => { 
+        // anytime moleculeResp, enzymeResp, or reload state changes, rerender the lists
         if (moleculeResp != null) {
             const dropDownItems = moleculeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>
@@ -61,25 +74,36 @@ function BuilderSideBar(props) {
         props.onAddEnzyme(enzymeSelection)
     }
 
-  return (
-    <div className='card ModelAreaChild' id='PathwaySliderBox'>
-            <h1>{props.slidersTitle}</h1>
-            <a>{props.slidersDescription}</a>
-            <select class="form-select" onChange={(e) => onMoleculeSelect(e.target.value)}>
-                <option selected disabled hidden>Select Molecule</option>
-                {molecules}
-            </select>
-            <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
-            <select class="form-select" onChange={(e) => onEnzymeSelect(e.target.value)}>
-                <option selected disabled hidden>Select Enzyme</option>
-                {enzymes}
-            </select>
-            <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button>
-            <BuildEnzymeModal onNewEnzyme={props.onNewEnzyme} resetDropDowns={setReload} dropDownItems={molecules} moleculeResp={moleculeResp}></BuildEnzymeModal>
-            <BuildMoleculeModal onNewMolecule={props.onNewMolecule} resetDropDowns={setReload}></BuildMoleculeModal>
-            
+    return (
+        <div className='card ModelAreaChild' id='PathwaySliderBox' style={{zIndex: "6"}}>
+            <div className="fs-1">Pathway Builder</div>
+            <div className="fs-5">Create a new Pathway</div>
+            <div className="container">
+                <select class="form-select m-1" onChange={(e) => onMoleculeSelect(e.target.value)}>
+                    <option selected disabled hidden>Select Molecule</option>
+                    {molecules}
+                </select>
+                <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
+                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+                </div>
+                <select class="form-select m-1" onChange={(e) => onEnzymeSelect(e.target.value)}>
+                    <option selected disabled hidden>Select Enzyme</option>
+                    {enzymes}
+                </select>
+                <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme build')} draggable>
+                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Enzyme</button>
+                </div>
+                <BuildEnzymeModal 
+                    onNewEnzyme={props.onNewEnzyme} 
+                    resetDropDowns={setReload} 
+                    dropDownItems={molecules} 
+                    moleculeResp={moleculeResp} />
+                <BuildMoleculeModal 
+                    onNewMolecule={props.onNewMolecule} 
+                    resetDropDowns={setReload} />
+            </div>
         </div>
-  );
+    );
 }
 
 const BuildEnzymeModal = (props) => {
@@ -101,12 +125,15 @@ const BuildEnzymeModal = (props) => {
         setCofactors([]);
         setReversible("false");
 
-        document.getElementById("text1").value="";
-        document.getElementById("text2").value="";
-        document.getElementById("text3").value="";
+        document.getElementById("enzymeName").value="";
+        document.getElementById("enzymeAbbr").value="";
+        document.getElementById("substrates").selectedIndex=-1;
+        document.getElementById("products").selectedIndex=-1;
+        document.getElementById("cofactors").selectedIndex=-1;
     }, [reset])
 
     function handleClick() {
+
 
         const enzymeObj = {
             "name": name,
@@ -128,45 +155,60 @@ const BuildEnzymeModal = (props) => {
     }
 
     function handleNewSubstrate(selectedSubstrate) { // adds new selected molecule to substrate list
-        setSubstrates(substrates => [...substrates,props.moleculeResp[selectedSubstrate].id] )
+        // setSubstrates(substrates => [...substrates,props.moleculeResp[selectedSubstrate].id] )
+        let selectElement = document.getElementById("substrates");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setSubstrates(selectedValues);
     }
 
     function handleNewProduct(selectedProduct) { // adds new selected molecule to substrate list
-        setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
+        // setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
+        let selectElement = document.getElementById("products");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setProducts(selectedValues);
     }
 
     function handleNewCofactor(selectedCofactor) { // adds new selected molecule to substrate list
-        setCofactors(cofactors => [...cofactors,props.moleculeResp[selectedCofactor].id] )
+        // setCofactors(cofactors => [...cofactors,props.moleculeResp[selectedCofactor].id] )
+        let selectElement = document.getElementById("cofactors");
+        // get the molecule id from the value of each selected option
+        let selectedValues = Array.from(selectElement.selectedOptions)
+            .map(option => (props.moleculeResp[parseInt(option.value)].id));
+        setCofactors(selectedValues);
     }
 
     return (
-        <div class="dropdown">
+        <div class="dropdown m-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 New Enzyme
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
-                    <label>
+            <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
+                <label>
                     Enzyme Name
-                    <input id="text1" class="form-control" type="text" onChange={e => setName(e.target.value)} />
-                    </label>
-                    <label>
+                    <input id="enzymeName" class="form-control" type="text" onChange={e => setName(e.target.value)} />
+                </label>
+                <label>
                     Enzyme Abbreviation
-                    <input id="text2" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
-                    </label>
-                    <label>
+                    <input id="enzymeAbbr" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
+                </label>
+                <label>
                     Reversible
-                    <input id="text3" class="form-control" type="text" onChange={e => setReversible(e.target.value)} />
-                    </label>
-                </li>
+                    <select class="form-select" onChange={e => setReversible(e.target.value)}>
+                        <option>false</option>
+                        <option>true</option>
+                    </select>
+                </label>
                 <li class="dropdown-submenu">
                     <a class="dropdown-item" href="#">
                         Substrates
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)}>
+                            <select id="substrates" class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)} multiple>
                                 <option>Select Substrates</option>
                                 {props.dropDownItems}
                             </select>
@@ -178,9 +220,8 @@ const BuildEnzymeModal = (props) => {
                         Products
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
-                        
                         <li>
-                            <select class="form-select" onChange={(e) => handleNewProduct(e.target.value)}>
+                            <select id="products" class="form-select" onChange={(e) => handleNewProduct(e.target.value)} multiple>
                                 <option>Select Products</option>
                                 {props.dropDownItems}
                             </select>
@@ -193,13 +234,14 @@ const BuildEnzymeModal = (props) => {
                     </a>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
-                            <select class="form-select" Change={(e) => handleNewCofactor(e.target.value)}>
+                            <select id="cofactors" class="form-select" Change={(e) => handleNewCofactor(e.target.value)} multiple>
                                 <option>Select Cofactors</option>
                                 {props.dropDownItems}
                             </select>
                         </li>
                     </ul>
                 </li>
+                <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
             </ul>
             </div>
     )
@@ -216,8 +258,8 @@ const BuildMoleculeModal = (props) => {
         setLabel(null);
         setAbbr(null);
 
-        document.getElementById("mtext1").value="";
-        document.getElementById("mtext2").value="";
+        document.getElementById("mName").value="";
+        document.getElementById("mAbbr").value="";
     }, [reset])
 
     function handleSubmit(event) {
@@ -239,20 +281,20 @@ const BuildMoleculeModal = (props) => {
     }
 
     return (
-        <div class="dropdown">
+        <div class="dropdown m-1">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 New Molecule
             </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu p-2">
                 <li>
                     <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>
                         Molecule Name
-                    <input id="mtext1" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
+                    <input id="mName" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
                     </label>
                     <label>
                         Molecule Abbreviation
-                    <input id="mtext2" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
+                    <input id="mAbbr" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
                 </li>
               </ul>

@@ -127,10 +127,14 @@ async function postPathway(pathwayObj) {
 }
 
 async function postMolecule(moleculeObj) {
+    const successMessage = "Molecule successfully added to DB"
+    const failMessage = "Molecule add failed, try again"
     return postBackendData(moleculeObj, "molecules/");
 }
 
 async function postEnzyme(enzymeObj) {
+    const successMessage = "Enzyme successfully added to DB"
+    const failMessage = "Enzyme add failed, try again"
     return postBackendData(enzymeObj, "enzymes/");
 }
 

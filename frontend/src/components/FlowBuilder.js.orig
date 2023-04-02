@@ -217,6 +217,11 @@ const FlowBuilder = (props) => {
     }, [setNodes]);
 
     const onClear = useCallback(() => {
+<<<<<<< HEAD
+        console.log("why the fuck...");
+        localStorage.clear();
+=======
+>>>>>>> dev
         setNodes(initialNodes);
         setEdges(initialEdges);
         // setPathwayID(null); // no pathway id if current Build is cleared

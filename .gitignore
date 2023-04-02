@@ -1,3 +1,6 @@
+# ignore sensitive information stored inside config file
+system_info.json
+
 # ignore postgres because we don't need our whole DB in the repo
 postgres
 *.code-workspace

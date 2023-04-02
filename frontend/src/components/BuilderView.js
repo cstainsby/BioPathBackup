@@ -8,11 +8,9 @@ import FlowBuilder from './FlowBuilder'
  * @returns A react component containing the 
  */
 const BuilderView = (props) => {
-
   return (
     <div id="ModelAreaCol">
-      <FlowBuilder></FlowBuilder>
-      
+      <FlowBuilder />
     </div>
   );
 }

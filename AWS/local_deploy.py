@@ -124,7 +124,9 @@ def login_to_aws():
   acct_id = cred_vals[acct_id_index]
   
 
-  """aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/p4x5m2c9"""
+  """
+  Sample sign in command
+  aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/p4x5m2c9"""
   # login to AWS
   console_job("Logging Into AWS",
               f"""aws ecr get-login-password --region {REGION_NAME} \
@@ -230,10 +232,6 @@ def main():
     else:
       print("Error: unregcognized flag {}".format(flag))
       return -1
-  
-  if len(flags) == 0:
-    images_to_ecr()
-    deploy_aws_infrastructure()
 
 
 

@@ -32,7 +32,10 @@ SECRET_KEY = 'django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "wtfysc3awc.us-west-2.awsapprunner.com",
+    "localhost"
+]
 
 
 # Application definition
@@ -87,21 +90,33 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = { # edited by Josh S
-    # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("POSTGRES_DB"),
-        'HOST': os.environ.get("POSTGRES_DB_HOST"), # 'db', # name of postgres container
-        'PORT': 5432, # default port for postgres
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'TEST': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': f'{BASE_DIR}/db.sqlite3',
+if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
+    DATABASES =  {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("RDS_DB_NAME"),
+            'HOST': os.environ.get("RDS_HOSTNAME"), # 'db', # name of postgres container
+            'PORT': os.environ.get("RDS_PORT"),     # default port for postgres
+            'USER': os.environ.get('RDS_USERNAME'),
+            'PASSWORD': os.environ.get('RDS_PASSWORD')
         }
     }
-}
+else:
+    DATABASES = { # edited by Josh S
+        # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("POSTGRES_DB"),
+            'HOST': os.environ.get("POSTGRES_DB_HOST"), # 'db', # name of postgres container
+            'PORT': 5432, # default port for postgres
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'TEST': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': f'{BASE_DIR}/db.sqlite3',
+            }
+        }
+    }
 
 
 # Password validation
@@ -148,6 +163,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Allow CORS from localhost for development
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://wtfysc3awc.us-west-2.awsapprunner.com",
+    "https://vwuucs6wau.us-west-2.awsapprunner.com"
 ]
 
 

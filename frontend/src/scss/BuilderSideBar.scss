@@ -2,6 +2,11 @@
     position: relative;
 }
 
+.dropdown-checkbox {
+    position: relative;
+    height: 70px;
+}
+
 .dropdown-submenu>.dropdown-menu {
     top: 0;
     left: 100%;
@@ -10,6 +15,7 @@
     -webkit-border-radius: 0 6px 6px 6px;
     -moz-border-radius: 0 6px 6px;
     border-radius: 0 6px 6px 6px;
+    overflow-y: auto;
 }
 
 .dropdown-submenu:hover>.dropdown-menu {

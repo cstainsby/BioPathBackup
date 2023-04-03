@@ -29,3 +29,6 @@
 *.iml
 *.swp
 *.swo
+
+# enviornment secrets
+.env

@@ -16,13 +16,13 @@ const SignInModal = (props) => {
   // remains null until sign in attempt is made 
   // once attempt is made, true/false is set which influences modal rendering
   const [isUserValid, setIsUserValid] = useState(false);
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const [usernameText, setUsernameText] = useState("");
   const [passwordText, setPasswordText] = useState("");
 
   // state for determining what type of form to display
-  const [signInMode, setSignInMode] = useState("signIn") 
+  const [signInMode, setSignInMode] = useState("signIn");
 
 
   /**
@@ -55,15 +55,16 @@ const SignInModal = (props) => {
     const resData = await login(usernameText, passwordText);
 
     if (resData) {
-      setIsUserValid(true)
+      setIsUserValid(true);
       saveTokens(resData.access, resData.refresh);
 
       // set user information and route back to home page 
       const signedInUser = {
         username: usernameText
       }
-      saveUser(signedInUser)
-      setUser(signedInUser)
+      saveUser(signedInUser);
+      setUser(signedInUser);
+      console.log("user is: " + signedInUser);
     }
     else {
       setErrorMsg("Invalid Login")

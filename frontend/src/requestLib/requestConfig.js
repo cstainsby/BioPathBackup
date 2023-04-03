@@ -15,18 +15,37 @@
  * @returns string representation of URL 
  */
 function getEndpointHeader() {
-  // const BACKEND_BASE_API_URL = "http://localhost:8000/"; 
-  // const MOCK_API_URL = "http://localhost:4000/";
-  // const AWS_BACKEND_URL = "http://6umnppgwmc.us-west-2.awsapprunner.com/";
-
   // the frontend's backend requests are directed towards BACKEND_ENDPOINT 
   //  which is defined in the enviornment variables
   //  note that this endpoint could be invalid or MISSING, there should be error handling 
   //  in our requests
-  // let definedBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
-  let definedBackendEndpoint = "http://localhost:8000/";
-  // console.log("defined backend endpoint: " + definedBackendEndpoint);
-  
+
+  console.log(process.env);
+  let remoteBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
+  let localBackendEndpoint = "http://localhost:8000/"
+  let definedBackendEndpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+
+  // if the NODE_ENV is in development allow targeting of local
+  //  and remote backends
+  if(process.env.NODE_ENV === "development") {
+    if(process.env.REACT_APP_BACKEND_LOCATION === "local") {
+      definedBackendEndpoint = localBackendEndpoint;
+    }
+    else if(process.env.REACT_APP_BACKEND_LOCATION === "remote") {
+      definedBackendEndpoint = remoteBackendEndpoint
+    } 
+  }
+  // if the NODE_ENV is in production, default to the remote endpoint.
+  else if(process.env.NODE_ENV === "production") {
+    definedBackendEndpoint = remoteBackendEndpoint;
+  }
+
+  if(!definedBackendEndpoint || definedBackendEndpoint === "") {
+    definedBackendEndpoint = localBackendEndpoint;
+  }
+
+  definedBackendEndpoint = "http://localhost:8000/"; // delete me
+
   return definedBackendEndpoint;
 }
 

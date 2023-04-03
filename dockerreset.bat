@@ -1,4 +1,4 @@
 docker-compose down
-bash ./buildfrontend
+bash ./buildfrontend.sh
 docker-compose build
 docker-compose up -d

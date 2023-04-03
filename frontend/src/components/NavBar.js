@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import SignInModal from './modals/SignInModal';
 import UserContext from '../UserContext';
 
+import { clearUser } from "../localStoreAccess/userAccess"
+import { clearTokens } from "../localStoreAccess/jwtAccess"
+
 /**
  * this is the base component that holds every child component below
  * This component when rendered will be the main navigation bar above 
@@ -14,8 +17,14 @@ import UserContext from '../UserContext';
  * @returns website wide navbar component
  */
 const Navbar = () => {
-
     let { user, setUser } = useContext(UserContext);
+
+    function signOut() {
+        console.log("Signing out...");
+        setUser(null);
+        clearTokens();
+        clearUser();
+    }
 
     let userSignInIcon;
     if (user) {
@@ -26,7 +35,7 @@ const Navbar = () => {
             </button>
             <ul className="dropdown-menu text-center">
                 <li><Link className="dropdown-item" to="/">Settings</Link></li>
-                <li><Link className="dropdown-item" to="/" data-bs-toggle="dropdown" onClick={() => setUser(null)}>Sign Out</Link></li>
+                <li><Link className="dropdown-item" to="/" data-bs-toggle="dropdown" onClick={signOut}>Sign Out</Link></li>
             </ul>
         </div>
     } else {

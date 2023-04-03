@@ -1,27 +1,12 @@
-# docker-compose.yaml
-#
-# Docker compose file for launching and running both frontend and backend
-# docker containers for the Biopath app
+# Docker compose file for running Django server and database in containers
 
 version: "3.2"
 services:
-  # Zach B - No need for redis at the moment, but we'll leave this 
-  #           here in case we use it in the future
-  # redis:
-  #   restart: always
-  #   image: redis:5
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - db-net
-
   db:
-    # Josh S. - Dockerized the DB and changed to postgres
     container_name: postgres
     image: postgres:14.1-alpine
     restart: always
-    volumes: # volume for database persistence while container is down
-             # you must set the environment variable BIOPATH_ROOT_PATH on your machine
+    volumes: # you must set the environment variable BIOPATH_ROOT_PATH on your machine
              #  for me this was just
              #   'export BIOPATH_ROOT_PATH="~/Users/joshuaschmitz/Projects/BioPath"'
       - "${BIOPATH_ROOT_PATH}/postgres:/var/lib/postgresql/data/"
@@ -34,14 +19,9 @@ services:
       - '5432:5432'
 
   backend:
-    # Josh S - Renamed to backend for consistency purposes
-    # Zach B - We ran into constant restart issues, fixed when we removed this
-    # restart: always
     container_name: backend
     platform: linux/amd64
-    # Josh S - Edited command to wait until DB is ready to accept connections before migrating and then starting server
     #   Not sure if we should actually makemigrations and migrate every startup, but it works for now
-    #command: bash -c "/app/api/startup.sh"
     environment:
       # TODO: change username, password, email
       # django admin login
@@ -61,13 +41,6 @@ services:
     image: backend
     ports:
       - "8000:8000"
-
-    # comment out dependancy for now
-    # depends_on:
-    #   - db
-      # - redis
-    # networks:
-    #   - db-net
 
   # frontend:
   #   container_name: frontend
@@ -91,9 +64,3 @@ services:
   #     awslogs-group: BiopathLogGroup 
   #     awslogs-region: us-west-2
   #     awslogs-stream-prefix:
-
-
-# Josh S - This was unneeded for now; removed to decrease complexity
-# networks:
-#   db-net:
-#     driver: bridge

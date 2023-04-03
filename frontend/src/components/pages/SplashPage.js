@@ -9,7 +9,6 @@ import UserContext from "../../UserContext";
  */
 const SplashPage = () => {
     const splashPageLoaderData = useLoaderData() // get data loaded from react router
-
     const { user, setUser } = useContext(UserContext);
 
     const [recentWork, setRecentWork] = useState(null);

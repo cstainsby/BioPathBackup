@@ -94,3 +94,7 @@ api/migrations
 !.env.dev
 *.venv
 *.sqlite3
+
+
+# ignore static files from npm build
+frontend/static/*

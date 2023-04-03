@@ -11,7 +11,6 @@ const getUser = () => {
 }
 
 const saveUser = (userJson) => {
-  console.log("userAccess saveUser: " + userJson); // delete me
   sessionStorage.setItem("signedInUser", userJson)
 }
 

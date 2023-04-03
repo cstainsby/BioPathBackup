@@ -36,7 +36,6 @@ const getRefreshToken = () => {
  * @param {string} refresh_token 
  */
 const saveTokens = (access_token, refresh_token) => {
-  console.log("jwtAccess saveTokens: " + access_token); // delete me
   sessionStorage.setItem("access_token", access_token);
   sessionStorage.setItem("refresh_token", refresh_token);
 }

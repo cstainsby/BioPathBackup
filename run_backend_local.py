@@ -34,13 +34,6 @@ def run_backend(backend_setup_pckg):
             return
         else:
             env_vars = rds_env_vars
-        # {
-        #     "RDS_DB_NAME": "postgres",
-        #     "RDS_HOSTNAME": "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com",
-        #     "RDS_PORT": 5432,
-        #     "RDS_USERNAME": "biopath_admin",
-        #     "RDS_PASSWORD": "WsatnbBqr7get9A",
-        # }
 
         # Build the Docker image with environment variables
         env_flags = " ".join([f"--build-arg {key}={value}" for key, value in env_vars.items()])

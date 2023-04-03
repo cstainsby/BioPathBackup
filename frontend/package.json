@@ -23,7 +23,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "docs": "jsdoc -c jsdoc.json"
+    "docs": "jsdoc -c jsdoc.json",
+
+    "build-dev": "webpack --env.ENVIRONMENT=development --config webpack.config.dev.js",
+    "build-production": "webpack --env.ENVIRONMENT=production --config webpack.config.build.js"
   },
   "eslintConfig": {
     "extends": [

@@ -9,7 +9,7 @@ import ReactFlow, {
     Controls
 } from 'reactflow';
 import { generatePathwayJson } from './utils/pathwayBuilderUtils';
-import { postPathway, deletePathway } from '../requestLib/apiRequests';
+import { postPathway, deletePathway, updatePathway } from '../requestLib/apiRequests';
 
 
 import './../scss/CustomNodes.scss';
@@ -150,18 +150,20 @@ const FlowBuilder = (props) => {
         if (pathwayID) { // checks an id exists before trying to delete a pathway
             console.log("updating pathway: ", pathwayID)
             try {
-                var pathwayObj = null;
-                if (nodes.length > 0) { // checking if deleting a pathway
-                    pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
-                }
-                if (pathwayObj) {
-                    postPathway(pathwayObj)
-                }
-                else { // if no nodes they are deleting the pathway
-                    const alertMessage = "deleting Pathway: " + location.state.title;
-                    alert(alertMessage)
-                }
-                deletePathway(pathwayID)
+                const pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
+                updatePathway(pathwayID, pathwayObj);
+                // var pathwayObj = null;
+                // if (nodes.length > 0) { // checking if deleting a pathway
+                //     pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
+                // }
+                // if (pathwayObj) {
+                //     postPathway(pathwayObj)
+                // }
+                // else { // if no nodes they are deleting the pathway
+                //     const alertMessage = "deleting Pathway: " + location.state.title;
+                //     alert(alertMessage)
+                // }
+                // deletePathway(pathwayID)
             }
             catch(err) {
             }

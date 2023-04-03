@@ -163,4 +163,44 @@ async function deletePathway(pathwayID) {
     }
 }
 
-export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway }
+async function updatePathway(pathwayID, pathwayObj) {
+    const methodType = "PUT";
+    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
+
+
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
+    try {
+        const requestOptions = {
+            method: methodType,
+            headers: headers,
+            body: JSON.stringify(pathwayObj)
+        };
+
+        const response = await fetch(requestUrl, requestOptions);
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+        alert("Pathway Updated Successfully")
+        return responseJSON;
+    } catch(error) {
+        alert("Pathway not updated");
+        return error;
+    }
+}
+
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway, updatePathway }

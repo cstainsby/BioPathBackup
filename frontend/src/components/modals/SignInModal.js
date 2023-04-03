@@ -11,72 +11,69 @@ import { saveUser } from "../../localStoreAccess/userAccess";
  * @returns 
  */
 const SignInModal = (props) => {
-    const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
-    // remains null until sign in attempt is made 
-    // once attempt is made, true/false is set which influences modal rendering
-    const [isUserValid, setIsUserValid] = useState(false);
-    const [errorMsg, setErrorMsg] = useState(null)
+  // remains null until sign in attempt is made 
+  // once attempt is made, true/false is set which influences modal rendering
+  const [isUserValid, setIsUserValid] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-    const [usernameText, setUsernameText] = useState("");
-    const [passwordText, setPasswordText] = useState("");
+  const [usernameText, setUsernameText] = useState("");
+  const [passwordText, setPasswordText] = useState("");
 
-    // state for determining what type of form to display
-    const [signInMode, setSignInMode] = useState("signIn") 
+  // state for determining what type of form to display
+  const [signInMode, setSignInMode] = useState("signIn");
 
 
-    /**
-     * handler which contains logic for switching form from sign in to sign up
-     * and vice versa
-     */
-    const handleSignInModeSwitch = () => {
-        if (signInMode === "signIn") {
-            setSignInMode("signUp");
-        }
-        else {
-            setSignInMode("signIn");
-        }
+  /**
+   * handler which contains logic for switching form from sign in to sign up
+   * and vice versa
+   */
+  const handleSignInModeSwitch = () => {
+    if (signInMode === "signIn") {
+      setSignInMode("signUp");
     }
-
-    /**
-     * Handler for taking entered username and password which should be either 
-     * used for sign in or sign up based on mode selection
-     */
-    const handleSignInClick = async () => {
-
-        if (signInMode === "signUp") {
-            const res = await register(usernameText, passwordText)
-
-            if (!res.ok) {
-                setIsUserValid(false);
-                return
-            }
-        }
-        
-        const resData = await login(usernameText, passwordText)
-        
-        if (resData) {
-            setIsUserValid(true)
-
-            const { access } = resData.access;
-            const { refresh } = resData.refresh;
-            saveTokens(access, refresh);
-
-            // set user information and route back to home page 
-            const signedInUser = {
-                username: usernameText
-            }
-            saveUser(signedInUser)
-            setUser(signedInUser)
-        }
-        else {
-            setErrorMsg("Invalid Login")
-        }
+    else {
+      setSignInMode("signIn");
     }
+  }
 
-    return (
-        <div className="modal fade align-items-start" id="signInModal" tabIndex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
+  /**
+   * Handler for taking entered username and password which should be either 
+   * used for sign in or sign up based on mode selection
+   */
+  const handleSignInClick = async () => {
+    if (signInMode === "signUp") {
+      const res = await register(usernameText, passwordText)
+
+      if (!res.ok) {
+        setIsUserValid(false);
+        return
+      }
+    }
+    
+    const resData = await login(usernameText, passwordText);
+
+    if (resData) {
+      setIsUserValid(true);
+      saveTokens(resData.access, resData.refresh);
+
+      // set user information and route back to home page 
+      const signedInUser = {
+        username: usernameText
+      }
+      saveUser(signedInUser);
+      setUser(signedInUser);
+      console.log("user is: " + signedInUser);
+    }
+    else {
+      setErrorMsg("Invalid Login")
+    }
+  }
+
+  return (
+    <div className="modal fade align-items-start" id="signInModal" tabIndex="-1" aria-labelledby="signInModalLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
             <div className="modal-header">
                 <h1 className="modal-title fs-5" id="signInModalLabel">

@@ -43,7 +43,9 @@ function getEndpointHeader() {
   if(!definedBackendEndpoint || definedBackendEndpoint === "") {
     definedBackendEndpoint = localBackendEndpoint;
   }
-  
+
+  definedBackendEndpoint = "http://localhost:8000/"; // delete me
+
   return definedBackendEndpoint;
 }
 

@@ -7,15 +7,15 @@
 // ----------------------------------------------------------------------
 
 const getUser = () => {
-  return localStorage.getItem("signedInUser")
+  return sessionStorage.getItem("signedInUser")
 }
 
 const saveUser = (userJson) => {
-  localStorage.setItem("signedInUser", userJson)
+  sessionStorage.setItem("signedInUser", userJson)
 }
 
 const clearUser = () => {
-  localStorage.removeItem("signedInUser")
+  sessionStorage.removeItem("signedInUser")
 }
 
 export {

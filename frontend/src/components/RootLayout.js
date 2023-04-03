@@ -12,8 +12,8 @@ import Navbar from "./NavBar";
  */
 const RootLayout = () => {
 
-  const [user, setUser] = useState(null)
-  const userProvider= useMemo(() => ({ user, setUser }), [user, setUser])
+  const [user, setUser] = useState(null);
+  const userProvider= useMemo(() => ({ user, setUser }), [user, setUser]);
   //console.log(userProvider);
   return (
     <div className="d-flex w-100 h-100 flex-column">

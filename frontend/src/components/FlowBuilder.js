@@ -1,4 +1,4 @@
-import {useLocation} from 'react-router-dom'; // testing delete maybe
+import {useLocation, useNavigate} from 'react-router-dom'; // testing delete maybe
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
@@ -23,14 +23,13 @@ const nodeTypes = {
     enzyme: BuilderEnzyme,
     molecule: BuilderMolecule
 };
-const flowKey = 'example-flow';
+// const flowKey = 'example-flow';
 
 const getNodeId = () => `${+new Date()}`;
 
 const initialNodes = [];
 const initialEdges = [];
 
-let numEnzymes = 0;
 
 const FlowBuilder = (props) => {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
@@ -44,9 +43,9 @@ const FlowBuilder = (props) => {
     const { setViewport, getViewport } = useReactFlow();
 
     const location = useLocation();
+    const navigate = useNavigate(); // testing delte later maybe
 
 
-    // testing
     const onDragOver = useCallback((event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
@@ -76,9 +75,9 @@ const FlowBuilder = (props) => {
         },
         [rfInstance]
       );
-      // testing
 
-    if(location.state && location.state.initialNodes && editExisting === false) { // used for transfering from flowmodel to flowbuilder
+    // if coming from flowModel, update node internals to match whats needed for flowBuilder
+    if(location.state && location.state.initialNodes && editExisting === false) {
         let enzymeNodes = [];
         setPathwayID(location.state.id);
         for (let node of location.state.initialNodes) {
@@ -182,7 +181,7 @@ const FlowBuilder = (props) => {
                 type: "molecule",
                 position: {
                     x: 270 + (Math.random() * 300),
-                    y: (200 * numEnzymes),
+                    y: 200
                 },
             };
             // setNodes((nds) => nds.concat(newNode));
@@ -192,7 +191,6 @@ const FlowBuilder = (props) => {
 
     const onAddEnzyme = useCallback((nodeData) => {
         if (nodeData) {
-            numEnzymes += 1; // used for moving node generation down y axis
             const newNode = {
                 id: getNodeId(),
                 className: 'enzyme build',
@@ -210,7 +208,7 @@ const FlowBuilder = (props) => {
                 type: "enzyme",
                 position: {
                     x: 800,
-                    y: (200 * numEnzymes)
+                    y: 200
                 },
             };
             // setNodes((nds) => nds.concat(newNode));
@@ -221,8 +219,23 @@ const FlowBuilder = (props) => {
     const onClear = useCallback(() => {
         setNodes(initialNodes);
         setEdges(initialEdges);
-        // setPathwayID(null); // no pathway id if current Build is cleared
+        setPathwayID(null); // no pathway id if current Build is cleared
     }, [setNodes, setViewport])
+
+    const onDelete = useCallback(() => {
+        if (pathwayID)
+        if (window.confirm("Do you really want to delete this pathway?")) {
+            if (pathwayID) {
+                try{
+                    deletePathway(pathwayID)
+                    navigate('/');
+                    alert("Pathway deleted")
+                } catch(error) {
+                    alert(error)
+                }
+            }
+        }
+    })
 
 
     const onNodeClick = (e, clickedNode) => {
@@ -230,9 +243,6 @@ const FlowBuilder = (props) => {
         if (window.confirm("Do you really want to delete this node?")) {
             setNodes((nds) => nds.filter(node => node.id !== clickedNode.id)); // deletes selected node
             setEdges((eds) => eds.filter(edge => (edge.target != clickedNode.id && edge.source != clickedNode.id))) // deletes edges with selected node id
-        }
-        if (clickedNode.type === "enzyme") { // check if an enzyme was deleted
-            numEnzymes -= 1;
         }
     }
 
@@ -270,6 +280,7 @@ const FlowBuilder = (props) => {
                                 {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
                                 <button class="btn btn-success mx-1" onClick={onUpdate}>Save</button>
                                 <button class="btn btn-danger mx-1" onClick={onClear}>Clear flow</button>
+                                <button class="btn btn-danger mx-1" onClick={onDelete}>Delete Pathway</button>
                             </div>
                         </div>
                     </div>

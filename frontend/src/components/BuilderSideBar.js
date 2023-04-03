@@ -209,7 +209,7 @@ const BuildEnzymeModal = (props) => {
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
                             <select id="substrates" class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)} multiple>
-                                <option>Select Substrates</option>
+                                <option selected disabled hidden>Select Substrates</option>
                                 {props.dropDownItems}
                             </select>
                         </li>
@@ -222,7 +222,7 @@ const BuildEnzymeModal = (props) => {
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
                             <select id="products" class="form-select" onChange={(e) => handleNewProduct(e.target.value)} multiple>
-                                <option>Select Products</option>
+                                <option selected disabled hidden>Select Products</option>
                                 {props.dropDownItems}
                             </select>
                         </li>
@@ -235,7 +235,7 @@ const BuildEnzymeModal = (props) => {
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
                             <select id="cofactors" class="form-select" Change={(e) => handleNewCofactor(e.target.value)} multiple>
-                                <option>Select Cofactors</option>
+                                <option selected disabled hidden>Select Cofactors</option>
                                 {props.dropDownItems}
                             </select>
                         </li>

@@ -18,6 +18,7 @@ import 'reactflow/dist/style.css';
 import { BuilderEnzyme } from './customNodes/BuilderEnzyme.js';
 import { BuilderMolecule } from './customNodes/BuilderMolecule.js';
 import BuilderSideBar from './BuilderSideBar.js';
+import BuilderModal from './BuilderModal'; // testing probs delete
 
 const nodeTypes = {
     enzyme: BuilderEnzyme,
@@ -43,7 +44,6 @@ const FlowBuilder = (props) => {
     const { setViewport, getViewport } = useReactFlow();
 
     const location = useLocation();
-    const navigate = useNavigate(); // testing delte later maybe
 
 
     const onDragOver = useCallback((event) => {
@@ -59,7 +59,6 @@ const FlowBuilder = (props) => {
           const type = event.dataTransfer.getData('application/reactflow');
     
           // check if the dropped element is valid
-          console.log(typeof type, 'undefined', type)
           if (type === "undefined") { // if nothing was selected return
             return;
           }
@@ -132,7 +131,6 @@ const FlowBuilder = (props) => {
 
 
     useEffect(() => {
-        console.log(nodes, pathwayID)
     }, [nodes, pathwayID]); // monitor pathwayID for changes
 
     const onPush = useCallback(() => {
@@ -147,23 +145,10 @@ const FlowBuilder = (props) => {
 
     const onUpdate = useCallback(() => {
 
-        if (pathwayID) { // checks an id exists before trying to delete a pathway
-            console.log("updating pathway: ", pathwayID)
+        if (pathwayID) { // checks an id exists before trying to update a pathway
             try {
                 const pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
                 updatePathway(pathwayID, pathwayObj);
-                // var pathwayObj = null;
-                // if (nodes.length > 0) { // checking if deleting a pathway
-                //     pathwayObj = generatePathwayJson(nodes, edges, location.state.title);
-                // }
-                // if (pathwayObj) {
-                //     postPathway(pathwayObj)
-                // }
-                // else { // if no nodes they are deleting the pathway
-                //     const alertMessage = "deleting Pathway: " + location.state.title;
-                //     alert(alertMessage)
-                // }
-                // deletePathway(pathwayID)
             }
             catch(err) {
             }
@@ -230,7 +215,7 @@ const FlowBuilder = (props) => {
             if (pathwayID) {
                 try{
                     deletePathway(pathwayID)
-                    navigate('/');
+                    window.location.href = '/';
                     alert("Pathway deleted")
                 } catch(error) {
                     alert(error)

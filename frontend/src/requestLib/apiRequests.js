@@ -44,7 +44,6 @@ async function getBackendData(endpoint) {
         return responseJSON;
 
     } catch (error) {
-        console.log(requestUrl, error);
         return error;
     }
 }
@@ -113,7 +112,6 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
         return responseJSON;
     } catch(error) {
         alert(failMessage);
-        console.log(requestUrl, error, "testststs");
         return error;
     }
 }
@@ -140,10 +138,21 @@ async function deletePathway(pathwayID) {
     const methodType = "DELETE";
     const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
 
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
     try {
         const requestOptions = {
             method: methodType,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(pathwayID)
         };
 

@@ -82,7 +82,6 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
     const requestUrl = dataSourceAddressHeader + endpoint;
 
     const accessToken = getAccessToken();
-    console.log("apiRequests postBackendData: " + accessToken); // delete me
     let headers = {};
     if (accessToken === "") {
         alert("You must be signed in to save anything you build.");
@@ -93,7 +92,6 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
             "Authorization": "Bearer " + accessToken
         };
     }
-    console.log("***Headers:" + headers.Authorization); // delete me
 
     try {
         const requestOptions = {

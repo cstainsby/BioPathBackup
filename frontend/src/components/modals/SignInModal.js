@@ -11,7 +11,6 @@ import { saveUser } from "../../localStoreAccess/userAccess";
  * @returns 
  */
 const SignInModal = (props) => {
-  console.log("SignInModal"); // delete
   const { user, setUser } = useContext(UserContext);
 
   // remains null until sign in attempt is made 

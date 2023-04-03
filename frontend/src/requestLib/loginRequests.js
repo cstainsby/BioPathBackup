@@ -62,14 +62,6 @@ const login = async (username, password) => {
       })
       .catch(err => console.error(err));
   
-  
-  // let response = await resData;
-  // let accessToken = response.access;
-  // let refreshToken = response.refresh;
-  // console.log("accessToken: " + accessToken + "********"); // delete me
-  // console.log("refreshToken: " + refreshToken + "********"); // delete me
-  // saveTokens(accessToken, refreshToken);
-  
   return resData
 } 
 

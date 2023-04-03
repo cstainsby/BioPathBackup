@@ -15,7 +15,6 @@ const RootLayout = () => {
   const [user, setUser] = useState(null)
   const userProvider= useMemo(() => ({ user, setUser }), [user, setUser])
   //console.log(userProvider);
-  console.log("RootLayout"); // delete
   return (
     <div className="d-flex w-100 h-100 flex-column">
       {/* This provider gives context access to the user context to all 

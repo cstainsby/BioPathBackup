@@ -6,10 +6,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Important Concepts
 1. The Flow Model (React-Flow)
-1. ConcentrationManager
-1. Requests 
-1. Routing
-1. Users
+2. ConcentrationManager
+3. Requests 
+4. Routing
+5. Users
+
+#### 
 
 ### Folder Structure
 ```bash

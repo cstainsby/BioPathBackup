@@ -94,8 +94,5 @@ api/migrations
 *.venv
 *.sqlite3
 
-frontend/static/css/*
-frontend/static/js/*
-frontend/static/media/*
-frontend/templates/frontend/*
-frontend/static/asset-manifest.json
+# ignore static files from npm build
+frontend/static/*

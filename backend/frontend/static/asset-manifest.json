@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.bceedd29.css",
-    "main.js": "/static/js/main.33d1605b.js",
+    "main.js": "/static/js/main.c0c5c9a9.js",
     "static/media/pyruvate kinase.png": "/static/media/pyruvate kinase.617d9857a879fea4d310.png",
     "static/media/phosphofructokinase.png": "/static/media/phosphofructokinase.1f6046bc51a1fcc4dc58.png",
     "static/media/phosphoglycerate mutase.png": "/static/media/phosphoglycerate mutase.f7ef167d63f87056cc41.png",
@@ -14,10 +14,10 @@
     "static/media/hexokinase.png": "/static/media/hexokinase.a884d2a35713fbbcb728.png",
     "index.html": "/index.html",
     "main.bceedd29.css.map": "/static/css/main.bceedd29.css.map",
-    "main.33d1605b.js.map": "/static/js/main.33d1605b.js.map"
+    "main.c0c5c9a9.js.map": "/static/js/main.c0c5c9a9.js.map"
   },
   "entrypoints": [
     "static/css/main.bceedd29.css",
-    "static/js/main.33d1605b.js"
+    "static/js/main.c0c5c9a9.js"
   ]
 }

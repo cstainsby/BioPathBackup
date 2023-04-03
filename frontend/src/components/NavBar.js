@@ -17,6 +17,7 @@ import { clearTokens } from "../localStoreAccess/jwtAccess"
  * @returns website wide navbar component
  */
 const Navbar = () => {
+    console.log("Navbar"); // delete
     let { user, setUser } = useContext(UserContext);
 
     function signOut() {

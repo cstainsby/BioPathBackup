@@ -1,4 +1,5 @@
 import {useLocation, useNavigate} from 'react-router-dom'; // testing delete maybe
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger'; // testing
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
@@ -18,7 +19,7 @@ import 'reactflow/dist/style.css';
 import { BuilderEnzyme } from './customNodes/BuilderEnzyme.js';
 import { BuilderMolecule } from './customNodes/BuilderMolecule.js';
 import BuilderSideBar from './BuilderSideBar.js';
-import BuilderModal from './BuilderModal'; // testing probs delete
+import Tooltip from './Tooltip';
 
 const nodeTypes = {
     enzyme: BuilderEnzyme,
@@ -263,11 +264,17 @@ const FlowBuilder = (props) => {
                         </div>
                         <div className="py-3">
                             <div className="btn-group" role='group' style={{zIndex: "6"}}>
+                                <Tooltip text="Save as a new Pathway">
                                 <button class="btn btn-success mx-1" type="submit" onClick={onPush}>Save As</button>
+                                </Tooltip>
                                 {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
+                                <Tooltip text="Update existing pathway">
                                 <button class="btn btn-success mx-1" onClick={onUpdate}>Save</button>
+                                </Tooltip>
                                 <button class="btn btn-danger mx-1" onClick={onClear}>Clear flow</button>
+                                <Tooltip text="Remove pathway from database">
                                 <button class="btn btn-danger mx-1" onClick={onDelete}>Delete Pathway</button>
+                                </Tooltip>
                             </div>
                         </div>
                     </div>

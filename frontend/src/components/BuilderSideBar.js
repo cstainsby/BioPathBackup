@@ -3,6 +3,8 @@ import React, {useContext, useState, useEffect} from "react";
 import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLib/apiRequests';
 
 import '../scss/BuilderSideBar.scss'
+import Tooltip from './Tooltip';
+
 
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState(null);
@@ -203,9 +205,11 @@ const BuildEnzymeModal = (props) => {
                     </select>
                 </label>
                 <li class="dropdown-submenu">
+                    <Tooltip text="Select Multiple using Command click">
                     <a class="dropdown-item" href="#">
                         Substrates
                     </a>
+                    </Tooltip>
                     <ul class="dropdown-menu dropdown-submenu">
                         <li>
                             <select id="substrates" class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)} multiple>

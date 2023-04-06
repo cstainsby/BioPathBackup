@@ -121,6 +121,8 @@ const FlowBuilder = (props) => {
 
         // remove reversible edges for flowbuilder
         for (const currentEdge of location.state.initialEdges) {
+            currentEdge.animated = false; // change styling to build style
+            currentEdge.style = {strokeWidth: 5, stroke: '#0000FF'}; // change styling to build style
             if (currentEdge.id[0] === 'R') {
                 setEdges((eds) => eds.filter(edge => (edge.id != currentEdge.id)));
             }
@@ -128,8 +130,11 @@ const FlowBuilder = (props) => {
         setEditExisting(true);
     }
 
-    const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
-
+    const onConnect = useCallback((params) => {
+        params.style = {strokeWidth: 5, stroke: '#0000FF'}; // change styling to build style
+        console.log(params)
+        setEdges((eds) => addEdge(params, eds));
+    });
 
     useEffect(() => {
     }, [nodes, pathwayID]); // monitor pathwayID for changes

@@ -69,7 +69,6 @@ const FlowModel = (props) => {
      * If there is no pathway ID, close the current pathway.
      */
     useEffect(() => {
-        //console.log(pathway)
         handlePathwayOpen(pathway)
     }, [pathway]); // monitor pathwayID for changes
 
@@ -166,7 +165,6 @@ const FlowModel = (props) => {
         
         return () => {
             clearInterval(interval);
-            // console.log("clearInterval");
         };
     }, [running, speed]);
 
@@ -179,7 +177,7 @@ const FlowModel = (props) => {
         props.concentrationManager.reset();
     }
 
-    const handleEdit = () => { // testing delte later maybe
+    const handleEdit = () => { // sends reactflow state to flowBuilder
         navigate('/build', {state:{
                                 initialNodes: nodes, 
                                 initialEdges: edges,

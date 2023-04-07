@@ -53,7 +53,6 @@ function BuilderSideBar(props) {
     }, [moleculeResp, enzymeResp, reload]);
 
     function callGetMolecules() {
-        console.log(reload, "test")
         setReload(false)
         getMolecules()
         .then(moleculeResp => setMoleculeResp(moleculeResp));
@@ -118,7 +117,7 @@ function BuilderSideBar(props) {
 
                     <Modal show={enzymeShow} onHide={handleEnzymeClose}>
                         <Modal.Header closeButton>
-                        <Modal.Title>Modal heading</Modal.Title>
+                        <Modal.Title>Save New Enzyme</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                         <BuildEnzymeModal 
@@ -142,7 +141,7 @@ function BuilderSideBar(props) {
 
                 <Modal show={moleculeShow} onHide={handleMoleculeClose}>
                     <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Save New Molecule</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                     <BuildMoleculeModal 
@@ -205,10 +204,13 @@ const BuildEnzymeModal = (props) => {
         }
         postEnzyme(enzymeObj);
 
-        props.onSubmit()
-        props.resetDropDowns(true);
+        // GET request sometimes executes before POST finishes
+        setTimeout(function() {
+            props.onSubmit()
+            props.resetDropDowns(true);
 
-        setReset(!reset)
+            setReset(!reset);
+          }, 1000);
     }
 
     function handleNewSubstrate(selectedSubstrate) { // adds new selected molecule to substrate list
@@ -335,12 +337,15 @@ const BuildMoleculeModal = (props) => {
             "public": true,
             "author": 1
         }
-        postMolecule(moleculeObj);
+        postMolecule(moleculeObj)
 
-        props.onSubmit()
-        props.resetDropDowns(true);
+        // set in wait function because GET Request sometimes executes before POST request finishes
+        setTimeout(function() {
+            props.onSubmit()
+            props.resetDropDowns(true);
 
-        setReset(!reset);
+            setReset(!reset);
+          }, 1000);
     }
 
     return (

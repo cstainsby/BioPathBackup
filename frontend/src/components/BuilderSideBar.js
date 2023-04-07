@@ -4,6 +4,10 @@ import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLi
 
 import '../scss/BuilderSideBar.scss'
 import Tooltip from './Tooltip';
+import Modal from 'react-bootstrap/Modal'; // testing
+
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 
 function BuilderSideBar(props) {
@@ -15,7 +19,7 @@ function BuilderSideBar(props) {
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
 
-    const onDragStart = (event, nodeType) => { // testing
+    const onDragStart = (event, nodeType) => {
         if (nodeType === 'molecule build') {
             var nodeJSON = JSON.stringify(props.onAddMolecule(moleculeSelection));
         }
@@ -27,7 +31,7 @@ function BuilderSideBar(props) {
         event.dataTransfer.effectAllowed = 'move';
     };
     
-    useEffect(() => { 
+    useEffect(() => {
         // anytime moleculeResp, enzymeResp, or reload state changes, rerender the lists
         if (moleculeResp != null) {
             const dropDownItems = moleculeResp.map((item, index) => 
@@ -49,6 +53,7 @@ function BuilderSideBar(props) {
     }, [moleculeResp, enzymeResp, reload]);
 
     function callGetMolecules() {
+        console.log(reload, "test")
         setReload(false)
         getMolecules()
         .then(moleculeResp => setMoleculeResp(moleculeResp));
@@ -76,6 +81,17 @@ function BuilderSideBar(props) {
         props.onAddEnzyme(enzymeSelection)
     }
 
+    // testing
+    const [moleculeShow, setMoleculeShow] = useState(false);
+    const [enzymeShow, setEnzymeShow] = useState(false);
+
+    const handleMoleculeClose = () => setMoleculeShow(false);
+    const handleMoleculeShow = () => setMoleculeShow(true);
+
+    const handleEnzymeClose = () => setEnzymeShow(false);
+    const handleEnzymeShow = () => setEnzymeShow(true);
+    // testing
+
     return (
         <div className='card ModelAreaChild' id='PathwaySliderBox' style={{zIndex: "6"}}>
             <div className="fs-1">Pathway Builder</div>
@@ -93,16 +109,54 @@ function BuilderSideBar(props) {
                     {enzymes}
                 </select>
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme build')} draggable>
-                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Enzyme</button>
+                    <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button>
                 </div>
-                <BuildEnzymeModal 
-                    onNewEnzyme={props.onNewEnzyme} 
-                    resetDropDowns={setReload} 
-                    dropDownItems={molecules} 
-                    moleculeResp={moleculeResp} />
-                <BuildMoleculeModal 
+                <>
+                    <Button variant="secondary" onClick={handleEnzymeShow}>
+                        New Enzyme
+                    </Button>
+
+                    <Modal show={enzymeShow} onHide={handleEnzymeClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Modal heading</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <BuildEnzymeModal 
+                        onNewEnzyme={props.onNewEnzyme} 
+                        resetDropDowns={setReload} 
+                        dropDownItems={molecules} 
+                        moleculeResp={moleculeResp}
+                        onSubmit={handleEnzymeClose} />
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleEnzymeClose}>
+                            Close
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+                <>
+                <Button variant="secondary" onClick={handleMoleculeShow}>
+                    New Molecule
+                </Button>
+
+                <Modal show={moleculeShow} onHide={handleMoleculeClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <BuildMoleculeModal 
                     onNewMolecule={props.onNewMolecule} 
-                    resetDropDowns={setReload} />
+                    resetDropDowns={setReload}
+                    onSubmit={handleMoleculeClose} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={handleMoleculeClose}>
+                        Close
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+    </>
             </div>
         </div>
     );
@@ -151,6 +205,7 @@ const BuildEnzymeModal = (props) => {
         }
         postEnzyme(enzymeObj);
 
+        props.onSubmit()
         props.resetDropDowns(true);
 
         setReset(!reset)
@@ -185,25 +240,26 @@ const BuildEnzymeModal = (props) => {
 
     return (
         <div class="dropdown m-1">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                New Enzyme
-            </button>
-            <ul class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton">
-                <label>
-                    Enzyme Name
-                    <input id="enzymeName" class="form-control" type="text" onChange={e => setName(e.target.value)} />
-                </label>
-                <label>
-                    Enzyme Abbreviation
-                    <input id="enzymeAbbr" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
-                </label>
-                <label>
-                    Reversible
-                    <select class="form-select" onChange={e => setReversible(e.target.value)}>
-                        <option>false</option>
-                        <option>true</option>
-                    </select>
-                </label>
+            <ul>
+                <li>
+                    <label>
+                        Enzyme Name
+                        <input id="enzymeName" class="form-control" type="text" onChange={e => setName(e.target.value)} />
+                    </label>
+                    <label>
+                        Enzyme Abbreviation
+                        <input id="enzymeAbbr" class="form-control" type="text" onChange={e => setAbbrevation(e.target.value)} />
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        Reversible
+                        <select class="form-select" onChange={e => setReversible(e.target.value)}>
+                            <option>false</option>
+                            <option>true</option>
+                        </select>
+                    </label>
+                </li>
                 <li class="dropdown-submenu">
                     <Tooltip text="Select Multiple using Command click">
                     <a class="dropdown-item" href="#">
@@ -245,9 +301,11 @@ const BuildEnzymeModal = (props) => {
                         </li>
                     </ul>
                 </li>
-                <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
+                <li>
+                    <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>
+                </li>
             </ul>
-            </div>
+        </div>
     )
 }
 
@@ -279,6 +337,7 @@ const BuildMoleculeModal = (props) => {
         }
         postMolecule(moleculeObj);
 
+        props.onSubmit()
         props.resetDropDowns(true);
 
         setReset(!reset);
@@ -286,20 +345,21 @@ const BuildMoleculeModal = (props) => {
 
     return (
         <div class="dropdown m-1">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                New Molecule
-            </button>
-              <ul className="dropdown-menu p-2">
+              <ul>
                 <li>
-                    <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                     <label>
                         Molecule Name
                     <input id="mName" class="form-control" type="text" onChange={e => setLabel(e.target.value)} />
                     </label>
+                </li>
+                <li>
                     <label>
                         Molecule Abbreviation
                     <input id="mAbbr" class="form-control" type="text" onChange={e => setAbbr(e.target.value)} />
                     </label>
+                </li>
+                <li>
+                    <button class="btn btn-primary" onClick={handleSubmit}>Submit New Molecule</button>
                 </li>
               </ul>
         </div>

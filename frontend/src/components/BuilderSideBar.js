@@ -5,10 +5,9 @@ import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLi
 import '../scss/BuilderSideBar.scss'
 import Tooltip from './Tooltip';
 import Checkbox from './Checkbox';
-import Modal from 'react-bootstrap/Modal'; // testing
+import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 
 
 function BuilderSideBar(props) {
@@ -19,6 +18,14 @@ function BuilderSideBar(props) {
     const [enzymes, setEnzymes] = useState();
     const [molecules, setMolecules] = useState();
     const [reload, setReload] = useState(true); // used to call db when new stuff posted
+    const [moleculeShow, setMoleculeShow] = useState(false); // used for displaying modal
+    const [enzymeShow, setEnzymeShow] = useState(false); // used for displaying modal
+
+    // needed to prevent an infinite rerender
+    const handleMoleculeClose = () => setMoleculeShow(false);
+    const handleMoleculeShow = () => setMoleculeShow(true);
+    const handleEnzymeClose = () => setEnzymeShow(false);
+    const handleEnzymeShow = () => setEnzymeShow(true);
 
     const onDragStart = (event, nodeType) => {
         if (nodeType === 'molecule build') {
@@ -69,28 +76,9 @@ function BuilderSideBar(props) {
         setMolSelection(moleculeResp[selectedMolecule])
     }
 
-    function onMoleculeSubmit() {
-        props.onAddMolecule(moleculeSelection)
-    }
-
     function onEnzymeSelect(selectedEnzyme) {
         setEnzSelection(enzymeResp[selectedEnzyme])
     }
-
-    function onEnzymeSubmit() {
-        props.onAddEnzyme(enzymeSelection)
-    }
-
-    // testing
-    const [moleculeShow, setMoleculeShow] = useState(false);
-    const [enzymeShow, setEnzymeShow] = useState(false);
-
-    const handleMoleculeClose = () => setMoleculeShow(false);
-    const handleMoleculeShow = () => setMoleculeShow(true);
-
-    const handleEnzymeClose = () => setEnzymeShow(false);
-    const handleEnzymeShow = () => setEnzymeShow(true);
-    // testing
 
     return (
         <div className='card ModelAreaChild' id='PathwaySliderBox' style={{zIndex: "6"}}>
@@ -102,14 +90,18 @@ function BuilderSideBar(props) {
                     {molecules}
                 </select>
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
-                    <button class="btn btn-primary" onClick={onMoleculeSubmit}>Add Molecule</button>
+                    <Tooltip text="Drag and Drop">
+                    <button class="btn btn-primary">Add Molecule</button>
+                    </Tooltip>
                 </div>
                 <select class="form-select m-1" onChange={(e) => onEnzymeSelect(e.target.value)}>
                     <option selected disabled hidden>Select Enzyme</option>
                     {enzymes}
                 </select>
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme build')} draggable>
-                    <button class="btn btn-primary" onClick={onEnzymeSubmit}>Add Enzyme</button>
+                    <Tooltip text="Drag and Drop">
+                    <button class="btn btn-primary">Add Enzyme</button>
+                    </Tooltip>
                 </div>
                 <>
                     <Button variant="secondary" onClick={handleEnzymeShow}>
@@ -136,57 +128,39 @@ function BuilderSideBar(props) {
                     </Modal>
                 </>
                 <>
-                <Button variant="secondary" onClick={handleMoleculeShow}>
-                    New Molecule
-                </Button>
-
-                <Modal show={moleculeShow} onHide={handleMoleculeClose}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>Save New Molecule</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                    <BuildMoleculeModal 
-                    onNewMolecule={props.onNewMolecule} 
-                    resetDropDowns={setReload}
-                    onSubmit={handleMoleculeClose} />
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="secondary" onClick={handleMoleculeClose}>
-                        Close
+                    <Button variant="secondary" onClick={handleMoleculeShow}>
+                        New Molecule
                     </Button>
-                    </Modal.Footer>
-                </Modal>
-    </>
+
+                    <Modal show={moleculeShow} onHide={handleMoleculeClose}>
+                        <Modal.Header closeButton>
+                        <Modal.Title>Save New Molecule</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                        <BuildMoleculeModal 
+                        onNewMolecule={props.onNewMolecule} 
+                        resetDropDowns={setReload}
+                        onSubmit={handleMoleculeClose} />
+                        </Modal.Body>
+                        <Modal.Footer>
+                        <Button variant="secondary" onClick={handleMoleculeClose}>
+                            Close
+                        </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
             </div>
         </div>
     );
 }
 
 const BuildEnzymeModal = (props) => {
-    const [reset, setReset] = useState(false);
-
     const [name, setName] = useState(null);
     const [abbreviation, setAbbrevation] = useState(null);
     const [substrates, setSubstrates] = useState([]);
     const [products, setProducts] = useState([]);
     const [cofactors, setCofactors] = useState([]);
     const [reversible, setReversible] = useState("false");
-
-    useEffect(() => {
-        // clear state for next new enzyme
-        setName(null);
-        setAbbrevation(null);
-        setSubstrates([]);
-        setProducts([]);
-        setCofactors([]);
-        setReversible("false");
-
-        document.getElementById("enzymeName").value="";
-        document.getElementById("enzymeAbbr").value="";
-        // document.getElementById("substrates").selectedIndex=-1;
-        // document.getElementById("products").selectedIndex=-1;
-        // document.getElementById("cofactors").selectedIndex=-1;
-    }, [reset])
 
     function handleClick() {
 
@@ -209,37 +183,7 @@ const BuildEnzymeModal = (props) => {
         setTimeout(function() {
             props.onSubmit()
             props.resetDropDowns(true);
-
-            setReset(!reset);
           }, 1000);
-    }
-
-    function handleNewSubstrate(selectedSubstrate) { // adds new selected molecule to substrate list
-        // setSubstrates(substrates => [...substrates,props.moleculeResp[selectedSubstrate].id] )
-        let selectElement = document.getElementById("substrates");
-        // get the molecule id from the value of each selected option
-        let selectedValues = Array.from(selectElement.selectedOptions)
-            .map(option => (props.moleculeResp[parseInt(option.value)].id));
-        setSubstrates(selectedValues);
-    }
-
-    function handleNewProduct(selectedProduct) { // adds new selected molecule to substrate list
-        // setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
-        let selectElement = document.getElementById("products");
-        console.log(Array.from(selectElement.selectedOptions))
-        // get the molecule id from the value of each selected option
-        let selectedValues = Array.from(selectElement.selectedOptions)
-            .map(option => (props.moleculeResp[parseInt(option.value)].id));
-        setProducts(selectedValues);
-    }
-
-    function handleNewCofactor(selectedCofactor) { // adds new selected molecule to substrate list
-        // setCofactors(cofactors => [...cofactors,props.moleculeResp[selectedCofactor].id] )
-        let selectElement = document.getElementById("cofactors");
-        // get the molecule id from the value of each selected option
-        let selectedValues = Array.from(selectElement.selectedOptions)
-            .map(option => (props.moleculeResp[parseInt(option.value)].id));
-        setCofactors(selectedValues);
     }
 
     const handleSubstrateChange = (newSelections) => {
@@ -280,68 +224,18 @@ const BuildEnzymeModal = (props) => {
                         </select>
                     </label>
                 </li>
-                {/* <li class="dropdown-submenu">
-                    <Tooltip text="Select Multiple using Command click">
-                    <a class="dropdown-item" href="#">
-                        Substrates
-                    </a>
-                    </Tooltip>
-                    <ul class="dropdown-menu dropdown-submenu">
-                        <li>
-                            <select id="substrates" class="form-select" onChange={(e) => handleNewSubstrate(e.target.value)} multiple>
-                                <option selected disabled hidden>Select Substrates</option>
-                                {props.dropDownItems}
-                            </select>
-                        </li>
-                    </ul>
-                </li> */}
                 <li>
                     <Checkbox
                         options={props.moleculeResp} 
                         onSelectionChange={handleSubstrateChange}
                         listName="Substrates"/>
                 </li>
-                {/* <li class="dropdown-submenu">
-                    <a class="dropdown-item" href="#">
-                        Products
-                    </a>
-                    <ul class="dropdown-menu dropdown-submenu">
-                        <li>
-                            <select id="products" class="form-select" onChange={(e) => handleNewProduct(e.target.value)} multiple>
-                                <option selected disabled hidden>Select Products</option>
-                                {props.dropDownItems}
-                            </select>
-                        </li>
-                    </ul>
-                </li> */}
                 <li>
-                    {/* <Tooltip text="Select Multiple using Command click">
-                    <a class="dropdown-item" href="#">
-                        Products
-                    </a>
-                    </Tooltip>
-                    <ul class="dropdown-menu dropdown-submenu">
-                        <li> */}
-                            <Checkbox
-                                options={props.moleculeResp} 
-                                onSelectionChange={handleProductChange}
-                                listName="Products"/>
-                        {/* </li>
-                    </ul> */}
+                    <Checkbox
+                        options={props.moleculeResp} 
+                        onSelectionChange={handleProductChange}
+                        listName="Products"/>
                 </li>
-                {/* <li class="dropdown-submenu">
-                    <a class="dropdown-item" href="#">
-                        Cofactors
-                    </a>
-                    <ul class="dropdown-menu dropdown-submenu">
-                        <li>
-                            <select id="cofactors" class="form-select" Change={(e) => handleNewCofactor(e.target.value)} multiple>
-                                <option selected disabled hidden>Select Cofactors</option>
-                                {props.dropDownItems}
-                            </select>
-                        </li>
-                    </ul>
-                </li> */}
                 <li>
                     <Checkbox
                         options={props.moleculeResp}
@@ -358,18 +252,8 @@ const BuildEnzymeModal = (props) => {
 
 
 const BuildMoleculeModal = (props) => {
-    const [reset, setReset] = useState(false);
     const [label, setLabel] = useState(null);
     const [abbr, setAbbr] = useState(null);
-
-    useEffect(() => {
-        // clear state for next new molecule
-        setLabel(null);
-        setAbbr(null);
-
-        document.getElementById("mName").value="";
-        document.getElementById("mAbbr").value="";
-    }, [reset])
 
     function handleSubmit(event) {
 
@@ -384,12 +268,10 @@ const BuildMoleculeModal = (props) => {
         }
         postMolecule(moleculeObj)
 
-        // set in wait function because GET Request sometimes executes before POST request finishes
+        // setTimeout function because GET Request sometimes executes before POST request finishes
         setTimeout(function() {
             props.onSubmit()
             props.resetDropDowns(true);
-
-            setReset(!reset);
           }, 1000);
     }
 

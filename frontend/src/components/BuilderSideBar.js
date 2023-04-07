@@ -4,6 +4,7 @@ import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLi
 
 import '../scss/BuilderSideBar.scss'
 import Tooltip from './Tooltip';
+import Checkbox from './Checkbox';
 import Modal from 'react-bootstrap/Modal'; // testing
 
 import Button from 'react-bootstrap/Button';
@@ -182,9 +183,9 @@ const BuildEnzymeModal = (props) => {
 
         document.getElementById("enzymeName").value="";
         document.getElementById("enzymeAbbr").value="";
-        document.getElementById("substrates").selectedIndex=-1;
-        document.getElementById("products").selectedIndex=-1;
-        document.getElementById("cofactors").selectedIndex=-1;
+        // document.getElementById("substrates").selectedIndex=-1;
+        // document.getElementById("products").selectedIndex=-1;
+        // document.getElementById("cofactors").selectedIndex=-1;
     }, [reset])
 
     function handleClick() {
@@ -225,6 +226,7 @@ const BuildEnzymeModal = (props) => {
     function handleNewProduct(selectedProduct) { // adds new selected molecule to substrate list
         // setProducts(products => [...products,props.moleculeResp[selectedProduct].id] )
         let selectElement = document.getElementById("products");
+        console.log(Array.from(selectElement.selectedOptions))
         // get the molecule id from the value of each selected option
         let selectedValues = Array.from(selectElement.selectedOptions)
             .map(option => (props.moleculeResp[parseInt(option.value)].id));
@@ -239,6 +241,22 @@ const BuildEnzymeModal = (props) => {
             .map(option => (props.moleculeResp[parseInt(option.value)].id));
         setCofactors(selectedValues);
     }
+
+    const handleSubstrateChange = (newSelections) => {
+        // get true molecule id from moleculeResp
+        let selectedValues = newSelections.map(index => (props.moleculeResp[index].id));
+        setSubstrates(selectedValues);
+    };
+
+    const handleProductChange = (newSelections) => {
+        let selectedValues = newSelections.map(index => (props.moleculeResp[index].id));
+        setProducts(selectedValues);
+    };
+
+    const handleCofactorChange = (newSelections) => {
+        let selectedValues = newSelections.map(index => (props.moleculeResp[index].id));
+        setCofactors(selectedValues);
+    };
 
     return (
         <div class="dropdown m-1">
@@ -262,7 +280,7 @@ const BuildEnzymeModal = (props) => {
                         </select>
                     </label>
                 </li>
-                <li class="dropdown-submenu">
+                {/* <li class="dropdown-submenu">
                     <Tooltip text="Select Multiple using Command click">
                     <a class="dropdown-item" href="#">
                         Substrates
@@ -276,8 +294,14 @@ const BuildEnzymeModal = (props) => {
                             </select>
                         </li>
                     </ul>
+                </li> */}
+                <li>
+                    <Checkbox
+                        options={props.moleculeResp} 
+                        onSelectionChange={handleSubstrateChange}
+                        listName="Substrates"/>
                 </li>
-                <li class="dropdown-submenu">
+                {/* <li class="dropdown-submenu">
                     <a class="dropdown-item" href="#">
                         Products
                     </a>
@@ -289,8 +313,23 @@ const BuildEnzymeModal = (props) => {
                             </select>
                         </li>
                     </ul>
+                </li> */}
+                <li>
+                    {/* <Tooltip text="Select Multiple using Command click">
+                    <a class="dropdown-item" href="#">
+                        Products
+                    </a>
+                    </Tooltip>
+                    <ul class="dropdown-menu dropdown-submenu">
+                        <li> */}
+                            <Checkbox
+                                options={props.moleculeResp} 
+                                onSelectionChange={handleProductChange}
+                                listName="Products"/>
+                        {/* </li>
+                    </ul> */}
                 </li>
-                <li class="dropdown-submenu">
+                {/* <li class="dropdown-submenu">
                     <a class="dropdown-item" href="#">
                         Cofactors
                     </a>
@@ -302,6 +341,12 @@ const BuildEnzymeModal = (props) => {
                             </select>
                         </li>
                     </ul>
+                </li> */}
+                <li>
+                    <Checkbox
+                        options={props.moleculeResp}
+                        onSelectionChange={handleCofactorChange}
+                        listName="Cofactors"/>
                 </li>
                 <li>
                     <button class="btn btn-primary" onClick={handleClick}>Submit New Enzyme</button>

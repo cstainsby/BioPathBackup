@@ -92,3 +92,9 @@ api/migrations
 *.env
 *.venv
 *.sqlite3
+
+frontend/static/css/*
+frontend/static/js/*
+frontend/static/media/*
+frontend/templates/frontend/*
+frontend/static/asset-manifest.json

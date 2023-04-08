@@ -30,7 +30,7 @@ const Navbar = () => {
     if (user) {
         userSignInIcon = 
         <div className='dropdown dropstart'>
-            <button type="button" className=' btn btn-primary text-center p-2' data-bs-toggle="dropdown">
+            <button type="button" className='btn btn-primary text-center p-2' data-bs-toggle="dropdown">
                 <span>{user.username[0].toUpperCase()}</span>
             </button>
             <ul className="dropdown-menu text-center">
@@ -52,8 +52,6 @@ const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-md border-bottom border-4 border-secondary">
             <div className="container-fluid">
-            {/* reset button 
-            reset every selectable item, go to base page */}
             <Link className="navbar-brand fw-bold px-3" to="/">BioPath</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

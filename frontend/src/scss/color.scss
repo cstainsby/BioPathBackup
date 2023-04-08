@@ -1,0 +1,17 @@
+/**
+    color.scss
+*/
+@import '~bootstrap/scss/functions';
+
+// Overrides
+$primary: #ef7d57;
+$secondary: #84778a;
+$tertiary: #ffcd75;
+$success: #38b764;
+$failure: #b13e53;
+$locked: #b13e53;
+
+@import '~bootstrap/scss/variables';
+
+$enzyme-color: $orange-400;
+$molecule-color: $green-300;

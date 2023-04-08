@@ -6,7 +6,7 @@ build:
 docker_run: build
 	docker-compose down
 	docker-compose build
-	docker-compose up
+	docker-compose up -d
 
 run: build
 	./run.sh

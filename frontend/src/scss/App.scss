@@ -1,4 +1,7 @@
-@import 'index.scss';
+/**
+    App.scss
+*/
+@use 'color';
 
 #root {
     min-height: 100vh;
@@ -22,13 +25,13 @@ ul {
 
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: $secondary;
+    background-color: color.$secondary;
     border-radius: 20px;
     left: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: $primary;
+    background: color.$primary;
     border-radius: 20px;
     cursor: grabbing;
 }
@@ -50,7 +53,7 @@ input[type=range] {
         width: 16px;
         border-radius: 10px;
         margin-top: -12px;
-        background: $locked;
+        background: color.$locked;
         cursor: pointer;
     }
 
@@ -59,7 +62,7 @@ input[type=range] {
         height: 8px;
         margin-top: -35px;
         cursor: pointer;
-        background: $secondary;
+        background: color.$secondary;
         border-radius: 4px;
         border: 0.2px solid #010101;
     }
@@ -71,7 +74,7 @@ input[type=range] {
         width: 16px;
         border-radius: 10px;
         margin-top: -12px;
-        background: $locked;
+        background: color.$locked;
         cursor: pointer;
     }
 
@@ -80,7 +83,7 @@ input[type=range] {
         height: 8px;
         margin-top: -35px;
         cursor: pointer;
-        background: $secondary;
+        background: color.$secondary;
         border-radius: 4px;
         border: 0.2px solid #010101;
     }
@@ -92,7 +95,7 @@ input[type=range] {
         width: 16px;
         border-radius: 10px;
         margin-top: -12px;
-        background: $locked;
+        background: color.$locked;
         cursor: pointer;
     }
 
@@ -101,7 +104,7 @@ input[type=range] {
         height: 8px;
         margin-top: -35px;
         cursor: pointer;
-        background: $secondary;
+        background: color.$secondary;
         border-radius: 4px;
         border: 0.2px solid #010101;
     }

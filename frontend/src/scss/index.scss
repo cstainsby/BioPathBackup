@@ -1,21 +1,68 @@
 /**
     index.scss
-    Boilerplate from: https://stackoverflow.com/a/50253707/17213181
+*/
+/* 
+    Import Bootstrap component dependencies.
+    These two are imported in 'color' and overridden to get a
+    custom color scheme. Only un-comment if not using 'color'.
+ */
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+
+/* 
+    Color scheme defined after variables so they can override values
+    before being used in the components.
+*/
+@import 'color';
+
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+/* 
+    Import individual Bootstrap component styles here
+    Uncomment any that you need to use. This reduces
+    bundle size.
+
+    Please note that order matters here.
+    Styles defined later can override prior styles.
 */
 
-/* import the necessary Bootstrap files */
-@import '~bootstrap/scss/_functions';
+// Layout & components
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+// @import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/tables";
+// @import "bootstrap/scss/forms";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/button-group";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/card";
+// @import "bootstrap/scss/accordion";
+// @import "bootstrap/scss/breadcrumb";
+// @import "bootstrap/scss/pagination";
+// @import "bootstrap/scss/badge";
+@import "bootstrap/scss/alert";
+// @import "bootstrap/scss/progress";
+// @import "bootstrap/scss/list-group";
+@import "bootstrap/scss/close";
+// @import "bootstrap/scss/toasts";
+@import "bootstrap/scss/modal";
+// @import "bootstrap/scss/tooltip";
+// @import "bootstrap/scss/popover";
+// @import "bootstrap/scss/carousel";
+// @import "bootstrap/scss/spinners";
+// @import "bootstrap/scss/offcanvas";
+// @import "bootstrap/scss/placeholders";
 
-$primary: #ef7d57;
-$secondary: #84778a;
-$tertiary: #ffcd75;
-$success: #38b764;
-$failure: #b13e53;
-$locked: #b13e53;
+// Helpers
+@import "bootstrap/scss/helpers";
 
-// .container {
-//     border: 2px solid red;
-// }
-
-/* finally, import Bootstrap */
-@import "bootstrap";
+// Utilities
+@import "bootstrap/scss/utilities/api";

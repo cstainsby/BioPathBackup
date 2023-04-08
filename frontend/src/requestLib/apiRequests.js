@@ -27,6 +27,7 @@ async function getBackendData(endpoint) {
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + accessToken
+            // 'Authorization': 'Basic ' + btoa("root:root") // uncomment if getting 401 errors on GET requests
         };
     }
 

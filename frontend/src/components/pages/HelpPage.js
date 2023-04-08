@@ -1,12 +1,5 @@
-import Help from "./Help";
-
 // TODO: Add Help information
 const HelpPage = () => {
-
-    const bulletStyle = {
-        "list-style-type": "disc"
-      };
-
     return (
         <div>
             <header>

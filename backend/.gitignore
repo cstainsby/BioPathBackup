@@ -96,4 +96,5 @@ api/migrations
 frontend/static/css/*
 frontend/static/js/*
 frontend/static/media/*
+frontend/templates/frontend/*
 frontend/static/asset-manifest.json

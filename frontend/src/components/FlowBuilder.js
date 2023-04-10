@@ -1,5 +1,4 @@
-import {useLocation, useNavigate} from 'react-router-dom'; // testing delete maybe
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger'; // testing
+import {useLocation, useNavigate} from 'react-router-dom';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
@@ -25,7 +24,6 @@ const nodeTypes = {
     enzyme: BuilderEnzyme,
     molecule: BuilderMolecule
 };
-// const flowKey = 'example-flow';
 
 const getNodeId = () => `${+new Date()}`;
 
@@ -270,7 +268,7 @@ const FlowBuilder = (props) => {
                         <div className="py-3">
                             <div className="btn-group" role='group' style={{zIndex: "6"}}>
                                 <Tooltip text="Save as a new Pathway">
-                                <button class="btn btn-success mx-1" type="submit" onClick={onPush}>Save As</button>
+                                <button class="btn btn-success mx-1" type="submit" onClick={onPush} data-toggle="tooltip" data-placement="right" title="Tooltip on right">Save As</button>
                                 </Tooltip>
                                 {isPostShown && <PathwayTitle title={handleTitleChange} submit={onPush}/>}
                                 <Tooltip text="Update existing pathway">

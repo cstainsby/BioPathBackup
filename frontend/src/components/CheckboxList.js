@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Checkbox({ options, onSelectionChange, listName }) {
+function CheckboxList({ options, onSelectionChange, listName }) {
     const [checked, setChecked] = useState([]);
 
     useEffect(() => {
@@ -40,4 +40,4 @@ function Checkbox({ options, onSelectionChange, listName }) {
     );
 }
 
-export default Checkbox;
+export default CheckboxList;

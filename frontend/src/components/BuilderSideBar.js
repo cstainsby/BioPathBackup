@@ -4,7 +4,7 @@ import { getEnzymes, getMolecules, postMolecule, postEnzyme } from '../requestLi
 
 import '../scss/BuilderSideBar.scss'
 import Tooltip from './Tooltip';
-import Checkbox from './Checkbox';
+import CheckboxList from './CheckboxList';
 import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
@@ -225,19 +225,19 @@ const BuildEnzymeModal = (props) => {
                     </label>
                 </li>
                 <li>
-                    <Checkbox
+                    <CheckboxList
                         options={props.moleculeResp} 
                         onSelectionChange={handleSubstrateChange}
                         listName="Substrates"/>
                 </li>
                 <li>
-                    <Checkbox
+                    <CheckboxList
                         options={props.moleculeResp} 
                         onSelectionChange={handleProductChange}
                         listName="Products"/>
                 </li>
                 <li>
-                    <Checkbox
+                    <CheckboxList
                         options={props.moleculeResp}
                         onSelectionChange={handleCofactorChange}
                         listName="Cofactors"/>

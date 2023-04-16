@@ -19,6 +19,17 @@ ENVIORNMENT VARIBALES NEEDED:
     DB_PORT:     which port the database will be running on (NOTE: standard to postgres is 5432)
     DB_USERNAME: the database user
     DB_PASSWORD: the database password
+
+
+ENVIORNMENT VARIBALES NEEDED:
+    SECRET_KEY:  the django secret key, this needs to be kept secret
+    DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
+
+    DB_NAME:     the name of the database being connected to
+    DB_HOSTNAME: the name of the database host
+    DB_PORT:     which port the database will be running on (NOTE: standard to postgres is 5432)
+    DB_USERNAME: the database user
+    DB_PASSWORD: the database password
 """
 
 from pathlib import Path
@@ -99,6 +110,20 @@ DATABASES =  {
         'PORT': os.environ.get("DB_PORT"),     # default port for postgres
         'USER': os.environ.get('DB_USERNAME'),
         'PASSWORD': os.environ.get('DB_PASSWORD')
+    }
+}
+
+
+if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
+    DATABASES =  {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get("RDS_DB_NAME"),
+            'HOST': os.environ.get("RDS_HOSTNAME"), # 'db', # name of postgres container
+            'PORT': os.environ.get("RDS_PORT"),     # default port for postgres
+            'USER': os.environ.get('RDS_USERNAME'),
+            'PASSWORD': os.environ.get('RDS_PASSWORD')
+        }
     }
 }
 

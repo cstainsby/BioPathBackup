@@ -43,7 +43,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # unless development is explicitly stated, set to debug to False to ensure safety
@@ -114,18 +114,33 @@ DATABASES =  {
 }
 
 
-if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
-    DATABASES =  {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get("RDS_DB_NAME"),
-            'HOST': os.environ.get("RDS_HOSTNAME"), # 'db', # name of postgres container
-            'PORT': os.environ.get("RDS_PORT"),     # default port for postgres
-            'USER': os.environ.get('RDS_USERNAME'),
-            'PASSWORD': os.environ.get('RDS_PASSWORD')
-        }
-    }
-}
+# if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
+#     DATABASES =  {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.environ.get("RDS_DB_NAME"),
+#             'HOST': os.environ.get("RDS_HOSTNAME"), # 'db', # name of postgres container
+#             'PORT': os.environ.get("RDS_PORT"),     # default port for postgres
+#             'USER': os.environ.get('RDS_USERNAME'),
+#             'PASSWORD': os.environ.get('RDS_PASSWORD')
+#         }
+#     }
+# else:
+#     DATABASES = { # edited by Josh S
+#         # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': os.environ.get("POSTGRES_DB"),
+#             'HOST': os.environ.get("POSTGRES_DB_HOST"), # 'db', # name of postgres container
+#             'PORT': 5432, # default port for postgres
+#             'USER': os.environ.get('POSTGRES_USER'),
+#             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+#             'TEST': {
+#                 'ENGINE': 'django.db.backends.sqlite3',
+#                 'NAME': f'{BASE_DIR}/db.sqlite3',
+#             }
+#         }
+#     }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

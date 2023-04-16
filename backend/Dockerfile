@@ -26,26 +26,26 @@
 
 # Dockerfile
 
-FROM python:3.9-slim-buster AS common-base
-ENV DJANGO_SETTINGS_FILE settings.ini
-# ARG BUILD_FRONTEND=false
+# FROM python:3.9-slim-buster AS common-base
+# ENV DJANGO_SETTINGS_FILE settings.ini
+# # ARG BUILD_FRONTEND=false
 
 
 
-FROM common-base AS builder
-RUN pip install -U pip setuptools
-RUN mkdir -p /app
-WORKDIR /app
-COPY requirements.txt .
+# FROM common-base AS builder
+# RUN pip install -U pip setuptools
+# RUN mkdir -p /app
+# WORKDIR /app
+# COPY requirements.txt .
 
-COPY . /app/
-RUN pip install --no-warn-script-location --prefix=/install -r requirements.txt
-RUN cp -r /install/* /usr/local
-CMD ["python3", "manage.py", "collectstatic", "--no-input"]
+# COPY . /app/
+# RUN pip install --no-warn-script-location --prefix=/install -r requirements.txt
+# RUN cp -r /install/* /usr/local
+# CMD ["python3", "manage.py", "collectstatic", "--no-input"]
 
-FROM common-base
-# COPY docker-entrypoint.sh /app
-COPY --from=builder /install /usr/local
+# FROM common-base
+# # COPY docker-entrypoint.sh /app
+# COPY --from=builder /install /usr/local
 # COPY --from=builder /app/static /app/static
 # CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 # ENTRYPOINT ["/app/docker-entrypoint.sh"]
@@ -62,3 +62,18 @@ COPY --from=builder /install /usr/local
 
 #(5) Runtime stage
 #   install the compiled static files into a fresh image
+
+FROM python:3.9-slim-buster
+# WORKDIR /app
+# COPY . ./
+# RUN pip install -r requirements.txt
+# EXPOSE 8000
+
+# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+
+WORKDIR /app/api
+COPY . ./
+RUN pip install -r requirements.txt
+RUN ["chmod", "+x", "/app/api/startup.sh"]
+EXPOSE 8000
+ENTRYPOINT ["/app/api/startup.sh"]

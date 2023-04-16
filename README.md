@@ -57,3 +57,70 @@ BioPath
 |   |   ...
 ```
 
+## System Build
+Problem
+I have multiple ways I want the developer and users to interact with the project. The project should be able to have:
+
+### Build Types
+All build types explicitly listed
+1. local frontend &rarr; local backend &rarr; local DB
+2. local frontend &rarr; local backend &rarr; remote DB 
+3. local frontend &rarr; remote backend &rarr; remote DB
+4. remote frontend &rarr; remote backend &rarr; remote DB
+5. local backend &rarr; local DB
+6. local backend &rarr; remote DB
+
+**NOTE:** Types 1, 2, and 3 will be for development only, type 4 is for deployment only. 
+
+Within these build types the frontend developer is going to want to use npm start refreshes to make development not miserable
+which necessitates two types of build configurations for build types 1, 2, and 3.
+
+### Frontend sub-build configurations
+1. npm frontend -> any backend
+2. static frontend -> local backend
+
+**NOTE:** 2 is necessary because this is how we are deploying the full application. It is necessary for testing purposes
+
+## The Problem of environment variables 
+
+This is a list of all environment variables needed by each part of the project:
+
+#### Backend 
+1. DB_NAME
+2. DB_HOSTNAME 
+3. DB_PORT
+4. DB_USERNAME 
+5. DB_PASSWORD
+6. DJANGO_SECRET_KEY
+7. DJANGO_ENV - specifies "production" or "development"
+
+#### Frontend 
+1. REACT_APP_BACKEND_ENDPOINT - where requests for the backend will be forwarded to.
+
+**The first issue**, creating connections:
+
+Each one of the four requires a different setup environment variables wise e.g. the frontend needs to know how to reach the backend. The backend needs to know how to reach the database.
+
+**The second issue**, secrets: 
+
+Due to the backend's env var 5 and 6 being critical to the app's security, they will be loaded in from either:
+
+*If remote*: aws secret manager
+
+*If local*: a local .env file
+
+NOTE: These .env files should **ALWAYS** be ignored by both docker and github. In order to locally run the frontend or backend, you need to get this information from another team member or advisor and create the file locally yourself.
+
+## How to Run
+**Referencing the Build Types from the System Build Section**
+
+I will run through a list of common use cases.
+
+**Frontend Development:**
+
+**Backend Development:**
+**Test full build locally:**
+
+**Deploy to Remote**
+
+

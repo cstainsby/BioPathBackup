@@ -27,23 +27,24 @@ function getEndpointHeader() {
 
   // if the NODE_ENV is in development allow targeting of local
   //  and remote backends
-  if(process.env.NODE_ENV === "development") {
-    if(process.env.REACT_APP_BACKEND_LOCATION === "local") {
-      definedBackendEndpoint = localBackendEndpoint;
-    }
-    else if(process.env.REACT_APP_BACKEND_LOCATION === "remote") {
-      definedBackendEndpoint = remoteBackendEndpoint
-    } 
-  }
-  // if the NODE_ENV is in production, default to the remote endpoint.
-  else if(process.env.NODE_ENV === "production") {
-    definedBackendEndpoint = remoteBackendEndpoint;
-  }
+  // if(process.env.NODE_ENV === "development") {
+  //   if(process.env.REACT_APP_BACKEND_LOCATION === "local") {
+  //     definedBackendEndpoint = localBackendEndpoint;
+  //   }
+  //   else if(process.env.REACT_APP_BACKEND_LOCATION === "remote") {
+  //     definedBackendEndpoint = remoteBackendEndpoint
+  //   } 
+  // }
+  // // if the NODE_ENV is in production, default to the remote endpoint.
+  // else if(process.env.NODE_ENV === "production") {
+  //   definedBackendEndpoint = remoteBackendEndpoint;
+  // }
 
-  if(!definedBackendEndpoint || definedBackendEndpoint === "") {
-    definedBackendEndpoint = localBackendEndpoint;
-  }
-
+  // // default to local backend endpoint if 
+  // if(!definedBackendEndpoint || definedBackendEndpoint === "") {
+  //   definedBackendEndpoint = localBackendEndpoint;
+  // }
+  
   return definedBackendEndpoint;
 }
 

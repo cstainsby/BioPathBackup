@@ -1,4 +1,8 @@
-# Docker compose file for running Django server and database in containers
+# docker-compose.yaml
+#
+# Docker compose file for launching and running both frontend and backend
+# docker containers for the Biopath app
+# 
 
 version: "3.2"
 services:
@@ -22,45 +26,55 @@ services:
     container_name: backend
     platform: linux/amd64
     #   Not sure if we should actually makemigrations and migrate every startup, but it works for now
-    environment:
+    #command: bash -c "/app/api/startup.sh"
+
+    env_file: # where the enviornment varibles come from
+      - backend/local.env
+
+    # environment:
       # TODO: change username, password, email
       # django admin login
-      - DJANGO_ADMIN_USER=root
-      - DJANGO_ADMIN_PASS=root
-      - DJANGO_ADMIN_EMAIL=root@root.com
+      # - DJANGO_ADMIN_USER=root
+      # - DJANGO_ADMIN_PASS=root
+      # - DJANGO_ADMIN_EMAIL=root@root.com
 
-      # These are the same as those in db container
-      # TODO: change username, password
-      - POSTGRES_DB=BioPath
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB_HOST=db
+      # # These are the same as those in db container
+      # # TODO: change username, password
+      # - POSTGRES_DB=BioPath
+      # - POSTGRES_USER=username
+      # - POSTGRES_PASSWORD=password
+      # - POSTGRES_DB_HOST=db
     build:
       context: ./backend/
       dockerfile: Dockerfile
     image: backend
     ports:
       - "8000:8000"
+    depends_on:
+      - db
 
-  # frontend:
-  #   container_name: frontend
-  #   restart: always
-  #   command : npm start
-  #   build:
-  #     context: ./frontend/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   stdin_open: true
+    # comment out dependancy for now
     # depends_on:
-    #   - backend
+    #   - db
+      # - redis
     # networks:
     #   - db-net
 
-  # AWS specific configuration details
-  # logging:
-  #   driver: awslogs 
-  #   options:
-  #     awslogs-group: BiopathLogGroup 
-  #     awslogs-region: us-west-2
-  #     awslogs-stream-prefix:
+  frontend:
+    container_name: frontend
+    restart: always
+    command : npm start
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile.local
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - backend
+
+
+# Josh S - This was unneeded for now; removed to decrease complexity
+# networks:
+#   db-net:
+#     driver: bridge

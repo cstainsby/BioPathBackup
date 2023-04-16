@@ -92,3 +92,4 @@ api/migrations
 *.env
 *.venv
 *.sqlite3
+.env.*

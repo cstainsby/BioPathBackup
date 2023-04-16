@@ -40,7 +40,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # unless development is explicitly stated, set to debug to False to ensure safety
-if os.environ.get("DJANGO_ENV") == "development":
+if os.environ.get("DJANGO_ENV") == "local":
     DEBUG = True
 else: DEBUG = False
 

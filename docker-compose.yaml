@@ -34,10 +34,14 @@ services:
     #   Not sure if we should actually makemigrations and migrate every startup, but it works for now
     #command: bash -c "/app/api/startup.sh"
 
-    env_file: # where the enviornment varibles come from
-      - backend/local.env
-
-    # environment:
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_HOSTNAME=${DB_HOSTNAME}
+      - DB_PORT=${DB_PORT}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DJANGO_ENV=${DJANGO_ENV}
       # TODO: change username, password, email
       # django admin login
       # - DJANGO_ADMIN_USER=root
@@ -66,18 +70,18 @@ services:
     # networks:
     #   - db-net
 
-  frontend:
-    container_name: frontend
-    restart: always
-    command : npm start
-    build:
-      context: ./frontend/
-      dockerfile: Dockerfile.local
-    ports:
-      - "3000:3000"
-    stdin_open: true
-    depends_on:
-      - backend
+  # frontend:
+  #   container_name: frontend
+  #   restart: always
+  #   command : npm start
+  #   build:
+  #     context: ./frontend/
+  #     dockerfile: Dockerfile.local
+  #   ports:
+  #     - "3000:3000"
+  #   stdin_open: true
+  #   depends_on:
+  #     - backend
 
 
 # Josh S - This was unneeded for now; removed to decrease complexity

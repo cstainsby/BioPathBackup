@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^5.2.2",
+    "env-cmd": "^10.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
@@ -19,11 +20,14 @@
     "web-vitals": "^3.0.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-local": "env-cmd -f .env.backend.local react-scripts start",
+    "start-remote": "env-cmd -f .env.backend.remote react-scripts start",
+    "build-local": "env-cmd -f .env.local react-scripts build",
+    "build-remote": "env-cmd -f .env.remote react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "docs": "jsdoc -c jsdoc.json",
+
     "build-dev": "webpack --env.ENVIRONMENT=development --config webpack.config.dev.js",
     "build-production": "webpack --env.ENVIRONMENT=production --config webpack.config.build.js"
   },

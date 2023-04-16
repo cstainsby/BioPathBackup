@@ -76,10 +76,13 @@ Within these build types the frontend developer is going to want to use npm star
 which necessitates two types of build configurations for build types 1, 2, and 3.
 
 ### Frontend sub-build configurations
-1. npm frontend -> any backend
-2. static frontend -> local backend
+1. npm frontend &rarr; any backend
+2. static frontend &rarr; local backend
 
 **NOTE:** 2 is necessary because this is how we are deploying the full application. It is necessary for testing purposes
+
+### Backend sub-build
+The backend will always be built using docker. But based on whether the frontend is being staically built into the backend will affect how the backend will be built.
 
 ## The Problem of environment variables 
 
@@ -97,6 +100,7 @@ This is a list of all environment variables needed by each part of the project:
 #### Frontend 
 1. REACT_APP_BACKEND_ENDPOINT - where requests for the backend will be forwarded to.
 
+### Issues
 **The first issue**, creating connections:
 
 Each one of the four requires a different setup environment variables wise e.g. the frontend needs to know how to reach the backend. The backend needs to know how to reach the database.
@@ -109,7 +113,9 @@ Due to the backend's env var 5 and 6 being critical to the app's security, they 
 
 *If local*: a local .env file
 
-NOTE: These .env files should **ALWAYS** be ignored by both docker and github. In order to locally run the frontend or backend, you need to get this information from another team member or advisor and create the file locally yourself.
+NOTE: The backend .env files should **ALWAYS** be ignored by both docker and github. In order to locally run the backend, you need to get this information from another team member or advisor and create the file locally yourself.
+
+### 
 
 ## How to Run
 **Referencing the Build Types from the System Build Section**
@@ -118,9 +124,48 @@ I will run through a list of common use cases.
 
 **Frontend Development:**
 
+- With the ability to make edits to the backend
+    
+    See Backend development section, you should run its container locally first. Then run from the frontend root:
+
+        npm run start-local
+
+- Using the remote backend
+
+    Be careful using this, changes to the database from this run type will be reflected on the actual database. Normal backend security should be in place. Run from the frontend root:
+
+        npm run start-remote
+
+
 **Backend Development:**
+
+With a local database.
+
+**NOTE:** connections to the production database with a development backend should be prevented in order to prevent any data wipes.
+Run with this command:
+
+    docker compose --env-file ./backend/.env.db.local up
+
+Take it down with this command:
+
+    docker compose down 
+
+
 **Test full build locally:**
 
-**Deploy to Remote**
+In order to emulate the conditions which the final build will be in, the frontend will need to be statically built and placed in the backend. 
+
+**NOTE:** the backend in this situation will default to connecting to the remote database.
+
+Run from the project root:
+
+    ./build.sh
+
+Then run:
+
+    docker compose --env-file ./backend/.env.db.local up
+
+**Package for Remote**
+
 
 

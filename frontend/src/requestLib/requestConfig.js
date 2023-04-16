@@ -21,8 +21,8 @@ function getEndpointHeader() {
   //  in our requests
 
   console.log(process.env);
-  let remoteBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
-  let localBackendEndpoint = "http://localhost:8000/"
+  // let remoteBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
+  // let localBackendEndpoint = "http://localhost:8000/"
   let definedBackendEndpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
   
   return definedBackendEndpoint;

@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ./frontend
 npm i
-npm run build
+npm run build-remote
 
 if [ $? -ne 0 ]; then
     echo "ERROR: NPM failed to build. Exiting."

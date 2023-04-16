@@ -94,4 +94,4 @@ api/migrations
 !.env.dev
 *.venv
 *.sqlite3
-
+.env.*

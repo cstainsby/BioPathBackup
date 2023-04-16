@@ -12,8 +12,17 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
-TODO get the whole backend production ready. Not sure what this entails but
-    definetly need to set DEBUG=False
+
+
+ENVIORNMENT VARIBALES NEEDED:
+    SECRET_KEY:  the django secret key, this needs to be kept secret
+    DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
+
+    DB_NAME:     the name of the database being connected to
+    DB_HOSTNAME: the name of the database host
+    DB_PORT:     which port the database will be running on (NOTE: standard to postgres is 5432)
+    DB_USERNAME: the database user
+    DB_PASSWORD: the database password
 """
 
 from pathlib import Path
@@ -28,10 +37,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get("SECRET_KEY")
 SECRET_KEY = 'django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# unless development is explicitly stated, set to debug to False to ensure safety
+if os.environ.get("DJANGO_ENV") == "development":
+    DEBUG = True
+else: DEBUG = False
 
 ALLOWED_HOSTS = [
     "wtfysc3awc.us-west-2.awsapprunner.com",
@@ -90,6 +103,18 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+DATABASES =  {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME"),
+        'HOST': os.environ.get("DB_HOSTNAME"), # 'db', # name of postgres container
+        'PORT': os.environ.get("DB_PORT"),     # default port for postgres
+        'USER': os.environ.get('DB_USERNAME'),
+        'PASSWORD': os.environ.get('DB_PASSWORD')
+    }
+}
+
 
 if "RDS_DB_NAME" in os.environ: # when pushing to AWS this tag will be available via AWS copilot defined env variables  
     DATABASES =  {
@@ -155,6 +180,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATIC_ROOT = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

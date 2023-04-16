@@ -24,25 +24,7 @@ function getEndpointHeader() {
   let remoteBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
   let localBackendEndpoint = "http://localhost:8000/"
   let definedBackendEndpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
-
-  // if the NODE_ENV is in development allow targeting of local
-  //  and remote backends
-  if(process.env.NODE_ENV === "development") {
-    if(process.env.REACT_APP_BACKEND_LOCATION === "local") {
-      definedBackendEndpoint = localBackendEndpoint;
-    }
-    else if(process.env.REACT_APP_BACKEND_LOCATION === "remote") {
-      definedBackendEndpoint = remoteBackendEndpoint
-    } 
-  }
-  // if the NODE_ENV is in production, default to the remote endpoint.
-  else if(process.env.NODE_ENV === "production") {
-    definedBackendEndpoint = remoteBackendEndpoint;
-  }
-
-  if(!definedBackendEndpoint || definedBackendEndpoint === "") {
-    definedBackendEndpoint = localBackendEndpoint;
-  }
+  
   return definedBackendEndpoint;
 }
 

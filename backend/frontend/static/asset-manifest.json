@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.a86e47d5.css",
-    "main.js": "/static/js/main.7bef4bda.js",
+    "main.css": "/static/css/main.1f41a078.css",
+    "main.js": "/static/js/main.b9f041a4.js",
     "static/media/pyruvate kinase.png": "/static/media/pyruvate kinase.617d9857a879fea4d310.png",
     "static/media/phosphofructokinase.png": "/static/media/phosphofructokinase.1f6046bc51a1fcc4dc58.png",
     "static/media/phosphoglycerate mutase.png": "/static/media/phosphoglycerate mutase.f7ef167d63f87056cc41.png",
@@ -13,11 +13,11 @@
     "static/media/aldolase.png": "/static/media/aldolase.de27f9d3ae068db15e62.png",
     "static/media/hexokinase.png": "/static/media/hexokinase.a884d2a35713fbbcb728.png",
     "index.html": "/index.html",
-    "main.a86e47d5.css.map": "/static/css/main.a86e47d5.css.map",
-    "main.7bef4bda.js.map": "/static/js/main.7bef4bda.js.map"
+    "main.1f41a078.css.map": "/static/css/main.1f41a078.css.map",
+    "main.b9f041a4.js.map": "/static/js/main.b9f041a4.js.map"
   },
   "entrypoints": [
-    "static/css/main.a86e47d5.css",
-    "static/js/main.7bef4bda.js"
+    "static/css/main.1f41a078.css",
+    "static/js/main.b9f041a4.js"
   ]
 }

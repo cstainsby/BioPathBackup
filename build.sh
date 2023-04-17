@@ -1,7 +1,20 @@
 #! /bin/bash
+
+# requires command line arguement for where frontend should 
+#   point its backend requests to
+
 cd ./frontend
 npm i
-npm run build-remote
+
+# default to local endpoint if in
+if [ "$1" = "remote_backend" ]; then
+    npm run build-remote
+elif [ "$1" = "local_backend" ]; then 
+    npm run build-local
+else 
+    echo "ERROR: invalid command line arg passed"
+    exit 1
+fi
 
 if [ $? -ne 0 ]; then
     echo "ERROR: NPM failed to build. Exiting."

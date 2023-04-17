@@ -166,6 +166,9 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
  * @returns bool
  */
 export function filterEnzymes(node) {
+    if (!node) { // only check node.data if node exists
+        return false;
+    }
     if ( node.data.type === "enzyme") {
         return true;
       }
@@ -179,6 +182,9 @@ export function filterEnzymes(node) {
  * @returns bool
  */
 function filterMolecules(node) {
+    if (!node) { // only check node.data if node exists
+        return false;
+    }
     if ( node.data.type === "molecule") {
         return true;
       }

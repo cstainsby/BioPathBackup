@@ -56,4 +56,9 @@ describe('pathwayBuilder', () => {
         expect(filterMolecules(nodesFilled[1])).toBe(true)
         expect(filterMolecules(nodesFilled[0])).toBe(false)
     });
+
+    test('filterEmpty', () => {
+        expect(filterMolecules()).toBe(false)
+        expect(filterEnzymes()).toBe(false)
+    });
 });

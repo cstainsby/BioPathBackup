@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, {useCallback, useEffect, useState} from 'react'
 import ReactFlow, {
-	// MiniMap,
 	Controls,
-	// Background,
 	useNodesState,
 	useEdgesState,
 	addEdge,
@@ -43,7 +41,7 @@ const FlowModel = (props) => {
     // molecules[id] = {"title": "ATP", "value": 10}
     let [molecules, setMolecules] = useState([]);
 
-    const navigate = useNavigate(); // testing delte later maybe
+    const navigate = useNavigate(); // used when editing an existing pathway
 
     /**
      * Console logs id and position of ReactFlow nodes 
@@ -79,7 +77,6 @@ const FlowModel = (props) => {
      */
     const handlePathwayOpen = (newPathway) => {
         setRunning(false);
-        //console.log("handle pathway load: ", newPathway);
 
         setPathwayTitle(newPathway["name"]);
         setPathwayDescription("about the pathway");
@@ -194,7 +191,7 @@ const FlowModel = (props) => {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                nodeTypes={nodeTypes} // new needed for multiple handlers
+                nodeTypes={nodeTypes} // needed for multiple handlers
                 fitView={true}
                 attributionPosition="bottom-left"
                 onNodeClick={onNodeClick}

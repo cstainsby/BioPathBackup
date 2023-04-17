@@ -34,7 +34,7 @@ const initialEdges = [];
 const FlowBuilder = (props) => {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
-    const [newTitle, setNewTitle] = useState(""); // maybe use
+    const [newTitle, setNewTitle] = useState(""); // used when save as
     const [pathwayID, setPathwayID] = useState(null); // used if editing existing
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -143,6 +143,7 @@ const FlowBuilder = (props) => {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
             if (pathwayObj) {
                 postPathway(pathwayObj)
+                window.location.href = '/';
             }
         }
     });
@@ -175,7 +176,6 @@ const FlowBuilder = (props) => {
                     y: 200
                 },
             };
-            // setNodes((nds) => nds.concat(newNode));
             return newNode;
         }
     }, [setNodes]);
@@ -202,7 +202,6 @@ const FlowBuilder = (props) => {
                     y: 200
                 },
             };
-            // setNodes((nds) => nds.concat(newNode));
             return newNode;
         }
     }, [setNodes]);

@@ -36,21 +36,11 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_ENV=${DJANGO_ENV}
-      # TODO: change username, password, email
-      # django admin login
-      # - DJANGO_ADMIN_USER=root
-      # - DJANGO_ADMIN_PASS=root
-      # - DJANGO_ADMIN_EMAIL=root@root.com
-
-      # # These are the same as those in db container
-      # # TODO: change username, password
-      # - POSTGRES_DB=BioPath
-      # - POSTGRES_USER=username
-      # - POSTGRES_PASSWORD=password
-      # - POSTGRES_DB_HOST=db
     build:
       context: ./backend/
       dockerfile: Dockerfile
+      # build the local version of the backend
+      target: development 
     image: backend
     ports:
       - "8000:8000"

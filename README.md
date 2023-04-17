@@ -165,6 +165,10 @@ Then run:
 
     docker compose --env-file ./backend/.env.db.local up
 
+To take it down run:
+
+    docker compose down
+
 **Package for Remote Manually**
 
 Run from the project root:

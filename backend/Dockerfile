@@ -63,17 +63,34 @@
 #(5) Runtime stage
 #   install the compiled static files into a fresh image
 
-FROM python:3.9-slim-buster
-# WORKDIR /app
+# FROM python:3.9-slim-buster
+# WORKDIR /app/api
 # COPY . ./
 # RUN pip install -r requirements.txt
+# RUN ["chmod", "+x", "/app/api/startup.sh"]
 # EXPOSE 8000
+# ENTRYPOINT ["/app/api/startup.sh"]
 
-# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
 
+
+
+FROM python:3.9-slim-buster AS base 
 WORKDIR /app/api
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . ./
-RUN pip install -r requirements.txt
+
+
+
+FROM base AS development 
 RUN ["chmod", "+x", "/app/api/startup.sh"]
 EXPOSE 8000
 ENTRYPOINT ["/app/api/startup.sh"]
+
+
+FROM base AS production 
+ENV DJANGO_SETTINGS_MODULE
+ENV PYTHONPATH=/app
+RUN ["python3", "manage.py", "collectstatic", "--noinput"]
+EXPOSE 8000
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "your_project.wsgi"]

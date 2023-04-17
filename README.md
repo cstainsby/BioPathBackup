@@ -159,13 +159,23 @@ In order to emulate the conditions which the final build will be in, the fronten
 
 Run from the project root:
 
-    ./build.sh
+    ./build.sh local_backend
 
 Then run:
 
     docker compose --env-file ./backend/.env.db.local up
 
-**Package for Remote**
+**Package for Remote Manually**
 
+Run from the project root:
 
+    ./build.sh remote_backend 
+
+Then navigate to AWS/copilot folder 
+
+    cd AWS/copilot
+
+Then run:
+
+    copilot deploy
 

@@ -84,7 +84,7 @@ which necessitates two types of build configurations for build types 1, 2, and 3
 ### Backend sub-build
 The backend will always be built using docker. But based on whether the frontend is being staically built into the backend will affect how the backend will be built.
 
-## The Problem of environment variables 
+## Environment Variables 
 
 This is a list of all environment variables needed by each part of the project:
 
@@ -100,10 +100,14 @@ This is a list of all environment variables needed by each part of the project:
 #### Frontend 
 1. REACT_APP_BACKEND_ENDPOINT - where requests for the backend will be forwarded to.
 
-### Issues
+### Issues which informed the direction of our setup
 **The first issue**, creating connections:
 
 Each one of the four requires a different setup environment variables wise e.g. the frontend needs to know how to reach the backend. The backend needs to know how to reach the database.
+
+**Our fix**:
+
+
 
 **The second issue**, secrets: 
 
@@ -115,7 +119,23 @@ Due to the backend's env var 5 and 6 being critical to the app's security, they 
 
 NOTE: The backend .env files should **ALWAYS** be ignored by both docker and github. In order to locally run the backend, you need to get this information from another team member or advisor and create the file locally yourself.
 
-### 
+### How to add more environment variables 
+
+- To frontend 
+    
+    The frontend contains the files *.env.backend.local* and *.env.backend.remote*. The .local file will be used when the frontend is built to reach a backend which is local, .remote for remote backend. Add env kv pairs which you will need in either build here. 
+
+    **NOTE:** for a env var to be recognized by react, each variable needs to be prefixed by "REACT_APP_". You **shouldn't** pass sensitive into the react app, therefore it's ok to pass these .env files into source control.
+
+- To Backend
+
+    The backend contains the files *.env.db.local* and *.env.db.remote*. The .local file will be used when the frontend is built to reach a backend which is local, .remote for remote backend. Add env kv pairs which you will need in either build here.
+
+    **NOTE:** These files will contain sensitve information and should **never** be checked into source control.
+
+- To AWS 
+
+    Use [copilot documentation](https://aws.github.io/copilot-cli/docs/developing/secrets/) to add new env vars to aws secrets manager. 
 
 ## How to Run
 **Referencing the Build Types from the System Build Section**

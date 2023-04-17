@@ -11,6 +11,7 @@ image:
   # Docker build arguments.
   # For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/#image-build
   build: ../backend/Dockerfile.prod
+  target: production # target the production build stage
   # Port exposed through your container to route traffic to it.
   port: 8000
 
@@ -40,13 +41,15 @@ memory: 2048
 # Optional fields for more advanced use-cases.
 #
 variables:                    # Pass environment variables as key value pairs.
- RDS_DB_NAME: "postgres"
- RDS_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
- RDS_PORT: 5432
- RDS_USERNAME: "biopath_admin"
- RDS_PASSWORD: "WsatnbBqr7get9A"
+  DB_NAME: "postgres"
+  DB_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
+  DB_PORT: 5432
+  DB_USERNAME: "biopath_admin"
+  DB_PASSWORD: 
+    secretsmanager: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/RDS_PASSWORD
+  DJANGO_SECRET_KEY: 
+    secretsmanager: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY
 
- SECRET_KEY:
 # tags:                         # Pass tags as key value pairs.
 #   project: project-name
 

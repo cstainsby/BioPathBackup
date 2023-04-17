@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+
+/**
+ * Generic Checkbox list component for user input
+ * 
+ * @prop {options} list list of items for the checkboxlist
+ * @prop {onSelectionChange} function function to change state in parent
+ * @prop {listname} string identifies list
+ */
 function CheckboxList({ options, onSelectionChange, listName }) {
     const [checked, setChecked] = useState([]);
 

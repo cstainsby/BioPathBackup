@@ -23,46 +23,6 @@
 # https://lincolnloop.com/insights/using-setuppy-your-django-project/
 
 
-
-# Dockerfile
-
-# FROM python:3.9-slim-buster AS common-base
-# ENV DJANGO_SETTINGS_FILE settings.ini
-# # ARG BUILD_FRONTEND=false
-
-
-
-# FROM common-base AS builder
-# RUN pip install -U pip setuptools
-# RUN mkdir -p /app
-# WORKDIR /app
-# COPY requirements.txt .
-
-# COPY . /app/
-# RUN pip install --no-warn-script-location --prefix=/install -r requirements.txt
-# RUN cp -r /install/* /usr/local
-# CMD ["python3", "manage.py", "collectstatic", "--no-input"]
-
-# FROM common-base
-# # COPY docker-entrypoint.sh /app
-# COPY --from=builder /install /usr/local
-# COPY --from=builder /app/static /app/static
-# CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
-# ENTRYPOINT ["/app/docker-entrypoint.sh"]
-
-
-# FROM base-builder AS builder
-
-
-# Only build frontend if specified in build arg
-# RUN if [ "$BUILD_FRONTEND" = "true" ]; then \
-#     # Build frontend here \
-#     source ../buildfrontend.sh
-# fi
-
-#(5) Runtime stage
-#   install the compiled static files into a fresh image
-
 # FROM python:3.9-slim-buster
 # WORKDIR /app/api
 # COPY . ./

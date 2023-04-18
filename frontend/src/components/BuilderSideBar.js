@@ -8,11 +8,12 @@ import CheckboxList from './CheckboxList';
 import Modal from 'react-bootstrap/Modal';
 
 import Button from 'react-bootstrap/Button';
+import FilteredSelect from './FilterSelect';
 
 
 function BuilderSideBar(props) {
-    const [moleculeResp, setMoleculeResp] = useState(null);
-    const [enzymeResp, setEnzymeResp] = useState(null);
+    const [moleculeResp, setMoleculeResp] = useState([]);
+    const [enzymeResp, setEnzymeResp] = useState([]);
     const [moleculeSelection, setMolSelection] = useState(null);
     const [enzymeSelection, setEnzSelection] = useState(null);
     const [enzymes, setEnzymes] = useState();
@@ -41,13 +42,13 @@ function BuilderSideBar(props) {
     
     useEffect(() => {
         // anytime moleculeResp, enzymeResp, or reload state changes, rerender the lists
-        if (moleculeResp != null) {
+        if (moleculeResp != []) {
             const dropDownItems = moleculeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>
             );
             setMolecules(dropDownItems);
         }
-        if (enzymeResp != null) {
+        if (enzymeResp != []) {
             const dropDownItems = enzymeResp.map((item, index) => 
                 <option value={index}>{item["name"]}</option>
             );
@@ -73,6 +74,7 @@ function BuilderSideBar(props) {
     }
 
     function onMoleculeSelect(selectedMolecule) {
+        console.log(selectedMolecule, "selection")
         setMolSelection(moleculeResp[selectedMolecule])
     }
 
@@ -85,19 +87,13 @@ function BuilderSideBar(props) {
             <div className="fs-1">Pathway Builder</div>
             <div className="fs-5">Create a new Pathway</div>
             <div className="container">
-                <select class="form-select m-1" onChange={(e) => onMoleculeSelect(e.target.value)}>
-                    <option selected disabled hidden>Select Molecule</option>
-                    {molecules}
-                </select>
+                <FilteredSelect options={moleculeResp} selectFunction={onMoleculeSelect} filterType="Molecule"/>
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'molecule build')} draggable>
                     <Tooltip text="Drag and Drop">
                     <button class="btn btn-primary">Add Molecule</button>
                     </Tooltip>
                 </div>
-                <select class="form-select m-1" onChange={(e) => onEnzymeSelect(e.target.value)}>
-                    <option selected disabled hidden>Select Enzyme</option>
-                    {enzymes}
-                </select>
+                <FilteredSelect options={enzymeResp} selectFunction={onEnzymeSelect} filterType="Enzyme"/>
                 <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'enzyme build')} draggable>
                     <Tooltip text="Drag and Drop">
                     <button class="btn btn-primary">Add Enzyme</button>
@@ -115,8 +111,7 @@ function BuilderSideBar(props) {
                         <Modal.Body>
                         <BuildEnzymeModal 
                         onNewEnzyme={props.onNewEnzyme} 
-                        resetDropDowns={setReload} 
-                        dropDownItems={molecules} 
+                        resetDropDowns={setReload}
                         moleculeResp={moleculeResp}
                         onSubmit={handleEnzymeClose} />
                         </Modal.Body>
@@ -149,7 +144,7 @@ function BuilderSideBar(props) {
                         </Modal.Footer>
                     </Modal>
                 </>
-            </div>
+               </div>
         </div>
     );
 }

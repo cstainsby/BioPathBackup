@@ -88,6 +88,7 @@ local_settings.py
 api/migrations
 !api/migrations/__init__.py
 
+frontend/
 
 *.env
 *.env.*

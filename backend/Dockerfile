@@ -1,11 +1,18 @@
 FROM python:3
-WORKDIR /app/api
-COPY . ./
-RUN pip install -r requirements.txt
-RUN ["chmod", "+x", "/app/api/startup.sh"]
-EXPOSE 8000
-ENTRYPOINT ["/app/api/startup.sh"]
+WORKDIR /app
 
-# shell file not needed 
-# DOCKER BUILD -t django-app:version-1 .
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# install nginx
+RUN apt-get update && \
+    apt-get -y install wget gnupg && \
+    wget https://nginx.org/keys/nginx_signing.key && \
+    cat nginx_signing.key | apt-key add - && \
+    apt-get update && \
+    apt-get -y install build-essential libpq-dev nginx supervisor && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN ["pip", "install", "-r", "requirements.txt"]
+COPY . .
+RUN ["mv", "nginx.conf", "/etc/nginx/conf.d/biopath_nginx.conf"]
+EXPOSE 80
+ENTRYPOINT ["/bin/bash", "/app/startup.sh"]

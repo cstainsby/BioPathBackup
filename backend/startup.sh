@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# this probably shouldn't be used in prod
+# busy wait until port 5432 is open so that we can succesfully connect to db
+echo "Waiting for database..."
+while !</dev/tcp/db/5432; do
+    sleep 0.1
+done
 
-while !</dev/tcp/db/5432 # busy wait until port 5432 is open so that we can succesfully connect to db
-    do
-        sleep 1
-    done
+echo "Migrating and loading..."
+python manage.py makemigrations
+python manage.py migrate
+python manage.py load_data
 
-python manage.py makemigrations # TODO this probably shouldn't be done every time
-python manage.py migrate # TODO same as this
-python manage.py load_data # TODO same as this
-python manage.py runserver 0.0.0.0:8000
+echo "Starting Gunicorn..."
+gunicorn biopath.wsgi:application --log-file=/dev/stdout --bind 127.0.0.1:8000 &
+
+echo "Starting nginx..."
+exec nginx -g 'daemon off;'
+
+echo "Done." # this should never print

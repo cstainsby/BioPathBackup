@@ -89,6 +89,8 @@ api/migrations
 
 !api/migrations/__init__.py
 
+frontend/
+
 *.env
 *.venv
 *.sqlite3

@@ -10,18 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 
 
-ENVIORNMENT VARIBALES NEEDED:
-    SECRET_KEY:  the django secret key, this needs to be kept secret
-    DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
-
-    DB_NAME:     the name of the database being connected to
-    DB_HOSTNAME: the name of the database host
-    DB_PORT:     which port the database will be running on (NOTE: standard to postgres is 5432)
-    DB_USERNAME: the database user
-    DB_PASSWORD: the database password
-
-
-ENVIORNMENT VARIBALES NEEDED:
+ENVIRONMENT VARIBALES NEEDED:
     SECRET_KEY:  the django secret key, this needs to be kept secret
     DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
 
@@ -141,6 +130,7 @@ DATABASES =  {
 #             }
 #         }
 #     }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

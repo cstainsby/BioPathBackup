@@ -31,8 +31,8 @@ function CheckboxList({ options, onSelectionChange, listName }) {
             </a>
             <ul class="dropdown-menu dropdown-checkbox">
                 {options.map((item, index) => (
-                    <li>
-                        <label key={index}>
+                    <li key={index}>
+                        <label>
                             <input
                                 type="checkbox"
                                 value={index}

@@ -43,7 +43,6 @@ function getEndpointHeader() {
   if(!definedBackendEndpoint || definedBackendEndpoint === "") {
     definedBackendEndpoint = localBackendEndpoint;
   }
-
   return definedBackendEndpoint;
 }
 

@@ -86,10 +86,11 @@ __pycache__/
 **/__pycache__/
 local_settings.py
 api/migrations
-
 !api/migrations/__init__.py
 
+
 *.env
+!.env.dev
 *.venv
 *.sqlite3
 

@@ -12,6 +12,7 @@ run: build
 	./run.sh
 
 backend_test:
-	python3 backend/manage.py makemigrations
-	python3 backend/manage.py migrate
-	python3 backend/manage.py test
+	cd backend && \
+		python3 manage.py makemigrations && \
+		python3 manage.py migrate && \
+		python3 manage.py test

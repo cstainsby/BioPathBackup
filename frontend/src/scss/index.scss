@@ -15,6 +15,12 @@
 */
 @import 'color';
 
+/**
+    Override the default transition behavoir to be instant for SideBar
+*/
+$transition-collapse:         height .000000001ms linear;
+$transition-collapse-width:   width .000000001ms linear;
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
@@ -48,7 +54,7 @@
 // @import "bootstrap/scss/breadcrumb";
 // @import "bootstrap/scss/pagination";
 // @import "bootstrap/scss/badge";
-@import "bootstrap/scss/alert";
+// @import "bootstrap/scss/alert";
 // @import "bootstrap/scss/progress";
 // @import "bootstrap/scss/list-group";
 @import "bootstrap/scss/close";

@@ -237,22 +237,35 @@ const FlowModel = (props) => {
  * @returns An informational react component for the current pathway
  */
 const PathwayTitleCard = (props) => {
-    if (props.pathwayTitle !== "") {
-        return (
-            <div className='card' style={{zIndex: '5'}}>
-                <div className='card-body'>
-                    <div className='fs-2 card-title' id='PathwayTitle'>{ props.pathwayTitle }</div>
-                    <div className='fs-5 card-text'>{ props.pathwayDescription }</div>
-                    <div className='fs-5 card-text'><small className="text-muted">Created By { props.pathwayAuthor }</small></div>
-                </div>
-                <button className='btn btn-primary' onClick={props.editPathway}>Edit pathway</button>
-            </div>
-        );
-    } else {
-        return (
-            <></>
-        )
+    const [isExpanded, setIsExpanded] = useState(true);
+    
+    const toggleExpanded = () => {
+        setIsExpanded(expanded => !expanded);
     }
+
+    return props.pathwayTitle ? (
+        <>
+        <div className="card bg-opacity-10" style={{zIndex: '5'}}>
+            <button className="btn btn-primary" type="button" onClick={toggleExpanded}>
+                {
+                    isExpanded ? 
+                    "Hide Info" : 
+                    "Show Info"
+                }
+            </button>
+        </div>
+        <div className={'card collapse' + (isExpanded ? ' show' : '')} style={{zIndex: '5'}}>
+            <div className='card-body'>
+                <div className='fs-2 card-title' id='PathwayTitle'>{ props.pathwayTitle }</div>
+                <div className='fs-5 card-text'>{ props.pathwayDescription }</div>
+                <div className='fs-5 card-text'><small className="text-muted">Created By { props.pathwayAuthor }</small></div>
+            </div>
+            <button className='btn btn-primary' onClick={props.editPathway}>Edit pathway</button>
+        </div>
+        </>
+    ): (
+        <></>
+    );
 }
 
 export default FlowModel;

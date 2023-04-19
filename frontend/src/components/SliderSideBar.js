@@ -11,23 +11,41 @@ import dropdownLogo from "../icons/arrow-down-sign-to-navigate.png";
  * @prop handleConcentrationChange(string, int): void
  */
 const SliderSideBar = (props) => {
+    const [isExpanded, setIsExpanded] = useState(true);
+    
+    const toggleExpanded = () => {
+        setIsExpanded(expanded => !expanded);
+    }
+
     return (
-        <div className='card' style={{zIndex: '5'}}>
-            <button className="btn btn-primary m-1" onClick={() => {props.run()}} disabled={props.running}>
-                Run
+        <>
+        <div className="card bg-opacity-10" style={{zIndex: '5'}}>
+            <button className="btn btn-primary" type="button" onClick={toggleExpanded}>
+                {
+                    isExpanded ? 
+                    "Hide Concentrations" : 
+                    "Show Concentrations"
+                }
             </button>
-            <button className="btn btn-secondary m-1" onClick={() => {props.stop()}} disabled={!props.running}>
-                Stop
-            </button>
-            <button className="btn btn-secondary m-1" onClick={() => {props.reset()}}>
+        </div>
+        <div className={'card collapse' + (isExpanded ? ' show' : '')} style={{zIndex: '5'}}>
+            <div className='container-fluid px-0'>
+                <button className="btn btn-primary col-6" onClick={() => {props.run()}} disabled={props.running}>
+                    Run
+                </button>
+                <button className="btn btn-secondary col-6" onClick={() => {props.stop()}} disabled={!props.running}>
+                    Stop
+                </button>
+            </div>
+            <button className="btn btn-secondary col-12" onClick={() => {props.reset()}}>
                 Reset
             </button>
-            <div className='fs-4'>Concentrations</div>
-            <div className='fs-6 px-3'><small className="text-muted">Adjust molecule concentrations</small></div>
-            <div className='container p-2' style={{maxHeight: "50vh", overflowY: "auto"}}>
-                {Object.entries(props.molecules).map(([id, data]) => 
+            <div className='fs-5'>Concentrations</div>
+            <div className='fs-6 px-3'><small className="text-muted">Adjust concentrations</small></div>
+            <div className='container p-0' style={{maxHeight: "50vh", overflowY: "auto"}}>
+                {Object.entries(props.molecules).map(([id, data]) =>
                     <div className="row m-2" key={id}>
-                        <Slider 
+                        <Slider
                             id={id}
                             title={data.title}
                             value={data.value.toFixed(2)}
@@ -37,6 +55,7 @@ const SliderSideBar = (props) => {
                 )}
             </div>
         </div>
+        </>
     )
 }
 
@@ -59,17 +78,17 @@ const Slider = (props) => {
     }
 
     const openHeader = 
-        <button className='btn d-flex flex-row align-items-center' onClick={(e) => handleClick(e.target.value)}>
-            <img src={dropdownLogo} style={{ maxHeight: "12px"}}/>
+        <div className='btn d-flex flex-row align-items-center' onClick={(e) => handleClick(e.target.value)}>
+            <img src={dropdownLogo} style={{ maxHeight: "16px"}}/>
             <div className='fs-4 fw-bold mx-3'>{props.title}</div>
-        </button>
+        </div>
 
     const closeHeader = 
-        <button className='btn d-flex flex-row align-items-center' onClick={(e) => handleClick(e.target.value)}>
-            <img src={dropdownLogo} style={{ transform: "rotate(-90deg)", maxHeight: "12px"}}  />
+        <div className='btn d-flex flex-row align-items-center' onClick={(e) => handleClick(e.target.value)}>
+            <img src={dropdownLogo} style={{ transform: "rotate(-90deg)", maxHeight: "16px"}}  />
             <div className='fs-4 mx-3'>{props.title}</div>
             <div className="fs-6 text-muted">{ parseFloat(props.value * 100).toFixed(0) }%</div>
-        </button>
+        </div>
 
     const cardContents = 
         <div className='card-body sliderCardContents'>
@@ -86,7 +105,7 @@ const Slider = (props) => {
         
 
     return (
-        <div className='card scaleOnHover' id='sliderCard'>
+        <div className='card p-0' id='sliderCard'>
             { isExpanded ? openHeader : closeHeader}
             { isExpanded ? cardContents : null }
         </div>

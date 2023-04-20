@@ -10,7 +10,7 @@ type: Request-Driven Web Service
 image:
   # Docker build arguments.
   # For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/#image-build
-  build: ../backend/Dockerfile.prod
+  build: ../backend/Dockerfile
   target: production # target the production build stage
   # Port exposed through your container to route traffic to it.
   port: 8000

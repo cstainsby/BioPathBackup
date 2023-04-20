@@ -1,23 +1,17 @@
-# docker-compose.yaml
-#
-# Docker compose file for launching and running both frontend and backend
-# docker containers for the Biopath app
-# 
+# Docker compose file for running production Django server and database in containers
 
 version: "3.2"
 services:
   db:
-    # Josh S. - Dockerized the DB and changed to postgres
     container_name: postgres
     image: postgres:14.1-alpine
     restart: always
-    volumes: # volume for database persistence while container is down
-             # you must set the environment variable BIOPATH_ROOT_PATH on your machine
+    volumes: # you must set the environment variable BIOPATH_ROOT_PATH on your machine
              #  for me this was just
              #   'export BIOPATH_ROOT_PATH="~/Users/joshuaschmitz/Projects/BioPath"'
       - "${BIOPATH_ROOT_PATH}/postgres:/var/lib/postgresql/data/"
     environment:
-      # these are the same as those in backend container
+      # these are the same as those in backend container; look at .env.dev
       - POSTGRES_USER=username
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=BioPath
@@ -25,56 +19,15 @@ services:
       - '5432:5432'
 
   backend:
-    # Josh S - Renamed to backend for consistency purposes
-    # Zach B - We ran into constant restart issues, fixed when we removed this
-    # restart: always
     container_name: backend
     platform: linux/amd64
-    # Josh S - Edited command to wait until DB is ready to accept connections before migrating and then starting server
-    #   Not sure if we should actually makemigrations and migrate every startup, but it works for now
-    #command: bash -c "/app/api/startup.sh"
-
-    environment:
-      - DB_NAME=${DB_NAME}
-      - DB_HOSTNAME=${DB_HOSTNAME}
-      - DB_PORT=${DB_PORT}
-      - DB_USERNAME=${DB_USERNAME}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-      - DJANGO_ENV=${DJANGO_ENV}
     build:
       context: ./backend/
       dockerfile: Dockerfile
-      # build the local version of the backend
-      target: development 
     image: backend
     ports:
+      - "80:80"
       - "8000:8000"
+    env_file: backend/.env.db.local
     depends_on:
       - db
-
-    # comment out dependancy for now
-    # depends_on:
-    #   - db
-      # - redis
-    # networks:
-    #   - db-net
-
-  # frontend:
-  #   container_name: frontend
-  #   restart: always
-  #   command : npm start
-  #   build:
-  #     context: ./frontend/
-  #     dockerfile: Dockerfile.local
-  #   ports:
-  #     - "3000:3000"
-  #   stdin_open: true
-  #   depends_on:
-  #     - backend
-
-
-# Josh S - This was unneeded for now; removed to decrease complexity
-# networks:
-#   db-net:
-#     driver: bridge

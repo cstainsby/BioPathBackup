@@ -12,3 +12,5 @@ Dockerfile
 local_settings.py
 
 media/*
+
+scripts

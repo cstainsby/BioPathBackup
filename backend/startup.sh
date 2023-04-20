@@ -9,7 +9,7 @@ done
 echo "Migrating and loading..."
 python manage.py makemigrations
 python manage.py migrate
-
+python manage.py collectstatic
 # python manage.py load_data
 
 echo "Starting Gunicorn..."

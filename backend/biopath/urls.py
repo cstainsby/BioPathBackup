@@ -13,4 +13,4 @@ from django.conf.urls.static import static
 urlpatterns = [
     path(route='admin/', view=admin.site.urls),
     path(route='api/', view=include('api.urls')), # this essentially just includes the urls from api/urls.py
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

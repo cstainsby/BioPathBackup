@@ -130,7 +130,6 @@ const FlowBuilder = (props) => {
 
     const onConnect = useCallback((params) => {
         params.style = {strokeWidth: 5, stroke: '#0000FF'}; // change styling to build style
-        console.log(params)
         setEdges((eds) => addEdge(params, eds));
     });
 

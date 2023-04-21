@@ -165,7 +165,10 @@ function generateEnzymeInstances(enzymes, molecules, edges) {
  * @param {reactFlow Node} node 
  * @returns bool
  */
-function filterEnzymes(node) {
+export function filterEnzymes(node) {
+    if (!node) { // only check node.data if node exists
+        return false;
+    }
     if ( node.data.type === "enzyme") {
         return true;
       }
@@ -179,8 +182,18 @@ function filterEnzymes(node) {
  * @returns bool
  */
 function filterMolecules(node) {
+    if (!node) { // only check node.data if node exists
+        return false;
+    }
     if ( node.data.type === "molecule") {
         return true;
       }
     return false;
 }
+
+export const exportedForTesting = {
+    generateEnzymeInstances,
+    generateMoleculeInstances,
+    filterMolecules,
+    filterEnzymes
+  }

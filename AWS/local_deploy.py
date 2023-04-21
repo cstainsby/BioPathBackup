@@ -16,24 +16,6 @@ import os
 import sys
 import csv
 
-# repository information 
-# get updated info by command ""
-# current info
-#     "repository": {
-#         "repositoryArn": "arn:aws:ecr:us-west-2:219085571562:repository/biopath-repo",
-#         "registryId": "219085571562",
-#         "repositoryName": "biopath-repo",
-#         "repositoryUri": "219085571562.dkr.ecr.us-west-2.amazonaws.com/biopath-repo",
-#         "createdAt": "2022-10-18T13:34:25-07:00",
-#         "imageTagMutability": "MUTABLE",
-#         "imageScanningConfiguration": {
-#             "scanOnPush": false
-#         },
-#         "encryptionConfiguration": {
-#             "encryptionType": "AES256"
-#         }
-#     }
-
 
 # constants
 REGION_NAME = "us-west-2"

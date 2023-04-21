@@ -1,0 +1,2 @@
+# Scripts folder
+The purpose of this folder is to hold scripts which are important to interacting with the project. Having these files set in one folder allows us to easily ignore them in docker due to them not being necessary in the final build.

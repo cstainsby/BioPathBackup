@@ -8,6 +8,17 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
+
+
+ENVIRONMENT VARIBALES NEEDED:
+    SECRET_KEY:  the django secret key, this needs to be kept secret
+    DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
+
+    DB_NAME:     the name of the database being connected to
+    DB_HOSTNAME: the name of the database host
+    DB_PORT:     which port the database will be running on (NOTE: standard to postgres is 5432)
+    DB_USERNAME: the database user
+    DB_PASSWORD: the database password
 """
 
 from pathlib import Path
@@ -21,10 +32,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get("DEBUG", default=0))
+# unless development is explicitly stated, set to debug to False to ensure safety
+if os.environ.get("DJANGO_ENV") == "local":
+    DEBUG = True
+else: DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
@@ -76,19 +90,15 @@ WSGI_APPLICATION = 'biopath.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-DATABASES = { # edited by Josh S
-    # environment variables (ie for NAME, USER, and PASSWORD) are defined in the docker-compose file for service: backend
+
+DATABASES =  {
     'default': {
-        'ENGINE': "django.db.backends.postgresql",
-        'NAME': os.environ.get("POSTGRES_DB"),
-        'HOST': os.environ.get("POSTGRES_HOST"),
-        'PORT': os.environ.get("POSTGRES_PORT"),
-        'USER': os.environ.get("POSTGRES_USER"),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
-        'TEST': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': f'{BASE_DIR}/db.sqlite3',
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME"),
+        'HOST': os.environ.get("DB_HOSTNAME"), # 'db', # name of postgres container
+        'PORT': os.environ.get("DB_PORT"),     # default port for postgres
+        'USER': os.environ.get('DB_USERNAME'),
+        'PASSWORD': os.environ.get('DB_PASSWORD')
     }
 }
 
@@ -119,6 +129,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = '/static/'
+
+# STATIC_ROOT = "/var/www/biopath.com/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

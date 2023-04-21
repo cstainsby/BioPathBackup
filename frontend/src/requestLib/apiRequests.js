@@ -27,6 +27,7 @@ async function getBackendData(endpoint) {
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + accessToken
+            // 'Authorization': 'Basic ' + btoa("root:root") // uncomment if getting 401 errors on GET requests
         };
     }
 
@@ -44,7 +45,6 @@ async function getBackendData(endpoint) {
         return responseJSON;
 
     } catch (error) {
-        console.log(requestUrl, error);
         return error;
     }
 }
@@ -113,7 +113,6 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
         return responseJSON;
     } catch(error) {
         alert(failMessage);
-        console.log(requestUrl, error, "testststs");
         return error;
     }
 }
@@ -127,23 +126,34 @@ async function postPathway(pathwayObj) {
 async function postMolecule(moleculeObj) {
     const successMessage = "Molecule successfully added to DB"
     const failMessage = "Molecule add failed, try again"
-    return postBackendData(moleculeObj, "molecules/");
+    return postBackendData(moleculeObj, "molecules/", successMessage, failMessage);
 }
 
 async function postEnzyme(enzymeObj) {
     const successMessage = "Enzyme successfully added to DB"
     const failMessage = "Enzyme add failed, try again"
-    return postBackendData(enzymeObj, "enzymes/");
+    return postBackendData(enzymeObj, "enzymes/", successMessage, failMessage);
 }
 
 async function deletePathway(pathwayID) {
     const methodType = "DELETE";
     const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
 
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
     try {
         const requestOptions = {
             method: methodType,
-            headers: { 'Content-Type': 'application/json' },
+            headers: headers,
             body: JSON.stringify(pathwayID)
         };
 
@@ -163,4 +173,44 @@ async function deletePathway(pathwayID) {
     }
 }
 
-export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway }
+async function updatePathway(pathwayID, pathwayObj) {
+    const methodType = "PUT";
+    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
+
+
+    const accessToken = getAccessToken();
+    let headers = {};
+    if (accessToken === "") {
+        headers = {"Content-Type": "application/json"};
+    } else {
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        };
+    }
+
+    try {
+        const requestOptions = {
+            method: methodType,
+            headers: headers,
+            body: JSON.stringify(pathwayObj)
+        };
+
+        const response = await fetch(requestUrl, requestOptions);
+        const isResponseJSON = response.headers.get('content-type')?.includes('application/json');
+        const responseJSON = isResponseJSON && await response.json();
+        
+        // if it is a bad request throw an error
+        if(!response.ok) {
+            const error = (responseJSON && responseJSON.message) || response.status;
+            throw error;
+        }
+        alert("Pathway Updated Successfully")
+        return responseJSON;
+    } catch(error) {
+        alert("Pathway not updated");
+        return error;
+    }
+}
+
+export { getPathways, getPathwayById, postPathway, getEnzymes, getMolecules, postMolecule, postEnzyme, deletePathway, updatePathway }

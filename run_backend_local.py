@@ -25,7 +25,7 @@ def run_backend(backend_setup_pckg):
     elif database_location == "AWS":
         # connect to RDS
         image_name = "local_rds_backend"
-        dockerfile_filename = BACKEND_ROOT_PATH + "/Dockerfile.prod"
+        dockerfile_filename = BACKEND_ROOT_PATH + "/Dockerfile"
         dockerfile_path = BACKEND_ROOT_PATH + "/."
 
         rds_env_vars = get_rds_vars()

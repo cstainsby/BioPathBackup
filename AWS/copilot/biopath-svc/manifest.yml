@@ -1,9 +1,9 @@
-# The manifest for the "biopath-backend" service.
+# The manifest for the "biopath-svc" service.
 # Read the full specification for the "Request-Driven Web Service" type at:
 # https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/
 
 # Your service name will be used in naming your resources like log groups, App Runner services, etc.
-name: biopath-backend
+name: biopath-svc
 # The "architecture" of the service you're running.
 type: Request-Driven Web Service
 
@@ -11,7 +11,6 @@ image:
   # Docker build arguments.
   # For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/#image-build
   build: ../backend/Dockerfile
-  # target: production # target the production build stage
   # Port exposed through your container to route traffic to it.
   port: 80
 
@@ -38,24 +37,11 @@ memory: 2048
 # observability:
 #   tracing: awsxray
 
-secrets:
-  DJANGO_SECRET_KEY: DJANGO_SECRET_KEY
-  DB_PASSWORD: RDS_PASSWORD
-
 # Optional fields for more advanced use-cases.
 #
-variables:                    # Pass environment variables as key value pairs.
-  DB_NAME: "postgres"
-  DB_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
-  DB_PORT: 5432
-  DB_USERNAME: "biopath_admin"
-  # DB_PASSWORD: 
-  #   secretsmanager: "/copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/RDS_PASSWORD"
-  # DJANGO_SECRET_KEY: 
-  #   secretsmanager: "/copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY"
-  DJANGO_ENV: "remote"
-  DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1 [::1]"
-
+# variables:                    # Pass environment variables as key value pairs.
+#   LOG_LEVEL: info
+#
 # tags:                         # Pass tags as key value pairs.
 #   project: project-name
 
@@ -64,3 +50,20 @@ variables:                    # Pass environment variables as key value pairs.
 #   test:
 #     variables:
 #       LOG_LEVEL: debug        # Log level for the "test" environment.
+
+tags:
+  copilot-application: biopath
+  copilot-environment: production
+
+secrets:
+  DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DB_PASSWORD
+  DJANGO_SECRET_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY
+#
+variables:                    # Pass environment variables as key value pairs.
+  DB_NAME: "postgres"
+  DB_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
+  DB_PORT: 5432
+  DB_USERNAME: "biopath_admin"
+  DJANGO_ENV: "remote"
+  DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1 [::1]"
+  REACT_APP_BACKEND_ENDPOINT: https://pchmfbhcvm.us-west-2.awsapprunner.com

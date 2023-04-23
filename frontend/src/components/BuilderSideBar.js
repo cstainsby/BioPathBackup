@@ -7,7 +7,6 @@ import {
     postEnzyme,
 } from "../requestLib/apiRequests";
 
-import "../scss/BuilderSideBar.scss";
 import Tooltip from "./Tooltip";
 import CheckboxList from "./CheckboxList";
 import Modal from "react-bootstrap/Modal";

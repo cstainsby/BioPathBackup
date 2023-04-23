@@ -67,3 +67,4 @@ variables:                    # Pass environment variables as key value pairs.
   DJANGO_ENV: "remote"
   DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1 [::1]"
   REACT_APP_BACKEND_ENDPOINT: https://pchmfbhcvm.us-west-2.awsapprunner.com
+  DJANGO_ENDPOINT: https://pchmfbhcvm.us-west-2.awsapprunner.com/

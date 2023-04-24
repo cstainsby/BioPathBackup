@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 
-import UserContext from "../../UserContext";
+import UserContext from "../UserContext";
 
 /**
  * This splash page should be the first page the user hits when opening the home page (the root route)

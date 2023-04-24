@@ -1,18 +1,17 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-
 // react components
 // import PathwayPage from "./PathwayPage";
-import SplashPage from "./pages/SplashPage";
+import SplashPage from "../pages/SplashPage";
 // import ExplorePage from "./pages/ExplorePage";
-import HelpPage from "./pages/HelpPage";
-import UserPage from "./pages/UserPage";
-import ErrorPage from "./pages/ErrorPage";
+import HelpPage from "../pages/HelpPage";
+import UserPage from "../pages/UserPage";
+import ErrorPage from "../pages/ErrorPage";
 import RootLayout from "./RootLayout";
 import PathwayView from "./PathwayView";
 
-// Loaders 
+// Loaders
 import { splashPageLoader } from "../requestLib/loaders/splashPageLoader";
 import { pathwayViewLoader } from "../requestLib/loaders/pathwayViewLoader";
 import FlowBuilder from "./FlowBuilder";
@@ -29,7 +28,7 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <SplashPage />,
-                loader: splashPageLoader
+                loader: splashPageLoader,
             },
             // No need for explore page as of 3/26
             //   {
@@ -38,50 +37,49 @@ const router = createBrowserRouter([
             //   },
             {
                 path: "build",
-                element: <FlowBuilder />
+                element: <FlowBuilder />,
             },
             {
                 path: "pathway/:pathwayId",
                 element: <PathwayView />,
-                loader: pathwayViewLoader
-            }, 
+                loader: pathwayViewLoader,
+            },
             {
                 path: "pathway/:pathwayId/edit",
                 element: <PathwayView />,
-                loader: pathwayViewLoader
+                loader: pathwayViewLoader,
             },
             {
                 path: "help",
-                element: <HelpPage/>
+                element: <HelpPage />,
             },
             {
                 path: "user/:username",
-                element: <UserPage/>,
+                element: <UserPage />,
                 children: [
-                {
-                    path: "work"
-                },
-                {
-                    path: "groups"
-                },
-                {
-                    path: "settings"
-                }
-                ]
-            }
-        ]
-    }
-])
+                    {
+                        path: "work",
+                    },
+                    {
+                        path: "groups",
+                    },
+                    {
+                        path: "settings",
+                    },
+                ],
+            },
+        ],
+    },
+]);
 
 /**
  * This Route manager is based off the react router dom's create browser router
- * Here is an excellent tutorial to learn this 
- * https://reactrouter.com/en/main/start/tutorial 
+ * Here is an excellent tutorial to learn this
+ * https://reactrouter.com/en/main/start/tutorial
  * @returns React Router Dom RouterProvider
  */
 const RouteManager = () => {
-    return <RouterProvider router={router} />
-}
-
+    return <RouterProvider router={router} />;
+};
 
 export default RouteManager;

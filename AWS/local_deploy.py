@@ -205,15 +205,15 @@ def main():
   login_to_aws()
   
 
-  for flag in flags:
-    if flag == "--images-to-ecr":
-      images_to_ecr()
-      pass
-    elif flag == "--deploy-infra":
-      deploy_aws_infrastructure()
-    else:
-      print("Error: unregcognized flag {}".format(flag))
-      return -1
+  # for flag in flags:
+  #   if flag == "--images-to-ecr":
+  #     images_to_ecr()
+  #     pass
+  #   elif flag == "--deploy-infra":
+  #     deploy_aws_infrastructure()
+  #   else:
+  #     print("Error: unregcognized flag {}".format(flag))
+  #     return -1
 
 
 

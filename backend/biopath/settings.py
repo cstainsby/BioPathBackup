@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 ENVIRONMENT VARIBALES NEEDED:
     SECRET_KEY:  the django secret key, this needs to be kept secret
     DJANGO_ENV:  the current enviornment the app is in ("development"/"production")
+    DJANGO_ENDPOINT: the endpoint the django app will be exposed on
 
     DB_NAME:     the name of the database being connected to
     DB_HOSTNAME: the name of the database host
@@ -137,10 +138,9 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Allow CORS from localhost for development
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "https://wtfysc3awc.us-west-2.awsapprunner.com",
-    "https://vwuucs6wau.us-west-2.awsapprunner.com"
+CORS_ALLOWED_ORIGINS = [ str(os.environ.get("DJANGO_ENDPOINT"))
+    # "http://localhost",
+    # "https://pchmfbhcvm.us-west-2.awsapprunner.com/"/\
 ]
 
 # set authentication scheme for auth tokens 

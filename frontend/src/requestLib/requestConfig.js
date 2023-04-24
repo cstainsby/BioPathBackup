@@ -20,11 +20,14 @@ function getEndpointHeader() {
     //  note that this endpoint could be invalid or MISSING, there should be error handling
     //  in our requests
 
-    console.log(process.env);
-    // let remoteBackendEndpoint = "https://wtfysc3awc.us-west-2.awsapprunner.com/"
-    let definedBackendEndpoint = 'http://localhost:8000/';
-    // let definedBackendEndpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
+    let definedBackendEndpoint = process.env.REACT_APP_BACKEND_ENDPOINT;
 
+    // if the backend endpoint happens to not have a slash at the end of it, add it
+    if (definedBackendEndpoint[definedBackendEndpoint.length - 1] !== '/') {
+        definedBackendEndpoint += '/';
+    }
+
+    console.log('defined backend endpoint', definedBackendEndpoint);
     return definedBackendEndpoint;
 }
 

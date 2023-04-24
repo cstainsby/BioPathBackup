@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
+/**
+ * Component that allows user to filter a list based on user input
+ * 
+ * @param props
+ * @prop options list
+ * @prop selectFunction function
+ * @prop filterType String
+ */
 function FilteredSelect(props) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [filteredOptions, setFilteredOptions] = useState(props.options);

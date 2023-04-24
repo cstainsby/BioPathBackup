@@ -14,6 +14,13 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import FilteredSelect from "./FilterSelect";
 
+/**
+ * Add molecules / enzymes to database and modelview
+ * @param props
+ * 
+ * @prop onAddMolecule function
+ * @prop onAddEnzyme function
+ */
 function BuilderSideBar(props) {
     const [moleculeResp, setMoleculeResp] = useState([]);
     const [enzymeResp, setEnzymeResp] = useState([]);
@@ -181,6 +188,15 @@ function BuilderSideBar(props) {
     );
 }
 
+/**
+ * Modal for adding enzymes to database
+ * @param props
+ * 
+ * @prop onNewEnzyme function
+ * @prop resetDropDowns function
+ * @prop moleculeResp list
+ * @prop onSubmit function
+ */
 const BuildEnzymeModal = (props) => {
     const [name, setName] = useState(null);
     const [abbreviation, setAbbrevation] = useState(null);
@@ -299,6 +315,14 @@ const BuildEnzymeModal = (props) => {
     );
 };
 
+/**
+ * Modal for adding enzmoleculesymes to database
+ * @param props
+ * 
+ * @prop NewMolecule function
+ * @prop resetDropDowns function
+ * @prop onSubmit function
+ */
 const BuildMoleculeModal = (props) => {
     const [label, setLabel] = useState(null);
     const [abbr, setAbbr] = useState(null);

@@ -13,6 +13,7 @@ import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png'
 
 const ENZYME_WIDTH = 250;
 
+// TODO: Make image imports dynamic
 const Enzyme = memo(({ data, isConnectable }) => {
     let image = null;
     if (data.image === "aldolase") {

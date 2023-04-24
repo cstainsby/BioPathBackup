@@ -23,9 +23,7 @@ export function generatePathwayJson(nodes, edges, title, author, isPublic) {
     if (!author) { // remove for production
         author = 1;
     }
-    if (!isPublic) { // remove for production
-        isPublic = false;
-    }
+    isPublic = true // TODO: fix this :)
 
     const pathwayObj = {
         "name": title,

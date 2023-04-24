@@ -28,6 +28,6 @@ services:
     ports:
       - "80:80"
       - "8000:8000"
-    env_file: backend/.env.db.remote
+    env_file: backend/.env.db.local
     depends_on:
       - db

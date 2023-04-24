@@ -53,18 +53,20 @@ memory: 2048
 
 tags:
   copilot-application: biopath
-  copilot-environment: production
+  copilot-environment: prod
 
-secrets:
-  DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DB_PASSWORD
-  DJANGO_SECRET_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY
-#
+# secrets:
+#   DB_PASSWORD: "'arn:aws:secretsmanager:us-west-2:219085571562:secret:prod/Biopath/db_password-UjUWvF'"
+#   DJANGO_SECRET_KEY: "'arn:aws:secretsmanager:us-west-2:219085571562:secret:prod/Biopath/django_secret_key-8Tegsh'"
+
 variables:                    # Pass environment variables as key value pairs.
   DB_NAME: "postgres"
   DB_HOSTNAME: "biopath-db.covgnwx3ckfu.us-west-2.rds.amazonaws.com"
   DB_PORT: 5432
   DB_USERNAME: "biopath_admin"
-  DJANGO_ENV: "remote"
-  DJANGO_ALLOWED_HOSTS: "localhost 127.0.0.1 [::1]"
-  REACT_APP_BACKEND_ENDPOINT: https://pchmfbhcvm.us-west-2.awsapprunner.com
-  DJANGO_ENDPOINT: https://pchmfbhcvm.us-west-2.awsapprunner.com/
+  DJANGO_ENV: "local"
+  DJANGO_ALLOWED_HOSTS: ifdfgjpy82.us-west-2.awsapprunner.com
+  REACT_APP_BACKEND_ENDPOINT: https://ifdfgjpy82.us-west-2.awsapprunner.com
+  DJANGO_ENDPOINT: https://ifdfgjpy82.us-west-2.awsapprunner.com
+  DB_PASSWORD: WsatnbBqr7get9A
+  DJANGO_SECRET_KEY: django-insecure-o%s2)@(x_ow3bm(6z0r-05nqc!eb!o^vt_)0nc^ua_)i=1x!_r

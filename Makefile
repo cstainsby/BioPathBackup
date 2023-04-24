@@ -1,7 +1,7 @@
 # useful commands for running and testing the app
 
 build:
-	./build.sh
+	./build.sh 
 
 docker_run: build
 	docker-compose down

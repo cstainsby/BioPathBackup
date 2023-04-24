@@ -76,7 +76,6 @@ function BuilderSideBar(props) {
     }
 
     function onMoleculeSelect(selectedMolecule) {
-        console.log(selectedMolecule, "selection");
         setMolSelection(moleculeResp[selectedMolecule]);
     }
 
@@ -106,7 +105,9 @@ function BuilderSideBar(props) {
                     draggable
                 >
                     <Tooltip text="Drag and Drop">
-                        <button class="btn btn-primary">Add Molecule</button>
+                        <button className="btn btn-primary">
+                            Add Molecule
+                        </button>
                     </Tooltip>
                 </div>
                 <FilteredSelect
@@ -120,7 +121,7 @@ function BuilderSideBar(props) {
                     draggable
                 >
                     <Tooltip text="Drag and Drop">
-                        <button class="btn btn-primary">Add Enzyme</button>
+                        <button className="btn btn-primary">Add Enzyme</button>
                     </Tooltip>
                 </div>
                 <>
@@ -234,14 +235,14 @@ const BuildEnzymeModal = (props) => {
     };
 
     return (
-        <div class="dropdown m-1">
+        <div className="dropdown m-1">
             <ul>
                 <li>
                     <label>
                         Enzyme Name
                         <input
                             id="enzymeName"
-                            class="form-control"
+                            className="form-control"
                             type="text"
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -250,7 +251,7 @@ const BuildEnzymeModal = (props) => {
                         Enzyme Abbreviation
                         <input
                             id="enzymeAbbr"
-                            class="form-control"
+                            className="form-control"
                             type="text"
                             onChange={(e) => setAbbrevation(e.target.value)}
                         />
@@ -260,7 +261,7 @@ const BuildEnzymeModal = (props) => {
                     <label>
                         Reversible
                         <select
-                            class="form-select"
+                            className="form-select"
                             onChange={(e) => setReversible(e.target.value)}
                         >
                             <option>false</option>
@@ -290,7 +291,7 @@ const BuildEnzymeModal = (props) => {
                     />
                 </li>
                 <li>
-                    <button class="btn btn-primary" onClick={handleClick}>
+                    <button className="btn btn-primary" onClick={handleClick}>
                         Submit New Enzyme
                     </button>
                 </li>
@@ -323,14 +324,14 @@ const BuildMoleculeModal = (props) => {
     }
 
     return (
-        <div class="dropdown m-1">
+        <div className="dropdown m-1">
             <ul>
                 <li>
                     <label>
                         Molecule Name
                         <input
                             id="mName"
-                            class="form-control"
+                            className="form-control"
                             type="text"
                             onChange={(e) => setLabel(e.target.value)}
                         />
@@ -341,14 +342,14 @@ const BuildMoleculeModal = (props) => {
                         Molecule Abbreviation
                         <input
                             id="mAbbr"
-                            class="form-control"
+                            className="form-control"
                             type="text"
                             onChange={(e) => setAbbr(e.target.value)}
                         />
                     </label>
                 </li>
                 <li>
-                    <button class="btn btn-primary" onClick={handleSubmit}>
+                    <button className="btn btn-primary" onClick={handleSubmit}>
                         Submit New Molecule
                     </button>
                 </li>

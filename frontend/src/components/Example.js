@@ -2,7 +2,7 @@
  * This is an example of a functional react component.
  * Not intended for practical use, just for learning.
  */
-import React, {useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
 const Example = (props) => {
     let [data, setData] = useState("data");
@@ -11,11 +11,11 @@ const Example = (props) => {
         console.log(data);
     }, [data]);
 
-    return(
+    return (
         <div>
             <p>Example</p>
         </div>
     );
-}
+};
 
 export default Example;

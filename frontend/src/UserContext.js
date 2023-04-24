@@ -7,7 +7,7 @@ import { getUser } from "./localStoreAccess/userAccess";
 let user = getUser();
 let UserContext = null;
 if (user) {
-    UserContext = createContext({username: user.username});
+    UserContext = createContext({ username: user.username });
 } else {
     UserContext = createContext(null);
 }

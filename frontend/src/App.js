@@ -1,7 +1,7 @@
-import './scss/App.scss'
-import React from 'react'; 
+import "./scss/App.scss";
+import React from "react";
 
-import RouteManager from './components/RouteManager';
+import RouteManager from "./components/RouteManager";
 
 function App() {
     return (

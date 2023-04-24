@@ -27,7 +27,7 @@ function getEndpointHeader() {
         definedBackendEndpoint += '/';
     }
 
-    console.log('defined backend endpoint', definedBackendEndpoint);
+    // console.log('defined backend endpoint', definedBackendEndpoint);
     return definedBackendEndpoint;
 }
 

@@ -11,16 +11,6 @@ function SplashPage() {
     const splashPageLoaderData = useLoaderData(); // get data loaded from react router
     const { user, setUser } = useContext(UserContext);
 
-    const [recentWork, setRecentWork] = useState(null);
-    const [feed, setFeed] = useState(null);
-
-    useEffect(() => {
-        if (splashPageLoaderData.recentWork)
-            setRecentWork(splashPageLoaderData.recentWork);
-
-        if (splashPageLoaderData.feed) setFeed(splashPageLoaderData.feed);
-    }, [splashPageLoaderData]);
-
     return (
         <div className="container">
             <div className="fs-1">Biopath</div>

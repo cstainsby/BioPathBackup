@@ -8,7 +8,7 @@ import { getAccessToken } from '../localStoreAccess/jwtAccess';
 
 // for this file, /api/ is attached to get at the data behind that
 // portion of the backend
-let dataSourceAddressHeader = getEndpointHeader() + 'api/';
+const getDataSourceAddressHeader = getEndpointHeader() + 'api/';
 
 /**
  * Gets data from the backend at a specified endpoint
@@ -16,7 +16,7 @@ let dataSourceAddressHeader = getEndpointHeader() + 'api/';
  * @returns backend response object
  */
 async function getBackendData(endpoint) {
-    const requestUrl = dataSourceAddressHeader + endpoint;
+    const requestUrl = getDataSourceAddressHeader + endpoint;
 
     const accessToken = getAccessToken();
     let headers = {};
@@ -46,7 +46,7 @@ async function getBackendData(endpoint) {
 
         return responseJSON;
     } catch (error) {
-        return error;
+        alert(error);
     }
 }
 
@@ -80,7 +80,7 @@ async function getMolecules() {
  */
 async function postBackendData(obj, endpoint, successMessage, failMessage) {
     const methodType = 'POST';
-    const requestUrl = dataSourceAddressHeader + endpoint;
+    const requestUrl = getDataSourceAddressHeader + endpoint;
 
     const accessToken = getAccessToken();
     let headers = {};
@@ -117,7 +117,6 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
         return responseJSON;
     } catch (error) {
         alert(failMessage);
-        return error;
     }
 }
 
@@ -151,7 +150,8 @@ async function postEnzyme(enzymeObj) {
 
 async function deletePathway(pathwayID) {
     const methodType = 'DELETE';
-    const requestUrl = dataSourceAddressHeader + 'pathways/' + pathwayID + '/';
+    const requestUrl =
+        getDataSourceAddressHeader + 'pathways/' + pathwayID + '/';
 
     const accessToken = getAccessToken();
     let headers = {};
@@ -186,13 +186,13 @@ async function deletePathway(pathwayID) {
         return responseJSON;
     } catch (error) {
         alert('Pathway not deleted');
-        return error;
     }
 }
 
 async function updatePathway(pathwayID, pathwayObj) {
     const methodType = 'PUT';
-    const requestUrl = dataSourceAddressHeader + 'pathways/' + pathwayID + '/';
+    const requestUrl =
+        getDataSourceAddressHeader + 'pathways/' + pathwayID + '/';
 
     const accessToken = getAccessToken();
     let headers = {};

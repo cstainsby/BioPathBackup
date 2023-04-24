@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
 
-function FilteredSelect({ options, selectFunction, filterType }) {
-    const [selectedOption, setSelectedOption] = useState("");
-    const [filteredOptions, setFilteredOptions] = useState([]);
+/**
+ * Select list with filter textbox. Calls selectFunction when a selection is made
+ */
+export default function FilteredSelect({
+    options,
+    selectFunction,
+    filterType,
+}) {
+    // The selected option returns a string so this type needs to
+    // be a string. Useful to put the default value here so that the
+    // <select> shows our temp message. See that I'm making sure not
+    // to pass this into selectFuntion in the useEffect() - Zach
+    const [selectedOptionIndex, setSelectedOption] = useState(
+        "Select " + filterType
+    );
+    const [textInput, setTextInput] = useState("");
 
     useEffect(() => {
-        const index = options.findIndex((item) => item.name === selectedOption);
-        selectFunction(index);
-    }, [selectedOption]);
+        if (selectedOptionIndex !== "Select " + filterType) {
+            selectFunction(Number(selectedOptionIndex));
+        }
+    }, [selectedOptionIndex]);
 
-    function handleInputChange(event) {
-        const inputValue = event.target.value;
-        const filtered = options.filter((options) =>
-            options.name.toLowerCase().includes(inputValue.toLowerCase())
-        );
-        setFilteredOptions(filtered);
-    }
-
-    function handleChange(selectedOption) {
-        setSelectedOption(selectedOption.target.value);
+    function onTextInputChange(event) {
+        setTextInput(event.target.value);
     }
 
     return (
@@ -27,24 +33,32 @@ function FilteredSelect({ options, selectFunction, filterType }) {
                 type="text"
                 className="form-control"
                 placeholder="Search"
-                onChange={handleInputChange}
+                onChange={onTextInputChange}
             />
             <select
                 className="form-select m-1"
-                value={selectedOption}
-                onChange={handleChange}
+                value={selectedOptionIndex}
+                onChange={(selection) =>
+                    setSelectedOption(selection.target.value)
+                }
             >
-                <option selected disabled hidden>
+                <option value={"Select " + filterType} disabled hidden>
                     Select {filterType}
                 </option>
-                {filteredOptions.map((option) => (
-                    <option key={option.id} value={option.name}>
-                        {option.name}
-                    </option>
-                ))}
+                {options.map((option, index) => {
+                    if (
+                        option.name
+                            .toLowerCase()
+                            .includes(textInput.toLowerCase())
+                    ) {
+                        return (
+                            <option key={option.id} value={index}>
+                                {option.name}
+                            </option>
+                        );
+                    }
+                })}
             </select>
         </div>
     );
 }
-
-export default FilteredSelect;

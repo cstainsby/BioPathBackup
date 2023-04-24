@@ -1,5 +1,5 @@
 // TODO: Add Help information
-const HelpPage = () => {
+function HelpPage() {
     return (
         <div>
             <h1>Help</h1>
@@ -50,7 +50,7 @@ const HelpPage = () => {
 
             <h2>Contact Us</h2>
             <p>
-                If you have any questions or issues, please contact us at{" "}
+                If you have any questions or issues, please contact us at{' '}
                 <a href="https://www.reddit.com/user/BenjamanSnatch22/comments/12f4qwq/biopath_forums/">
                     BioPath Reddit Forum
                 </a>
@@ -58,6 +58,6 @@ const HelpPage = () => {
             </p>
         </div>
     );
-};
+}
 
 export default HelpPage;

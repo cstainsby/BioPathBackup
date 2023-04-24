@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import { getUser } from "./localStoreAccess/userAccess";
+import { createContext } from 'react';
+import { getUser } from './localStoreAccess/userAccess';
 
 /**
  * This context is used for storing a sign in status across the react app

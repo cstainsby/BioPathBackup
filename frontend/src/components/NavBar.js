@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from 'react';
 
 // import requests lib
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 // import modals
-import SignInModal from "./modals/SignInModal";
-import UserContext from "../UserContext";
+import SignInModal from './modals/SignInModal';
+import UserContext from '../UserContext';
 
-import { clearUser } from "../localStoreAccess/userAccess";
-import { clearTokens } from "../localStoreAccess/jwtAccess";
+import { clearUser } from '../localStoreAccess/userAccess';
+import { clearTokens } from '../localStoreAccess/jwtAccess';
 
 /**
  * this is the base component that holds every child component below
@@ -16,11 +16,11 @@ import { clearTokens } from "../localStoreAccess/jwtAccess";
  * our main model area
  * @returns website wide navbar component
  */
-const Navbar = () => {
+function Navbar() {
     let { user, setUser } = useContext(UserContext);
 
     function signOut() {
-        console.log("Signing out...");
+        console.log('Signing out...');
         setUser(null);
         clearTokens();
         clearUser();
@@ -99,7 +99,7 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link
                                     className="nav-link"
-                                    to={"user/" + user.username}
+                                    to={'user/' + user.username}
                                     role="button"
                                 >
                                     My Work
@@ -127,6 +127,6 @@ const Navbar = () => {
             </div>
         </nav>
     );
-};
+}
 
 export default Navbar;

@@ -1,16 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 
-import UserContext from "../../UserContext";
-import { login, register } from "../../requestLib/loginRequests";
-import { saveTokens } from "../../localStoreAccess/jwtAccess";
-import { saveUser } from "../../localStoreAccess/userAccess";
+import UserContext from '../../UserContext';
+import { login, register } from '../../requestLib/loginRequests';
+import { saveTokens } from '../../localStoreAccess/jwtAccess';
+import { saveUser } from '../../localStoreAccess/userAccess';
 
 /**
- *
- * @param {*} props
- * @returns
+ * Pop up for user signing in
  */
-const SignInModal = (props) => {
+function SignInModal() {
     const { user, setUser } = useContext(UserContext);
 
     // remains null until sign in attempt is made
@@ -18,21 +16,21 @@ const SignInModal = (props) => {
     const [isUserValid, setIsUserValid] = useState(false);
     const [errorMsg, setErrorMsg] = useState(null);
 
-    const [usernameText, setUsernameText] = useState("");
-    const [passwordText, setPasswordText] = useState("");
+    const [usernameText, setUsernameText] = useState('');
+    const [passwordText, setPasswordText] = useState('');
 
     // state for determining what type of form to display
-    const [signInMode, setSignInMode] = useState("signIn");
+    const [signInMode, setSignInMode] = useState('signIn');
 
     /**
      * handler which contains logic for switching form from sign in to sign up
      * and vice versa
      */
     const handleSignInModeSwitch = () => {
-        if (signInMode === "signIn") {
-            setSignInMode("signUp");
+        if (signInMode === 'signIn') {
+            setSignInMode('signUp');
         } else {
-            setSignInMode("signIn");
+            setSignInMode('signIn');
         }
     };
 
@@ -41,7 +39,7 @@ const SignInModal = (props) => {
      * used for sign in or sign up based on mode selection
      */
     const handleSignInClick = async () => {
-        if (signInMode === "signUp") {
+        if (signInMode === 'signUp') {
             const res = await register(usernameText, passwordText);
 
             if (!res.ok) {
@@ -62,9 +60,9 @@ const SignInModal = (props) => {
             };
             saveUser(signedInUser);
             setUser(signedInUser);
-            console.log("user is: " + signedInUser);
+            console.log('user is: ' + signedInUser);
         } else {
-            setErrorMsg("Invalid Login");
+            setErrorMsg('Invalid Login');
         }
     };
 
@@ -80,7 +78,7 @@ const SignInModal = (props) => {
                 <div className="modal-content">
                     <div className="modal-header">
                         <h1 className="modal-title fs-5" id="signInModalLabel">
-                            {signInMode === "signIn" ? (
+                            {signInMode === 'signIn' ? (
                                 <>Sign In</>
                             ) : (
                                 <>Sign Up</>
@@ -148,7 +146,7 @@ const SignInModal = (props) => {
                             data-bs-dismiss="modal"
                             onClick={handleSignInClick}
                         >
-                            {signInMode === "signIn" ? (
+                            {signInMode === 'signIn' ? (
                                 <>Sign In</>
                             ) : (
                                 <>Sign Up</>
@@ -158,7 +156,7 @@ const SignInModal = (props) => {
                     <div className="modal-footer">
                         <div className="list-group-item container">
                             <span className="col-md-8">
-                                {signInMode === "signIn" ? (
+                                {signInMode === 'signIn' ? (
                                     <>Don't have an account?</>
                                 ) : (
                                     <>Already have an account?</>
@@ -170,7 +168,7 @@ const SignInModal = (props) => {
                                 className="btn btn-primary btn-sm col ms-3"
                                 onClick={handleSignInModeSwitch}
                             >
-                                {signInMode !== "signIn" ? (
+                                {signInMode !== 'signIn' ? (
                                     <>Sign In</>
                                 ) : (
                                     <>Sign Up</>
@@ -182,6 +180,6 @@ const SignInModal = (props) => {
             </div>
         </div>
     );
-};
+}
 
 export default SignInModal;

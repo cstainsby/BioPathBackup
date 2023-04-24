@@ -1,5 +1,5 @@
-import { saveTokens } from "../localStoreAccess/jwtAccess";
-import getEndpointHeader from "./requestConfig";
+import { saveTokens } from '../localStoreAccess/jwtAccess';
+import getEndpointHeader from './requestConfig';
 
 // for this file, nothing attached like there is an attachment for the api/
 let dataSourceAddressHeader = getEndpointHeader();
@@ -11,7 +11,7 @@ let dataSourceAddressHeader = getEndpointHeader();
  * @returns res returned by post
  */
 const register = async (username, password) => {
-    let endpointExtension = "api/register/";
+    let endpointExtension = 'api/register/';
     let requestUrl = dataSourceAddressHeader + endpointExtension;
 
     const data = {
@@ -20,9 +20,9 @@ const register = async (username, password) => {
     };
 
     const res = fetch(requestUrl, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
     }).catch((err) => console.log(err));
@@ -38,7 +38,7 @@ const register = async (username, password) => {
  * @param {string} password
  */
 const login = async (username, password) => {
-    let endpointExtension = "api/api-token-auth/";
+    let endpointExtension = 'api/api-token-auth/';
     let requestUrl = dataSourceAddressHeader + endpointExtension;
 
     const data = {
@@ -47,9 +47,9 @@ const login = async (username, password) => {
     };
 
     const resData = fetch(requestUrl, {
-        method: "POST",
+        method: 'POST',
         headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
     })

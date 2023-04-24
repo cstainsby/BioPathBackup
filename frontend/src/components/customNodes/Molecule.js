@@ -1,9 +1,12 @@
-import React, { memo } from "react";
-import { Handle } from "reactflow";
+import React, { memo } from 'react';
+import { Handle } from 'reactflow';
 
 const MOLECULE_WIDTH = 60;
 const HANDLE_OFFSET = 15;
 
+/**
+ * Reactflow Node for molecules
+ */
 const Molecule = memo(({ data, isConnectable }) => {
     let MOLECULE_CENTER = MOLECULE_WIDTH / 2;
     return (
@@ -15,9 +18,9 @@ const Molecule = memo(({ data, isConnectable }) => {
                 style={{
                     left: MOLECULE_CENTER - HANDLE_OFFSET,
                     top: 1,
-                    background: "#555",
+                    background: '#555',
                 }}
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={(params) => console.log('handle onConnect', params)}
                 isConnectable={isConnectable}
             />
             <Handle
@@ -27,9 +30,9 @@ const Molecule = memo(({ data, isConnectable }) => {
                 style={{
                     left: MOLECULE_CENTER + HANDLE_OFFSET,
                     top: 1,
-                    background: "#555",
+                    background: '#555',
                 }}
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={(params) => console.log('handle onConnect', params)}
                 isConnectable={isConnectable}
             />
             <div>
@@ -43,7 +46,7 @@ const Molecule = memo(({ data, isConnectable }) => {
                 style={{
                     left: MOLECULE_CENTER - HANDLE_OFFSET,
                     bottom: 1,
-                    background: "#555",
+                    background: '#555',
                 }}
                 isConnectable={isConnectable}
             />
@@ -54,7 +57,7 @@ const Molecule = memo(({ data, isConnectable }) => {
                 style={{
                     left: MOLECULE_CENTER + HANDLE_OFFSET,
                     bottom: 1,
-                    background: "#555",
+                    background: '#555',
                 }}
                 isConnectable={isConnectable}
             />

@@ -1,19 +1,15 @@
-import React, { Component, useState, useEffect } from "react";
-import FlowModel from "./FlowModel";
-import ConcentrationManager from "./utils/ConcentrationManager";
-import { useLoaderData } from "react-router-dom";
+import React, { useState } from 'react';
+import FlowModel from './FlowModel';
+import ConcentrationManager from './utils/ConcentrationManager';
+import { useLoaderData } from 'react-router-dom';
 
 /**
- *
  * @prop {int} pathwayId
  * @returns A react component containing the
  */
-const PathwayView = (props) => {
+function PathwayView() {
     const pathway = useLoaderData();
-    const [isMinimized, setIsMinimized] = useState(false);
-    let [concentrationManager, setConcentrationManager] = useState(
-        new ConcentrationManager()
-    );
+    let [concentrationManager, _] = useState(new ConcentrationManager());
 
     return (
         <div className="h-100">
@@ -23,6 +19,6 @@ const PathwayView = (props) => {
             />
         </div>
     );
-};
+}
 
 export default PathwayView;

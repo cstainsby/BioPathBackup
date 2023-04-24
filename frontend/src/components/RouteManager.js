@@ -1,62 +1,62 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import SplashPage from "../pages/SplashPage";
-import HelpPage from "../pages/HelpPage";
-import UserPage from "../pages/UserPage";
-import ErrorPage from "../pages/ErrorPage";
-import RootLayout from "./RootLayout";
-import PathwayView from "./PathwayView";
+import SplashPage from '../pages/SplashPage';
+import HelpPage from '../pages/HelpPage';
+import UserPage from '../pages/UserPage';
+import ErrorPage from '../pages/ErrorPage';
+import RootLayout from './RootLayout';
+import PathwayView from './PathwayView';
 
 // Loaders
-import { splashPageLoader } from "../requestLib/loaders/splashPageLoader";
-import { pathwayViewLoader } from "../requestLib/loaders/pathwayViewLoader";
-import FlowBuilder from "./FlowBuilder";
+import { splashPageLoader } from '../requestLib/loaders/splashPageLoader';
+import { pathwayViewLoader } from '../requestLib/loaders/pathwayViewLoader';
+import FlowBuilder from './FlowBuilder';
 
 /**
  * A declaritive definition of the routes within the website
  */
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: '/',
         element: <RootLayout />,
         errorElement: <ErrorPage />,
         children: [
             {
-                path: "/",
+                path: '/',
                 element: <SplashPage />,
                 loader: splashPageLoader,
             },
             {
-                path: "build",
+                path: 'build',
                 element: <FlowBuilder />,
             },
             {
-                path: "pathway/:pathwayId",
+                path: 'pathway/:pathwayId',
                 element: <PathwayView />,
                 loader: pathwayViewLoader,
             },
             {
-                path: "pathway/:pathwayId/edit",
+                path: 'pathway/:pathwayId/edit',
                 element: <PathwayView />,
                 loader: pathwayViewLoader,
             },
             {
-                path: "help",
+                path: 'help',
                 element: <HelpPage />,
             },
             {
-                path: "user/:username",
+                path: 'user/:username',
                 element: <UserPage />,
                 children: [
                     {
-                        path: "work",
+                        path: 'work',
                     },
                     {
-                        path: "groups",
+                        path: 'groups',
                     },
                     {
-                        path: "settings",
+                        path: 'settings',
                     },
                 ],
             },

@@ -1,6 +1,9 @@
-import React, { memo } from "react";
-import { Handle } from "reactflow";
+import React, { memo } from 'react';
+import { Handle } from 'reactflow';
 
+/**
+ * Reactflow Node for BuilderMolecules
+ */
 const BuilderMolecule = memo(({ data, isConnectable }) => {
     return (
         <>
@@ -8,7 +11,7 @@ const BuilderMolecule = memo(({ data, isConnectable }) => {
                 type="target"
                 position="top"
                 id="top-source"
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={(params) => console.log('handle onConnect', params)}
                 isConnectable={isConnectable}
             />
             <div>

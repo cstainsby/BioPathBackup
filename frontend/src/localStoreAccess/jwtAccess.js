@@ -8,10 +8,10 @@
  * @returns token or empty string
  */
 const getAccessToken = () => {
-    let accessToken = sessionStorage.getItem("access_token");
+    let accessToken = sessionStorage.getItem('access_token');
 
-    if (!accessToken || accessToken === "undefined") {
-        accessToken = "";
+    if (!accessToken || accessToken === 'undefined') {
+        accessToken = '';
     }
 
     return accessToken;
@@ -22,10 +22,10 @@ const getAccessToken = () => {
  * @returns token string or empty string
  */
 const getRefreshToken = () => {
-    let refreshToken = sessionStorage.getItem("refresh_token");
+    let refreshToken = sessionStorage.getItem('refresh_token');
 
-    if (!refreshToken || refreshToken === "undefined") {
-        refreshToken = "";
+    if (!refreshToken || refreshToken === 'undefined') {
+        refreshToken = '';
     }
     return refreshToken;
 };
@@ -36,16 +36,16 @@ const getRefreshToken = () => {
  * @param {string} refresh_token
  */
 const saveTokens = (access_token, refresh_token) => {
-    sessionStorage.setItem("access_token", access_token);
-    sessionStorage.setItem("refresh_token", refresh_token);
+    sessionStorage.setItem('access_token', access_token);
+    sessionStorage.setItem('refresh_token', refresh_token);
 };
 
 /**
  * used to clear tokens after sign out
  */
 const clearTokens = () => {
-    sessionStorage.removeItem("access_token");
-    sessionStorage.removeItem("refresh_token");
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('refresh_token');
 };
 
 export { getAccessToken, getRefreshToken, saveTokens, clearTokens };

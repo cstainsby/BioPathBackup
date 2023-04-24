@@ -1,24 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 /**
  * Select list with filter textbox. Calls selectFunction when a selection is made
  */
-export default function FilteredSelect({
-    options,
-    selectFunction,
-    filterType,
-}) {
+function FilteredSelect({ options, selectFunction, filterType }) {
     // The selected option returns a string so this type needs to
     // be a string. Useful to put the default value here so that the
     // <select> shows our temp message. See that I'm making sure not
     // to pass this into selectFuntion in the useEffect() - Zach
     const [selectedOptionIndex, setSelectedOption] = useState(
-        "Select " + filterType
+        'Select ' + filterType
     );
-    const [textInput, setTextInput] = useState("");
+    const [textInput, setTextInput] = useState('');
 
     useEffect(() => {
-        if (selectedOptionIndex !== "Select " + filterType) {
+        if (selectedOptionIndex !== 'Select ' + filterType) {
             selectFunction(Number(selectedOptionIndex));
         }
     }, [selectedOptionIndex]);
@@ -42,7 +38,7 @@ export default function FilteredSelect({
                     setSelectedOption(selection.target.value)
                 }
             >
-                <option value={"Select " + filterType} disabled hidden>
+                <option value={'Select ' + filterType} disabled hidden>
                     Select {filterType}
                 </option>
                 {options.map((option, index) => {
@@ -62,3 +58,5 @@ export default function FilteredSelect({
         </div>
     );
 }
+
+export default FilteredSelect;

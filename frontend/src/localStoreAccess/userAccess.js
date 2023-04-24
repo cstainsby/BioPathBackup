@@ -7,15 +7,15 @@
 // ----------------------------------------------------------------------
 
 const getUser = () => {
-    return sessionStorage.getItem("signedInUser");
+    return sessionStorage.getItem('signedInUser');
 };
 
 const saveUser = (userJson) => {
-    sessionStorage.setItem("signedInUser", userJson);
+    sessionStorage.setItem('signedInUser', userJson);
 };
 
 const clearUser = () => {
-    sessionStorage.removeItem("signedInUser");
+    sessionStorage.removeItem('signedInUser');
 };
 
 export { getUser, saveUser, clearUser };

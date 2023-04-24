@@ -3,12 +3,12 @@
  * requests to the backend
  */
 
-import getEndpointHeader from "./requestConfig";
-import { getAccessToken } from "../localStoreAccess/jwtAccess";
+import getEndpointHeader from './requestConfig';
+import { getAccessToken } from '../localStoreAccess/jwtAccess';
 
 // for this file, /api/ is attached to get at the data behind that
 // portion of the backend
-let dataSourceAddressHeader = getEndpointHeader() + "api/";
+let dataSourceAddressHeader = getEndpointHeader() + 'api/';
 
 /**
  * Gets data from the backend at a specified endpoint
@@ -20,12 +20,12 @@ async function getBackendData(endpoint) {
 
     const accessToken = getAccessToken();
     let headers = {};
-    if (accessToken === "") {
-        headers = { "Content-Type": "application/json" };
+    if (accessToken === '') {
+        headers = { 'Content-Type': 'application/json' };
     } else {
         headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + accessToken,
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
             // 'Authorization': 'Basic ' + btoa("root:root") // uncomment if getting 401 errors on GET requests
         };
     }
@@ -33,8 +33,8 @@ async function getBackendData(endpoint) {
     try {
         const response = await fetch(requestUrl, { headers: headers });
         const isResponseJSON = response.headers
-            .get("content-type")
-            ?.includes("application/json");
+            .get('content-type')
+            ?.includes('application/json');
         const responseJSON = isResponseJSON && (await response.json());
 
         // if it is a bad request throw an error
@@ -56,19 +56,19 @@ async function getBackendData(endpoint) {
  * @returns response object from backend
  */
 async function getPathwayById(id) {
-    return getBackendData("pathways/" + id + "/");
+    return getBackendData('pathways/' + id + '/');
 }
 
 async function getPathways() {
-    return getBackendData("pathways/");
+    return getBackendData('pathways/');
 }
 
 async function getEnzymes() {
-    return getBackendData("enzymes/");
+    return getBackendData('enzymes/');
 }
 
 async function getMolecules() {
-    return getBackendData("molecules/");
+    return getBackendData('molecules/');
 }
 
 /**
@@ -79,18 +79,18 @@ async function getMolecules() {
  * @returns backend response object
  */
 async function postBackendData(obj, endpoint, successMessage, failMessage) {
-    const methodType = "POST";
+    const methodType = 'POST';
     const requestUrl = dataSourceAddressHeader + endpoint;
 
     const accessToken = getAccessToken();
     let headers = {};
-    if (accessToken === "") {
-        alert("You must be signed in to save anything you build.");
-        headers = { "Content-Type": "application/json" };
+    if (accessToken === '') {
+        alert('You must be signed in to save anything you build.');
+        headers = { 'Content-Type': 'application/json' };
     } else {
         headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + accessToken,
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
         };
     }
 
@@ -103,8 +103,8 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
 
         const response = await fetch(requestUrl, requestOptions);
         const isResponseJSON = response.headers
-            .get("content-type")
-            ?.includes("application/json");
+            .get('content-type')
+            ?.includes('application/json');
         const responseJSON = isResponseJSON && (await response.json());
 
         // if it is a bad request throw an error
@@ -122,45 +122,45 @@ async function postBackendData(obj, endpoint, successMessage, failMessage) {
 }
 
 async function postPathway(pathwayObj) {
-    const successMessage = "DB updated successfully";
-    const failMessage = "Pathway had incorrect internals, try again";
+    const successMessage = 'DB updated successfully';
+    const failMessage = 'Pathway had incorrect internals, try again';
     return postBackendData(
         pathwayObj,
-        "pathways/",
+        'pathways/',
         successMessage,
         failMessage
     );
 }
 
 async function postMolecule(moleculeObj) {
-    const successMessage = "Molecule successfully added to DB";
-    const failMessage = "Molecule add failed, try again";
+    const successMessage = 'Molecule successfully added to DB';
+    const failMessage = 'Molecule add failed, try again';
     return postBackendData(
         moleculeObj,
-        "molecules/",
+        'molecules/',
         successMessage,
         failMessage
     );
 }
 
 async function postEnzyme(enzymeObj) {
-    const successMessage = "Enzyme successfully added to DB";
-    const failMessage = "Enzyme add failed, try again";
-    return postBackendData(enzymeObj, "enzymes/", successMessage, failMessage);
+    const successMessage = 'Enzyme successfully added to DB';
+    const failMessage = 'Enzyme add failed, try again';
+    return postBackendData(enzymeObj, 'enzymes/', successMessage, failMessage);
 }
 
 async function deletePathway(pathwayID) {
-    const methodType = "DELETE";
-    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
+    const methodType = 'DELETE';
+    const requestUrl = dataSourceAddressHeader + 'pathways/' + pathwayID + '/';
 
     const accessToken = getAccessToken();
     let headers = {};
-    if (accessToken === "") {
-        headers = { "Content-Type": "application/json" };
+    if (accessToken === '') {
+        headers = { 'Content-Type': 'application/json' };
     } else {
         headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + accessToken,
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
         };
     }
 
@@ -173,8 +173,8 @@ async function deletePathway(pathwayID) {
 
         const response = await fetch(requestUrl, requestOptions);
         const isResponseJSON = response.headers
-            .get("content-type")
-            ?.includes("application/json");
+            .get('content-type')
+            ?.includes('application/json');
         const responseJSON = isResponseJSON && (await response.json());
 
         // if it is a bad request throw an error
@@ -185,23 +185,23 @@ async function deletePathway(pathwayID) {
         }
         return responseJSON;
     } catch (error) {
-        alert("Pathway not deleted");
+        alert('Pathway not deleted');
         return error;
     }
 }
 
 async function updatePathway(pathwayID, pathwayObj) {
-    const methodType = "PUT";
-    const requestUrl = dataSourceAddressHeader + "pathways/" + pathwayID + "/";
+    const methodType = 'PUT';
+    const requestUrl = dataSourceAddressHeader + 'pathways/' + pathwayID + '/';
 
     const accessToken = getAccessToken();
     let headers = {};
-    if (accessToken === "") {
-        headers = { "Content-Type": "application/json" };
+    if (accessToken === '') {
+        headers = { 'Content-Type': 'application/json' };
     } else {
         headers = {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + accessToken,
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + accessToken,
         };
     }
 
@@ -214,8 +214,8 @@ async function updatePathway(pathwayID, pathwayObj) {
 
         const response = await fetch(requestUrl, requestOptions);
         const isResponseJSON = response.headers
-            .get("content-type")
-            ?.includes("application/json");
+            .get('content-type')
+            ?.includes('application/json');
         const responseJSON = isResponseJSON && (await response.json());
 
         // if it is a bad request throw an error
@@ -224,10 +224,10 @@ async function updatePathway(pathwayID, pathwayObj) {
                 (responseJSON && responseJSON.message) || response.status;
             throw error;
         }
-        alert("Pathway Updated Successfully");
+        alert('Pathway Updated Successfully');
         return responseJSON;
     } catch (error) {
-        alert("Pathway not updated");
+        alert('Pathway not updated');
         return error;
     }
 }

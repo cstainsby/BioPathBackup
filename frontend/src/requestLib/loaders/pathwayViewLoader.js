@@ -1,4 +1,4 @@
-import { getPathwayById } from "../apiRequests";
+import { getPathwayById } from '../apiRequests';
 
 /**
  * Loader used by React-Router to supply a Pathway when page is loaded

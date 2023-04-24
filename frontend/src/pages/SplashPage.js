@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useLoaderData } from 'react-router-dom';
 
-import UserContext from "../UserContext";
+import UserContext from '../UserContext';
 
 /**
  * This splash page should be the first page the user hits when opening the home page (the root route)
  * @returns A Splash page component
  */
-const SplashPage = () => {
+function SplashPage() {
     const splashPageLoaderData = useLoaderData(); // get data loaded from react router
     const { user, setUser } = useContext(UserContext);
 
@@ -34,7 +34,7 @@ const SplashPage = () => {
                         <div className="fs-3 col-auto">Jump Back In</div>
                         <Link
                             className="btn btn-primary col-auto me-2"
-                            to={"user/" + user.username}
+                            to={'user/' + user.username}
                         >
                             To Your Work
                         </Link>
@@ -48,7 +48,7 @@ const SplashPage = () => {
                                     return (
                                         <Link
                                             key={pathway.id}
-                                            to={"pathway/" + pathway.id}
+                                            to={'pathway/' + pathway.id}
                                             className="col-auto card text-decoration-none mx-1 px-3 py-2"
                                         >
                                             <div className="fs-4">
@@ -74,7 +74,7 @@ const SplashPage = () => {
                         return (
                             <Link
                                 key={pathway.id}
-                                to={"pathway/" + pathway.id}
+                                to={'pathway/' + pathway.id}
                                 className="row card text-decoration-none m-1 p-1 m-sm-2 p-sm-2"
                             >
                                 <div className="fs-4 fw-bold">
@@ -120,7 +120,7 @@ const SplashPage = () => {
             </div>
         </div>
     );
-};
+}
 
 /**
  * A card component which is used to direct the user on the splash screen
@@ -129,20 +129,20 @@ const SplashPage = () => {
  * @prop {string} linkPath
  * @returns
  */
-const StarterCard = (props) => {
+function StarterCard({ linkPath, title, description }) {
     return (
         <Link
-            to={props.linkPath}
+            to={linkPath}
             className="card h-100 text-start text-decoration-none"
         >
             <div className="row g-0">
                 <div className="card-body">
-                    <div className="fs-3">{props.title}</div>
-                    <div className="card-text">{props.description}</div>
+                    <div className="fs-3">{title}</div>
+                    <div className="card-text">{description}</div>
                 </div>
             </div>
         </Link>
     );
-};
+}
 
 export default SplashPage;

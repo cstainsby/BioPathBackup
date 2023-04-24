@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 import { getPathways } from "../../requestLib/requests";
 
-// ----------------------------------------------------------------------
-// PathwayLoaderModal
-// ----------------------------------------------------------------------
-const PathwayLoaderModal = (props) => {
+/**
+ * Modal for loading pathways
+ */
+function PathwayLoaderModal() {
     const [pathways, setPathways] = useState(null);
 
     useEffect(() => {
@@ -106,6 +106,6 @@ const PathwayLoaderModal = (props) => {
             </div>
         </div>
     );
-};
+}
 
 export default PathwayLoaderModal;

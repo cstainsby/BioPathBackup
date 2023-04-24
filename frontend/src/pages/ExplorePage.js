@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const ExplorePage = (pages) => {
-    const paginationButtonNames = ["Pathways", "Groups", "Users"];
+function ExplorePage() {
+    const paginationButtonNames = ['Pathways', 'Groups', 'Users'];
 
-    let [selectedExploreType, setSelectedExploreType] = useState("");
+    let [selectedExploreType, setSelectedExploreType] = useState('');
 
     const handlePaginationButtonClick = (buttonName) => {
         if (selectedExploreType === buttonName) {
-            setSelectedExploreType("");
+            setSelectedExploreType('');
         } else {
             setSelectedExploreType(buttonName);
         }
@@ -20,10 +20,10 @@ const ExplorePage = (pages) => {
             <nav>
                 <ul class="pagination pagination-sm">
                     {paginationButtonNames.map((buttonName) => {
-                        let className = "page-item";
+                        let className = 'page-item';
 
                         if (selectedExploreType === buttonName)
-                            className += " active";
+                            className += ' active';
 
                         return (
                             <li
@@ -47,6 +47,6 @@ const ExplorePage = (pages) => {
             </div>
         </div>
     );
-};
+}
 
 export default ExplorePage;

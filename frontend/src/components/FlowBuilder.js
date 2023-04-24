@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import { useLocation } from 'react-router-dom';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
     ReactFlowProvider,
     useNodesState,
@@ -7,21 +7,21 @@ import ReactFlow, {
     addEdge,
     useReactFlow,
     Controls,
-} from "reactflow";
-import { generatePathwayJson } from "./utils/pathwayBuilderUtils";
+} from 'reactflow';
+import { generatePathwayJson } from './utils/pathwayBuilderUtils';
 import {
     postPathway,
     deletePathway,
     updatePathway,
-} from "../requestLib/apiRequests";
+} from '../requestLib/apiRequests';
 
-import "./../scss/CustomNodes.scss";
-import "reactflow/dist/style.css";
+import './../scss/CustomNodes.scss';
+import 'reactflow/dist/style.css';
 
-import { BuilderEnzyme } from "./customNodes/BuilderEnzyme.js";
-import { BuilderMolecule } from "./customNodes/BuilderMolecule.js";
-import BuilderSideBar from "./BuilderSideBar.js";
-import Tooltip from "./Tooltip";
+import { BuilderEnzyme } from './customNodes/BuilderEnzyme.js';
+import { BuilderMolecule } from './customNodes/BuilderMolecule.js';
+import BuilderSideBar from './BuilderSideBar.js';
+import Tooltip from './Tooltip';
 
 const nodeTypes = {
     enzyme: BuilderEnzyme,
@@ -33,10 +33,10 @@ const getNodeId = () => `${+new Date()}`;
 const initialNodes = [];
 const initialEdges = [];
 
-const FlowBuilder = (props) => {
+function FlowBuilder() {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
-    const [newTitle, setNewTitle] = useState(""); // used when save as
+    const [newTitle, setNewTitle] = useState(''); // used when save as
     const [pathwayID, setPathwayID] = useState(null); // used if editing existing
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
@@ -48,7 +48,7 @@ const FlowBuilder = (props) => {
 
     const onDragOver = useCallback((event) => {
         event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
+        event.dataTransfer.dropEffect = 'move';
     }, []);
 
     const onDrop = useCallback(
@@ -57,10 +57,10 @@ const FlowBuilder = (props) => {
 
             const reactFlowBounds =
                 reactFlowWrapper.current.getBoundingClientRect();
-            const type = event.dataTransfer.getData("application/reactflow");
+            const type = event.dataTransfer.getData('application/reactflow');
 
             // check if the dropped element is valid
-            if (type === "undefined") {
+            if (type === 'undefined') {
                 // if nothing was selected return
                 return;
             }
@@ -86,8 +86,8 @@ const FlowBuilder = (props) => {
         let enzymeNodes = [];
         setPathwayID(location.state.id);
         for (let node of location.state.initialNodes) {
-            node.className = node.className + " build";
-            if (node.className === "enzyme build") {
+            node.className = node.className + ' build';
+            if (node.className === 'enzyme build') {
                 // needs to be else if because will enter once changed to MoleculeBuild
                 enzymeNodes.push(node);
             }
@@ -98,7 +98,7 @@ const FlowBuilder = (props) => {
                 let mol = location.state.initialNodes.find((obj) => {
                     // take the temp_id and convert to int to compare to substrate values
                     return (
-                        parseInt(obj.id.replace(/\D/g, ""), "replace") ===
+                        parseInt(obj.id.replace(/\D/g, ''), 'replace') ===
                         enzyme.data.substrates[i]
                     );
                 });
@@ -107,7 +107,7 @@ const FlowBuilder = (props) => {
             for (let i = 0; i < enzyme.data.products.length; i++) {
                 let mol = location.state.initialNodes.find((obj) => {
                     return (
-                        parseInt(obj.id.replace(/\D/g, ""), "replace") ===
+                        parseInt(obj.id.replace(/\D/g, ''), 'replace') ===
                         enzyme.data.products[i]
                     );
                 });
@@ -116,7 +116,7 @@ const FlowBuilder = (props) => {
             for (let i = 0; i < enzyme.data.cofactors.length; i++) {
                 let mol = location.state.initialNodes.find((obj) => {
                     return (
-                        parseInt(obj.id.replace(/\D/g, ""), "replace") ===
+                        parseInt(obj.id.replace(/\D/g, ''), 'replace') ===
                         enzyme.data.cofactors[i]
                     );
                 });
@@ -136,8 +136,8 @@ const FlowBuilder = (props) => {
         // remove reversible edges for flowbuilder
         for (const currentEdge of location.state.initialEdges) {
             currentEdge.animated = false; // change styling to build style
-            currentEdge.style = { strokeWidth: 5, stroke: "#0000FF" }; // change styling to build style
-            if (currentEdge.id[0] === "R") {
+            currentEdge.style = { strokeWidth: 5, stroke: '#0000FF' }; // change styling to build style
+            if (currentEdge.id[0] === 'R') {
                 setEdges((eds) =>
                     eds.filter((edge) => edge.id != currentEdge.id)
                 );
@@ -147,7 +147,7 @@ const FlowBuilder = (props) => {
     }
 
     const onConnect = useCallback((params) => {
-        params.style = { strokeWidth: 5, stroke: "#0000FF" }; // change styling to build style
+        params.style = { strokeWidth: 5, stroke: '#0000FF' }; // change styling to build style
         setEdges((eds) => addEdge(params, eds));
     });
 
@@ -159,7 +159,7 @@ const FlowBuilder = (props) => {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
             if (pathwayObj) {
                 postPathway(pathwayObj);
-                window.location.href = "/";
+                window.location.href = '/';
             }
         }
     });
@@ -183,14 +183,14 @@ const FlowBuilder = (props) => {
             if (nodeData) {
                 const newNode = {
                     id: getNodeId(),
-                    className: "molecule build",
+                    className: 'molecule build',
                     data: {
                         label: nodeData.abbreviation,
                         molecule_name: nodeData.name,
                         molecule_id: nodeData.id,
-                        type: "molecule",
+                        type: 'molecule',
                     },
-                    type: "molecule",
+                    type: 'molecule',
                     position: {
                         x: 270 + Math.random() * 300,
                         y: 200,
@@ -207,19 +207,19 @@ const FlowBuilder = (props) => {
             if (nodeData) {
                 const newNode = {
                     id: getNodeId(),
-                    className: "enzyme build",
+                    className: 'enzyme build',
                     data: {
                         label: nodeData.name,
                         abbreviation: nodeData.abbreviation,
                         enzyme_id: nodeData.id,
-                        type: "enzyme",
+                        type: 'enzyme',
                         reversible: nodeData.reversible,
                         substrates: nodeData.substrates,
                         products: nodeData.products,
                         cofactors: nodeData.cofactors,
                         image: nodeData.link,
                     },
-                    type: "enzyme",
+                    type: 'enzyme',
                     position: {
                         x: 800,
                         y: 200,
@@ -239,12 +239,12 @@ const FlowBuilder = (props) => {
 
     const onDelete = useCallback(() => {
         if (pathwayID)
-            if (window.confirm("Do you really want to delete this pathway?")) {
+            if (window.confirm('Do you really want to delete this pathway?')) {
                 if (pathwayID) {
                     try {
                         deletePathway(pathwayID);
-                        window.location.href = "/";
-                        alert("Pathway deleted");
+                        window.location.href = '/';
+                        alert('Pathway deleted');
                     } catch (error) {
                         alert(error);
                     }
@@ -254,7 +254,7 @@ const FlowBuilder = (props) => {
 
     const onNodeClick = (e, clickedNode) => {
         // uncomment in production
-        if (window.confirm("Do you really want to delete this node?")) {
+        if (window.confirm('Do you really want to delete this node?')) {
             setNodes((nds) => nds.filter((node) => node.id !== clickedNode.id)); // deletes selected node
             setEdges((eds) =>
                 eds.filter(
@@ -274,7 +274,7 @@ const FlowBuilder = (props) => {
         <div
             className="h-100"
             ref={reactFlowWrapper}
-            style={{ background: "#adb5bd" }}
+            style={{ background: '#adb5bd' }}
         >
             <ReactFlow
                 nodes={nodes}
@@ -302,7 +302,7 @@ const FlowBuilder = (props) => {
                         <div
                             className="btn-group"
                             role="group"
-                            style={{ zIndex: "6" }}
+                            style={{ zIndex: '6' }}
                         >
                             <Tooltip text="Save as a new Pathway">
                                 <button
@@ -350,18 +350,18 @@ const FlowBuilder = (props) => {
             </ReactFlow>
         </div>
     );
-};
+}
 
-const PathwayTitle = (props) => {
+function PathwayTitle({ title, submit }) {
     // take user input to set pathway title
     return (
         <div>
             <label>Enter Pathway title: </label>
-            <input type="text" onChange={(e) => props.title(e)}></input>
-            <button onClick={props.submit}>Submit</button>
+            <input type="text" onChange={(e) => title(e)}></input>
+            <button onClick={submit}>Submit</button>
         </div>
     );
-};
+}
 
 export default () => (
     <ReactFlowProvider>

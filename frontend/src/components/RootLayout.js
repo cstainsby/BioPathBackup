@@ -1,15 +1,15 @@
-import React, { useState, useMemo } from "react";
-import { Outlet } from "react-router-dom";
-import UserContext from "../UserContext";
+import React, { useState, useMemo } from 'react';
+import { Outlet } from 'react-router-dom';
+import UserContext from '../UserContext';
 
-import Navbar from "./NavBar";
+import Navbar from './NavBar';
 
 /**
  * This is the root of the project (different from the provided root)
  * This component is essentially a page organizer for the larger components
  * @returns Layout component
  */
-const RootLayout = () => {
+function RootLayout() {
     const [user, setUser] = useState(null);
     const userProvider = useMemo(() => ({ user, setUser }), [user, setUser]);
     //console.log(userProvider);
@@ -23,6 +23,6 @@ const RootLayout = () => {
             </UserContext.Provider>
         </div>
     );
-};
+}
 
 export default RootLayout;

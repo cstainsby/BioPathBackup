@@ -1,10 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-// react components
-// import PathwayPage from "./PathwayPage";
 import SplashPage from "../pages/SplashPage";
-// import ExplorePage from "./pages/ExplorePage";
 import HelpPage from "../pages/HelpPage";
 import UserPage from "../pages/UserPage";
 import ErrorPage from "../pages/ErrorPage";
@@ -30,11 +27,6 @@ const router = createBrowserRouter([
                 element: <SplashPage />,
                 loader: splashPageLoader,
             },
-            // No need for explore page as of 3/26
-            //   {
-            //     path: "explore",
-            //     element: <ExplorePage />
-            //   },
             {
                 path: "build",
                 element: <FlowBuilder />,

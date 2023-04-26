@@ -41,7 +41,7 @@ const initialEdges = [];
  * 
  * @state location - gets state from flowModel if editing an eisting pathway
  */
-const FlowBuilder = () => {
+function FlowBuilder () {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(''); // used when save as

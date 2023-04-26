@@ -7,6 +7,9 @@ Note that for dev, using the Django development server is preferred as it will a
 This is the architecture we are using.  
 ![Architecture Diagram](../architecture-diagram.png)
 
+
+Checkout this [Django course](https://www.youtube.com/watch?v=c708Nf0cHrs). It's really long but super useful and he has timestamps so you can just skip to the section you are confused on. I also recommend that you go through the process of building you're own very basic Django/DRF api before working on this. Just spend an hour or two following some quick tutorial so you have a basic understanding of what all is happening before you start messing with this code.
+
 ## File Structure
 This does not contain every file or directory, just the one's that are most critical for you to understand what's going. Django creates a bunch of files and directories that are necessary for everything to work, but aren't necessary for you the developer to mess with or fully understand. These are the files that we have found useful/written code in so far, but please expand this as you inevitably end up modifying or adding other files. Also read [this](https://techvidvan.com/tutorials/django-project-structure-layout/) to better understand the files that Django creates and what they do.
 
@@ -72,3 +75,6 @@ third party libraries.
 To run tests just run python3 manage.py test
 
 https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Testing
+
+## Install Requirements
+If you'd like to run the backend without Docker (heavily recommended if you are modifying the API or other backend code), all you need to do is install Django, `pip3 install requirements.txt`, `python3 manage.py runserver`. In this case you will probably still want to use the Postgres container (`docker-compose up db`), but you can also run postgres on bare metal if you so wish. In general, if you run into issues, checkout the Dockerfiles as they are essentially just a list of commands that must be ran in order to get everything up and running from scratch. Note though that our backend container is using a production type server configuration (using Gunicorn & Nginx instead of Django dev. server). For development the Django development server (which starts when you run python3 manage.py runserver) is preferred.

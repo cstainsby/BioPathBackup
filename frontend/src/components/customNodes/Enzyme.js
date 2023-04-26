@@ -14,6 +14,7 @@ import triose_phosphate_dehydrogenase from '../../images/glycolysis/GAPDH.png';
 
 const ENZYME_WIDTH = 250;
 
+// TODO: Make image imports dynamic
 /**
  * Reactflow Node for molecules
  */

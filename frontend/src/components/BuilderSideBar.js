@@ -180,6 +180,15 @@ function BuilderSideBar({
     );
 }
 
+/**
+ * Modal for adding enzymes to database
+ * @param props
+ * 
+ * @prop onNewEnzyme function
+ * @prop resetDropDowns function
+ * @prop moleculeResp list
+ * @prop onSubmit function
+ */
 function BuildEnzymeModal({ onSubmit, resetDropDowns, molecules }) {
     const [name, setName] = useState(null);
     const [abbreviation, setAbbrevation] = useState(null);
@@ -298,6 +307,14 @@ function BuildEnzymeModal({ onSubmit, resetDropDowns, molecules }) {
     );
 }
 
+/**
+ * Modal for adding enzmoleculesymes to database
+ * @param props
+ * 
+ * @prop NewMolecule function
+ * @prop resetDropDowns function
+ * @prop onSubmit function
+ */
 function BuildMoleculeModal({ onSubmit, resetDropDowns }) {
     const [label, setLabel] = useState(null);
     const [abbr, setAbbr] = useState(null);

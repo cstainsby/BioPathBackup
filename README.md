@@ -3,26 +3,6 @@ More detailed documentation for each componenet found in the README at...
 * [Backend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/backend#biopath-backend)
 * [Frontend](https://github.com/SD-2022-CPSC-10/BioPath/tree/api/frontend)
 
-### GU BioPath web app
-
-To run:
-Install Docker Desktop
-From the directory containing docker-compose.yaml: ```$ docker-compose build```
-
-This will build the docker containers (it might take a while the first time)
-
-Then to start the applications: ```$ docker-compose up -d```
-
-The -d stands for detached mode
-
-To check he status of your Docker containers either
-1. Look at Docker Desktop
-2. run ```$ docker-compose ps -a```
-
-To stop the app: ```$ docker-compose down```
-
-
-
 ### Filesystem
 ```
 BioPath
@@ -60,10 +40,9 @@ BioPath
 ## System Build
 There are multiple ways the developer and users should be able to interact with the project. The project should be able to have:
 
-### Build Types
-&rarr; *for points requests to*
-
-\+ *for showing built into - requests are still sent between components*
+### Build Configuration Types
+- &rarr; *for points requests to*
+- \+ *for showing built into - requests are still sent between components*
 
 
 All build types explicitly listed
@@ -74,24 +53,15 @@ All build types explicitly listed
 5. local npm frontend &rarr; remote backend &rarr; remote DB
 6. remote static frontend + remote backend &rarr; remote DB
 
-**NOTE:** Types 1, 2, and 3 will be for development only, type 4 is for deployment only. 
-
-Within these build types the frontend developer is going to want to use npm start refreshes to make development not miserable
-which necessitates two types of build configurations for build types 1, 2, and 3.
-
-
-
-
+Types 1-5 will be for development only, type 6 is for deployment only. 
 
 
 ### Frontend sub-build configurations
 1. npm frontend &rarr; any backend
-2. static frontend &rarr; local backend
+2. static frontend + local backend
 
-**NOTE:** 2 is necessary because this is how we are deploying the full application. It is necessary for testing purposes
+**NOTE:** 2 will always be done when spinning up the backend so there will always be a static version that will be reachable when running the backend at the root of port 80. having an npm frontend running as well speeds up development significantly though.
 
-### Backend sub-build
-The backend will always be built using docker. But based on whether the frontend is being staically built into the backend will affect how the backend will be built.
 
 ## Environment Variables 
 
@@ -104,47 +74,37 @@ This is a list of all environment variables needed by each part of the project:
 4. DB_USERNAME 
 5. DB_PASSWORD
 6. DJANGO_SECRET_KEY
-7. DJANGO_ENV - specifies "production" or "development"
+7. DJANGO_ENV - specifies "production" or "local"
+8. DJANGO_ALLOWED_HOSTS - specifies allowed cors
+9. DJANGO_ENDPOINT - endpoint backend is running on
+
 
 #### Frontend 
 1. REACT_APP_BACKEND_ENDPOINT - where requests for the backend will be forwarded to.
 
-### Issues which informed the direction of our setup
-**The first issue**, creating connections:
+The environment variables will be injected into the running instances through.
+ - *If remote*: aws secret manager
+ - *If local*: a local .env file 
 
-Each one of the four requires a different setup environment variables wise e.g. the frontend needs to know how to reach the backend. The backend needs to know how to reach the database.
-
-**Our fix**:
-
-
-
-**The second issue**, secrets: 
-
-Due to the backend's env var 5 and 6 being critical to the app's security, they will be loaded in from either:
-
-*If remote*: aws secret manager
-
-*If local*: a local .env file
-
-NOTE: The backend .env files should **ALWAYS** be ignored by both docker and github. In order to locally run the backend, you need to get this information from another team member or advisor and create the file locally yourself.
+**NOTE:** The backend .env.db.remote files should **ALWAYS** be ignored by both docker and github. In order to locally run the backend, you need to get this information from another team member or advisor and create the file locally yourself.
 
 ### How to add more environment variables 
 
 - To frontend 
     
-    The frontend contains the files *.env.backend.local* and *.env.backend.remote*. The .local file will be used when the frontend is built to reach a backend which is local, .remote for remote backend. Add env kv pairs which you will need in either build here. 
+    The frontend contains the files *.env.backend.local* and *.env.backend.remote*. The .local env file will be used when the frontend is built to reach a backend which is local, .remote env file for a remote backend. Add env kv pairs which you will need in either build here.
 
     **NOTE:** for a env var to be recognized by react, each variable needs to be prefixed by "REACT_APP_". You **shouldn't** pass sensitive into the react app, therefore it's ok to pass these .env files into source control.
 
 - To Backend
 
-    The backend contains the files *.env.db.local* and *.env.db.remote*. The .local file will be used when the frontend is built to reach a backend which is local, .remote for remote backend. Add env kv pairs which you will need in either build here.
+    The backend contains the files *.env.db.local* and *.env.db.remote*. The .local env file will be used when the backend is built to reach a database which is local, .remote env file for a remote database. Add env kv pairs which you will need in either build here.
 
-    **NOTE:** These files will contain sensitve information and should **never** be checked into source control.
+    **NOTE:** .env.db.remote will contain sensitve information and should **never** be checked into source control. To get the information to create this file locally, you should talk to your supervisor or teamates.
 
 - To AWS 
 
-    Use [copilot documentation](https://aws.github.io/copilot-cli/docs/developing/secrets/) to add new env vars to aws secrets manager. 
+    Use copilot documentation for [basic environment variables](https://aws.github.io/copilot-cli/docs/developing/environment-variables/) and [secrets](https://aws.github.io/copilot-cli/docs/developing/secrets/) for aws secrets manager. 
 
 ## How to Run
 **What to Install:**
@@ -161,13 +121,18 @@ For remote versions you will need to add file *.env.db.remote*. This file will b
 
 I will run through a list of common use cases.
 
-**Frontend Development:**
+### Use Cases
+#### Frontend Development:
 
+#### NPM development 
 - With the ability to make edits to the backend
     
     See Backend development section, you should run its container locally first. Then run from the frontend root:
 
+        npm i
         npm run start-local
+
+    You will also need to spin up a backend if you are targeting a local backend, checkout the Backend Development section below.
 
 - Using the remote backend
 
@@ -177,12 +142,30 @@ I will run through a list of common use cases.
 
 **NOTE:** you can change these scripts within package.json, we are using the node package env-cmd to dynamically bring in environment variables.
 
+#### Static Build
+In order to get a static build into the backend to run, run the build.sh file in the root of the project. Pass arguments into it to tell it where to expect the backend e.g.:
 
-**Backend Development:**
+For local backend:
 
-With a local database.
+        ./build.sh local_backend
+    
+For remote backend:
+
+        ./build.sh remote_backend
+
+This will build a static directory in the backend/frontend/ folder where it can be served by the backend. You will need to follow the Backend development steps to work with this static build.
+
+#### Backend Development:
 
 **NOTE:** connections to the production database with a development backend **should** be prevented in order to prevent any data wipes.
+
+#### Local Backend
+We do this with docker-compose. If you want to change which database it is targeting, change the env file to the db you want to target.
+
+Also if you want to use the docker-compose file you will want to run:
+
+```export BIOPATH_ROOT_PATH=<Your absolute project root path>```
+
 Run with this command:
 
     docker compose build
@@ -194,23 +177,7 @@ Take it down with this command:
 
 It is important to know that our backend will always have a statically built frontend version by default which will be running at the root of the localhost port. If you want to update this frontend version ./build.sh.
 
-**Test full build locally:**
-
-In order to emulate the conditions which the final build will be in, the frontend will need to be statically built and placed in the backend. 
-
-**NOTE:** the backend in this situation will default to connecting to the remote database.
-
-Run from the project root:
-
-    ./build.sh local_backend
-
-Then run:
-
-    docker compose --env-file ./backend/.env.db.local up
-
-To take it down run:
-
-    docker compose down
+**Important:** You will need to manage the nginx.conf file's server name within the backend to make sure the built project is being exposed correctly. If being run locally, use "localhost section", remote use the link.
 
 **Package for Remote Manually**
 

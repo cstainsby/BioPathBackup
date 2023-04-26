@@ -19,13 +19,13 @@ const edgesFilled = [
 
 describe('pathwayBuilder', () => {
     test('generatePathwayJson', () => {
-        expect(generatePathwayJson(nodesFilled, edgesFilled, "test-filled")).toStrictEqual({"name":"test-filled","author":1,"public":false,"enzyme_instances":[{"enzyme":1,"x":449,"y":312,"limiting":false,"substrate_instances":[109],"product_instances":[107],"cofactor_instances":[108]}],"molecule_instances":[{"temp_id":107,"molecule":2,"x":528,"y":524},{"temp_id":108,"molecule":3,"x":715,"y":524},{"temp_id":109,"molecule":1,"x":551,"y":168}]})
+        expect(generatePathwayJson(nodesFilled, edgesFilled, "test-filled")).toStrictEqual({"name":"test-filled","author":1,"public":true,"enzyme_instances":[{"enzyme":1,"x":449,"y":312,"limiting":false,"substrate_instances":[109],"product_instances":[107],"cofactor_instances":[108]}],"molecule_instances":[{"temp_id":107,"molecule":2,"x":528,"y":524},{"temp_id":108,"molecule":3,"x":715,"y":524},{"temp_id":109,"molecule":1,"x":551,"y":168}]})
         expect(generatePathwayJson(nodesEmpty, edgesEmpty, "test-empty")).toStrictEqual({
             "author": 1,
             "enzyme_instances": [],
             "molecule_instances": [],
             "name": "test-empty",
-            "public": false
+            "public": true
         })
     });
     

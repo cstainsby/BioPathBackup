@@ -33,7 +33,15 @@ const getNodeId = () => `${+new Date()}`;
 const initialNodes = [];
 const initialEdges = [];
 
-function FlowBuilder() {
+
+/**
+ * Wrapper for ReactFlow and builder sliders. 
+ * Interaction area for building a pathway and inputting new molecules / enzymes.
+ * @param props
+ * 
+ * @state location - gets state from flowModel if editing an eisting pathway
+ */
+function FlowBuilder () {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(''); // used when save as
@@ -92,7 +100,7 @@ function FlowBuilder() {
                 enzymeNodes.push(node);
             }
         }
-        // change the subs / prods from instance ids to real ids
+        // change the substrates / products from instance ids to real ids (see src/README.md)
         for (const enzyme of enzymeNodes) {
             for (let i = 0; i < enzyme.data.substrates.length; i++) {
                 let mol = location.state.initialNodes.find((obj) => {

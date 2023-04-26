@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# busy wait until port 5432 is open so that we can succesfully connect to db
-# echo "Waiting for database..."
-# while !</dev/tcp/db/5432; do
-#     sleep 0.1
-# done
-
 echo "Migrating and loading..."
 python manage.py makemigrations
 python manage.py migrate

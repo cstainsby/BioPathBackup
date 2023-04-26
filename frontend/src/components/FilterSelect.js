@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 /**
+ * Component that allows user to filter a list based on user input
+ * 
+ * @param props
+ * @prop options list
+ * @prop selectFunction function
+ * @prop filterType String
+ */
+/**
  * Select list with filter textbox. Calls selectFunction when a selection is made
  */
 function FilteredSelect({ options, selectFunction, filterType }) {

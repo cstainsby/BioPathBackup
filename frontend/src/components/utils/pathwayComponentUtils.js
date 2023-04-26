@@ -102,21 +102,20 @@ export function generateNodes(pathway) {
     let nodes = []
 
     for (const enzyme of pathway.enzyme_instances) {
-        // console.log(enzyme, "emzyme")
         // Reactflow node
-        if (enzyme.reversible) { // new for multi handlers
+        if (enzyme.reversible) {
             nodes.push({
                 id: String(enzyme.id) + "_enzyme", 
                 className: 'enzyme', 
                 data: {
-                    abbreviation: enzyme.abbreviation, // testing maybe later
+                    abbreviation: enzyme.abbreviation,
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
                     products: enzyme.product_instances,
-                    cofactors: enzyme.cofactor_instances, // testing maybe delte later
-                    enzyme_id: enzyme.enzyme, // testing maybe delete later
+                    cofactors: enzyme.cofactor_instances,
+                    enzyme_id: enzyme.enzyme,
                     image: enzyme.link
                 },
                 type: "enzyme",
@@ -128,14 +127,14 @@ export function generateNodes(pathway) {
                 id: String(enzyme.id) + "_enzyme", 
                 className: 'enzyme', 
                 data: {
-                    abbreviation: enzyme.abbreviation, // testing maybe later
+                    abbreviation: enzyme.abbreviation,
                     label: enzyme.name, 
                     type: "enzyme",
                     reversible: enzyme.reversible,
                     substrates: enzyme.substrate_instances, 
                     products: enzyme.product_instances,
-                    cofactors: enzyme.cofactor_instances, // testing maybe delte later
-                    enzyme_id: enzyme.enzyme, // testing maybe delete later
+                    cofactors: enzyme.cofactor_instances,
+                    enzyme_id: enzyme.enzyme,
                     image: enzyme.link
                 },
                 type: "enzyme",
@@ -146,7 +145,6 @@ export function generateNodes(pathway) {
     
     for (const molecule of pathway.molecule_instances) {
         // Reactflow node
-        // console.log(molecule, "molecule")
         nodes.push({
             id: String(molecule.id) + "_molecule", 
             className: 'molecule',

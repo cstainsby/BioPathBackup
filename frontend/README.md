@@ -59,6 +59,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - scss/* - Contains all of our scss stylesheets
 - App.js - The root react element
 - UserContext - defines a useContext hook for the currently signed in user. Changes to this context will propogate throughout the app.
+- A README that goes into more detail can be found in the frontend/src folder
 
 ### Enviornment Variables
 Our frontend, as of right now, uses two enviornment variables.

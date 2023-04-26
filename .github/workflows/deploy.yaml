@@ -5,75 +5,75 @@
 # NOTE: This script will not 
 
 
-name: Deploy to Amazon App Runner
+# name: Deploy to Amazon App Runner
 
-on:
-  push:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
 
-env:
-  ECR_REPOSITORY: biopath/biopath-backend     # set this to your Amazon ECR repository name
-  AWS_REGION: us-west-2 
+# env:
+#   ECR_REPOSITORY: biopath/biopath-backend     # set this to your Amazon ECR repository name
+#   AWS_REGION: us-west-2 
 
-permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout                      
+# permissions:
+#       id-token: write   # This is required for requesting the JWT
+#       contents: read    # This is required for actions/checkout                      
 
-jobs:
-  deploy-app:
-    name: Deploy App 
-    runs-on: ubuntu-latest
-    enviornment: production
+# jobs:
+#   deploy-app:
+#     name: Deploy App 
+#     runs-on: ubuntu-latest
+#     enviornment: production
 
-    steps:
-      # checkout the code from your repository
-      - name: Checkout
-        uses: actions/checkout@v3
+#     steps:
+#       # checkout the code from your repository
+#       - name: Checkout
+#         uses: actions/checkout@v3
       
-      # because our frontend is being served through our django app, 
-      # we need to run NPM build 
-      - name: Build Frontend
-        run: bash buildfrontend.sh
+#       # because our frontend is being served through our django app, 
+#       # we need to run NPM build 
+#       - name: Build Frontend
+#         run: bash buildfrontend.sh
 
-      # Configure credentials using Docker credentials
-      # this step accesses github's secret enviornment variables which should be set up
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: $AWS_REGION
+#       # Configure credentials using Docker credentials
+#       # this step accesses github's secret enviornment variables which should be set up
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v1
+#         with:
+#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           aws-region: $AWS_REGION
 
-      # Login to ECR using the credentials
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+#       # Login to ECR using the credentials
+#       - name: Login to Amazon ECR
+#         id: login-ecr
+#         uses: aws-actions/amazon-ecr-login@v1
 
-      # build tag and push image to ecr
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#       # build tag and push image to ecr
+#       - name: Build, tag, and push image to Amazon ECR
+#         id: build-image
+#         env:
+#           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#           IMAGE_TAG: ${{ github.sha }}
+#         run: |
+#           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+#           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
       
-      # deploy the built image to app runner
-      # this step uses a secret ROLE_ARN which is stored in github's secret manager
-      - name: Deploy to App Runner
-        id: deploy-apprunner
-        uses: awslabs/amazon-app-runner-deploy@main        
-        with:
-          service: biopath-production-biopath-backend
-          image: ${{ steps.build-image.outputs.image }}          
-          access-role-arn: ${{ secrets.ROLE_ARN }}
-          runtime: python3         
-          region: $AWS_REGION
-          cpu : 1
-          memory : 2
-          port: 8000
-          wait-for-service-stability: true
+#       # deploy the built image to app runner
+#       # this step uses a secret ROLE_ARN which is stored in github's secret manager
+#       - name: Deploy to App Runner
+#         id: deploy-apprunner
+#         uses: awslabs/amazon-app-runner-deploy@main        
+#         with:
+#           service: biopath-production-biopath-backend
+#           image: ${{ steps.build-image.outputs.image }}          
+#           access-role-arn: ${{ secrets.ROLE_ARN }}
+#           runtime: python3         
+#           region: $AWS_REGION
+#           cpu : 1
+#           memory : 2
+#           port: 8000
+#           wait-for-service-stability: true
       
-      - name: App Runner output
-        run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}" 
+#       - name: App Runner output
+#         run: echo "App runner output ${{ steps.deploy-apprunner.outputs.service-id }}" 

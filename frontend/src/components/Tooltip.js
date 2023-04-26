@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 
+/**
+ * Modal for additional tool information
+ * 
+ * @param {children} 
+ * @param {text} String
+ */
 function Tooltip({ children, text }) {
     const [showTooltip, setShowTooltip] = useState(false);
 

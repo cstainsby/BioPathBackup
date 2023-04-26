@@ -1,9 +1,9 @@
-# The manifest for the "biopath-svc" service.
+# The manifest for the "biopath-test-svc" service.
 # Read the full specification for the "Request-Driven Web Service" type at:
 # https://aws.github.io/copilot-cli/docs/manifest/rd-web-service/
 
 # Your service name will be used in naming your resources like log groups, App Runner services, etc.
-name: biopath-svc
+name: biopath-test-svc
 # The "architecture" of the service you're running.
 type: Request-Driven Web Service
 
@@ -46,15 +46,22 @@ memory: 2048
 #   project: project-name
 
 # You can override any of the values defined above by environment.
+# environments:
+#   test:
+#     variables:
+#       LOG_LEVEL: debug        # Log level for the "test" environment.
+
 secrets:
-  DJANGO_SECRET_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY
-  DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DB_PASSWORD
+  DJANGO_SECRET_KEY:
+    secretsmanager: prod/Biopath/django_secret_key
+  DB_PASSWORD:
+    secretsmanager: prod/Biopath/db_password
     # variables:
     #   LOG_LEVEL: debug        # Log level for the "test" environment.
 
-tags:
-  copilot-application: biopath
-  copilot-environment: prod
+# tags:
+#   copilot-application: biopath
+#   copilot-environment: prod
 
 # secrets:
 #   DB_PASSWORD: "'arn:aws:secretsmanager:us-west-2:219085571562:secret:prod/Biopath/db_password-UjUWvF'"
@@ -66,6 +73,8 @@ variables:                    # Pass environment variables as key value pairs.
   DB_PORT: 5432
   DB_USERNAME: "biopath_admin"
   DJANGO_ENV: "local"
-  DJANGO_ALLOWED_HOSTS: ifdfgjpy82.us-west-2.awsapprunner.com
-  REACT_APP_BACKEND_ENDPOINT: https://ifdfgjpy82.us-west-2.awsapprunner.com
-  DJANGO_ENDPOINT: https://ifdfgjpy82.us-west-2.awsapprunner.com
+  DJANGO_ALLOWED_HOSTS: "i5bnpvmeyc.us-west-2.awsapprunner.com"
+  REACT_APP_BACKEND_ENDPOINT: "https://i5bnpvmeyc.us-west-2.awsapprunner.com"
+  DJANGO_ENDPOINT: "https://i5bnpvmeyc.us-west-2.awsapprunner.com"
+
+  

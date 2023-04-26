@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './scss/index.scss';
-import "bootstrap/dist/js/bootstrap.bundle.min"; // bootstrap bundle for js
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // bootstrap bundle for js
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

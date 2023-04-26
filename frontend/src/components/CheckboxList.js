@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 /**
  * Generic Checkbox list component for user input
@@ -45,7 +45,7 @@ function CheckboxList({ options, onSelectionChange, listName }) {
                             checked={checked[index]}
                             onChange={handleCheckboxChange}
                         />
-                        {item["name"]}
+                        {item['name']}
                     </label>
                 ))}
             </div>

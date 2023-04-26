@@ -72,64 +72,27 @@ Our frontend, as of right now, uses two enviornment variables.
     - test
 
 ## How to Develop
-Our React app can be interacted with in a multitude of ways within a development setting. 
-- npm tools 
-
-    From the frontend root run:
+If you want to develop on a locally running version of the backend. If you want to target a locally running backend run from the frontend root:
     
-        npm start
-- docker
-- docker-compose 
+        npm run start-local
 
-    This will run the entire stack, including a local backend and database.
+If you want to target a remotely running backend.
 
-    from project root run:
+        npm run start-remote
 
+You can also run a statically built version of the frontend which will run from a local backend using:
+
+
+        ./build.sh local_backend
         docker-compose build
+        docker-compose up -d 
 
-        docker-compose up -d
 
-    To take it down run:
+**NOTE:** the way we have it set up, without specifying backend location, it will target local by default. More info in root README.md.
 
-        docker-compose down
 
-The frontend can also target different backends. **NOTE:** the way we have it set up, without specifying backend location, it will target local by default.
-
-**Recommended:** Within the root of the project directory, there are scripts:
-- run.py
-- run_frontend_local.py
-
-    These scripts are **NOT** mandatory but they allow you to very simply set things up and will handle importing env vars. **You should** run the frontend through NPM though, having your changes be reflected in real time is very helpful.
 
 ## Deployment of the Frontend
-Go to AWS directory README for more info on deployment of the app. Specifically for the frontend, the main thing to note is that because django is capable of serving web traffic, it makes more sense cost-wise to make a compiled build of the frontend into the backend where it can be accessed by it. To update this build in the backend use file *buildfrontend.sh*. 
+Go to AWS directory README for more info on deployment of the app. Specifically for the frontend, the main thing to note is that because django is capable of serving web traffic, it makes more sense cost-wise to make a compiled build of the frontend into the backend where it can be accessed by it. To update this build in the backend use:
 
-## Tooling
-We have created basic tooling scripts for running the frontend. This is fully explained in the project root README as well as the recommended section in `How to Develop`.
-
-## Available Standard Scripts Provided By NPM
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+        ./build.sh remote_backend

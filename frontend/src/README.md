@@ -39,31 +39,6 @@ As our backend simply sends JSON responses representing the pathways, the pathwa
 * In addition to these, Jeff surely has many features he wants implemented to enhance the model
 
 
-
-## File trees
-
-src
-├── App.js
-    │── RouteManager.js
-        ├── SplashPage.js
-        │
-        ├── PathwayView.js
-        │   ├── FlowModel.js
-        │       ├──ConcentrationManager.js
-        │       ├──SliderSideBar.js
-        │       ├──PathwayComponentUtils.js
-        │
-        ├── FlowBuilder.js
-        │   ├──PathwayBuilderUtils.js
-        │   ├──BuilderSideBar.js
-        │       ├──FilterSelect.js
-        │       ├──CheckboxList.js
-        │
-        ├──UserPage.js
-        │
-        ├── HelpPage.js
-
-
 ## Additional information
 
 # Change the substrates / products from temp ID to real ID

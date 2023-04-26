@@ -58,22 +58,31 @@ BioPath
 ```
 
 ## System Build
-Problem
-I have multiple ways I want the developer and users to interact with the project. The project should be able to have:
+There are multiple ways the developer and users should be able to interact with the project. The project should be able to have:
 
 ### Build Types
+&rarr; *for points requests to*
+
+\+ *for showing built into - requests are still sent between components*
+
+
 All build types explicitly listed
-1. local frontend &rarr; local backend &rarr; local DB
-2. local frontend &rarr; local backend &rarr; remote DB 
-3. local frontend &rarr; remote backend &rarr; remote DB
-4. remote frontend &rarr; remote backend &rarr; remote DB
-5. local backend &rarr; local DB
-6. local backend &rarr; remote DB
+1. local npm frontend &rarr; local backend &rarr; local DB
+2. local static frontend + local backend &rarr; local DB
+3. local npm frontend &rarr; local backend &rarr; remote DB
+4. local static frontend + local backend &rarr; remote DB 
+5. local npm frontend &rarr; remote backend &rarr; remote DB
+6. remote static frontend + remote backend &rarr; remote DB
 
 **NOTE:** Types 1, 2, and 3 will be for development only, type 4 is for deployment only. 
 
 Within these build types the frontend developer is going to want to use npm start refreshes to make development not miserable
 which necessitates two types of build configurations for build types 1, 2, and 3.
+
+
+
+
+
 
 ### Frontend sub-build configurations
 1. npm frontend &rarr; any backend
@@ -138,6 +147,16 @@ NOTE: The backend .env files should **ALWAYS** be ignored by both docker and git
     Use [copilot documentation](https://aws.github.io/copilot-cli/docs/developing/secrets/) to add new env vars to aws secrets manager. 
 
 ## How to Run
+**What to Install:**
+- Python^3.10
+- Node^16
+- docker
+- docker-compose
+
+**What To Create:**
+
+For remote versions you will need to add file *.env.db.remote*. This file will be in the same backend/ folder alongside its *.env.db.remote*. You will need to copy in the environment information from your supervisor. It will need to match the form of the local env file.
+
 **Referencing the Build Types from the System Build Section**
 
 I will run through a list of common use cases.
@@ -156,20 +175,24 @@ I will run through a list of common use cases.
 
         npm run start-remote
 
+**NOTE:** you can change these scripts within package.json, we are using the node package env-cmd to dynamically bring in environment variables.
+
 
 **Backend Development:**
 
 With a local database.
 
-**NOTE:** connections to the production database with a development backend should be prevented in order to prevent any data wipes.
+**NOTE:** connections to the production database with a development backend **should** be prevented in order to prevent any data wipes.
 Run with this command:
 
-    docker compose --env-file ./backend/.env.db.local up
+    docker compose build
+    docker compose up -d
 
 Take it down with this command:
 
     docker compose down 
 
+It is important to know that our backend will always have a statically built frontend version by default which will be running at the root of the localhost port. If you want to update this frontend version ./build.sh.
 
 **Test full build locally:**
 

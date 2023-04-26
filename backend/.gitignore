@@ -90,9 +90,7 @@ api/migrations
 
 frontend/*
 
-*.env
-*.env.*
 !.env.dev
 *.venv
 *.sqlite3
-.env.*
+.env.db.remote

@@ -5,7 +5,7 @@ All of the code and relevant information for the backend can be found in this di
 Note that for dev, using the Django development server is preferred as it will automatically update as you make changes to the source code. However, for prod, this server is not adequate; as such we are using Gunicorn to handle WSGI and Nginx for serving static files and proxying to Gunicorn. As such the Docker container uses this more complex server setup so that you can ensure everything is working on your computer before deploying. You shouldn't have to mess with the server configuration too much, but it's worth having someone learn the basics so that you're not screwed when something goes wrong. Check out the Dockerfile, nginx.conf, and startup.sh to see what's going on behind the scenes.
 
 This is the architecture we are using.  
-![Architecture Diagram](architecture-diagram.png)
+![Architecture Diagram](../architecture-diagram.png)
 
 ## File Structure
 This does not contain every file or directory, just the one's that are most critical for you to understand what's going. Django creates a bunch of files and directories that are necessary for everything to work, but aren't necessary for you the developer to mess with or fully understand. These are the files that we have found useful/written code in so far, but please expand this as you inevitably end up modifying or adding other files. Also read [this](https://techvidvan.com/tutorials/django-project-structure-layout/) to better understand the files that Django creates and what they do.

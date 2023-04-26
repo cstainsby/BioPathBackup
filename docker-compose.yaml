@@ -23,6 +23,8 @@ services:
     platform: linux/amd64
     build:
       context: ./backend/
+      # args:
+      #   - RUN_LOCATION=local
       dockerfile: Dockerfile
     image: backend
     ports:

@@ -52,8 +52,10 @@ memory: 2048
 #       LOG_LEVEL: debug        # Log level for the "test" environment.
 
 secrets:
-  DJANGO_SECRET_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DJANGO_SECRET_KEY
-  DB_PASSWORD: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/DB_PASSWORD
+  DJANGO_SECRET_KEY:
+    secretsmanager: prod/Biopath/django_secret_key
+  DB_PASSWORD:
+    secretsmanager: prod/Biopath/db_password
     # variables:
     #   LOG_LEVEL: debug        # Log level for the "test" environment.
 
@@ -71,6 +73,8 @@ variables:                    # Pass environment variables as key value pairs.
   DB_PORT: 5432
   DB_USERNAME: "biopath_admin"
   DJANGO_ENV: "local"
-  DJANGO_ALLOWED_HOSTS: i5bnpvmeyc.us-west-2.awsapprunner.com
-  REACT_APP_BACKEND_ENDPOINT: https://i5bnpvmeyc.us-west-2.awsapprunner.com
-  DJANGO_ENDPOINT: https://i5bnpvmeyc.us-west-2.awsapprunner.com
+  DJANGO_ALLOWED_HOSTS: "i5bnpvmeyc.us-west-2.awsapprunner.com"
+  REACT_APP_BACKEND_ENDPOINT: "https://i5bnpvmeyc.us-west-2.awsapprunner.com"
+  DJANGO_ENDPOINT: "https://i5bnpvmeyc.us-west-2.awsapprunner.com"
+
+  

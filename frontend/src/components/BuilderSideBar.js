@@ -120,7 +120,7 @@ function BuilderSideBar({ onAddMolecule, onAddEnzyme }) {
                         <Modal.Body>
                             <BuildEnzymeModal
                                 resetDropDowns={setShouldReload}
-                                moleculeResp={molecules}
+                                molecules={molecules}
                                 onSubmit={onCloseEnzyme}
                             />
                         </Modal.Body>

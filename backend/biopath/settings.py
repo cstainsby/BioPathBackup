@@ -138,8 +138,8 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Allow CORS from localhost for development
-CORS_ALLOWED_ORIGINS = [ str(os.environ.get("DJANGO_ENDPOINT"))
-    # "http://localhost",
+CORS_ALLOWED_ORIGINS = [ str(os.environ.get("DJANGO_ENDPOINT")),
+    "http://localhost:3000"
     # "https://pchmfbhcvm.us-west-2.awsapprunner.com/"/\
 ]
 

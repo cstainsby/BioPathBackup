@@ -178,7 +178,6 @@ function BuildEnzymeModal({ onSubmit, resetDropDowns, molecules }) {
     const [reversible, setReversible] = useState('false');
 
     const handleClick = () => {
-        console.log(substrates, products)
         const enzymeObj = {
             name: name,
             abbreviation: abbreviation,

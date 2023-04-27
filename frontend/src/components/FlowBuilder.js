@@ -33,15 +33,14 @@ const getNodeId = () => `${+new Date()}`;
 const initialNodes = [];
 const initialEdges = [];
 
-
 /**
- * Wrapper for ReactFlow and builder sliders. 
+ * Wrapper for ReactFlow and builder sliders.
  * Interaction area for building a pathway and inputting new molecules / enzymes.
  * @param props
- * 
+ *
  * @state location - gets state from flowModel if editing an eisting pathway
  */
-function FlowBuilder () {
+function FlowBuilder() {
     const reactFlowWrapper = useRef(null); // needed for drag and drop bounds
     const [isPostShown, setPostShown] = useState(false); // displays additional component on push
     const [newTitle, setNewTitle] = useState(''); // used when save as

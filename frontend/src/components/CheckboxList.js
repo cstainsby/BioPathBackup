@@ -8,19 +8,19 @@ import React, { useState, useEffect } from 'react';
  * @prop {listname} string identifies list
  */
 function CheckboxList({ options, onSelectionChange, listName }) {
-    const [checked, setChecked] = useState(Array(options.length).fill(false));
+    const [checked, setChecked] = useState([]);
 
     useEffect(() => {
         onSelectionChange(checked);
     }, [checked]);
 
     function handleCheckboxChange(event) {
-        const value = Number(event.target.value);
-        setChecked((oldChecked) => {
-            let copy = [...oldChecked];
-            copy[value] = !copy[value];
-            return copy;
-        });
+        const value = event.target.value;
+        if (checked.includes(value)) {
+            setChecked(checked.filter(item => item !== value));
+        } else {
+            setChecked([...checked, value]);
+        }
     }
 
     return (
@@ -42,7 +42,7 @@ function CheckboxList({ options, onSelectionChange, listName }) {
                             className="form-check-input me-2"
                             type="checkbox"
                             value={index}
-                            checked={checked[index]}
+                            checked={checked.includes(index.toString())}
                             onChange={handleCheckboxChange}
                         />
                         {item['name']}

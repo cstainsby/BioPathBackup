@@ -201,23 +201,17 @@ function BuildEnzymeModal({ onSubmit, resetDropDowns, molecules }) {
 
     const handleSubstrateChange = (newSelections) => {
         // get true molecule id from moleculeResp
-        let selectedValues = newSelections.map((value, index) => {
-            if (value) return molecules[index].id;
-        });
+        let selectedValues = newSelections.map(index => (molecules[index].id));
         setSubstrates(selectedValues);
     };
 
     const handleProductChange = (newSelections) => {
-        let selectedValues = newSelections.map((value, index) => {
-            if (value) return molecules[index].id;
-        });
+        let selectedValues = newSelections.map(index => (molecules[index].id));
         setProducts(selectedValues);
     };
 
     const handleCofactorChange = (newSelections) => {
-        let selectedValues = newSelections.map((value, index) => {
-            if (value) return molecules[index].id;
-        });
+        let selectedValues = newSelections.map(index => (molecules[index].id));
         setCofactors(selectedValues);
     };
 

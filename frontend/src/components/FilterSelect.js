@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * Component that allows user to filter a list based on user input
- * 
+ *
  * @param props
  * @prop options list
  * @prop selectFunction function
@@ -30,7 +30,6 @@ function FilteredSelect({ options, selectFunction, filterType }) {
     function onTextInputChange(event) {
         setTextInput(event.target.value);
     }
-
     return (
         <div>
             <input
@@ -49,19 +48,20 @@ function FilteredSelect({ options, selectFunction, filterType }) {
                 <option value={'Select ' + filterType} disabled hidden>
                     Select {filterType}
                 </option>
-                {options.map((option, index) => {
-                    if (
-                        option.name
-                            .toLowerCase()
-                            .includes(textInput.toLowerCase())
-                    ) {
-                        return (
-                            <option key={option.id} value={index}>
-                                {option.name}
-                            </option>
-                        );
-                    }
-                })}
+                {options.length !== 0 &&
+                    options.map((option, index) => {
+                        if (
+                            option.name
+                                .toLowerCase()
+                                .includes(textInput.toLowerCase())
+                        ) {
+                            return (
+                                <option key={option.id} value={index}>
+                                    {option.name}
+                                </option>
+                            );
+                        }
+                    })}
             </select>
         </div>
     );

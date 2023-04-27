@@ -14,12 +14,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import FilteredSelect from './FilterSelect';
 
-function BuilderSideBar({
-    onAddMolecule,
-    onAddEnzyme,
-    onNewEnzyme,
-    onNewMolecule,
-}) {
+function BuilderSideBar({ onAddMolecule, onAddEnzyme }) {
     const [molecules, setMolecules] = useState([]);
     const [enzymes, setEnzymes] = useState([]);
     const [moleculeSelection, setMolSelection] = useState(null);
@@ -48,18 +43,6 @@ function BuilderSideBar({
 
     useEffect(() => {
         // anytime moleculeResp, enzymeResp, or reload state changes, rerender the lists
-        if (molecules != []) {
-            const dropDownItems = molecules.map((item, index) => (
-                <option value={index}>{item['name']}</option>
-            ));
-            setMolecules(dropDownItems);
-        }
-        if (enzymes != []) {
-            const dropDownItems = enzymes.map((item, index) => (
-                <option value={index}>{item['name']}</option>
-            ));
-            setEnzymes(dropDownItems);
-        }
         if (shouldReload) {
             callGetEnzymes();
             callGetMolecules();
@@ -136,7 +119,6 @@ function BuilderSideBar({
                         </Modal.Header>
                         <Modal.Body>
                             <BuildEnzymeModal
-                                onNewEnzyme={onNewEnzyme}
                                 resetDropDowns={setShouldReload}
                                 moleculeResp={molecules}
                                 onSubmit={onCloseEnzyme}
@@ -160,7 +142,6 @@ function BuilderSideBar({
                         </Modal.Header>
                         <Modal.Body>
                             <BuildMoleculeModal
-                                onNewMolecule={onNewMolecule}
                                 resetDropDowns={setShouldReload}
                                 onSubmit={onCloseMolecule}
                             />
@@ -183,8 +164,7 @@ function BuilderSideBar({
 /**
  * Modal for adding enzymes to database
  * @param props
- * 
- * @prop onNewEnzyme function
+ *
  * @prop resetDropDowns function
  * @prop moleculeResp list
  * @prop onSubmit function
@@ -310,7 +290,7 @@ function BuildEnzymeModal({ onSubmit, resetDropDowns, molecules }) {
 /**
  * Modal for adding enzmoleculesymes to database
  * @param props
- * 
+ *
  * @prop NewMolecule function
  * @prop resetDropDowns function
  * @prop onSubmit function

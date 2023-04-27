@@ -94,7 +94,6 @@ export function generateEdges(pathway) {
     @return lists of nodes to be used by ReactFlow
 */
 export function generateNodes(pathway) {
-    console.log(pathway);
     if(typeof pathway === "undefined" || typeof pathway.enzyme_instances === "undefined") { 
         console.log("generateNodes: Invalid pathway passed");
         return;

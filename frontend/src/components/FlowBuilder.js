@@ -165,8 +165,7 @@ function FlowBuilder() {
         if (isPostShown) {
             const pathwayObj = generatePathwayJson(nodes, edges, newTitle);
             if (pathwayObj) {
-                postPathway(pathwayObj);
-                window.location.href = '/';
+                postPathway(pathwayObj)
             }
         }
     });

@@ -83,7 +83,14 @@ target/
 *.pot
 *.pyc
 __pycache__/
+**/__pycache__/
 local_settings.py
+api/migrations
+!api/migrations/__init__.py
 
-.env
-db.sqlite3
+frontend/*
+
+!.env.dev
+*.venv
+*.sqlite3
+.env.db.remote

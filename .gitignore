@@ -1,0 +1,19 @@
+# ignore sensitive information stored inside config file
+system_info.json
+
+# ignore postgres because we don't need our whole DB in the repo
+postgres
+*.code-workspace
+**/*.log
+postgres.log
+**/*.sqlite3
+
+# ignore private credentials which should be kept local
+AWS/aws_credentials.csv
+
+.DS_Store
+
+# ignore backend image/file storage
+backend/media/*
+
+__pycache__

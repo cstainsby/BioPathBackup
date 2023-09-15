@@ -1,0 +1,555 @@
+{
+  "Users":[
+    {
+      "id": "1",
+      "username": "cstainsby",
+      "groups": []
+    },
+    {
+      "id": "2",
+      "username": "hugh janus",
+      "groups": []
+    }
+  ],
+
+  "pathways":[
+    {
+        "id": 17,
+        "name": "test path",
+        "author": "Cole"
+    },
+    {
+        "id": 3,
+        "enzymes": [
+            {
+                "id": 12,
+                "name": "enzyme1",
+                "x": 0,
+                "y": 100,
+                "abbreviation": "e1",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    27
+                ],
+                "products": [
+                    28
+                ],
+                "cofactors": [
+                    29
+                ],
+                "link": "",
+                "author": 2,
+                "public": false
+            }
+        ],
+        "molecules": [
+            {
+                "id": 27,
+                "name": "molecule1",
+                "x": 45,
+                "y": 0,
+                "abbreviation": "m1",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": "",
+                "author": 2,
+                "public": false
+            },
+            {
+                "id": 28,
+                "name": "molecule2",
+                "x": 45,
+                "y": 240,
+                "abbreviation": "m2",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": "",
+                "author": 2,
+                "public": false
+            },
+            {
+                "id": 29,
+                "name": "molecule3",
+                "x": 195,
+                "y": 120,
+                "abbreviation": "m3",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": "",
+                "author": 2,
+                "public": false
+            }
+        ],
+        "name": "path1",
+        "link": "",
+        "public": true,
+        "author": 2
+    },
+    {
+        "id": 4,
+        "enzymes": [
+            {
+                "id": 13,
+                "name": "Hexokinase",
+                "x": 210,
+                "y": 240,
+                "abbreviation": "HK",
+                "image": null,
+                "reversible": false,
+                "substrates": [
+                    30,
+                    44
+                ],
+                "products": [
+                    31,
+                    45
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 14,
+                "name": "Phosphoglucoisomerase",
+                "x": 210,
+                "y": 480,
+                "abbreviation": "PGI",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    31
+                ],
+                "products": [
+                    32
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 15,
+                "name": "Phosphofructokinase",
+                "x": 210,
+                "y": 720,
+                "abbreviation": "PFK",
+                "image": null,
+                "reversible": false,
+                "substrates": [
+                    32,
+                    46
+                ],
+                "products": [
+                    33,
+                    47
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 16,
+                "name": "Aldolase",
+                "x": 210,
+                "y": 945,
+                "abbreviation": "ALD",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    33
+                ],
+                "products": [
+                    34,
+                    35
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 17,
+                "name": "Triose Phosphate Isomerase",
+                "x": 300,
+                "y": 1200,
+                "abbreviation": "ISO",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    35
+                ],
+                "products": [
+                    34
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 18,
+                "name": "Trios Phosphate Dehydrogenase",
+                "x": 225,
+                "y": 1425,
+                "abbreviation": "",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    34,
+                    41
+                ],
+                "products": [
+                    36,
+                    42,
+                    43
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 19,
+                "name": "Phosphoglycerokinase",
+                "x": 225,
+                "y": 1725,
+                "abbreviation": "PGK",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    36,
+                    48
+                ],
+                "products": [
+                    37,
+                    49
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 20,
+                "name": "Phosphoglyceromutase",
+                "x": 225,
+                "y": 1965,
+                "abbreviation": "PGM",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    37
+                ],
+                "products": [
+                    38
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 21,
+                "name": "Enolase",
+                "x": 225,
+                "y": 2235,
+                "abbreviation": "ENO",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    38
+                ],
+                "products": [
+                    39
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 22,
+                "name": "Pyruvate Kinase",
+                "x": 225,
+                "y": 2520,
+                "abbreviation": "PYRK",
+                "image": null,
+                "reversible": true,
+                "substrates": [
+                    39,
+                    50
+                ],
+                "products": [
+                    40,
+                    51
+                ],
+                "cofactors": [],
+                "link": null,
+                "author": 2,
+                "public": true
+            }
+        ],
+        "molecules": [
+            {
+                "id": 30,
+                "name": "Glucose",
+                "x": 200,
+                "y": 150,
+                "abbreviation": "GLU",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 44,
+                "name": "ATP",
+                "x": 315,
+                "y": 150,
+                "abbreviation": "ATP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 31,
+                "name": "Glucose 6-Phosphate",
+                "x": 195,
+                "y": 390,
+                "abbreviation": "G6P",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 45,
+                "name": "ADP",
+                "x": 315,
+                "y": 390,
+                "abbreviation": "ADP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 32,
+                "name": "Fructose 6-Phosphate",
+                "x": 195,
+                "y": 615,
+                "abbreviation": "F6P",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 46,
+                "name": "ATP",
+                "x": 315,
+                "y": 615,
+                "abbreviation": "ATP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 33,
+                "name": "Fructose 1,6-Biphosphate",
+                "x": 210,
+                "y": 855,
+                "abbreviation": "F16BP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 47,
+                "name": "ADP",
+                "x": 300,
+                "y": 855,
+                "abbreviation": "ADP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 35,
+                "name": "Dehydrocycetone Phosphate",
+                "x": 345,
+                "y": 1110,
+                "abbreviation": "DHAP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 34,
+                "name": "Glyceraldehyde 3-Phosphate",
+                "x": 195,
+                "y": 1335,
+                "abbreviation": "G3P",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 41,
+                "name": "NAD+",
+                "x": 330,
+                "y": 1335,
+                "abbreviation": "NAD+",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 36,
+                "name": "1,3-Bisphosphoglycerate",
+                "x": 225,
+                "y": 1560,
+                "abbreviation": "13BPG",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 42,
+                "name": "NADH",
+                "x": 315,
+                "y": 1560,
+                "abbreviation": "NADH",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 49,
+                "name": "ADP",
+                "x": 315,
+                "y": 1875,
+                "abbreviation": "ADP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 37,
+                "name": "3-Phosphoglycerate",
+                "x": 225,
+                "y": 1875,
+                "abbreviation": "3PG",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 48,
+                "name": "ATP",
+                "x": 315,
+                "y": 1635,
+                "abbreviation": "ATP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 38,
+                "name": "2-Phosphoglycerate",
+                "x": 270,
+                "y": 2130,
+                "abbreviation": "2PG",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 39,
+                "name": "Phosphoenolpyruvate",
+                "x": 210,
+                "y": 2385,
+                "abbreviation": "PEP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 50,
+                "name": "ATP",
+                "x": 330,
+                "y": 2385,
+                "abbreviation": "ATP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 40,
+                "name": "Pyruvate",
+                "x": 210,
+                "y": 2670,
+                "abbreviation": "PYR",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            },
+            {
+                "id": 51,
+                "name": "ADP",
+                "x": 330,
+                "y": 2670,
+                "abbreviation": "ADP",
+                "ball_and_stick_image": null,
+                "space_filling_image": null,
+                "link": null,
+                "author": 2,
+                "public": true
+            }
+        ],
+        "name": "Glycolysis",
+        "link": null,
+        "public": true,
+        "author": 2
+    }
+]
+}

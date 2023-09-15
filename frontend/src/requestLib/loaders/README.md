@@ -1,0 +1,3 @@
+# Loaders Folder
+
+This folder will contain .js files containing singular functions which map onto pages within the react router. For example, on pathway view page load, a loader by the name pathwayViewLoader will be called to retreive the necessary information from the requests folder. **These loaders are essentially wrappers to collect all necessary data for a page** rather than have a bunch of loading calls spread around a page file.
